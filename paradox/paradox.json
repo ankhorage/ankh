@@ -67,7 +67,15 @@
       }
     ]
   },
-  "readmeUsage": [],
+  "readmeUsage": [
+    {
+      "title": "Bootstrap status",
+      "description": "Bootstrap status\n\n`@ankhorage/ankh` is the root CLI front door and command bus for Ankhorage.\n\nProvider discovery is intentionally deferred to `ankhorage/ankh#2`.\n\nNo domain behavior belongs in the root CLI. Domain behavior stays in provider\npackages such as infra, templates, studio, board, doctor, and dev.\n\nCurrent built-ins are `help`, `commands`, and `version`.",
+      "language": "ts",
+      "code": "import { runCli } from './cli.js';\n\nawait runCli(['--help']);",
+      "sourcePath": "src/readme-usage.ts"
+    }
+  ],
   "config": null,
   "entrypoints": ["src/index.ts"],
   "modules": [
@@ -652,6 +660,11 @@
         "sourcePath": "src/index.ts"
       },
       {
+        "fromPath": "src/readme-usage.ts",
+        "toPath": "src/cli.ts",
+        "sourcePath": "src/readme-usage.ts"
+      },
+      {
         "fromPath": "tests/cli.test.ts",
         "toPath": "package.json",
         "sourcePath": "tests/cli.test.ts"
@@ -748,6 +761,12 @@
         "toSymbol": "renderUnknownCommand",
         "callExpression": "renderUnknownCommand",
         "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "src/readme-usage.ts",
+        "toSymbol": "runCli",
+        "callExpression": "runCli",
+        "sourcePath": "src/readme-usage.ts"
       },
       {
         "fromSymbol": "tests/cli.test.ts",
