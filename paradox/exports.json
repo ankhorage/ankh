@@ -88,7 +88,7 @@
     "modulePath": "src/providerRegistry.ts",
     "sourceLocation": {
       "filePath": "src/providerRegistry.ts",
-      "line": 6,
+      "line": 3,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -134,6 +134,205 @@
     "structuredRows": []
   },
   {
+    "name": "AnkhDiscoveredPackage",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/discovery.ts",
+    "sourceLocation": {
+      "filePath": "src/discovery.ts",
+      "line": 14,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhDiscoverySource"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "metadata",
+        "kind": "property",
+        "type": "AnkhPackageMetadata",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "packageJsonPath",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "packageName",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "packageRoot",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "source",
+        "kind": "property",
+        "type": "AnkhDiscoverySource",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhDiscoverySource",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "unknown",
+    "modulePath": "src/discovery.ts",
+    "sourceLocation": {
+      "filePath": "src/discovery.ts",
+      "line": 12,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhMetadataDiscoveryDiagnostic",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/discovery.ts",
+    "sourceLocation": {
+      "filePath": "src/discovery.ts",
+      "line": 22,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhDiscoverySource"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "code",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "message",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "packageJsonPath",
+        "kind": "property",
+        "type": "string | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "packageName",
+        "kind": "property",
+        "type": "string | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "severity",
+        "kind": "property",
+        "type": "\"warning\" | \"error\"",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "source",
+        "kind": "property",
+        "type": "AnkhDiscoverySource | undefined",
+        "required": false,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhMetadataDiscoveryResult",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/discovery.ts",
+    "sourceLocation": {
+      "filePath": "src/discovery.ts",
+      "line": 31,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhDiscoveredPackage", "AnkhMetadataDiscoveryDiagnostic"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "diagnostics",
+        "kind": "property",
+        "type": "readonly AnkhMetadataDiscoveryDiagnostic[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "packages",
+        "kind": "property",
+        "type": "readonly AnkhDiscoveredPackage[]",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhPackageRegistry",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/packageRegistry.ts",
+    "sourceLocation": {
+      "filePath": "src/packageRegistry.ts",
+      "line": 3,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhDiscoveredPackage"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "hasCategory",
+        "kind": "method",
+        "type": "(category: string) => boolean",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "listPackages",
+        "kind": "method",
+        "type": "() => readonly AnkhDiscoveredPackage[]",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
     "name": "AnkhProviderRegistry",
     "description": null,
     "isReadme": false,
@@ -142,7 +341,7 @@
     "modulePath": "src/providerRegistry.ts",
     "sourceLocation": {
       "filePath": "src/providerRegistry.ts",
-      "line": 14,
+      "line": 11,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -199,6 +398,38 @@
     "structuredRows": []
   },
   {
+    "name": "createPackageRegistry",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/packageRegistry.ts",
+    "sourceLocation": {
+      "filePath": "src/packageRegistry.ts",
+      "line": 8,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhDiscoveredPackage", "AnkhPackageRegistry"],
+    "signatures": [
+      {
+        "label": "(packages?: readonly AnkhDiscoveredPackage[]) => AnkhPackageRegistry",
+        "parameters": [
+          {
+            "name": "packages",
+            "type": "readonly AnkhDiscoveredPackage[]",
+            "required": false,
+            "description": null
+          }
+        ],
+        "returnType": "AnkhPackageRegistry",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
     "name": "createProviderRegistry",
     "description": null,
     "isReadme": false,
@@ -207,7 +438,7 @@
     "modulePath": "src/providerRegistry.ts",
     "sourceLocation": {
       "filePath": "src/providerRegistry.ts",
-      "line": 23,
+      "line": 20,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -224,6 +455,38 @@
           }
         ],
         "returnType": "AnkhProviderRegistry",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "discoverAnkhPackages",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/discovery.ts",
+    "sourceLocation": {
+      "filePath": "src/discovery.ts",
+      "line": 45,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhMetadataDiscoveryResult"],
+    "signatures": [
+      {
+        "label": "(options: DiscoverAnkhPackagesOptions) => Promise<AnkhMetadataDiscoveryResult>",
+        "parameters": [
+          {
+            "name": "options",
+            "type": "DiscoverAnkhPackagesOptions",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "Promise<AnkhMetadataDiscoveryResult>",
         "returnDescription": null
       }
     ],
@@ -289,7 +552,7 @@
     "modulePath": "src/cli.ts",
     "sourceLocation": {
       "filePath": "src/cli.ts",
-      "line": 20,
+      "line": 29,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],

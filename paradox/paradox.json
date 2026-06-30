@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.2.0",
+      "value": "v0.2.1",
       "color": "cb3837"
     },
     {
@@ -70,9 +70,9 @@
   "readmeUsage": [
     {
       "title": "Bootstrap status",
-      "description": "Bootstrap status\n\n`@ankhorage/ankh` is the root CLI front door and command bus for Ankhorage.\n\nProvider discovery is intentionally deferred to `ankhorage/ankh#2`.\n\nNo domain behavior belongs in the root CLI. Domain behavior stays in provider\npackages such as infra, templates, studio, board, doctor, and dev.\n\nCurrent built-ins are `help`, `commands`, and `version`.",
+      "description": "Bootstrap status\n\n`@ankhorage/ankh` is the root CLI front door and command bus for Ankhorage.\n\n`ankh commands` currently lists discovered Ankh package metadata and\ncapabilities only.\n\nNo domain behavior belongs in the root CLI. Domain behavior stays in provider\npackages such as infra, templates, studio, board, doctor, and dev.\n\nCurrent built-ins are `help`, `commands`, and `version`.\n\nProvider manifest loading, command descriptors, category help, and command\nexecution are deferred beyond `ankhorage/ankh#2`.",
       "language": "ts",
-      "code": "import { runCli } from \"./cli.js\";\n\nawait runCli([\"--help\"]);",
+      "code": "import { runCli } from './cli.js';\n\nawait runCli(['--help']);",
       "sourcePath": "src/readme-usage.ts"
     }
   ],
@@ -102,27 +102,43 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/commandContext.ts",
+        "src/discovery.ts",
         "src/help.ts",
-        "src/parser.ts",
-        "src/providerRegistry.ts"
+        "src/packageRegistry.ts",
+        "src/parser.ts"
       ],
-      "exports": ["runCli", "RunCliOptions"]
+      "exports": ["DiscoverAnkhPackagesFn", "runCli", "RunCliOptions"]
     },
     {
       "path": "src/commandContext.ts",
       "isEntrypoint": false,
       "dependencies": ["package.json"],
+      "exports": ["AnkhCliRunResult", "AnkhCommandContext", "createDefaultCommandContext"]
+    },
+    {
+      "path": "src/discovery.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/packageMetadata.ts", "src/workspace.ts"],
       "exports": [
-        "AnkhCliRunResult",
-        "AnkhCommandContext",
-        "createDefaultCommandContext"
+        "AnkhDiscoveredPackage",
+        "AnkhDiscoverySource",
+        "AnkhMetadataDiscoveryDiagnostic",
+        "AnkhMetadataDiscoveryResult",
+        "discoverAnkhPackages",
+        "DiscoverAnkhPackagesOptions"
       ]
     },
     {
       "path": "src/help.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/providerRegistry.ts"],
-      "exports": ["renderCommands", "renderRootHelp", "renderUnknownCommand"]
+      "dependencies": ["src/discovery.ts"],
+      "exports": [
+        "renderCommands",
+        "renderDiscoveryFailure",
+        "renderMetadataDiscoveryDiagnostics",
+        "renderRootHelp",
+        "renderUnknownCommand"
+      ]
     },
     {
       "path": "src/index.ts",
@@ -132,13 +148,36 @@
         "AnkhCliRunResult",
         "AnkhCommandContext",
         "AnkhCommandListing",
+        "AnkhDiscoveredPackage",
+        "AnkhDiscoverySource",
+        "AnkhMetadataDiscoveryDiagnostic",
+        "AnkhMetadataDiscoveryResult",
+        "AnkhPackageRegistry",
         "AnkhProviderRegistry",
         "createDefaultCommandContext",
+        "createPackageRegistry",
         "createProviderRegistry",
+        "discoverAnkhPackages",
         "parseArgv",
         "ParsedCliRequest",
         "runCli"
       ]
+    },
+    {
+      "path": "src/packageMetadata.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/discovery.ts"],
+      "exports": [
+        "readAnkhPackageMetadata",
+        "ReadAnkhPackageMetadataOptions",
+        "ReadAnkhPackageMetadataResult"
+      ]
+    },
+    {
+      "path": "src/packageRegistry.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/discovery.ts"],
+      "exports": ["AnkhPackageRegistry", "createPackageRegistry"]
     },
     {
       "path": "src/parser.ts",
@@ -150,22 +189,41 @@
       "path": "src/providerRegistry.ts",
       "isEntrypoint": false,
       "dependencies": [],
+      "exports": ["AnkhCommandListing", "AnkhProviderRegistry", "createProviderRegistry"]
+    },
+    {
+      "path": "src/workspace.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
       "exports": [
-        "AnkhCommandListing",
-        "AnkhProviderRegistry",
-        "createProviderRegistry"
+        "findInstalledAnkhoragePackageJsonFiles",
+        "findWorkspacePackageJsonFiles",
+        "findWorkspaceRoots",
+        "WorkspaceRoots"
       ]
     },
     {
       "path": "tests/cli.test.ts",
       "isEntrypoint": false,
-      "dependencies": ["package.json", "src/cli.ts", "src/commandContext.ts"],
+      "dependencies": ["package.json", "src/cli.ts", "src/commandContext.ts", "src/discovery.ts"],
+      "exports": []
+    },
+    {
+      "path": "tests/discovery.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/discovery.ts"],
       "exports": []
     },
     {
       "path": "tests/package.test.ts",
       "isEntrypoint": false,
       "dependencies": ["package.json"],
+      "exports": []
+    },
+    {
+      "path": "tests/packageRegistry.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/packageRegistry.ts"],
       "exports": []
     },
     {
@@ -271,7 +329,7 @@
       "modulePath": "src/providerRegistry.ts",
       "sourceLocation": {
         "filePath": "src/providerRegistry.ts",
-        "line": 6,
+        "line": 3,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -317,6 +375,205 @@
       "structuredRows": []
     },
     {
+      "name": "AnkhDiscoveredPackage",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/discovery.ts",
+      "sourceLocation": {
+        "filePath": "src/discovery.ts",
+        "line": 14,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["AnkhDiscoverySource"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "metadata",
+          "kind": "property",
+          "type": "AnkhPackageMetadata",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "packageJsonPath",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "packageName",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "packageRoot",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "source",
+          "kind": "property",
+          "type": "AnkhDiscoverySource",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "AnkhDiscoverySource",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/discovery.ts",
+      "sourceLocation": {
+        "filePath": "src/discovery.ts",
+        "line": 12,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "AnkhMetadataDiscoveryDiagnostic",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/discovery.ts",
+      "sourceLocation": {
+        "filePath": "src/discovery.ts",
+        "line": 22,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["AnkhDiscoverySource"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "code",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "message",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "packageJsonPath",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "packageName",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "severity",
+          "kind": "property",
+          "type": "\"warning\" | \"error\"",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "source",
+          "kind": "property",
+          "type": "AnkhDiscoverySource | undefined",
+          "required": false,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "AnkhMetadataDiscoveryResult",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/discovery.ts",
+      "sourceLocation": {
+        "filePath": "src/discovery.ts",
+        "line": 31,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["AnkhDiscoveredPackage", "AnkhMetadataDiscoveryDiagnostic"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "diagnostics",
+          "kind": "property",
+          "type": "readonly AnkhMetadataDiscoveryDiagnostic[]",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "packages",
+          "kind": "property",
+          "type": "readonly AnkhDiscoveredPackage[]",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "AnkhPackageRegistry",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/packageRegistry.ts",
+      "sourceLocation": {
+        "filePath": "src/packageRegistry.ts",
+        "line": 3,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["AnkhDiscoveredPackage"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "hasCategory",
+          "kind": "method",
+          "type": "(category: string) => boolean",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "listPackages",
+          "kind": "method",
+          "type": "() => readonly AnkhDiscoveredPackage[]",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
       "name": "AnkhProviderRegistry",
       "description": null,
       "isReadme": false,
@@ -325,7 +582,7 @@
       "modulePath": "src/providerRegistry.ts",
       "sourceLocation": {
         "filePath": "src/providerRegistry.ts",
-        "line": 14,
+        "line": 11,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -382,6 +639,38 @@
       "structuredRows": []
     },
     {
+      "name": "createPackageRegistry",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/packageRegistry.ts",
+      "sourceLocation": {
+        "filePath": "src/packageRegistry.ts",
+        "line": 8,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["AnkhDiscoveredPackage", "AnkhPackageRegistry"],
+      "signatures": [
+        {
+          "label": "(packages?: readonly AnkhDiscoveredPackage[]) => AnkhPackageRegistry",
+          "parameters": [
+            {
+              "name": "packages",
+              "type": "readonly AnkhDiscoveredPackage[]",
+              "required": false,
+              "description": null
+            }
+          ],
+          "returnType": "AnkhPackageRegistry",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
       "name": "createProviderRegistry",
       "description": null,
       "isReadme": false,
@@ -390,7 +679,7 @@
       "modulePath": "src/providerRegistry.ts",
       "sourceLocation": {
         "filePath": "src/providerRegistry.ts",
-        "line": 23,
+        "line": 20,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -407,6 +696,38 @@
             }
           ],
           "returnType": "AnkhProviderRegistry",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "discoverAnkhPackages",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/discovery.ts",
+      "sourceLocation": {
+        "filePath": "src/discovery.ts",
+        "line": 45,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["AnkhMetadataDiscoveryResult"],
+      "signatures": [
+        {
+          "label": "(options: DiscoverAnkhPackagesOptions) => Promise<AnkhMetadataDiscoveryResult>",
+          "parameters": [
+            {
+              "name": "options",
+              "type": "DiscoverAnkhPackagesOptions",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "Promise<AnkhMetadataDiscoveryResult>",
           "returnDescription": null
         }
       ],
@@ -472,7 +793,7 @@
       "modulePath": "src/cli.ts",
       "sourceLocation": {
         "filePath": "src/cli.ts",
-        "line": 20,
+        "line": 29,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -509,7 +830,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli.ts",
-        "line": 20,
+        "line": 29,
         "column": 1
       }
     },
@@ -519,6 +840,42 @@
       "sourceLocation": {
         "filePath": "src/commandContext.ts",
         "line": 18,
+        "column": 1
+      }
+    },
+    {
+      "name": "discoverAnkhPackages",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/discovery.ts",
+        "line": 45,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectDiscoveryCandidates",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/discovery.ts",
+        "line": 96,
+        "column": 1
+      }
+    },
+    {
+      "name": "addCandidate",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/discovery.ts",
+        "line": 136,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectDuplicateMetadataDiagnostics",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/discovery.ts",
+        "line": 153,
         "column": 1
       }
     },
@@ -541,11 +898,110 @@
       }
     },
     {
+      "name": "renderMetadataDiscoveryDiagnostics",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/help.ts",
+        "line": 47,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderDiscoveryFailure",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/help.ts",
+        "line": 71,
+        "column": 1
+      }
+    },
+    {
       "name": "renderUnknownCommand",
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 39,
+        "line": 78,
+        "column": 1
+      }
+    },
+    {
+      "name": "getErrorMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/help.ts",
+        "line": 88,
+        "column": 1
+      }
+    },
+    {
+      "name": "readAnkhPackageMetadata",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/packageMetadata.ts",
+        "line": 29,
+        "column": 1
+      }
+    },
+    {
+      "name": "validateAnkhMetadata",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/packageMetadata.ts",
+        "line": 142,
+        "column": 1
+      }
+    },
+    {
+      "name": "getPackageName",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/packageMetadata.ts",
+        "line": 250,
+        "column": 1
+      }
+    },
+    {
+      "name": "isCapabilityId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/packageMetadata.ts",
+        "line": 259,
+        "column": 1
+      }
+    },
+    {
+      "name": "isProviderReference",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/packageMetadata.ts",
+        "line": 264,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/packageMetadata.ts",
+        "line": 268,
+        "column": 1
+      }
+    },
+    {
+      "name": "createDiagnostic",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/packageMetadata.ts",
+        "line": 281,
+        "column": 1
+      }
+    },
+    {
+      "name": "createPackageRegistry",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/packageRegistry.ts",
+        "line": 8,
         "column": 1
       }
     },
@@ -563,7 +1019,106 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerRegistry.ts",
-        "line": 23,
+        "line": 20,
+        "column": 1
+      }
+    },
+    {
+      "name": "findWorkspaceRoots",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/workspace.ts",
+        "line": 11,
+        "column": 1
+      }
+    },
+    {
+      "name": "findWorkspacePackageJsonFiles",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/workspace.ts",
+        "line": 42,
+        "column": 1
+      }
+    },
+    {
+      "name": "findInstalledAnkhoragePackageJsonFiles",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/workspace.ts",
+        "line": 64,
+        "column": 1
+      }
+    },
+    {
+      "name": "getWorkspacePatterns",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/workspace.ts",
+        "line": 90,
+        "column": 1
+      }
+    },
+    {
+      "name": "getPatternsFromPackageJson",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/workspace.ts",
+        "line": 118,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasWorkspaceField",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/workspace.ts",
+        "line": 145,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPackageJson",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/workspace.ts",
+        "line": 149,
+        "column": 1
+      }
+    },
+    {
+      "name": "fileExists",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/workspace.ts",
+        "line": 161,
+        "column": 1
+      }
+    },
+    {
+      "name": "getAncestorDirectories",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/workspace.ts",
+        "line": 170,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizeWorkspacePattern",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/workspace.ts",
+        "line": 186,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/workspace.ts",
+        "line": 191,
         "column": 1
       }
     }
@@ -579,9 +1134,25 @@
     },
     {
       "kind": "export",
+      "name": "createPackageRegistry",
+      "sourcePath": "src/packageRegistry.ts",
+      "symbolName": "createPackageRegistry",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
       "name": "createProviderRegistry",
       "sourcePath": "src/providerRegistry.ts",
       "symbolName": "createProviderRegistry",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "discoverAnkhPackages",
+      "sourcePath": "src/discovery.ts",
+      "symbolName": "discoverAnkhPackages",
       "description": null,
       "isReadme": false
     },
@@ -616,7 +1187,17 @@
       },
       {
         "fromPath": "src/cli.ts",
+        "toPath": "src/discovery.ts",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromPath": "src/cli.ts",
         "toPath": "src/help.ts",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromPath": "src/cli.ts",
+        "toPath": "src/packageRegistry.ts",
         "sourcePath": "src/cli.ts"
       },
       {
@@ -625,18 +1206,23 @@
         "sourcePath": "src/cli.ts"
       },
       {
-        "fromPath": "src/cli.ts",
-        "toPath": "src/providerRegistry.ts",
-        "sourcePath": "src/cli.ts"
-      },
-      {
         "fromPath": "src/commandContext.ts",
         "toPath": "package.json",
         "sourcePath": "src/commandContext.ts"
       },
       {
+        "fromPath": "src/discovery.ts",
+        "toPath": "src/packageMetadata.ts",
+        "sourcePath": "src/discovery.ts"
+      },
+      {
+        "fromPath": "src/discovery.ts",
+        "toPath": "src/workspace.ts",
+        "sourcePath": "src/discovery.ts"
+      },
+      {
         "fromPath": "src/help.ts",
-        "toPath": "src/providerRegistry.ts",
+        "toPath": "src/discovery.ts",
         "sourcePath": "src/help.ts"
       },
       {
@@ -651,6 +1237,16 @@
       },
       {
         "fromPath": "src/index.ts",
+        "toPath": "src/discovery.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
+        "toPath": "src/packageRegistry.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
         "toPath": "src/parser.ts",
         "sourcePath": "src/index.ts"
       },
@@ -658,6 +1254,16 @@
         "fromPath": "src/index.ts",
         "toPath": "src/providerRegistry.ts",
         "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/packageMetadata.ts",
+        "toPath": "src/discovery.ts",
+        "sourcePath": "src/packageMetadata.ts"
+      },
+      {
+        "fromPath": "src/packageRegistry.ts",
+        "toPath": "src/discovery.ts",
+        "sourcePath": "src/packageRegistry.ts"
       },
       {
         "fromPath": "src/readme-usage.ts",
@@ -680,9 +1286,24 @@
         "sourcePath": "tests/cli.test.ts"
       },
       {
+        "fromPath": "tests/cli.test.ts",
+        "toPath": "src/discovery.ts",
+        "sourcePath": "tests/cli.test.ts"
+      },
+      {
+        "fromPath": "tests/discovery.test.ts",
+        "toPath": "src/discovery.ts",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
         "fromPath": "tests/package.test.ts",
         "toPath": "package.json",
         "sourcePath": "tests/package.test.ts"
+      },
+      {
+        "fromPath": "tests/packageRegistry.test.ts",
+        "toPath": "src/packageRegistry.ts",
+        "sourcePath": "tests/packageRegistry.test.ts"
       },
       {
         "fromPath": "tests/parser.test.ts",
@@ -716,12 +1337,6 @@
       },
       {
         "fromSymbol": "runCli",
-        "toSymbol": "createProviderRegistry",
-        "callExpression": "createProviderRegistry",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
         "toSymbol": "parseArgv",
         "callExpression": "parseArgv",
         "sourcePath": "src/cli.ts"
@@ -746,8 +1361,32 @@
       },
       {
         "fromSymbol": "runCli",
-        "toSymbol": "listCommands",
-        "callExpression": "registry.listCommands",
+        "toSymbol": "listPackages",
+        "callExpression": "options.registry.listPackages",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "discoverPackages",
+        "callExpression": "discoverPackages",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "createPackageRegistry",
+        "callExpression": "createPackageRegistry",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "listPackages",
+        "callExpression": "registry.listPackages",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "renderMetadataDiscoveryDiagnostics",
+        "callExpression": "renderMetadataDiscoveryDiagnostics",
         "sourcePath": "src/cli.ts"
       },
       {
@@ -758,15 +1397,237 @@
       },
       {
         "fromSymbol": "runCli",
+        "toSymbol": "renderDiscoveryFailure",
+        "callExpression": "renderDiscoveryFailure",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "runCli",
         "toSymbol": "renderUnknownCommand",
         "callExpression": "renderUnknownCommand",
         "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "discoverAnkhPackages",
+        "toSymbol": "findWorkspaceRoots",
+        "callExpression": "findWorkspaceRoots",
+        "sourcePath": "src/discovery.ts"
+      },
+      {
+        "fromSymbol": "discoverAnkhPackages",
+        "toSymbol": "collectDiscoveryCandidates",
+        "callExpression": "collectDiscoveryCandidates",
+        "sourcePath": "src/discovery.ts"
+      },
+      {
+        "fromSymbol": "discoverAnkhPackages",
+        "toSymbol": "readAnkhPackageMetadata",
+        "callExpression": "readAnkhPackageMetadata",
+        "sourcePath": "src/discovery.ts"
+      },
+      {
+        "fromSymbol": "discoverAnkhPackages",
+        "toSymbol": "collectDuplicateMetadataDiagnostics",
+        "callExpression": "collectDuplicateMetadataDiagnostics",
+        "sourcePath": "src/discovery.ts"
+      },
+      {
+        "fromSymbol": "collectDiscoveryCandidates",
+        "toSymbol": "addCandidate",
+        "callExpression": "addCandidate",
+        "sourcePath": "src/discovery.ts"
+      },
+      {
+        "fromSymbol": "collectDiscoveryCandidates",
+        "toSymbol": "findWorkspacePackageJsonFiles",
+        "callExpression": "findWorkspacePackageJsonFiles",
+        "sourcePath": "src/discovery.ts"
+      },
+      {
+        "fromSymbol": "collectDiscoveryCandidates",
+        "toSymbol": "findInstalledAnkhoragePackageJsonFiles",
+        "callExpression": "findInstalledAnkhoragePackageJsonFiles",
+        "sourcePath": "src/discovery.ts"
+      },
+      {
+        "fromSymbol": "renderDiscoveryFailure",
+        "toSymbol": "getErrorMessage",
+        "callExpression": "getErrorMessage",
+        "sourcePath": "src/help.ts"
+      },
+      {
+        "fromSymbol": "readAnkhPackageMetadata",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/packageMetadata.ts"
+      },
+      {
+        "fromSymbol": "readAnkhPackageMetadata",
+        "toSymbol": "createDiagnostic",
+        "callExpression": "createDiagnostic",
+        "sourcePath": "src/packageMetadata.ts"
+      },
+      {
+        "fromSymbol": "readAnkhPackageMetadata",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/packageMetadata.ts"
+      },
+      {
+        "fromSymbol": "readAnkhPackageMetadata",
+        "toSymbol": "getPackageName",
+        "callExpression": "getPackageName",
+        "sourcePath": "src/packageMetadata.ts"
+      },
+      {
+        "fromSymbol": "readAnkhPackageMetadata",
+        "toSymbol": "validateAnkhMetadata",
+        "callExpression": "validateAnkhMetadata",
+        "sourcePath": "src/packageMetadata.ts"
+      },
+      {
+        "fromSymbol": "validateAnkhMetadata",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/packageMetadata.ts"
+      },
+      {
+        "fromSymbol": "validateAnkhMetadata",
+        "toSymbol": "createDiagnostic",
+        "callExpression": "createDiagnostic",
+        "sourcePath": "src/packageMetadata.ts"
+      },
+      {
+        "fromSymbol": "validateAnkhMetadata",
+        "toSymbol": "isProviderReference",
+        "callExpression": "isProviderReference",
+        "sourcePath": "src/packageMetadata.ts"
+      },
+      {
+        "fromSymbol": "validateAnkhMetadata",
+        "toSymbol": "isCapabilityId",
+        "callExpression": "isCapabilityId",
+        "sourcePath": "src/packageMetadata.ts"
       },
       {
         "fromSymbol": "src/readme-usage.ts",
         "toSymbol": "runCli",
         "callExpression": "runCli",
         "sourcePath": "src/readme-usage.ts"
+      },
+      {
+        "fromSymbol": "findWorkspaceRoots",
+        "toSymbol": "getAncestorDirectories",
+        "callExpression": "getAncestorDirectories",
+        "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "findWorkspaceRoots",
+        "toSymbol": "readPackageJson",
+        "callExpression": "readPackageJson",
+        "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "findWorkspaceRoots",
+        "toSymbol": "hasWorkspaceField",
+        "callExpression": "hasWorkspaceField",
+        "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "findWorkspaceRoots",
+        "toSymbol": "fileExists",
+        "callExpression": "fileExists",
+        "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "findWorkspacePackageJsonFiles",
+        "toSymbol": "getWorkspacePatterns",
+        "callExpression": "getWorkspacePatterns",
+        "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "findWorkspacePackageJsonFiles",
+        "toSymbol": "normalizeWorkspacePattern",
+        "callExpression": "normalizeWorkspacePattern",
+        "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "findInstalledAnkhoragePackageJsonFiles",
+        "toSymbol": "readdir",
+        "callExpression": "readdir",
+        "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "findInstalledAnkhoragePackageJsonFiles",
+        "toSymbol": "fileExists",
+        "callExpression": "fileExists",
+        "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "getWorkspacePatterns",
+        "toSymbol": "readPackageJson",
+        "callExpression": "readPackageJson",
+        "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "getWorkspacePatterns",
+        "toSymbol": "getPatternsFromPackageJson",
+        "callExpression": "getPatternsFromPackageJson",
+        "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "getWorkspacePatterns",
+        "toSymbol": "fileExists",
+        "callExpression": "fileExists",
+        "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "getWorkspacePatterns",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "getWorkspacePatterns",
+        "toSymbol": "parseYaml",
+        "callExpression": "parseYaml",
+        "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "getWorkspacePatterns",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "getPatternsFromPackageJson",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "hasWorkspaceField",
+        "toSymbol": "getPatternsFromPackageJson",
+        "callExpression": "getPatternsFromPackageJson",
+        "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "readPackageJson",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "readPackageJson",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "fileExists",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/workspace.ts"
       },
       {
         "fromSymbol": "tests/cli.test.ts",
@@ -799,6 +1660,102 @@
         "sourcePath": "tests/cli.test.ts"
       },
       {
+        "fromSymbol": "discoverPackages",
+        "toSymbol": "createDiscoveredPackage",
+        "callExpression": "createDiscoveredPackage",
+        "sourcePath": "tests/cli.test.ts"
+      },
+      {
+        "fromSymbol": "tests/discovery.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
+        "fromSymbol": "tests/discovery.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
+        "fromSymbol": "tests/discovery.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
+        "fromSymbol": "tests/discovery.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
+        "fromSymbol": "tests/discovery.test.ts",
+        "toSymbol": "createFixtureRoot",
+        "callExpression": "createFixtureRoot",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
+        "fromSymbol": "tests/discovery.test.ts",
+        "toSymbol": "writePackageJson",
+        "callExpression": "writePackageJson",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
+        "fromSymbol": "tests/discovery.test.ts",
+        "toSymbol": "discoverAnkhPackages",
+        "callExpression": "discoverAnkhPackages",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
+        "fromSymbol": "tests/discovery.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
+        "fromSymbol": "tests/discovery.test.ts",
+        "toSymbol": "writeRawPackageJson",
+        "callExpression": "writeRawPackageJson",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
+        "fromSymbol": "createFixtureRoot",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
+        "fromSymbol": "createFixtureRoot",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
+        "fromSymbol": "writePackageJson",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
+        "fromSymbol": "writePackageJson",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
+        "fromSymbol": "writeRawPackageJson",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
+        "fromSymbol": "writeRawPackageJson",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
         "fromSymbol": "tests/package.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
@@ -815,6 +1772,42 @@
         "toSymbol": "expect",
         "callExpression": "expect",
         "sourcePath": "tests/package.test.ts"
+      },
+      {
+        "fromSymbol": "tests/packageRegistry.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "tests/packageRegistry.test.ts"
+      },
+      {
+        "fromSymbol": "tests/packageRegistry.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "tests/packageRegistry.test.ts"
+      },
+      {
+        "fromSymbol": "tests/packageRegistry.test.ts",
+        "toSymbol": "createPackageRegistry",
+        "callExpression": "createPackageRegistry",
+        "sourcePath": "tests/packageRegistry.test.ts"
+      },
+      {
+        "fromSymbol": "tests/packageRegistry.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "tests/packageRegistry.test.ts"
+      },
+      {
+        "fromSymbol": "tests/packageRegistry.test.ts",
+        "toSymbol": "listPackages",
+        "callExpression": "registry.listPackages",
+        "sourcePath": "tests/packageRegistry.test.ts"
+      },
+      {
+        "fromSymbol": "tests/packageRegistry.test.ts",
+        "toSymbol": "hasCategory",
+        "callExpression": "registry.hasCategory",
+        "sourcePath": "tests/packageRegistry.test.ts"
       },
       {
         "fromSymbol": "tests/parser.test.ts",
@@ -903,6 +1896,56 @@
         "fromSymbol": "createDefaultCommandContext",
         "toType": "AnkhCommandContext",
         "sourcePath": "src/commandContext.ts"
+      },
+      {
+        "fromSymbol": "AnkhDiscoveredPackage",
+        "toType": "AnkhDiscoverySource",
+        "sourcePath": "src/discovery.ts"
+      },
+      {
+        "fromSymbol": "AnkhDiscoveredPackage",
+        "toType": "AnkhPackageMetadata",
+        "sourcePath": "src/discovery.ts"
+      },
+      {
+        "fromSymbol": "AnkhMetadataDiscoveryDiagnostic",
+        "toType": "AnkhDiscoverySource",
+        "sourcePath": "src/discovery.ts"
+      },
+      {
+        "fromSymbol": "AnkhMetadataDiscoveryResult",
+        "toType": "AnkhDiscoveredPackage",
+        "sourcePath": "src/discovery.ts"
+      },
+      {
+        "fromSymbol": "AnkhMetadataDiscoveryResult",
+        "toType": "AnkhMetadataDiscoveryDiagnostic",
+        "sourcePath": "src/discovery.ts"
+      },
+      {
+        "fromSymbol": "discoverAnkhPackages",
+        "toType": "AnkhMetadataDiscoveryResult",
+        "sourcePath": "src/discovery.ts"
+      },
+      {
+        "fromSymbol": "discoverAnkhPackages",
+        "toType": "DiscoverAnkhPackagesOptions",
+        "sourcePath": "src/discovery.ts"
+      },
+      {
+        "fromSymbol": "AnkhPackageRegistry",
+        "toType": "AnkhDiscoveredPackage",
+        "sourcePath": "src/packageRegistry.ts"
+      },
+      {
+        "fromSymbol": "createPackageRegistry",
+        "toType": "AnkhDiscoveredPackage",
+        "sourcePath": "src/packageRegistry.ts"
+      },
+      {
+        "fromSymbol": "createPackageRegistry",
+        "toType": "AnkhPackageRegistry",
+        "sourcePath": "src/packageRegistry.ts"
       },
       {
         "fromSymbol": "parseArgv",
