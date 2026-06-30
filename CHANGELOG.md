@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+### Patch Changes
+
+- 1fb5302: Trigger release
+
 ## 0.2.0
 
 ### Minor Changes
