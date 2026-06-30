@@ -177,6 +177,42 @@ describe("discoverAnkhPackages", () => {
     );
   });
 
+  it("reports malformed current package json as a discovery diagnostic", async () => {
+    const root = await createFixtureRoot();
+    const packageDirectory = path.join(root, "packages", "broken");
+    await writePackageJson(root, {
+      name: "repo",
+      workspaces: ["packages/*"],
+    });
+    await writeRawPackageJson(
+      packageDirectory,
+      '{\n  "name": "@ankhorage/broken",\n  "ankh": ',
+    );
+
+    const result = await discoverAnkhPackages({
+      cwd: path.join(packageDirectory, "src"),
+    });
+
+    expect(result.packages).toEqual([]);
+    expect(result.diagnostics.map((diagnostic) => diagnostic.code)).toContain(
+      "invalid-package-json",
+    );
+  });
+
+  it("reports missing package name when ankh metadata is present", async () => {
+    const root = await createFixtureRoot();
+    await writePackageJson(root, {
+      ankh: infraMetadata,
+    });
+
+    const result = await discoverAnkhPackages({ cwd: root });
+
+    expect(result.packages).toEqual([]);
+    expect(result.diagnostics.map((diagnostic) => diagnostic.code)).toContain(
+      "invalid-package-name",
+    );
+  });
+
   it("prefers a workspace package over an installed duplicate", async () => {
     const root = await createFixtureRoot();
     await writePackageJson(root, {
@@ -238,6 +274,30 @@ describe("discoverAnkhPackages", () => {
     expect(diagnosticCodes).toContain("duplicate-ankh-category");
     expect(diagnosticCodes).toContain("duplicate-ankh-capability");
   });
+
+  it("discovers workspace packages declared through pnpm-workspace.yaml", async () => {
+    const root = await createFixtureRoot();
+    await writePackageJson(root, {
+      name: "repo",
+    });
+    await writePnpmWorkspace(root, ["packages/*"]);
+    await writePackageJson(path.join(root, "packages", "infra"), {
+      ankh: infraMetadata,
+      name: "@ankhorage/infra",
+    });
+
+    const result = await discoverAnkhPackages({ cwd: root });
+
+    expect(result.packages).toEqual([
+      {
+        metadata: infraMetadata,
+        packageJsonPath: path.join(root, "packages", "infra", "package.json"),
+        packageName: "@ankhorage/infra",
+        packageRoot: path.join(root, "packages", "infra"),
+        source: "workspace",
+      },
+    ]);
+  });
 });
 
 async function createFixtureRoot(): Promise<string> {
@@ -264,4 +324,16 @@ async function writeRawPackageJson(
 ): Promise<void> {
   await mkdir(directory, { recursive: true });
   await writeFile(path.join(directory, "package.json"), rawPackageJson, "utf8");
+}
+
+async function writePnpmWorkspace(
+  directory: string,
+  packages: readonly string[],
+): Promise<void> {
+  await mkdir(directory, { recursive: true });
+  const yaml = [
+    "packages:",
+    ...packages.map((workspacePattern) => `  - '${workspacePattern}'`),
+  ].join("\n");
+  await writeFile(path.join(directory, "pnpm-workspace.yaml"), `${yaml}\n`, "utf8");
 }

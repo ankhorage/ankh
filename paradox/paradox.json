@@ -963,7 +963,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 142,
+        "line": 143,
         "column": 1
       }
     },
@@ -972,7 +972,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 250,
+        "line": 251,
         "column": 1
       }
     },
@@ -981,7 +981,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 259,
+        "line": 260,
         "column": 1
       }
     },
@@ -990,7 +990,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 264,
+        "line": 265,
         "column": 1
       }
     },
@@ -999,7 +999,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 268,
+        "line": 269,
         "column": 1
       }
     },
@@ -1008,7 +1008,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 281,
+        "line": 282,
         "column": 1
       }
     },
@@ -1545,14 +1545,14 @@
       },
       {
         "fromSymbol": "findWorkspaceRoots",
-        "toSymbol": "hasWorkspaceField",
-        "callExpression": "hasWorkspaceField",
+        "toSymbol": "fileExists",
+        "callExpression": "fileExists",
         "sourcePath": "src/workspace.ts"
       },
       {
         "fromSymbol": "findWorkspaceRoots",
-        "toSymbol": "fileExists",
-        "callExpression": "fileExists",
+        "toSymbol": "hasWorkspaceField",
+        "callExpression": "hasWorkspaceField",
         "sourcePath": "src/workspace.ts"
       },
       {
@@ -1641,8 +1641,8 @@
       },
       {
         "fromSymbol": "fileExists",
-        "toSymbol": "readFile",
-        "callExpression": "readFile",
+        "toSymbol": "access",
+        "callExpression": "access",
         "sourcePath": "src/workspace.ts"
       },
       {
@@ -1736,6 +1736,12 @@
         "sourcePath": "tests/discovery.test.ts"
       },
       {
+        "fromSymbol": "tests/discovery.test.ts",
+        "toSymbol": "writePnpmWorkspace",
+        "callExpression": "writePnpmWorkspace",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
         "fromSymbol": "createFixtureRoot",
         "toSymbol": "mkdtemp",
         "callExpression": "mkdtemp",
@@ -1767,6 +1773,18 @@
       },
       {
         "fromSymbol": "writeRawPackageJson",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
+        "fromSymbol": "writePnpmWorkspace",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
+        "fromSymbol": "writePnpmWorkspace",
         "toSymbol": "writeFile",
         "callExpression": "writeFile",
         "sourcePath": "tests/discovery.test.ts"

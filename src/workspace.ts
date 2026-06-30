@@ -1,4 +1,4 @@
-import { readdir, readFile } from "node:fs/promises";
+import { access, readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
 import { parse as parseYaml } from "yaml";
@@ -16,7 +16,10 @@ export async function findWorkspaceRoots(cwd: string): Promise<WorkspaceRoots> {
 
   for (const directory of directories) {
     const packageJson = await readPackageJson(directory);
-    if (currentPackageRoot === null && packageJson !== null) {
+    if (
+      currentPackageRoot === null &&
+      (await fileExists(path.join(directory, "package.json")))
+    ) {
       currentPackageRoot = directory;
     }
 
@@ -132,7 +135,8 @@ function getPatternsFromPackageJson(
     return rawWorkspaces
       .filter((workspacePattern): workspacePattern is string => {
         return (
-          typeof workspacePattern === "string" && workspacePattern.trim() !== ""
+          typeof workspacePattern === "string" &&
+          workspacePattern.trim() !== ""
         );
       })
       .map((workspacePattern) => workspacePattern.trim());
@@ -142,7 +146,8 @@ function getPatternsFromPackageJson(
     return rawWorkspaces.packages
       .filter((workspacePattern): workspacePattern is string => {
         return (
-          typeof workspacePattern === "string" && workspacePattern.trim() !== ""
+          typeof workspacePattern === "string" &&
+          workspacePattern.trim() !== ""
         );
       })
       .map((workspacePattern) => workspacePattern.trim());
@@ -173,7 +178,7 @@ async function readPackageJson(
 
 async function fileExists(filePath: string): Promise<boolean> {
   try {
-    await readFile(filePath, "utf8");
+    await access(filePath);
     return true;
   } catch {
     return false;

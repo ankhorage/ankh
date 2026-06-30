@@ -94,8 +94,18 @@ export async function readAnkhPackageMetadata(
 
   const packageJson = parsedJson as ParsedPackageJson;
   const packageName = getPackageName(packageJson.name);
+
+  if (packageJson.ankh === undefined) {
+    return {
+      packageName,
+      packageRoot,
+      metadata: null,
+      diagnostics: [],
+    };
+  }
+
   const nameDiagnostics =
-    packageJson.name === undefined || packageName !== null
+    packageName !== null
       ? []
       : [
           createDiagnostic({
@@ -106,15 +116,6 @@ export async function readAnkhPackageMetadata(
             source: options.source,
           }),
         ];
-
-  if (packageJson.ankh === undefined) {
-    return {
-      packageName,
-      packageRoot,
-      metadata: null,
-      diagnostics: nameDiagnostics,
-    };
-  }
 
   const metadataResult = validateAnkhMetadata({
     packageJsonPath: options.packageJsonPath,
