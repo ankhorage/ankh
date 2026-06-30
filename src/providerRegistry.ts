@@ -1,7 +1,4 @@
-import type {
-  AnkhCapabilityId,
-  AnkhCommandProviderManifest,
-} from "@ankhorage/contracts/cli";
+import type { AnkhCapabilityId, AnkhCommandProviderManifest } from '@ankhorage/contracts/cli';
 
 export interface AnkhCommandListing {
   readonly providerId: string;

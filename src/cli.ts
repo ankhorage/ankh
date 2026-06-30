@@ -1,13 +1,9 @@
-import type { AnkhCliRunResult, AnkhCommandContext } from "./commandContext.js";
-import { createDefaultCommandContext } from "./commandContext.js";
-import {
-  renderCommands,
-  renderRootHelp,
-  renderUnknownCommand,
-} from "./help.js";
-import { parseArgv } from "./parser.js";
-import type { AnkhProviderRegistry } from "./providerRegistry.js";
-import { createProviderRegistry } from "./providerRegistry.js";
+import type { AnkhCliRunResult, AnkhCommandContext } from './commandContext.js';
+import { createDefaultCommandContext } from './commandContext.js';
+import { renderCommands, renderRootHelp, renderUnknownCommand } from './help.js';
+import { parseArgv } from './parser.js';
+import type { AnkhProviderRegistry } from './providerRegistry.js';
+import { createProviderRegistry } from './providerRegistry.js';
 
 export interface RunCliOptions {
   readonly context?: AnkhCommandContext;
@@ -26,16 +22,16 @@ export async function runCli(
   const request = await Promise.resolve(parseArgv(argv));
 
   switch (request.kind) {
-    case "help":
+    case 'help':
       context.writeStdout(renderRootHelp());
       return { exitCode: 0 };
-    case "version":
+    case 'version':
       context.writeStdout(`${context.version}\n`);
       return { exitCode: 0 };
-    case "commands":
+    case 'commands':
       context.writeStdout(renderCommands(registry.listCommands()));
       return { exitCode: 0 };
-    case "dispatch":
+    case 'dispatch':
       context.writeStderr(renderUnknownCommand(request.tokens));
       return { exitCode: 1 };
   }

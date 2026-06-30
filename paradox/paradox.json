@@ -112,11 +112,7 @@
       "path": "src/commandContext.ts",
       "isEntrypoint": false,
       "dependencies": ["package.json"],
-      "exports": [
-        "AnkhCliRunResult",
-        "AnkhCommandContext",
-        "createDefaultCommandContext"
-      ]
+      "exports": ["AnkhCliRunResult", "AnkhCommandContext", "createDefaultCommandContext"]
     },
     {
       "path": "src/help.ts",
@@ -150,11 +146,7 @@
       "path": "src/providerRegistry.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "AnkhCommandListing",
-        "AnkhProviderRegistry",
-        "createProviderRegistry"
-      ]
+      "exports": ["AnkhCommandListing", "AnkhProviderRegistry", "createProviderRegistry"]
     },
     {
       "path": "tests/cli.test.ts",
@@ -422,7 +414,7 @@
       "modulePath": "src/parser.ts",
       "sourceLocation": {
         "filePath": "src/parser.ts",
-        "line": 13,
+        "line": 16,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -554,7 +546,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/parser.ts",
-        "line": 13,
+        "line": 16,
         "column": 1
       }
     },

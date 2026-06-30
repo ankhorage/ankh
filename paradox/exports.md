@@ -85,7 +85,7 @@ Source: `src/providerRegistry.ts:20:1`
 
 Kind: `function`
 Module: `src/parser.ts`
-Source: `src/parser.ts:13:1`
+Source: `src/parser.ts:16:1`
 
 ### Signatures
 
