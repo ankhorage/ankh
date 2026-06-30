@@ -72,7 +72,7 @@
       "title": "Bootstrap status",
       "description": "Bootstrap status\n\n`@ankhorage/ankh` is the root CLI front door and command bus for Ankhorage.\n\nProvider discovery is intentionally deferred to `ankhorage/ankh#2`.\n\nNo domain behavior belongs in the root CLI. Domain behavior stays in provider\npackages such as infra, templates, studio, board, doctor, and dev.\n\nCurrent built-ins are `help`, `commands`, and `version`.",
       "language": "ts",
-      "code": "import { runCli } from './cli.js';\n\nawait runCli(['--help']);",
+      "code": "import { runCli } from \"./cli.js\";\n\nawait runCli([\"--help\"]);",
       "sourcePath": "src/readme-usage.ts"
     }
   ],
@@ -112,7 +112,11 @@
       "path": "src/commandContext.ts",
       "isEntrypoint": false,
       "dependencies": ["package.json"],
-      "exports": ["AnkhCliRunResult", "AnkhCommandContext", "createDefaultCommandContext"]
+      "exports": [
+        "AnkhCliRunResult",
+        "AnkhCommandContext",
+        "createDefaultCommandContext"
+      ]
     },
     {
       "path": "src/help.ts",
@@ -146,7 +150,11 @@
       "path": "src/providerRegistry.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["AnkhCommandListing", "AnkhProviderRegistry", "createProviderRegistry"]
+      "exports": [
+        "AnkhCommandListing",
+        "AnkhProviderRegistry",
+        "createProviderRegistry"
+      ]
     },
     {
       "path": "tests/cli.test.ts",
@@ -263,7 +271,7 @@
       "modulePath": "src/providerRegistry.ts",
       "sourceLocation": {
         "filePath": "src/providerRegistry.ts",
-        "line": 3,
+        "line": 6,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -317,7 +325,7 @@
       "modulePath": "src/providerRegistry.ts",
       "sourceLocation": {
         "filePath": "src/providerRegistry.ts",
-        "line": 11,
+        "line": 14,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -382,7 +390,7 @@
       "modulePath": "src/providerRegistry.ts",
       "sourceLocation": {
         "filePath": "src/providerRegistry.ts",
-        "line": 20,
+        "line": 23,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -464,7 +472,7 @@
       "modulePath": "src/cli.ts",
       "sourceLocation": {
         "filePath": "src/cli.ts",
-        "line": 16,
+        "line": 20,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -501,7 +509,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli.ts",
-        "line": 16,
+        "line": 20,
         "column": 1
       }
     },
@@ -537,7 +545,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 37,
+        "line": 39,
         "column": 1
       }
     },
@@ -555,7 +563,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerRegistry.ts",
-        "line": 20,
+        "line": 23,
         "column": 1
       }
     }

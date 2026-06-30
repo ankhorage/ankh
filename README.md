@@ -23,9 +23,9 @@ Current built-ins are `help`, `commands`, and `version`.
 Source: `src/readme-usage.ts`
 
 ```ts
-import { runCli } from './cli.js';
+import { runCli } from "./cli.js";
 
-await runCli(['--help']);
+await runCli(["--help"]);
 ```
 
 ## Installation

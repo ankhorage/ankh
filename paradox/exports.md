@@ -32,7 +32,7 @@ Source: `src/commandContext.ts:3:1`
 
 Kind: `type`
 Module: `src/providerRegistry.ts`
-Source: `src/providerRegistry.ts:3:1`
+Source: `src/providerRegistry.ts:6:1`
 
 ### Members
 
@@ -48,7 +48,7 @@ Source: `src/providerRegistry.ts:3:1`
 
 Kind: `type`
 Module: `src/providerRegistry.ts`
-Source: `src/providerRegistry.ts:11:1`
+Source: `src/providerRegistry.ts:14:1`
 
 ### Members
 
@@ -73,7 +73,7 @@ Source: `src/commandContext.ts:18:1`
 
 Kind: `function`
 Module: `src/providerRegistry.ts`
-Source: `src/providerRegistry.ts:20:1`
+Source: `src/providerRegistry.ts:23:1`
 
 ### Signatures
 
@@ -103,7 +103,7 @@ Source: `src/parser.ts:1:1`
 
 Kind: `function`
 Module: `src/cli.ts`
-Source: `src/cli.ts:16:1`
+Source: `src/cli.ts:20:1`
 
 ### Signatures
 
