@@ -1,0 +1,37 @@
+graph LR
+  module_package_json["package.json"]
+  module_paradox_config_ts["paradox.config.ts"]
+  module_src_bin_ts["src/bin.ts"]
+  module_src_cli_ts["src/cli.ts"]
+  module_src_commandContext_ts["src/commandContext.ts"]
+  module_src_help_ts["src/help.ts"]
+  module_src_index_ts["src/index.ts"]
+  module_src_parser_ts["src/parser.ts"]
+  module_src_providerRegistry_ts["src/providerRegistry.ts"]
+  module_tests_cli_test_ts["tests/cli.test.ts"]
+  module_tests_package_test_ts["tests/package.test.ts"]
+  module_tests_parser_test_ts["tests/parser.test.ts"]
+  module_tests_providerRegistry_test_ts["tests/providerRegistry.test.ts"]
+  export_AnkhCliRunResult["AnkhCliRunResult"]
+  module_src_commandContext_ts --> export_AnkhCliRunResult
+  export_AnkhCommandContext["AnkhCommandContext"]
+  module_src_commandContext_ts --> export_AnkhCommandContext
+  export_AnkhCommandListing["AnkhCommandListing"]
+  module_src_providerRegistry_ts --> export_AnkhCommandListing
+  export_AnkhProviderRegistry["AnkhProviderRegistry"]
+  module_src_providerRegistry_ts --> export_AnkhProviderRegistry
+  export_AnkhProviderRegistry -.-> export_AnkhCommandListing
+  export_createDefaultCommandContext["createDefaultCommandContext"]
+  module_src_commandContext_ts --> export_createDefaultCommandContext
+  export_createDefaultCommandContext -.-> export_AnkhCommandContext
+  export_createProviderRegistry["createProviderRegistry"]
+  module_src_providerRegistry_ts --> export_createProviderRegistry
+  export_createProviderRegistry -.-> export_AnkhProviderRegistry
+  export_parseArgv["parseArgv"]
+  module_src_parser_ts --> export_parseArgv
+  export_parseArgv -.-> export_ParsedCliRequest
+  export_ParsedCliRequest["ParsedCliRequest"]
+  module_src_parser_ts --> export_ParsedCliRequest
+  export_runCli["runCli"]
+  module_src_cli_ts --> export_runCli
+  export_runCli -.-> export_AnkhCliRunResult
