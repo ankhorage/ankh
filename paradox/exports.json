@@ -1,0 +1,321 @@
+[
+  {
+    "name": "AnkhCliRunResult",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/commandContext.ts",
+    "sourceLocation": {
+      "filePath": "src/commandContext.ts",
+      "line": 11,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "exitCode",
+        "kind": "property",
+        "type": "number",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhCommandContext",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/commandContext.ts",
+    "sourceLocation": {
+      "filePath": "src/commandContext.ts",
+      "line": 3,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "cwd",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "env",
+        "kind": "property",
+        "type": "Readonly<Record<string, string | undefined>>",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "version",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "writeStderr",
+        "kind": "method",
+        "type": "(text: string) => void",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "writeStdout",
+        "kind": "method",
+        "type": "(text: string) => void",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhCommandListing",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/providerRegistry.ts",
+    "sourceLocation": {
+      "filePath": "src/providerRegistry.ts",
+      "line": 3,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "capability",
+        "kind": "property",
+        "type": "`${string}.${string}`",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "category",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "path",
+        "kind": "property",
+        "type": "readonly [string, ...string[]]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "providerId",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "summary",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhProviderRegistry",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/providerRegistry.ts",
+    "sourceLocation": {
+      "filePath": "src/providerRegistry.ts",
+      "line": 11,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhCommandListing"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "hasCategory",
+        "kind": "method",
+        "type": "(category: string) => boolean",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "listCommands",
+        "kind": "method",
+        "type": "() => readonly AnkhCommandListing[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "listProviders",
+        "kind": "method",
+        "type": "() => readonly AnkhCommandProviderManifest[]",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "createDefaultCommandContext",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/commandContext.ts",
+    "sourceLocation": {
+      "filePath": "src/commandContext.ts",
+      "line": 18,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhCommandContext"],
+    "signatures": [
+      {
+        "label": "() => AnkhCommandContext",
+        "parameters": [],
+        "returnType": "AnkhCommandContext",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "createProviderRegistry",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/providerRegistry.ts",
+    "sourceLocation": {
+      "filePath": "src/providerRegistry.ts",
+      "line": 20,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhProviderRegistry"],
+    "signatures": [
+      {
+        "label": "(providers?: readonly AnkhCommandProviderManifest[]) => AnkhProviderRegistry",
+        "parameters": [
+          {
+            "name": "providers",
+            "type": "readonly AnkhCommandProviderManifest[]",
+            "required": false,
+            "description": null
+          }
+        ],
+        "returnType": "AnkhProviderRegistry",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "parseArgv",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/parser.ts",
+    "sourceLocation": {
+      "filePath": "src/parser.ts",
+      "line": 13,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["ParsedCliRequest"],
+    "signatures": [
+      {
+        "label": "(argv: readonly string[]) => ParsedCliRequest",
+        "parameters": [
+          {
+            "name": "argv",
+            "type": "readonly string[]",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "ParsedCliRequest",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "ParsedCliRequest",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "unknown",
+    "modulePath": "src/parser.ts",
+    "sourceLocation": {
+      "filePath": "src/parser.ts",
+      "line": 1,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "runCli",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/cli.ts",
+    "sourceLocation": {
+      "filePath": "src/cli.ts",
+      "line": 16,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhCliRunResult"],
+    "signatures": [
+      {
+        "label": "(argv: readonly string[], options?: RunCliOptions) => Promise<AnkhCliRunResult>",
+        "parameters": [
+          {
+            "name": "argv",
+            "type": "readonly string[]",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "options",
+            "type": "RunCliOptions",
+            "required": false,
+            "description": null
+          }
+        ],
+        "returnType": "Promise<AnkhCliRunResult>",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  }
+]
