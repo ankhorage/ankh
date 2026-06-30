@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0
+
+### Minor Changes
+
+- 8d8734c: Add metadata-only Ankh package discovery for `ankh commands`.
+
 ## 0.2.1
 
 ### Patch Changes
