@@ -32,7 +32,7 @@ Source: `src/commandContext.ts:3:1`
 
 Kind: `type`
 Module: `src/providerRegistry.ts`
-Source: `src/providerRegistry.ts:3:1`
+Source: `src/providerRegistry.ts:6:1`
 
 ### Members
 
@@ -48,7 +48,7 @@ Source: `src/providerRegistry.ts:3:1`
 
 Kind: `type`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:14:1`
+Source: `src/discovery.ts:15:1`
 
 ### Members
 
@@ -70,7 +70,7 @@ Source: `src/discovery.ts:12:1`
 
 Kind: `type`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:22:1`
+Source: `src/discovery.ts:23:1`
 
 ### Members
 
@@ -87,7 +87,7 @@ Source: `src/discovery.ts:22:1`
 
 Kind: `type`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:31:1`
+Source: `src/discovery.ts:32:1`
 
 ### Members
 
@@ -113,7 +113,7 @@ Source: `src/packageRegistry.ts:3:1`
 
 Kind: `type`
 Module: `src/providerRegistry.ts`
-Source: `src/providerRegistry.ts:11:1`
+Source: `src/providerRegistry.ts:14:1`
 
 ### Members
 
@@ -150,7 +150,7 @@ Source: `src/packageRegistry.ts:8:1`
 
 Kind: `function`
 Module: `src/providerRegistry.ts`
-Source: `src/providerRegistry.ts:20:1`
+Source: `src/providerRegistry.ts:23:1`
 
 ### Signatures
 
@@ -162,7 +162,7 @@ Source: `src/providerRegistry.ts:20:1`
 
 Kind: `function`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:45:1`
+Source: `src/discovery.ts:46:1`
 
 ### Signatures
 
@@ -192,7 +192,7 @@ Source: `src/parser.ts:1:1`
 
 Kind: `function`
 Module: `src/cli.ts`
-Source: `src/cli.ts:29:1`
+Source: `src/cli.ts:32:1`
 
 ### Signatures
 

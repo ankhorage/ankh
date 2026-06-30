@@ -1,4 +1,4 @@
-import type { AnkhDiscoveredPackage } from './discovery.js';
+import type { AnkhDiscoveredPackage } from "./discovery.js";
 
 export interface AnkhPackageRegistry {
   hasCategory(category: string): boolean;
