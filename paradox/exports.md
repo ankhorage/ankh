@@ -44,6 +44,71 @@ Source: `src/providerRegistry.ts:6:1`
 | providerId | property | `string`                         | yes      |             |
 | summary    | property | `string`                         | yes      |             |
 
+## AnkhDiscoveredPackage
+
+Kind: `type`
+Module: `src/discovery.ts`
+Source: `src/discovery.ts:15:1`
+
+### Members
+
+| Name            | Kind     | Type                  | Required | Description |
+| --------------- | -------- | --------------------- | -------- | ----------- |
+| metadata        | property | `AnkhPackageMetadata` | yes      |             |
+| packageJsonPath | property | `string`              | yes      |             |
+| packageName     | property | `string`              | yes      |             |
+| packageRoot     | property | `string`              | yes      |             |
+| source          | property | `AnkhDiscoverySource` | yes      |             |
+
+## AnkhDiscoverySource
+
+Kind: `unknown`
+Module: `src/discovery.ts`
+Source: `src/discovery.ts:12:1`
+
+## AnkhMetadataDiscoveryDiagnostic
+
+Kind: `type`
+Module: `src/discovery.ts`
+Source: `src/discovery.ts:23:1`
+
+### Members
+
+| Name            | Kind     | Type                               | Required | Description |
+| --------------- | -------- | ---------------------------------- | -------- | ----------- |
+| code            | property | `string`                           | yes      |             |
+| message         | property | `string`                           | yes      |             |
+| packageJsonPath | property | `string \| undefined`              | no       |             |
+| packageName     | property | `string \| undefined`              | no       |             |
+| severity        | property | `"warning" \| "error"`             | yes      |             |
+| source          | property | `AnkhDiscoverySource \| undefined` | no       |             |
+
+## AnkhMetadataDiscoveryResult
+
+Kind: `type`
+Module: `src/discovery.ts`
+Source: `src/discovery.ts:32:1`
+
+### Members
+
+| Name        | Kind     | Type                                         | Required | Description |
+| ----------- | -------- | -------------------------------------------- | -------- | ----------- |
+| diagnostics | property | `readonly AnkhMetadataDiscoveryDiagnostic[]` | yes      |             |
+| packages    | property | `readonly AnkhDiscoveredPackage[]`           | yes      |             |
+
+## AnkhPackageRegistry
+
+Kind: `type`
+Module: `src/packageRegistry.ts`
+Source: `src/packageRegistry.ts:3:1`
+
+### Members
+
+| Name         | Kind   | Type                                     | Required | Description |
+| ------------ | ------ | ---------------------------------------- | -------- | ----------- |
+| hasCategory  | method | `(category: string) => boolean`          | yes      |             |
+| listPackages | method | `() => readonly AnkhDiscoveredPackage[]` | yes      |             |
+
 ## AnkhProviderRegistry
 
 Kind: `type`
@@ -69,6 +134,18 @@ Source: `src/commandContext.ts:18:1`
 - `() => AnkhCommandContext`
   - returns: `AnkhCommandContext`
 
+## createPackageRegistry
+
+Kind: `function`
+Module: `src/packageRegistry.ts`
+Source: `src/packageRegistry.ts:8:1`
+
+### Signatures
+
+- `(packages?: readonly AnkhDiscoveredPackage[]) => AnkhPackageRegistry`
+  - packages: `readonly AnkhDiscoveredPackage[]` (optional)
+  - returns: `AnkhPackageRegistry`
+
 ## createProviderRegistry
 
 Kind: `function`
@@ -80,6 +157,18 @@ Source: `src/providerRegistry.ts:23:1`
 - `(providers?: readonly AnkhCommandProviderManifest[]) => AnkhProviderRegistry`
   - providers: `readonly AnkhCommandProviderManifest[]` (optional)
   - returns: `AnkhProviderRegistry`
+
+## discoverAnkhPackages
+
+Kind: `function`
+Module: `src/discovery.ts`
+Source: `src/discovery.ts:46:1`
+
+### Signatures
+
+- `(options: DiscoverAnkhPackagesOptions) => Promise<AnkhMetadataDiscoveryResult>`
+  - options: `DiscoverAnkhPackagesOptions`
+  - returns: `Promise<AnkhMetadataDiscoveryResult>`
 
 ## parseArgv
 
@@ -103,7 +192,7 @@ Source: `src/parser.ts:1:1`
 
 Kind: `function`
 Module: `src/cli.ts`
-Source: `src/cli.ts:20:1`
+Source: `src/cli.ts:32:1`
 
 ### Signatures
 

@@ -56,7 +56,8 @@
     "version-packages": "changeset version"
   },
   "dependencies": {
-    "@ankhorage/contracts": "^1.19.0"
+    "@ankhorage/contracts": "^1.19.0",
+    "yaml": "^2.8.1"
   },
   "devDependencies": {
     "@ankhorage/devtools": "^1.0.6",

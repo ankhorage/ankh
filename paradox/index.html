@@ -226,10 +226,40 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/discovery.ts"
+              >
+                src/discovery.ts
+                <small>4 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/help.ts"
               >
                 src/help.ts
-                <small>3 functions</small>
+                <small>6 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/packageMetadata.ts"
+              >
+                src/packageMetadata.ts
+                <small>7 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/packageRegistry.ts"
+              >
+                src/packageRegistry.ts
+                <small>1 function</small>
               </button>
             </li>
             <li>
@@ -252,6 +282,16 @@
                 <small>1 function</small>
               </button>
             </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/workspace.ts"
+              >
+                src/workspace.ts
+                <small>11 functions</small>
+              </button>
+            </li>
           </ul>
         </nav>
       </aside>
@@ -261,10 +301,10 @@
             <h2>Package overview</h2>
             <div class="summary">
               <div>
-                <strong>9</strong><span class="muted">public exports</span>
+                <strong>16</strong><span class="muted">public exports</span>
               </div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>13</strong><span class="muted">modules</span></div>
+              <div><strong>19</strong><span class="muted">modules</span></div>
               <div>
                 <strong>1</strong><span class="muted">entrypoints</span>
               </div>
@@ -301,18 +341,19 @@
             </article>
             <article
               class="item"
-              data-search="src/cli.ts src/commandContext.ts src/help.ts src/parser.ts src/providerRegistry.ts runCli RunCliOptions"
+              data-search="src/cli.ts src/commandContext.ts src/discovery.ts src/help.ts src/packageRegistry.ts src/parser.ts DiscoverAnkhPackagesFn runCli RunCliOptions"
             >
               <h3>src/cli.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong>
-                <code>src/commandContext.ts</code>, <code>src/help.ts</code>,
-                <code>src/parser.ts</code>, <code>src/providerRegistry.ts</code>
+                <code>src/commandContext.ts</code>,
+                <code>src/discovery.ts</code>, <code>src/help.ts</code>,
+                <code>src/packageRegistry.ts</code>, <code>src/parser.ts</code>
               </p>
               <p>
-                <strong>Exports:</strong> <code>runCli</code>,
-                <code>RunCliOptions</code>
+                <strong>Exports:</strong> <code>DiscoverAnkhPackagesFn</code>,
+                <code>runCli</code>, <code>RunCliOptions</code>
               </p>
             </article>
             <article
@@ -330,22 +371,43 @@
             </article>
             <article
               class="item"
-              data-search="src/help.ts src/providerRegistry.ts renderCommands renderRootHelp renderUnknownCommand"
+              data-search="src/discovery.ts src/packageMetadata.ts src/workspace.ts AnkhDiscoveredPackage AnkhDiscoverySource AnkhMetadataDiscoveryDiagnostic AnkhMetadataDiscoveryResult discoverAnkhPackages DiscoverAnkhPackagesOptions"
+            >
+              <h3>src/discovery.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong>
+                <code>src/packageMetadata.ts</code>,
+                <code>src/workspace.ts</code>
+              </p>
+              <p>
+                <strong>Exports:</strong> <code>AnkhDiscoveredPackage</code>,
+                <code>AnkhDiscoverySource</code>,
+                <code>AnkhMetadataDiscoveryDiagnostic</code>,
+                <code>AnkhMetadataDiscoveryResult</code>,
+                <code>discoverAnkhPackages</code>,
+                <code>DiscoverAnkhPackagesOptions</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/help.ts src/discovery.ts renderCommands renderDiscoveryFailure renderMetadataDiscoveryDiagnostics renderRootHelp renderUnknownCommand"
             >
               <h3>src/help.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
-                <strong>Dependencies:</strong>
-                <code>src/providerRegistry.ts</code>
+                <strong>Dependencies:</strong> <code>src/discovery.ts</code>
               </p>
               <p>
                 <strong>Exports:</strong> <code>renderCommands</code>,
+                <code>renderDiscoveryFailure</code>,
+                <code>renderMetadataDiscoveryDiagnostics</code>,
                 <code>renderRootHelp</code>, <code>renderUnknownCommand</code>
               </p>
             </article>
             <article
               class="item"
-              data-search="src/index.ts AnkhCliRunResult AnkhCommandContext AnkhCommandListing AnkhProviderRegistry createDefaultCommandContext createProviderRegistry parseArgv ParsedCliRequest runCli"
+              data-search="src/index.ts AnkhCliRunResult AnkhCommandContext AnkhCommandListing AnkhDiscoveredPackage AnkhDiscoverySource AnkhMetadataDiscoveryDiagnostic AnkhMetadataDiscoveryResult AnkhPackageRegistry AnkhProviderRegistry createDefaultCommandContext createPackageRegistry createProviderRegistry discoverAnkhPackages parseArgv ParsedCliRequest runCli"
             >
               <h3>src/index.ts</h3>
               <p class="muted">Configured entrypoint</p>
@@ -356,10 +418,46 @@
                 <strong>Exports:</strong> <code>AnkhCliRunResult</code>,
                 <code>AnkhCommandContext</code>,
                 <code>AnkhCommandListing</code>,
+                <code>AnkhDiscoveredPackage</code>,
+                <code>AnkhDiscoverySource</code>,
+                <code>AnkhMetadataDiscoveryDiagnostic</code>,
+                <code>AnkhMetadataDiscoveryResult</code>,
+                <code>AnkhPackageRegistry</code>,
                 <code>AnkhProviderRegistry</code>,
                 <code>createDefaultCommandContext</code>,
-                <code>createProviderRegistry</code>, <code>parseArgv</code>,
+                <code>createPackageRegistry</code>,
+                <code>createProviderRegistry</code>,
+                <code>discoverAnkhPackages</code>, <code>parseArgv</code>,
                 <code>ParsedCliRequest</code>, <code>runCli</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/packageMetadata.ts src/discovery.ts readAnkhPackageMetadata ReadAnkhPackageMetadataOptions ReadAnkhPackageMetadataResult"
+            >
+              <h3>src/packageMetadata.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/discovery.ts</code>
+              </p>
+              <p>
+                <strong>Exports:</strong> <code>readAnkhPackageMetadata</code>,
+                <code>ReadAnkhPackageMetadataOptions</code>,
+                <code>ReadAnkhPackageMetadataResult</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/packageRegistry.ts src/discovery.ts AnkhPackageRegistry createPackageRegistry"
+            >
+              <h3>src/packageRegistry.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/discovery.ts</code>
+              </p>
+              <p>
+                <strong>Exports:</strong> <code>AnkhPackageRegistry</code>,
+                <code>createPackageRegistry</code>
               </p>
             </article>
             <article
@@ -393,13 +491,41 @@
             </article>
             <article
               class="item"
-              data-search="tests/cli.test.ts package.json src/cli.ts src/commandContext.ts"
+              data-search="src/workspace.ts findInstalledAnkhoragePackageJsonFiles findWorkspacePackageJsonFiles findWorkspaceRoots WorkspaceRoots"
+            >
+              <h3>src/workspace.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <span class="empty">None</span>
+              </p>
+              <p>
+                <strong>Exports:</strong>
+                <code>findInstalledAnkhoragePackageJsonFiles</code>,
+                <code>findWorkspacePackageJsonFiles</code>,
+                <code>findWorkspaceRoots</code>, <code>WorkspaceRoots</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="tests/cli.test.ts package.json src/cli.ts src/commandContext.ts src/discovery.ts"
             >
               <h3>tests/cli.test.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>package.json</code>,
-                <code>src/cli.ts</code>, <code>src/commandContext.ts</code>
+                <code>src/cli.ts</code>, <code>src/commandContext.ts</code>,
+                <code>src/discovery.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="tests/discovery.test.ts src/discovery.ts"
+            >
+              <h3>tests/discovery.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/discovery.ts</code>
               </p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
@@ -410,6 +536,18 @@
               <h3>tests/package.test.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <code>package.json</code></p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="tests/packageRegistry.test.ts src/packageRegistry.ts"
+            >
+              <h3>tests/packageRegistry.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong>
+                <code>src/packageRegistry.ts</code>
+              </p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
             <article
@@ -445,7 +583,7 @@
                 data-search="runCli function src/cli.ts  AnkhCliRunResult (argv: readonly string[], options?: RunCliOptions) =&gt; Promise&lt;AnkhCliRunResult&gt;"
               >
                 <h4>runCli</h4>
-                <p class="muted">function • <code>src/cli.ts:20:1</code></p>
+                <p class="muted">function • <code>src/cli.ts:32:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -621,6 +759,352 @@
 
                   <p>
                     <strong>Returns:</strong> <code>AnkhCommandContext</code>
+                  </p>
+                </div>
+              </article>
+            </section>
+            <section>
+              <h3>src/discovery.ts</h3>
+              <article
+                class="item"
+                id="symbol-ankhdiscoveredpackage"
+                data-search="AnkhDiscoveredPackage type src/discovery.ts  AnkhDiscoverySource"
+              >
+                <h4>AnkhDiscoveredPackage</h4>
+                <p class="muted">type • <code>src/discovery.ts:15:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">AnkhDiscoverySource</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>metadata</code></td>
+                      <td>property</td>
+                      <td><code>AnkhPackageMetadata</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>packageJsonPath</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>packageName</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>packageRoot</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>source</code></td>
+                      <td>property</td>
+                      <td><code>AnkhDiscoverySource</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-ankhdiscoverysource"
+                data-search="AnkhDiscoverySource unknown src/discovery.ts "
+              >
+                <h4>AnkhDiscoverySource</h4>
+                <p class="muted">
+                  unknown • <code>src/discovery.ts:12:1</code>
+                </p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <span class="empty">None</span>
+                </div>
+              </article>
+              <article
+                class="item"
+                id="symbol-ankhmetadatadiscoverydiagnostic"
+                data-search="AnkhMetadataDiscoveryDiagnostic type src/discovery.ts  AnkhDiscoverySource"
+              >
+                <h4>AnkhMetadataDiscoveryDiagnostic</h4>
+                <p class="muted">type • <code>src/discovery.ts:23:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">AnkhDiscoverySource</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>code</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>message</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>packageJsonPath</code></td>
+                      <td>property</td>
+                      <td><code>string | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>packageName</code></td>
+                      <td>property</td>
+                      <td><code>string | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>severity</code></td>
+                      <td>property</td>
+                      <td>
+                        <code>&quot;warning&quot; | &quot;error&quot;</code>
+                      </td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>source</code></td>
+                      <td>property</td>
+                      <td><code>AnkhDiscoverySource | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-ankhmetadatadiscoveryresult"
+                data-search="AnkhMetadataDiscoveryResult type src/discovery.ts  AnkhDiscoveredPackage AnkhMetadataDiscoveryDiagnostic"
+              >
+                <h4>AnkhMetadataDiscoveryResult</h4>
+                <p class="muted">type • <code>src/discovery.ts:32:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">AnkhDiscoveredPackage</li>
+                    <li class="chip">AnkhMetadataDiscoveryDiagnostic</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>diagnostics</code></td>
+                      <td>property</td>
+                      <td>
+                        <code>readonly AnkhMetadataDiscoveryDiagnostic[]</code>
+                      </td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>packages</code></td>
+                      <td>property</td>
+                      <td><code>readonly AnkhDiscoveredPackage[]</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-discoverankhpackages"
+                data-search="discoverAnkhPackages function src/discovery.ts  AnkhMetadataDiscoveryResult (options: DiscoverAnkhPackagesOptions) =&gt; Promise&lt;AnkhMetadataDiscoveryResult&gt;"
+              >
+                <h4>discoverAnkhPackages</h4>
+                <p class="muted">
+                  function • <code>src/discovery.ts:46:1</code>
+                </p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">AnkhMetadataDiscoveryResult</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>
+(options: DiscoverAnkhPackagesOptions) =&gt; Promise&lt;AnkhMetadataDiscoveryResult&gt;</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>options</code></td>
+                        <td><code>DiscoverAnkhPackagesOptions</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>
+                    <strong>Returns:</strong>
+                    <code>Promise&lt;AnkhMetadataDiscoveryResult&gt;</code>
+                  </p>
+                </div>
+              </article>
+            </section>
+            <section>
+              <h3>src/packageRegistry.ts</h3>
+              <article
+                class="item"
+                id="symbol-ankhpackageregistry"
+                data-search="AnkhPackageRegistry type src/packageRegistry.ts  AnkhDiscoveredPackage"
+              >
+                <h4>AnkhPackageRegistry</h4>
+                <p class="muted">
+                  type • <code>src/packageRegistry.ts:3:1</code>
+                </p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">AnkhDiscoveredPackage</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>hasCategory</code></td>
+                      <td>method</td>
+                      <td><code>(category: string) =&gt; boolean</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>listPackages</code></td>
+                      <td>method</td>
+                      <td>
+                        <code>() =&gt; readonly AnkhDiscoveredPackage[]</code>
+                      </td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-createpackageregistry"
+                data-search="createPackageRegistry function src/packageRegistry.ts  AnkhDiscoveredPackage AnkhPackageRegistry (packages?: readonly AnkhDiscoveredPackage[]) =&gt; AnkhPackageRegistry"
+              >
+                <h4>createPackageRegistry</h4>
+                <p class="muted">
+                  function • <code>src/packageRegistry.ts:8:1</code>
+                </p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">AnkhDiscoveredPackage</li>
+                    <li class="chip">AnkhPackageRegistry</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>
+(packages?: readonly AnkhDiscoveredPackage[]) =&gt; AnkhPackageRegistry</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>packages</code></td>
+                        <td><code>readonly AnkhDiscoveredPackage[]</code></td>
+                        <td>no</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>
+                    <strong>Returns:</strong> <code>AnkhPackageRegistry</code>
                   </p>
                 </div>
               </article>
@@ -883,28 +1367,50 @@
                 module_src_cli_ts[&quot;src/cli.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_src_cli_ts
                 module_src_cli_ts --&gt; module_src_commandContext_ts
+                module_src_cli_ts --&gt; module_src_discovery_ts
                 module_src_cli_ts --&gt; module_src_help_ts module_src_cli_ts
-                --&gt; module_src_parser_ts module_src_cli_ts --&gt;
-                module_src_providerRegistry_ts
+                --&gt; module_src_packageRegistry_ts module_src_cli_ts --&gt;
+                module_src_parser_ts
                 module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_src_commandContext_ts
                 module_src_commandContext_ts --&gt; module_package_json
+                module_src_discovery_ts[&quot;src/discovery.ts&quot;]
+                package__ankhorage_ankh -.-&gt; module_src_discovery_ts
+                module_src_discovery_ts --&gt; module_src_packageMetadata_ts
+                module_src_discovery_ts --&gt; module_src_workspace_ts
                 module_src_help_ts[&quot;src/help.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_src_help_ts
-                module_src_help_ts --&gt; module_src_providerRegistry_ts
+                module_src_help_ts --&gt; module_src_discovery_ts
                 module_src_index_ts[&quot;src/index.ts&quot;]
+                module_src_packageMetadata_ts[&quot;src/packageMetadata.ts&quot;]
+                package__ankhorage_ankh -.-&gt; module_src_packageMetadata_ts
+                module_src_packageMetadata_ts --&gt; module_src_discovery_ts
+                module_src_packageRegistry_ts[&quot;src/packageRegistry.ts&quot;]
+                package__ankhorage_ankh -.-&gt; module_src_packageRegistry_ts
+                module_src_packageRegistry_ts --&gt; module_src_discovery_ts
                 module_src_parser_ts[&quot;src/parser.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_src_parser_ts
                 module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_src_providerRegistry_ts
+                module_src_workspace_ts[&quot;src/workspace.ts&quot;]
+                package__ankhorage_ankh -.-&gt; module_src_workspace_ts
                 module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_tests_cli_test_ts
                 module_tests_cli_test_ts --&gt; module_package_json
                 module_tests_cli_test_ts --&gt; module_src_cli_ts
                 module_tests_cli_test_ts --&gt; module_src_commandContext_ts
+                module_tests_cli_test_ts --&gt; module_src_discovery_ts
+                module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
+                package__ankhorage_ankh -.-&gt; module_tests_discovery_test_ts
+                module_tests_discovery_test_ts --&gt; module_src_discovery_ts
                 module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_tests_package_test_ts
                 module_tests_package_test_ts --&gt; module_package_json
+                module_tests_packageRegistry_test_ts[&quot;tests/packageRegistry.test.ts&quot;]
+                package__ankhorage_ankh -.-&gt;
+                module_tests_packageRegistry_test_ts
+                module_tests_packageRegistry_test_ts --&gt;
+                module_src_packageRegistry_ts
                 module_tests_parser_test_ts[&quot;tests/parser.test.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_tests_parser_test_ts
                 module_tests_parser_test_ts --&gt; module_src_parser_ts
@@ -931,28 +1437,48 @@ graph TD
   module_src_cli_ts[&quot;src/cli.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_cli_ts
   module_src_cli_ts --&gt; module_src_commandContext_ts
+  module_src_cli_ts --&gt; module_src_discovery_ts
   module_src_cli_ts --&gt; module_src_help_ts
+  module_src_cli_ts --&gt; module_src_packageRegistry_ts
   module_src_cli_ts --&gt; module_src_parser_ts
-  module_src_cli_ts --&gt; module_src_providerRegistry_ts
   module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_commandContext_ts
   module_src_commandContext_ts --&gt; module_package_json
+  module_src_discovery_ts[&quot;src/discovery.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_discovery_ts
+  module_src_discovery_ts --&gt; module_src_packageMetadata_ts
+  module_src_discovery_ts --&gt; module_src_workspace_ts
   module_src_help_ts[&quot;src/help.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_help_ts
-  module_src_help_ts --&gt; module_src_providerRegistry_ts
+  module_src_help_ts --&gt; module_src_discovery_ts
   module_src_index_ts[&quot;src/index.ts&quot;]
+  module_src_packageMetadata_ts[&quot;src/packageMetadata.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_packageMetadata_ts
+  module_src_packageMetadata_ts --&gt; module_src_discovery_ts
+  module_src_packageRegistry_ts[&quot;src/packageRegistry.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_packageRegistry_ts
+  module_src_packageRegistry_ts --&gt; module_src_discovery_ts
   module_src_parser_ts[&quot;src/parser.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_parser_ts
   module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_providerRegistry_ts
+  module_src_workspace_ts[&quot;src/workspace.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_workspace_ts
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_cli_test_ts
   module_tests_cli_test_ts --&gt; module_package_json
   module_tests_cli_test_ts --&gt; module_src_cli_ts
   module_tests_cli_test_ts --&gt; module_src_commandContext_ts
+  module_tests_cli_test_ts --&gt; module_src_discovery_ts
+  module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_discovery_test_ts
+  module_tests_discovery_test_ts --&gt; module_src_discovery_ts
   module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_package_test_ts
   module_tests_package_test_ts --&gt; module_package_json
+  module_tests_packageRegistry_test_ts[&quot;tests/packageRegistry.test.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_packageRegistry_test_ts
+  module_tests_packageRegistry_test_ts --&gt; module_src_packageRegistry_ts
   module_tests_parser_test_ts[&quot;tests/parser.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_parser_test_ts
   module_tests_parser_test_ts --&gt; module_src_parser_ts
@@ -976,27 +1502,41 @@ graph TD
                 module_src_bin_ts[&quot;src/bin.ts&quot;]
                 module_src_cli_ts[&quot;src/cli.ts&quot;]
                 module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
+                module_src_discovery_ts[&quot;src/discovery.ts&quot;]
                 module_src_help_ts[&quot;src/help.ts&quot;]
                 module_src_index_ts[&quot;src/index.ts&quot;]
+                module_src_packageMetadata_ts[&quot;src/packageMetadata.ts&quot;]
+                module_src_packageRegistry_ts[&quot;src/packageRegistry.ts&quot;]
                 module_src_parser_ts[&quot;src/parser.ts&quot;]
                 module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
+                module_src_workspace_ts[&quot;src/workspace.ts&quot;]
                 module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
+                module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
                 module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
+                module_tests_packageRegistry_test_ts[&quot;tests/packageRegistry.test.ts&quot;]
                 module_tests_parser_test_ts[&quot;tests/parser.test.ts&quot;]
                 module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
                 module_src_bin_ts --&gt; module_src_cli_ts module_src_cli_ts
                 --&gt; module_src_commandContext_ts module_src_cli_ts --&gt;
-                module_src_help_ts module_src_cli_ts --&gt; module_src_parser_ts
-                module_src_cli_ts --&gt; module_src_providerRegistry_ts
-                module_src_commandContext_ts --&gt; module_package_json
-                module_src_help_ts --&gt; module_src_providerRegistry_ts
-                module_tests_cli_test_ts --&gt; module_package_json
-                module_tests_cli_test_ts --&gt; module_src_cli_ts
-                module_tests_cli_test_ts --&gt; module_src_commandContext_ts
-                module_tests_package_test_ts --&gt; module_package_json
-                module_tests_parser_test_ts --&gt; module_src_parser_ts
-                module_tests_providerRegistry_test_ts --&gt;
-                module_src_providerRegistry_ts
+                module_src_discovery_ts module_src_cli_ts --&gt;
+                module_src_help_ts module_src_cli_ts --&gt;
+                module_src_packageRegistry_ts module_src_cli_ts --&gt;
+                module_src_parser_ts module_src_commandContext_ts --&gt;
+                module_package_json module_src_discovery_ts --&gt;
+                module_src_packageMetadata_ts module_src_discovery_ts --&gt;
+                module_src_workspace_ts module_src_help_ts --&gt;
+                module_src_discovery_ts module_src_packageMetadata_ts --&gt;
+                module_src_discovery_ts module_src_packageRegistry_ts --&gt;
+                module_src_discovery_ts module_tests_cli_test_ts --&gt;
+                module_package_json module_tests_cli_test_ts --&gt;
+                module_src_cli_ts module_tests_cli_test_ts --&gt;
+                module_src_commandContext_ts module_tests_cli_test_ts --&gt;
+                module_src_discovery_ts module_tests_discovery_test_ts --&gt;
+                module_src_discovery_ts module_tests_package_test_ts --&gt;
+                module_package_json module_tests_packageRegistry_test_ts --&gt;
+                module_src_packageRegistry_ts module_tests_parser_test_ts --&gt;
+                module_src_parser_ts module_tests_providerRegistry_test_ts
+                --&gt; module_src_providerRegistry_ts
               </div>
               <details>
                 <summary>View Mermaid source</summary>
@@ -1007,25 +1547,39 @@ graph LR
   module_src_bin_ts[&quot;src/bin.ts&quot;]
   module_src_cli_ts[&quot;src/cli.ts&quot;]
   module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
+  module_src_discovery_ts[&quot;src/discovery.ts&quot;]
   module_src_help_ts[&quot;src/help.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
+  module_src_packageMetadata_ts[&quot;src/packageMetadata.ts&quot;]
+  module_src_packageRegistry_ts[&quot;src/packageRegistry.ts&quot;]
   module_src_parser_ts[&quot;src/parser.ts&quot;]
   module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
+  module_src_workspace_ts[&quot;src/workspace.ts&quot;]
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
+  module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
+  module_tests_packageRegistry_test_ts[&quot;tests/packageRegistry.test.ts&quot;]
   module_tests_parser_test_ts[&quot;tests/parser.test.ts&quot;]
   module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
   module_src_bin_ts --&gt; module_src_cli_ts
   module_src_cli_ts --&gt; module_src_commandContext_ts
+  module_src_cli_ts --&gt; module_src_discovery_ts
   module_src_cli_ts --&gt; module_src_help_ts
+  module_src_cli_ts --&gt; module_src_packageRegistry_ts
   module_src_cli_ts --&gt; module_src_parser_ts
-  module_src_cli_ts --&gt; module_src_providerRegistry_ts
   module_src_commandContext_ts --&gt; module_package_json
-  module_src_help_ts --&gt; module_src_providerRegistry_ts
+  module_src_discovery_ts --&gt; module_src_packageMetadata_ts
+  module_src_discovery_ts --&gt; module_src_workspace_ts
+  module_src_help_ts --&gt; module_src_discovery_ts
+  module_src_packageMetadata_ts --&gt; module_src_discovery_ts
+  module_src_packageRegistry_ts --&gt; module_src_discovery_ts
   module_tests_cli_test_ts --&gt; module_package_json
   module_tests_cli_test_ts --&gt; module_src_cli_ts
   module_tests_cli_test_ts --&gt; module_src_commandContext_ts
+  module_tests_cli_test_ts --&gt; module_src_discovery_ts
+  module_tests_discovery_test_ts --&gt; module_src_discovery_ts
   module_tests_package_test_ts --&gt; module_package_json
+  module_tests_packageRegistry_test_ts --&gt; module_src_packageRegistry_ts
   module_tests_parser_test_ts --&gt; module_src_parser_ts
   module_tests_providerRegistry_test_ts --&gt; module_src_providerRegistry_ts
 </pre>
@@ -1043,12 +1597,18 @@ graph LR
                 module_src_bin_ts[&quot;src/bin.ts&quot;]
                 module_src_cli_ts[&quot;src/cli.ts&quot;]
                 module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
+                module_src_discovery_ts[&quot;src/discovery.ts&quot;]
                 module_src_help_ts[&quot;src/help.ts&quot;]
                 module_src_index_ts[&quot;src/index.ts&quot;]
+                module_src_packageMetadata_ts[&quot;src/packageMetadata.ts&quot;]
+                module_src_packageRegistry_ts[&quot;src/packageRegistry.ts&quot;]
                 module_src_parser_ts[&quot;src/parser.ts&quot;]
                 module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
+                module_src_workspace_ts[&quot;src/workspace.ts&quot;]
                 module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
+                module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
                 module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
+                module_tests_packageRegistry_test_ts[&quot;tests/packageRegistry.test.ts&quot;]
                 module_tests_parser_test_ts[&quot;tests/parser.test.ts&quot;]
                 module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
                 export_AnkhCliRunResult[&quot;AnkhCliRunResult&quot;]
@@ -1057,6 +1617,25 @@ graph LR
                 module_src_commandContext_ts --&gt; export_AnkhCommandContext
                 export_AnkhCommandListing[&quot;AnkhCommandListing&quot;]
                 module_src_providerRegistry_ts --&gt; export_AnkhCommandListing
+                export_AnkhDiscoveredPackage[&quot;AnkhDiscoveredPackage&quot;]
+                module_src_discovery_ts --&gt; export_AnkhDiscoveredPackage
+                export_AnkhDiscoveredPackage -.-&gt; export_AnkhDiscoverySource
+                export_AnkhDiscoverySource[&quot;AnkhDiscoverySource&quot;]
+                module_src_discovery_ts --&gt; export_AnkhDiscoverySource
+                export_AnkhMetadataDiscoveryDiagnostic[&quot;AnkhMetadataDiscoveryDiagnostic&quot;]
+                module_src_discovery_ts --&gt;
+                export_AnkhMetadataDiscoveryDiagnostic
+                export_AnkhMetadataDiscoveryDiagnostic -.-&gt;
+                export_AnkhDiscoverySource
+                export_AnkhMetadataDiscoveryResult[&quot;AnkhMetadataDiscoveryResult&quot;]
+                module_src_discovery_ts --&gt;
+                export_AnkhMetadataDiscoveryResult
+                export_AnkhMetadataDiscoveryResult -.-&gt;
+                export_AnkhDiscoveredPackage export_AnkhMetadataDiscoveryResult
+                -.-&gt; export_AnkhMetadataDiscoveryDiagnostic
+                export_AnkhPackageRegistry[&quot;AnkhPackageRegistry&quot;]
+                module_src_packageRegistry_ts --&gt; export_AnkhPackageRegistry
+                export_AnkhPackageRegistry -.-&gt; export_AnkhDiscoveredPackage
                 export_AnkhProviderRegistry[&quot;AnkhProviderRegistry&quot;]
                 module_src_providerRegistry_ts --&gt;
                 export_AnkhProviderRegistry export_AnkhProviderRegistry -.-&gt;
@@ -1066,10 +1645,19 @@ graph LR
                 export_createDefaultCommandContext
                 export_createDefaultCommandContext -.-&gt;
                 export_AnkhCommandContext
+                export_createPackageRegistry[&quot;createPackageRegistry&quot;]
+                module_src_packageRegistry_ts --&gt;
+                export_createPackageRegistry export_createPackageRegistry
+                -.-&gt; export_AnkhDiscoveredPackage
+                export_createPackageRegistry -.-&gt; export_AnkhPackageRegistry
                 export_createProviderRegistry[&quot;createProviderRegistry&quot;]
                 module_src_providerRegistry_ts --&gt;
                 export_createProviderRegistry export_createProviderRegistry
                 -.-&gt; export_AnkhProviderRegistry
+                export_discoverAnkhPackages[&quot;discoverAnkhPackages&quot;]
+                module_src_discovery_ts --&gt; export_discoverAnkhPackages
+                export_discoverAnkhPackages -.-&gt;
+                export_AnkhMetadataDiscoveryResult
                 export_parseArgv[&quot;parseArgv&quot;] module_src_parser_ts
                 --&gt; export_parseArgv export_parseArgv -.-&gt;
                 export_ParsedCliRequest
@@ -1087,12 +1675,18 @@ graph LR
   module_src_bin_ts[&quot;src/bin.ts&quot;]
   module_src_cli_ts[&quot;src/cli.ts&quot;]
   module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
+  module_src_discovery_ts[&quot;src/discovery.ts&quot;]
   module_src_help_ts[&quot;src/help.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
+  module_src_packageMetadata_ts[&quot;src/packageMetadata.ts&quot;]
+  module_src_packageRegistry_ts[&quot;src/packageRegistry.ts&quot;]
   module_src_parser_ts[&quot;src/parser.ts&quot;]
   module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
+  module_src_workspace_ts[&quot;src/workspace.ts&quot;]
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
+  module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
+  module_tests_packageRegistry_test_ts[&quot;tests/packageRegistry.test.ts&quot;]
   module_tests_parser_test_ts[&quot;tests/parser.test.ts&quot;]
   module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
   export_AnkhCliRunResult[&quot;AnkhCliRunResult&quot;]
@@ -1101,15 +1695,37 @@ graph LR
   module_src_commandContext_ts --&gt; export_AnkhCommandContext
   export_AnkhCommandListing[&quot;AnkhCommandListing&quot;]
   module_src_providerRegistry_ts --&gt; export_AnkhCommandListing
+  export_AnkhDiscoveredPackage[&quot;AnkhDiscoveredPackage&quot;]
+  module_src_discovery_ts --&gt; export_AnkhDiscoveredPackage
+  export_AnkhDiscoveredPackage -.-&gt; export_AnkhDiscoverySource
+  export_AnkhDiscoverySource[&quot;AnkhDiscoverySource&quot;]
+  module_src_discovery_ts --&gt; export_AnkhDiscoverySource
+  export_AnkhMetadataDiscoveryDiagnostic[&quot;AnkhMetadataDiscoveryDiagnostic&quot;]
+  module_src_discovery_ts --&gt; export_AnkhMetadataDiscoveryDiagnostic
+  export_AnkhMetadataDiscoveryDiagnostic -.-&gt; export_AnkhDiscoverySource
+  export_AnkhMetadataDiscoveryResult[&quot;AnkhMetadataDiscoveryResult&quot;]
+  module_src_discovery_ts --&gt; export_AnkhMetadataDiscoveryResult
+  export_AnkhMetadataDiscoveryResult -.-&gt; export_AnkhDiscoveredPackage
+  export_AnkhMetadataDiscoveryResult -.-&gt; export_AnkhMetadataDiscoveryDiagnostic
+  export_AnkhPackageRegistry[&quot;AnkhPackageRegistry&quot;]
+  module_src_packageRegistry_ts --&gt; export_AnkhPackageRegistry
+  export_AnkhPackageRegistry -.-&gt; export_AnkhDiscoveredPackage
   export_AnkhProviderRegistry[&quot;AnkhProviderRegistry&quot;]
   module_src_providerRegistry_ts --&gt; export_AnkhProviderRegistry
   export_AnkhProviderRegistry -.-&gt; export_AnkhCommandListing
   export_createDefaultCommandContext[&quot;createDefaultCommandContext&quot;]
   module_src_commandContext_ts --&gt; export_createDefaultCommandContext
   export_createDefaultCommandContext -.-&gt; export_AnkhCommandContext
+  export_createPackageRegistry[&quot;createPackageRegistry&quot;]
+  module_src_packageRegistry_ts --&gt; export_createPackageRegistry
+  export_createPackageRegistry -.-&gt; export_AnkhDiscoveredPackage
+  export_createPackageRegistry -.-&gt; export_AnkhPackageRegistry
   export_createProviderRegistry[&quot;createProviderRegistry&quot;]
   module_src_providerRegistry_ts --&gt; export_createProviderRegistry
   export_createProviderRegistry -.-&gt; export_AnkhProviderRegistry
+  export_discoverAnkhPackages[&quot;discoverAnkhPackages&quot;]
+  module_src_discovery_ts --&gt; export_discoverAnkhPackages
+  export_discoverAnkhPackages -.-&gt; export_AnkhMetadataDiscoveryResult
   export_parseArgv[&quot;parseArgv&quot;]
   module_src_parser_ts --&gt; export_parseArgv
   export_parseArgv -.-&gt; export_ParsedCliRequest
@@ -1133,7 +1749,7 @@ graph LR
             <h2>src/cli.ts</h2>
             <article class="item" data-search="runCli src/cli.ts ">
               <h3>runCli</h3>
-              <p class="muted"><code>src/cli.ts:20:1</code></p>
+              <p class="muted"><code>src/cli.ts:32:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -1157,6 +1773,45 @@ graph LR
           </section>
         </section>
         <section
+          id="view-src-discovery-ts"
+          class="view"
+          data-view="src/discovery.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/discovery.ts</h2>
+            <article
+              class="item"
+              data-search="discoverAnkhPackages src/discovery.ts "
+            >
+              <h3>discoverAnkhPackages</h3>
+              <p class="muted"><code>src/discovery.ts:46:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="collectDiscoveryCandidates src/discovery.ts "
+            >
+              <h3>collectDiscoveryCandidates</h3>
+              <p class="muted"><code>src/discovery.ts:97:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="addCandidate src/discovery.ts ">
+              <h3>addCandidate</h3>
+              <p class="muted"><code>src/discovery.ts:140:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="collectDuplicateMetadataDiagnostics src/discovery.ts "
+            >
+              <h3>collectDuplicateMetadataDiagnostics</h3>
+              <p class="muted"><code>src/discovery.ts:157:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
           id="view-src-help-ts"
           class="view"
           data-view="src/help.ts"
@@ -1166,12 +1821,28 @@ graph LR
             <h2>src/help.ts</h2>
             <article class="item" data-search="renderRootHelp src/help.ts ">
               <h3>renderRootHelp</h3>
-              <p class="muted"><code>src/help.ts:3:1</code></p>
+              <p class="muted"><code>src/help.ts:6:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="renderCommands src/help.ts ">
               <h3>renderCommands</h3>
-              <p class="muted"><code>src/help.ts:22:1</code></p>
+              <p class="muted"><code>src/help.ts:25:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="renderMetadataDiscoveryDiagnostics src/help.ts "
+            >
+              <h3>renderMetadataDiscoveryDiagnostics</h3>
+              <p class="muted"><code>src/help.ts:54:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="renderDiscoveryFailure src/help.ts "
+            >
+              <h3>renderDiscoveryFailure</h3>
+              <p class="muted"><code>src/help.ts:80:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -1179,7 +1850,96 @@ graph LR
               data-search="renderUnknownCommand src/help.ts "
             >
               <h3>renderUnknownCommand</h3>
-              <p class="muted"><code>src/help.ts:39:1</code></p>
+              <p class="muted"><code>src/help.ts:87:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="getErrorMessage src/help.ts ">
+              <h3>getErrorMessage</h3>
+              <p class="muted"><code>src/help.ts:97:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-packagemetadata-ts"
+          class="view"
+          data-view="src/packageMetadata.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/packageMetadata.ts</h2>
+            <article
+              class="item"
+              data-search="readAnkhPackageMetadata src/packageMetadata.ts "
+            >
+              <h3>readAnkhPackageMetadata</h3>
+              <p class="muted"><code>src/packageMetadata.ts:32:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="validateAnkhMetadata src/packageMetadata.ts "
+            >
+              <h3>validateAnkhMetadata</h3>
+              <p class="muted"><code>src/packageMetadata.ts:147:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="getPackageName src/packageMetadata.ts "
+            >
+              <h3>getPackageName</h3>
+              <p class="muted"><code>src/packageMetadata.ts:258:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isCapabilityId src/packageMetadata.ts "
+            >
+              <h3>isCapabilityId</h3>
+              <p class="muted"><code>src/packageMetadata.ts:267:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isProviderReference src/packageMetadata.ts "
+            >
+              <h3>isProviderReference</h3>
+              <p class="muted"><code>src/packageMetadata.ts:274:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isRecord src/packageMetadata.ts "
+            >
+              <h3>isRecord</h3>
+              <p class="muted"><code>src/packageMetadata.ts:278:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createDiagnostic src/packageMetadata.ts "
+            >
+              <h3>createDiagnostic</h3>
+              <p class="muted"><code>src/packageMetadata.ts:291:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-packageregistry-ts"
+          class="view"
+          data-view="src/packageRegistry.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/packageRegistry.ts</h2>
+            <article
+              class="item"
+              data-search="createPackageRegistry src/packageRegistry.ts "
+            >
+              <h3>createPackageRegistry</h3>
+              <p class="muted"><code>src/packageRegistry.ts:8:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -1213,6 +1973,98 @@ graph LR
             >
               <h3>createProviderRegistry</h3>
               <p class="muted"><code>src/providerRegistry.ts:23:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-workspace-ts"
+          class="view"
+          data-view="src/workspace.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/workspace.ts</h2>
+            <article
+              class="item"
+              data-search="findWorkspaceRoots src/workspace.ts "
+            >
+              <h3>findWorkspaceRoots</h3>
+              <p class="muted"><code>src/workspace.ts:11:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="findWorkspacePackageJsonFiles src/workspace.ts "
+            >
+              <h3>findWorkspacePackageJsonFiles</h3>
+              <p class="muted"><code>src/workspace.ts:45:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="findInstalledAnkhoragePackageJsonFiles src/workspace.ts "
+            >
+              <h3>findInstalledAnkhoragePackageJsonFiles</h3>
+              <p class="muted"><code>src/workspace.ts:70:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="getWorkspacePatterns src/workspace.ts "
+            >
+              <h3>getWorkspacePatterns</h3>
+              <p class="muted"><code>src/workspace.ts:96:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="getPatternsFromPackageJson src/workspace.ts "
+            >
+              <h3>getPatternsFromPackageJson</h3>
+              <p class="muted"><code>src/workspace.ts:126:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="hasWorkspaceField src/workspace.ts "
+            >
+              <h3>hasWorkspaceField</h3>
+              <p class="muted"><code>src/workspace.ts:157:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="readPackageJson src/workspace.ts "
+            >
+              <h3>readPackageJson</h3>
+              <p class="muted"><code>src/workspace.ts:163:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="fileExists src/workspace.ts ">
+              <h3>fileExists</h3>
+              <p class="muted"><code>src/workspace.ts:177:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="getAncestorDirectories src/workspace.ts "
+            >
+              <h3>getAncestorDirectories</h3>
+              <p class="muted"><code>src/workspace.ts:186:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="normalizeWorkspacePattern src/workspace.ts "
+            >
+              <h3>normalizeWorkspacePattern</h3>
+              <p class="muted"><code>src/workspace.ts:202:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="isRecord src/workspace.ts ">
+              <h3>isRecord</h3>
+              <p class="muted"><code>src/workspace.ts:207:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

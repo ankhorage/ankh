@@ -3,7 +3,7 @@
 
 # @ankhorage/ankh
 
-![license: MIT](./paradox/badges/license.svg) ![npm: v0.2.0](./paradox/badges/npm.svg) ![runtime: bun](./paradox/badges/runtime.svg) ![typescript: strict](./paradox/badges/typescript.svg) ![eslint: checked](./paradox/badges/eslint.svg) ![prettier: checked](./paradox/badges/prettier.svg) ![build: checked](./paradox/badges/build.svg) ![tests: checked](./paradox/badges/tests.svg) ![docs: paradox](./paradox/badges/docs.svg)
+![license: MIT](./paradox/badges/license.svg) ![npm: v0.2.1](./paradox/badges/npm.svg) ![runtime: bun](./paradox/badges/runtime.svg) ![typescript: strict](./paradox/badges/typescript.svg) ![eslint: checked](./paradox/badges/eslint.svg) ![prettier: checked](./paradox/badges/prettier.svg) ![build: checked](./paradox/badges/build.svg) ![tests: checked](./paradox/badges/tests.svg) ![docs: paradox](./paradox/badges/docs.svg)
 
 Bun-first Ankh CLI front door and command bus bootstrap package.
 
@@ -13,12 +13,16 @@ Bun-first Ankh CLI front door and command bus bootstrap package.
 
 `@ankhorage/ankh` is the root CLI front door and command bus for Ankhorage.
 
-Provider discovery is intentionally deferred to `ankhorage/ankh#2`.
+`ankh commands` currently lists discovered Ankh package metadata and
+capabilities only.
 
 No domain behavior belongs in the root CLI. Domain behavior stays in provider
 packages such as infra, templates, studio, board, doctor, and dev.
 
 Current built-ins are `help`, `commands`, and `version`.
+
+Provider manifest loading, command descriptors, category help, and command
+execution are deferred beyond `ankhorage/ankh#2`.
 
 Source: `src/readme-usage.ts`
 
