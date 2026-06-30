@@ -1,13 +1,16 @@
-import { readFile } from 'node:fs/promises';
-import path from 'node:path';
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 
 import type {
   AnkhCapabilityId,
   AnkhPackageMetadata,
   AnkhProviderReference,
-} from '@ankhorage/contracts/cli';
+} from "@ankhorage/contracts/cli";
 
-import type { AnkhDiscoverySource, AnkhMetadataDiscoveryDiagnostic } from './discovery.js';
+import type {
+  AnkhDiscoverySource,
+  AnkhMetadataDiscoveryDiagnostic,
+} from "./discovery.js";
 
 export interface ReadAnkhPackageMetadataOptions {
   readonly packageJsonPath: string;
@@ -33,7 +36,7 @@ export async function readAnkhPackageMetadata(
 
   let rawText: string;
   try {
-    rawText = await readFile(options.packageJsonPath, 'utf8');
+    rawText = await readFile(options.packageJsonPath, "utf8");
   } catch {
     return {
       packageName: null,
@@ -41,10 +44,11 @@ export async function readAnkhPackageMetadata(
       metadata: null,
       diagnostics: [
         createDiagnostic({
-          code: 'package-json-read-failed',
-          message: 'Could not read package.json while discovering Ankh metadata.',
+          code: "package-json-read-failed",
+          message:
+            "Could not read package.json while discovering Ankh metadata.",
           packageJsonPath: options.packageJsonPath,
-          severity: 'error',
+          severity: "error",
           source: options.source,
         }),
       ],
@@ -61,10 +65,10 @@ export async function readAnkhPackageMetadata(
       metadata: null,
       diagnostics: [
         createDiagnostic({
-          code: 'invalid-package-json',
-          message: 'package.json is not valid JSON.',
+          code: "invalid-package-json",
+          message: "package.json is not valid JSON.",
           packageJsonPath: options.packageJsonPath,
-          severity: 'error',
+          severity: "error",
           source: options.source,
         }),
       ],
@@ -78,10 +82,10 @@ export async function readAnkhPackageMetadata(
       metadata: null,
       diagnostics: [
         createDiagnostic({
-          code: 'invalid-package-json-shape',
-          message: 'package.json must parse to a JSON object.',
+          code: "invalid-package-json-shape",
+          message: "package.json must parse to a JSON object.",
           packageJsonPath: options.packageJsonPath,
-          severity: 'error',
+          severity: "error",
           source: options.source,
         }),
       ],
@@ -95,10 +99,10 @@ export async function readAnkhPackageMetadata(
       ? []
       : [
           createDiagnostic({
-            code: 'invalid-package-name',
+            code: "invalid-package-name",
             message: 'package.json "name" must be a non-empty string.',
             packageJsonPath: options.packageJsonPath,
-            severity: 'error',
+            severity: "error",
             source: options.source,
           }),
         ];
@@ -139,17 +143,19 @@ interface ValidateAnkhMetadataResult {
   readonly diagnostics: readonly AnkhMetadataDiscoveryDiagnostic[];
 }
 
-function validateAnkhMetadata(options: ValidateAnkhMetadataOptions): ValidateAnkhMetadataResult {
+function validateAnkhMetadata(
+  options: ValidateAnkhMetadataOptions,
+): ValidateAnkhMetadataResult {
   if (!isRecord(options.rawAnkhMetadata)) {
     return {
       metadata: null,
       diagnostics: [
         createDiagnostic({
-          code: 'invalid-ankh-metadata',
+          code: "invalid-ankh-metadata",
           message: 'package.json "ankh" must be an object when present.',
           packageJsonPath: options.packageJsonPath,
           packageName: options.packageName,
-          severity: 'error',
+          severity: "error",
           source: options.source,
         }),
       ],
@@ -157,16 +163,16 @@ function validateAnkhMetadata(options: ValidateAnkhMetadataOptions): ValidateAnk
   }
 
   const rawCategory = options.rawAnkhMetadata.category;
-  if (typeof rawCategory !== 'string' || rawCategory.trim() === '') {
+  if (typeof rawCategory !== "string" || rawCategory.trim() === "") {
     return {
       metadata: null,
       diagnostics: [
         createDiagnostic({
-          code: 'invalid-ankh-category',
+          code: "invalid-ankh-category",
           message: 'package.json "ankh.category" must be a non-empty string.',
           packageJsonPath: options.packageJsonPath,
           packageName: options.packageName,
-          severity: 'error',
+          severity: "error",
           source: options.source,
         }),
       ],
@@ -177,7 +183,7 @@ function validateAnkhMetadata(options: ValidateAnkhMetadataOptions): ValidateAnk
   const provider =
     rawProvider === null
       ? null
-      : typeof rawProvider === 'string' && isProviderReference(rawProvider)
+      : typeof rawProvider === "string" && isProviderReference(rawProvider)
         ? rawProvider
         : undefined;
 
@@ -186,12 +192,12 @@ function validateAnkhMetadata(options: ValidateAnkhMetadataOptions): ValidateAnk
       metadata: null,
       diagnostics: [
         createDiagnostic({
-          code: 'invalid-ankh-provider',
+          code: "invalid-ankh-provider",
           message:
             'package.json "ankh.provider" must be null or a package-relative path starting with "./".',
           packageJsonPath: options.packageJsonPath,
           packageName: options.packageName,
-          severity: 'error',
+          severity: "error",
           source: options.source,
         }),
       ],
@@ -204,11 +210,12 @@ function validateAnkhMetadata(options: ValidateAnkhMetadataOptions): ValidateAnk
       metadata: null,
       diagnostics: [
         createDiagnostic({
-          code: 'invalid-ankh-capabilities',
-          message: 'package.json "ankh.capabilities" must be an array of strings.',
+          code: "invalid-ankh-capabilities",
+          message:
+            'package.json "ankh.capabilities" must be an array of strings.',
           packageJsonPath: options.packageJsonPath,
           packageName: options.packageName,
-          severity: 'error',
+          severity: "error",
           source: options.source,
         }),
       ],
@@ -217,17 +224,17 @@ function validateAnkhMetadata(options: ValidateAnkhMetadataOptions): ValidateAnk
 
   const capabilities: AnkhCapabilityId[] = [];
   for (const capability of rawCapabilities) {
-    if (typeof capability !== 'string' || !isCapabilityId(capability)) {
+    if (typeof capability !== "string" || !isCapabilityId(capability)) {
       return {
         metadata: null,
         diagnostics: [
           createDiagnostic({
-            code: 'invalid-ankh-capabilities',
+            code: "invalid-ankh-capabilities",
             message:
               'package.json "ankh.capabilities" must contain dot-separated string identifiers.',
             packageJsonPath: options.packageJsonPath,
             packageName: options.packageName,
-            severity: 'error',
+            severity: "error",
             source: options.source,
           }),
         ],
@@ -248,25 +255,27 @@ function validateAnkhMetadata(options: ValidateAnkhMetadataOptions): ValidateAnk
 }
 
 function getPackageName(value: unknown): string | null {
-  if (typeof value !== 'string') {
+  if (typeof value !== "string") {
     return null;
   }
 
   const trimmedValue = value.trim();
-  return trimmedValue === '' ? null : trimmedValue;
+  return trimmedValue === "" ? null : trimmedValue;
 }
 
 function isCapabilityId(value: string): value is AnkhCapabilityId {
-  const segments = value.split('.');
-  return segments.length >= 2 && segments.every((segment) => segment.length > 0);
+  const segments = value.split(".");
+  return (
+    segments.length >= 2 && segments.every((segment) => segment.length > 0)
+  );
 }
 
 function isProviderReference(value: string): value is AnkhProviderReference {
-  return value.startsWith('./');
+  return value.startsWith("./");
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 interface DiagnosticInput {
@@ -274,11 +283,13 @@ interface DiagnosticInput {
   readonly message: string;
   readonly packageJsonPath: string;
   readonly packageName?: string | null;
-  readonly severity: 'warning' | 'error';
+  readonly severity: "warning" | "error";
   readonly source: AnkhDiscoverySource;
 }
 
-function createDiagnostic(input: DiagnosticInput): AnkhMetadataDiscoveryDiagnostic {
+function createDiagnostic(
+  input: DiagnosticInput,
+): AnkhMetadataDiscoveryDiagnostic {
   return {
     code: input.code,
     message: input.message,
