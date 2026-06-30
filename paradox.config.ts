@@ -1,15 +1,16 @@
-import { defineParadoxConfig } from '@ankhorage/paradox';
+import { defineParadoxConfig } from "@ankhorage/paradox";
 
 export default defineParadoxConfig({
-  mode: 'write',
+  mode: "write",
   docs: {
-    title: '@ankhorage/ankh',
-    description: 'Bun-first Ankh CLI front door and command bus bootstrap package.',
+    title: "@ankhorage/ankh",
+    description:
+      "Bun-first Ankh CLI front door and command bus bootstrap package.",
   },
   package: {
-    entrypoints: ['src/index.ts'],
+    entrypoints: ["src/index.ts"],
   },
   output: {
-    dir: 'paradox',
+    dir: "paradox",
   },
 });
