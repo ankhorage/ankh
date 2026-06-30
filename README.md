@@ -3,7 +3,7 @@
 
 # @ankhorage/ankh
 
-![license: MIT](./paradox/badges/license.svg) ![npm: v0.2.1](./paradox/badges/npm.svg) ![runtime: bun](./paradox/badges/runtime.svg) ![typescript: strict](./paradox/badges/typescript.svg) ![eslint: checked](./paradox/badges/eslint.svg) ![prettier: checked](./paradox/badges/prettier.svg) ![build: checked](./paradox/badges/build.svg) ![tests: checked](./paradox/badges/tests.svg) ![docs: paradox](./paradox/badges/docs.svg)
+![license: MIT](./paradox/badges/license.svg) ![npm: v0.3.0](./paradox/badges/npm.svg) ![runtime: bun](./paradox/badges/runtime.svg) ![typescript: strict](./paradox/badges/typescript.svg) ![eslint: checked](./paradox/badges/eslint.svg) ![prettier: checked](./paradox/badges/prettier.svg) ![build: checked](./paradox/badges/build.svg) ![tests: checked](./paradox/badges/tests.svg) ![docs: paradox](./paradox/badges/docs.svg)
 
 Bun-first Ankh CLI front door and command bus bootstrap package.
 
@@ -13,23 +13,26 @@ Bun-first Ankh CLI front door and command bus bootstrap package.
 
 `@ankhorage/ankh` is the root CLI front door and command bus for Ankhorage.
 
-`ankh commands` currently lists discovered Ankh package metadata and
-capabilities only.
+`ankh commands` discovers Ankh package metadata, attempts to load provider
+manifests, and renders detailed command descriptors for providers that load
+successfully.
 
 No domain behavior belongs in the root CLI. Domain behavior stays in provider
 packages such as infra, templates, studio, board, doctor, and dev.
 
 Current built-ins are `help`, `commands`, and `version`.
 
-Provider manifest loading, command descriptors, category help, and command
-execution are deferred beyond `ankhorage/ankh#2`.
+`ankh <category> --help` and `ankh <category> help` render provider-backed
+category help when a valid provider manifest is available.
+
+Provider command execution remains deferred until `ankhorage/ankh#6`.
 
 Source: `src/readme-usage.ts`
 
 ```ts
-import { runCli } from "./cli.js";
+import { runCli } from './cli.js';
 
-await runCli(["--help"]);
+await runCli(['--help']);
 ```
 
 ## Installation

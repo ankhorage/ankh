@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.2.1",
+      "value": "v0.3.0",
       "color": "cb3837"
     },
     {
@@ -70,9 +70,9 @@
   "readmeUsage": [
     {
       "title": "Bootstrap status",
-      "description": "Bootstrap status\n\n`@ankhorage/ankh` is the root CLI front door and command bus for Ankhorage.\n\n`ankh commands` currently lists discovered Ankh package metadata and\ncapabilities only.\n\nNo domain behavior belongs in the root CLI. Domain behavior stays in provider\npackages such as infra, templates, studio, board, doctor, and dev.\n\nCurrent built-ins are `help`, `commands`, and `version`.\n\nProvider manifest loading, command descriptors, category help, and command\nexecution are deferred beyond `ankhorage/ankh#2`.",
+      "description": "Bootstrap status\n\n`@ankhorage/ankh` is the root CLI front door and command bus for Ankhorage.\n\n`ankh commands` discovers Ankh package metadata, attempts to load provider\nmanifests, and renders detailed command descriptors for providers that load\nsuccessfully.\n\nNo domain behavior belongs in the root CLI. Domain behavior stays in provider\npackages such as infra, templates, studio, board, doctor, and dev.\n\nCurrent built-ins are `help`, `commands`, and `version`.\n\n`ankh <category> --help` and `ankh <category> help` render provider-backed\ncategory help when a valid provider manifest is available.\n\nProvider command execution remains deferred until `ankhorage/ankh#6`.",
       "language": "ts",
-      "code": "import { runCli } from \"./cli.js\";\n\nawait runCli([\"--help\"]);",
+      "code": "import { runCli } from './cli.js';\n\nawait runCli(['--help']);",
       "sourcePath": "src/readme-usage.ts"
     }
   ],
@@ -105,19 +105,17 @@
         "src/discovery.ts",
         "src/help.ts",
         "src/packageRegistry.ts",
-        "src/parser.ts"
+        "src/parser.ts",
+        "src/providerManifestLoader.ts",
+        "src/providerRegistry.ts"
       ],
-      "exports": ["DiscoverAnkhPackagesFn", "runCli", "RunCliOptions"]
+      "exports": ["DiscoverAnkhPackagesFn", "LoadProviderManifestsFn", "runCli", "RunCliOptions"]
     },
     {
       "path": "src/commandContext.ts",
       "isEntrypoint": false,
       "dependencies": ["package.json"],
-      "exports": [
-        "AnkhCliRunResult",
-        "AnkhCommandContext",
-        "createDefaultCommandContext"
-      ]
+      "exports": ["AnkhCliRunResult", "AnkhCommandContext", "createDefaultCommandContext"]
     },
     {
       "path": "src/discovery.ts",
@@ -135,12 +133,21 @@
     {
       "path": "src/help.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/discovery.ts"],
+      "dependencies": [
+        "src/discovery.ts",
+        "src/providerManifestLoader.ts",
+        "src/providerRegistry.ts"
+      ],
       "exports": [
+        "renderCategoryHelp",
+        "renderCategoryProviderUnavailable",
         "renderCommands",
         "renderDiscoveryFailure",
         "renderMetadataDiscoveryDiagnostics",
+        "renderProviderLoadFailure",
+        "renderProviderManifestDiagnostics",
         "renderRootHelp",
+        "renderUnknownCategory",
         "renderUnknownCommand"
       ]
     },
@@ -154,14 +161,18 @@
         "AnkhCommandListing",
         "AnkhDiscoveredPackage",
         "AnkhDiscoverySource",
+        "AnkhLoadedProvider",
         "AnkhMetadataDiscoveryDiagnostic",
         "AnkhMetadataDiscoveryResult",
         "AnkhPackageRegistry",
+        "AnkhProviderManifestDiagnostic",
         "AnkhProviderRegistry",
         "createDefaultCommandContext",
         "createPackageRegistry",
         "createProviderRegistry",
         "discoverAnkhPackages",
+        "loadProviderManifests",
+        "LoadProviderManifestsResult",
         "parseArgv",
         "ParsedCliRequest",
         "runCli"
@@ -190,14 +201,21 @@
       "exports": ["parseArgv", "ParsedCliRequest"]
     },
     {
+      "path": "src/providerManifestLoader.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/discovery.ts"],
+      "exports": [
+        "AnkhLoadedProvider",
+        "AnkhProviderManifestDiagnostic",
+        "loadProviderManifests",
+        "LoadProviderManifestsResult"
+      ]
+    },
+    {
       "path": "src/providerRegistry.ts",
       "isEntrypoint": false,
-      "dependencies": [],
-      "exports": [
-        "AnkhCommandListing",
-        "AnkhProviderRegistry",
-        "createProviderRegistry"
-      ]
+      "dependencies": ["src/providerManifestLoader.ts"],
+      "exports": ["AnkhCommandListing", "AnkhProviderRegistry", "createProviderRegistry"]
     },
     {
       "path": "src/workspace.ts",
@@ -217,7 +235,8 @@
         "package.json",
         "src/cli.ts",
         "src/commandContext.ts",
-        "src/discovery.ts"
+        "src/discovery.ts",
+        "src/providerManifestLoader.ts"
       ],
       "exports": []
     },
@@ -243,6 +262,12 @@
       "path": "tests/parser.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/parser.ts"],
+      "exports": []
+    },
+    {
+      "path": "tests/providerManifestLoader.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/providerManifestLoader.ts"],
       "exports": []
     },
     {
@@ -342,13 +367,20 @@
       "modulePath": "src/providerRegistry.ts",
       "sourceLocation": {
         "filePath": "src/providerRegistry.ts",
-        "line": 6,
+        "line": 5,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
+        {
+          "name": "aliases",
+          "kind": "property",
+          "type": "readonly string[] | undefined",
+          "required": false,
+          "description": null
+        },
         {
           "name": "capability",
           "kind": "property",
@@ -358,6 +390,20 @@
         },
         {
           "name": "category",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "examples",
+          "kind": "property",
+          "type": "readonly string[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "packageName",
           "kind": "property",
           "type": "string",
           "required": true,
@@ -396,7 +442,7 @@
       "modulePath": "src/discovery.ts",
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 15,
+        "line": 14,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -460,6 +506,53 @@
       "structuredRows": []
     },
     {
+      "name": "AnkhLoadedProvider",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/providerManifestLoader.ts",
+      "sourceLocation": {
+        "filePath": "src/providerManifestLoader.ts",
+        "line": 22,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["AnkhDiscoveredPackage"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "discoveredPackage",
+          "kind": "property",
+          "type": "AnkhDiscoveredPackage",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "manifest",
+          "kind": "property",
+          "type": "AnkhCommandProviderManifest",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "providerModulePath",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "providerModuleUrl",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
       "name": "AnkhMetadataDiscoveryDiagnostic",
       "description": null,
       "isReadme": false,
@@ -468,7 +561,7 @@
       "modulePath": "src/discovery.ts",
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 23,
+        "line": 22,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -529,14 +622,11 @@
       "modulePath": "src/discovery.ts",
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 32,
+        "line": 31,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": [
-        "AnkhDiscoveredPackage",
-        "AnkhMetadataDiscoveryDiagnostic"
-      ],
+      "relatedSymbols": ["AnkhDiscoveredPackage", "AnkhMetadataDiscoveryDiagnostic"],
       "signatures": [],
       "members": [
         {
@@ -573,6 +663,13 @@
       "signatures": [],
       "members": [
         {
+          "name": "findByCategory",
+          "kind": "method",
+          "type": "(category: string) => AnkhDiscoveredPackage | null",
+          "required": true,
+          "description": null
+        },
+        {
           "name": "hasCategory",
           "kind": "method",
           "type": "(category: string) => boolean",
@@ -590,6 +687,74 @@
       "structuredRows": []
     },
     {
+      "name": "AnkhProviderManifestDiagnostic",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/providerManifestLoader.ts",
+      "sourceLocation": {
+        "filePath": "src/providerManifestLoader.ts",
+        "line": 12,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "category",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "code",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "message",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "packageJsonPath",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "packageName",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "providerModulePath",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "severity",
+          "kind": "property",
+          "type": "\"warning\" | \"error\"",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
       "name": "AnkhProviderRegistry",
       "description": null,
       "isReadme": false,
@@ -598,13 +763,20 @@
       "modulePath": "src/providerRegistry.ts",
       "sourceLocation": {
         "filePath": "src/providerRegistry.ts",
-        "line": 14,
+        "line": 16,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": ["AnkhCommandListing"],
+      "relatedSymbols": ["AnkhCommandListing", "AnkhLoadedProvider"],
       "signatures": [],
       "members": [
+        {
+          "name": "findByCategory",
+          "kind": "method",
+          "type": "(category: string) => AnkhLoadedProvider | null",
+          "required": true,
+          "description": null
+        },
         {
           "name": "hasCategory",
           "kind": "method",
@@ -622,7 +794,7 @@
         {
           "name": "listProviders",
           "kind": "method",
-          "type": "() => readonly AnkhCommandProviderManifest[]",
+          "type": "() => readonly AnkhLoadedProvider[]",
           "required": true,
           "description": null
         }
@@ -663,7 +835,7 @@
       "modulePath": "src/packageRegistry.ts",
       "sourceLocation": {
         "filePath": "src/packageRegistry.ts",
-        "line": 8,
+        "line": 9,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -699,14 +871,14 @@
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": ["AnkhProviderRegistry"],
+      "relatedSymbols": ["AnkhLoadedProvider", "AnkhProviderRegistry"],
       "signatures": [
         {
-          "label": "(providers?: readonly AnkhCommandProviderManifest[]) => AnkhProviderRegistry",
+          "label": "(providers?: readonly AnkhLoadedProvider[]) => AnkhProviderRegistry",
           "parameters": [
             {
               "name": "providers",
-              "type": "readonly AnkhCommandProviderManifest[]",
+              "type": "readonly AnkhLoadedProvider[]",
               "required": false,
               "description": null
             }
@@ -727,7 +899,7 @@
       "modulePath": "src/discovery.ts",
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 46,
+        "line": 45,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -751,6 +923,71 @@
       "structuredRows": []
     },
     {
+      "name": "loadProviderManifests",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/providerManifestLoader.ts",
+      "sourceLocation": {
+        "filePath": "src/providerManifestLoader.ts",
+        "line": 34,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["AnkhDiscoveredPackage", "LoadProviderManifestsResult"],
+      "signatures": [
+        {
+          "label": "(packages: readonly AnkhDiscoveredPackage[]) => Promise<LoadProviderManifestsResult>",
+          "parameters": [
+            {
+              "name": "packages",
+              "type": "readonly AnkhDiscoveredPackage[]",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "Promise<LoadProviderManifestsResult>",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "LoadProviderManifestsResult",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/providerManifestLoader.ts",
+      "sourceLocation": {
+        "filePath": "src/providerManifestLoader.ts",
+        "line": 29,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["AnkhLoadedProvider", "AnkhProviderManifestDiagnostic"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "diagnostics",
+          "kind": "property",
+          "type": "readonly AnkhProviderManifestDiagnostic[]",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "providers",
+          "kind": "property",
+          "type": "readonly AnkhLoadedProvider[]",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
       "name": "parseArgv",
       "description": null,
       "isReadme": false,
@@ -759,7 +996,7 @@
       "modulePath": "src/parser.ts",
       "sourceLocation": {
         "filePath": "src/parser.ts",
-        "line": 16,
+        "line": 17,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -809,7 +1046,7 @@
       "modulePath": "src/cli.ts",
       "sourceLocation": {
         "filePath": "src/cli.ts",
-        "line": 32,
+        "line": 58,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -846,7 +1083,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli.ts",
-        "line": 32,
+        "line": 58,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveCliState",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli.ts",
+        "line": 155,
         "column": 1
       }
     },
@@ -864,7 +1110,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 46,
+        "line": 45,
         "column": 1
       }
     },
@@ -873,7 +1119,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 97,
+        "line": 96,
         "column": 1
       }
     },
@@ -882,7 +1128,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 140,
+        "line": 136,
         "column": 1
       }
     },
@@ -891,7 +1137,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 157,
+        "line": 153,
         "column": 1
       }
     },
@@ -900,7 +1146,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 6,
+        "line": 5,
         "column": 1
       }
     },
@@ -914,11 +1160,38 @@
       }
     },
     {
+      "name": "renderCategoryHelp",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/help.ts",
+        "line": 84,
+        "column": 1
+      }
+    },
+    {
       "name": "renderMetadataDiscoveryDiagnostics",
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 54,
+        "line": 129,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderProviderManifestDiagnostics",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/help.ts",
+        "line": 135,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderCategoryProviderUnavailable",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/help.ts",
+        "line": 141,
         "column": 1
       }
     },
@@ -927,7 +1200,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 80,
+        "line": 148,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderProviderLoadFailure",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/help.ts",
+        "line": 155,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderUnknownCategory",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/help.ts",
+        "line": 161,
         "column": 1
       }
     },
@@ -936,7 +1227,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 87,
+        "line": 165,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderDiagnostics",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/help.ts",
+        "line": 175,
         "column": 1
       }
     },
@@ -945,7 +1245,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 97,
+        "line": 202,
         "column": 1
       }
     },
@@ -954,7 +1254,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 32,
+        "line": 29,
         "column": 1
       }
     },
@@ -963,7 +1263,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 147,
+        "line": 143,
         "column": 1
       }
     },
@@ -972,7 +1272,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 258,
+        "line": 251,
         "column": 1
       }
     },
@@ -981,7 +1281,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 267,
+        "line": 260,
         "column": 1
       }
     },
@@ -990,7 +1290,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 274,
+        "line": 265,
         "column": 1
       }
     },
@@ -999,7 +1299,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 278,
+        "line": 269,
         "column": 1
       }
     },
@@ -1008,7 +1308,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 291,
+        "line": 282,
         "column": 1
       }
     },
@@ -1017,7 +1317,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageRegistry.ts",
-        "line": 8,
+        "line": 9,
         "column": 1
       }
     },
@@ -1026,7 +1326,124 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/parser.ts",
-        "line": 16,
+        "line": 17,
+        "column": 1
+      }
+    },
+    {
+      "name": "loadProviderManifests",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/providerManifestLoader.ts",
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "validateProviderManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/providerManifestLoader.ts",
+        "line": 110,
+        "column": 1
+      }
+    },
+    {
+      "name": "validateCapabilities",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/providerManifestLoader.ts",
+        "line": 240,
+        "column": 1
+      }
+    },
+    {
+      "name": "validateCommands",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/providerManifestLoader.ts",
+        "line": 313,
+        "column": 1
+      }
+    },
+    {
+      "name": "validateCommand",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/providerManifestLoader.ts",
+        "line": 364,
+        "column": 1
+      }
+    },
+    {
+      "name": "getCommandPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/providerManifestLoader.ts",
+        "line": 483,
+        "column": 1
+      }
+    },
+    {
+      "name": "getCapabilityId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/providerManifestLoader.ts",
+        "line": 505,
+        "column": 1
+      }
+    },
+    {
+      "name": "getOptionalStringArray",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/providerManifestLoader.ts",
+        "line": 509,
+        "column": 1
+      }
+    },
+    {
+      "name": "getNonEmptyString",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/providerManifestLoader.ts",
+        "line": 530,
+        "column": 1
+      }
+    },
+    {
+      "name": "isCapabilityId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/providerManifestLoader.ts",
+        "line": 539,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/providerManifestLoader.ts",
+        "line": 544,
+        "column": 1
+      }
+    },
+    {
+      "name": "getErrorMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/providerManifestLoader.ts",
+        "line": 548,
+        "column": 1
+      }
+    },
+    {
+      "name": "createDiagnostic",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/providerManifestLoader.ts",
+        "line": 564,
         "column": 1
       }
     },
@@ -1053,7 +1470,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 45,
+        "line": 42,
         "column": 1
       }
     },
@@ -1062,7 +1479,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 70,
+        "line": 64,
         "column": 1
       }
     },
@@ -1071,7 +1488,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 96,
+        "line": 90,
         "column": 1
       }
     },
@@ -1080,7 +1497,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 126,
+        "line": 118,
         "column": 1
       }
     },
@@ -1089,7 +1506,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 157,
+        "line": 145,
         "column": 1
       }
     },
@@ -1098,7 +1515,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 163,
+        "line": 149,
         "column": 1
       }
     },
@@ -1107,7 +1524,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 177,
+        "line": 161,
         "column": 1
       }
     },
@@ -1116,7 +1533,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 186,
+        "line": 170,
         "column": 1
       }
     },
@@ -1125,7 +1542,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 202,
+        "line": 186,
         "column": 1
       }
     },
@@ -1134,7 +1551,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 207,
+        "line": 191,
         "column": 1
       }
     }
@@ -1169,6 +1586,14 @@
       "name": "discoverAnkhPackages",
       "sourcePath": "src/discovery.ts",
       "symbolName": "discoverAnkhPackages",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "loadProviderManifests",
+      "sourcePath": "src/providerManifestLoader.ts",
+      "symbolName": "loadProviderManifests",
       "description": null,
       "isReadme": false
     },
@@ -1222,6 +1647,16 @@
         "sourcePath": "src/cli.ts"
       },
       {
+        "fromPath": "src/cli.ts",
+        "toPath": "src/providerManifestLoader.ts",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromPath": "src/cli.ts",
+        "toPath": "src/providerRegistry.ts",
+        "sourcePath": "src/cli.ts"
+      },
+      {
         "fromPath": "src/commandContext.ts",
         "toPath": "package.json",
         "sourcePath": "src/commandContext.ts"
@@ -1239,6 +1674,16 @@
       {
         "fromPath": "src/help.ts",
         "toPath": "src/discovery.ts",
+        "sourcePath": "src/help.ts"
+      },
+      {
+        "fromPath": "src/help.ts",
+        "toPath": "src/providerManifestLoader.ts",
+        "sourcePath": "src/help.ts"
+      },
+      {
+        "fromPath": "src/help.ts",
+        "toPath": "src/providerRegistry.ts",
         "sourcePath": "src/help.ts"
       },
       {
@@ -1268,6 +1713,11 @@
       },
       {
         "fromPath": "src/index.ts",
+        "toPath": "src/providerManifestLoader.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
         "toPath": "src/providerRegistry.ts",
         "sourcePath": "src/index.ts"
       },
@@ -1280,6 +1730,16 @@
         "fromPath": "src/packageRegistry.ts",
         "toPath": "src/discovery.ts",
         "sourcePath": "src/packageRegistry.ts"
+      },
+      {
+        "fromPath": "src/providerManifestLoader.ts",
+        "toPath": "src/discovery.ts",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromPath": "src/providerRegistry.ts",
+        "toPath": "src/providerManifestLoader.ts",
+        "sourcePath": "src/providerRegistry.ts"
       },
       {
         "fromPath": "src/readme-usage.ts",
@@ -1307,6 +1767,11 @@
         "sourcePath": "tests/cli.test.ts"
       },
       {
+        "fromPath": "tests/cli.test.ts",
+        "toPath": "src/providerManifestLoader.ts",
+        "sourcePath": "tests/cli.test.ts"
+      },
+      {
         "fromPath": "tests/discovery.test.ts",
         "toPath": "src/discovery.ts",
         "sourcePath": "tests/discovery.test.ts"
@@ -1325,6 +1790,11 @@
         "fromPath": "tests/parser.test.ts",
         "toPath": "src/parser.ts",
         "sourcePath": "tests/parser.test.ts"
+      },
+      {
+        "fromPath": "tests/providerManifestLoader.test.ts",
+        "toPath": "src/providerManifestLoader.ts",
+        "sourcePath": "tests/providerManifestLoader.test.ts"
       },
       {
         "fromPath": "tests/providerRegistry.test.ts",
@@ -1371,6 +1841,12 @@
       },
       {
         "fromSymbol": "runCli",
+        "toSymbol": "resolveCliState",
+        "callExpression": "resolveCliState",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "runCli",
         "toSymbol": "renderCommands",
         "callExpression": "renderCommands",
         "sourcePath": "src/cli.ts"
@@ -1378,25 +1854,7 @@
       {
         "fromSymbol": "runCli",
         "toSymbol": "listPackages",
-        "callExpression": "options.registry.listPackages",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "discoverPackages",
-        "callExpression": "discoverPackages",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "createPackageRegistry",
-        "callExpression": "createPackageRegistry",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "listPackages",
-        "callExpression": "registry.listPackages",
+        "callExpression": "resolvedState.packageRegistry.listPackages",
         "sourcePath": "src/cli.ts"
       },
       {
@@ -1413,14 +1871,92 @@
       },
       {
         "fromSymbol": "runCli",
-        "toSymbol": "renderDiscoveryFailure",
-        "callExpression": "renderDiscoveryFailure",
+        "toSymbol": "renderProviderManifestDiagnostics",
+        "callExpression": "renderProviderManifestDiagnostics",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "findByCategory",
+        "callExpression": "resolvedState.packageRegistry.findByCategory",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "renderUnknownCategory",
+        "callExpression": "renderUnknownCategory",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "findByCategory",
+        "callExpression": "resolvedState.providerRegistry.findByCategory",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "renderCategoryProviderUnavailable",
+        "callExpression": "renderCategoryProviderUnavailable",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "renderCategoryHelp",
+        "callExpression": "renderCategoryHelp",
         "sourcePath": "src/cli.ts"
       },
       {
         "fromSymbol": "runCli",
         "toSymbol": "renderUnknownCommand",
         "callExpression": "renderUnknownCommand",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
+        "toSymbol": "discoverPackages",
+        "callExpression": "input.discoverPackages",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
+        "toSymbol": "createPackageRegistry",
+        "callExpression": "createPackageRegistry",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
+        "toSymbol": "listProviders",
+        "callExpression": "input.options.providerRegistry.listProviders",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
+        "toSymbol": "loadProviders",
+        "callExpression": "input.loadProviders",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
+        "toSymbol": "createProviderRegistry",
+        "callExpression": "createProviderRegistry",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
+        "toSymbol": "writeStderr",
+        "callExpression": "input.context.writeStderr",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
+        "toSymbol": "renderProviderLoadFailure",
+        "callExpression": "renderProviderLoadFailure",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
+        "toSymbol": "renderDiscoveryFailure",
+        "callExpression": "renderDiscoveryFailure",
         "sourcePath": "src/cli.ts"
       },
       {
@@ -1466,7 +2002,37 @@
         "sourcePath": "src/discovery.ts"
       },
       {
+        "fromSymbol": "renderCommands",
+        "toSymbol": "listProviders",
+        "callExpression": "providerRegistry\n      .listProviders",
+        "sourcePath": "src/help.ts"
+      },
+      {
+        "fromSymbol": "renderCategoryHelp",
+        "toSymbol": "findByCategory",
+        "callExpression": "providerRegistry.findByCategory",
+        "sourcePath": "src/help.ts"
+      },
+      {
+        "fromSymbol": "renderMetadataDiscoveryDiagnostics",
+        "toSymbol": "renderDiagnostics",
+        "callExpression": "renderDiagnostics",
+        "sourcePath": "src/help.ts"
+      },
+      {
+        "fromSymbol": "renderProviderManifestDiagnostics",
+        "toSymbol": "renderDiagnostics",
+        "callExpression": "renderDiagnostics",
+        "sourcePath": "src/help.ts"
+      },
+      {
         "fromSymbol": "renderDiscoveryFailure",
+        "toSymbol": "getErrorMessage",
+        "callExpression": "getErrorMessage",
+        "sourcePath": "src/help.ts"
+      },
+      {
+        "fromSymbol": "renderProviderLoadFailure",
         "toSymbol": "getErrorMessage",
         "callExpression": "getErrorMessage",
         "sourcePath": "src/help.ts"
@@ -1524,6 +2090,144 @@
         "toSymbol": "isCapabilityId",
         "callExpression": "isCapabilityId",
         "sourcePath": "src/packageMetadata.ts"
+      },
+      {
+        "fromSymbol": "loadProviderManifests",
+        "toSymbol": "pathToFileURL",
+        "callExpression": "pathToFileURL",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "loadProviderManifests",
+        "toSymbol": "createDiagnostic",
+        "callExpression": "createDiagnostic",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "loadProviderManifests",
+        "toSymbol": "getErrorMessage",
+        "callExpression": "getErrorMessage",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "loadProviderManifests",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "loadProviderManifests",
+        "toSymbol": "validateProviderManifest",
+        "callExpression": "validateProviderManifest",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "validateProviderManifest",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "validateProviderManifest",
+        "toSymbol": "createDiagnostic",
+        "callExpression": "createDiagnostic",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "validateProviderManifest",
+        "toSymbol": "getNonEmptyString",
+        "callExpression": "getNonEmptyString",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "validateProviderManifest",
+        "toSymbol": "validateCapabilities",
+        "callExpression": "validateCapabilities",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "validateProviderManifest",
+        "toSymbol": "validateCommands",
+        "callExpression": "validateCommands",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "validateCapabilities",
+        "toSymbol": "createDiagnostic",
+        "callExpression": "createDiagnostic",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "validateCapabilities",
+        "toSymbol": "isCapabilityId",
+        "callExpression": "isCapabilityId",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "validateCommands",
+        "toSymbol": "createDiagnostic",
+        "callExpression": "createDiagnostic",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "validateCommands",
+        "toSymbol": "validateCommand",
+        "callExpression": "validateCommand",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "validateCommand",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "validateCommand",
+        "toSymbol": "createDiagnostic",
+        "callExpression": "createDiagnostic",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "validateCommand",
+        "toSymbol": "getCommandPath",
+        "callExpression": "getCommandPath",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "validateCommand",
+        "toSymbol": "getCapabilityId",
+        "callExpression": "getCapabilityId",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "validateCommand",
+        "toSymbol": "getNonEmptyString",
+        "callExpression": "getNonEmptyString",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "validateCommand",
+        "toSymbol": "getOptionalStringArray",
+        "callExpression": "getOptionalStringArray",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "getCommandPath",
+        "toSymbol": "getNonEmptyString",
+        "callExpression": "getNonEmptyString",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "getCapabilityId",
+        "toSymbol": "isCapabilityId",
+        "callExpression": "isCapabilityId",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "getOptionalStringArray",
+        "toSymbol": "getNonEmptyString",
+        "callExpression": "getNonEmptyString",
+        "sourcePath": "src/providerManifestLoader.ts"
       },
       {
         "fromSymbol": "src/readme-usage.ts",
@@ -1676,9 +2380,21 @@
         "sourcePath": "tests/cli.test.ts"
       },
       {
+        "fromSymbol": "tests/cli.test.ts",
+        "toSymbol": "createDiscoveredPackage",
+        "callExpression": "createDiscoveredPackage",
+        "sourcePath": "tests/cli.test.ts"
+      },
+      {
         "fromSymbol": "discoverPackages",
         "toSymbol": "createDiscoveredPackage",
         "callExpression": "createDiscoveredPackage",
+        "sourcePath": "tests/cli.test.ts"
+      },
+      {
+        "fromSymbol": "loadProviders",
+        "toSymbol": "createLoadedProvider",
+        "callExpression": "createLoadedProvider",
         "sourcePath": "tests/cli.test.ts"
       },
       {
@@ -1839,6 +2555,12 @@
       },
       {
         "fromSymbol": "tests/packageRegistry.test.ts",
+        "toSymbol": "findByCategory",
+        "callExpression": "registry.findByCategory",
+        "sourcePath": "tests/packageRegistry.test.ts"
+      },
+      {
+        "fromSymbol": "tests/packageRegistry.test.ts",
         "toSymbol": "hasCategory",
         "callExpression": "registry.hasCategory",
         "sourcePath": "tests/packageRegistry.test.ts"
@@ -1866,6 +2588,84 @@
         "toSymbol": "parseArgv",
         "callExpression": "parseArgv",
         "sourcePath": "tests/parser.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerManifestLoader.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "tests/providerManifestLoader.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerManifestLoader.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "tests/providerManifestLoader.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerManifestLoader.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "tests/providerManifestLoader.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerManifestLoader.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "tests/providerManifestLoader.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerManifestLoader.test.ts",
+        "toSymbol": "createPackageRoot",
+        "callExpression": "createPackageRoot",
+        "sourcePath": "tests/providerManifestLoader.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerManifestLoader.test.ts",
+        "toSymbol": "writeProviderModule",
+        "callExpression": "writeProviderModule",
+        "sourcePath": "tests/providerManifestLoader.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerManifestLoader.test.ts",
+        "toSymbol": "loadProviderManifests",
+        "callExpression": "loadProviderManifests",
+        "sourcePath": "tests/providerManifestLoader.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerManifestLoader.test.ts",
+        "toSymbol": "createDiscoveredPackage",
+        "callExpression": "createDiscoveredPackage",
+        "sourcePath": "tests/providerManifestLoader.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerManifestLoader.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "tests/providerManifestLoader.test.ts"
+      },
+      {
+        "fromSymbol": "createPackageRoot",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "tests/providerManifestLoader.test.ts"
+      },
+      {
+        "fromSymbol": "createPackageRoot",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "tests/providerManifestLoader.test.ts"
+      },
+      {
+        "fromSymbol": "createPackageRoot",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "tests/providerManifestLoader.test.ts"
+      },
+      {
+        "fromSymbol": "writeProviderModule",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "tests/providerManifestLoader.test.ts"
       },
       {
         "fromSymbol": "tests/providerRegistry.test.ts",
@@ -1901,6 +2701,12 @@
         "fromSymbol": "tests/providerRegistry.test.ts",
         "toSymbol": "listCommands",
         "callExpression": "registry.listCommands",
+        "sourcePath": "tests/providerRegistry.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerRegistry.test.ts",
+        "toSymbol": "findByCategory",
+        "callExpression": "registry.findByCategory",
         "sourcePath": "tests/providerRegistry.test.ts"
       },
       {
@@ -1987,18 +2793,48 @@
         "sourcePath": "src/parser.ts"
       },
       {
+        "fromSymbol": "AnkhLoadedProvider",
+        "toType": "AnkhCommandProviderManifest",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "AnkhLoadedProvider",
+        "toType": "AnkhDiscoveredPackage",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "LoadProviderManifestsResult",
+        "toType": "AnkhLoadedProvider",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "LoadProviderManifestsResult",
+        "toType": "AnkhProviderManifestDiagnostic",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "loadProviderManifests",
+        "toType": "AnkhDiscoveredPackage",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "loadProviderManifests",
+        "toType": "LoadProviderManifestsResult",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
         "fromSymbol": "AnkhProviderRegistry",
         "toType": "AnkhCommandListing",
         "sourcePath": "src/providerRegistry.ts"
       },
       {
         "fromSymbol": "AnkhProviderRegistry",
-        "toType": "AnkhCommandProviderManifest",
+        "toType": "AnkhLoadedProvider",
         "sourcePath": "src/providerRegistry.ts"
       },
       {
         "fromSymbol": "createProviderRegistry",
-        "toType": "AnkhCommandProviderManifest",
+        "toType": "AnkhLoadedProvider",
         "sourcePath": "src/providerRegistry.ts"
       },
       {

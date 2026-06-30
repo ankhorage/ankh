@@ -1,7 +1,7 @@
-import { access, readdir, readFile } from "node:fs/promises";
-import path from "node:path";
+import { access, readdir, readFile } from 'node:fs/promises';
+import path from 'node:path';
 
-import { parse as parseYaml } from "yaml";
+import { parse as parseYaml } from 'yaml';
 
 export interface WorkspaceRoots {
   readonly currentPackageRoot: string | null;
@@ -16,17 +16,14 @@ export async function findWorkspaceRoots(cwd: string): Promise<WorkspaceRoots> {
 
   for (const directory of directories) {
     const packageJson = await readPackageJson(directory);
-    if (
-      currentPackageRoot === null &&
-      (await fileExists(path.join(directory, "package.json")))
-    ) {
+    if (currentPackageRoot === null && (await fileExists(path.join(directory, 'package.json')))) {
       currentPackageRoot = directory;
     }
 
     if (
       workspaceRoot === null &&
       (hasWorkspaceField(packageJson) ||
-        (await fileExists(path.join(directory, "pnpm-workspace.yaml"))))
+        (await fileExists(path.join(directory, 'pnpm-workspace.yaml'))))
     ) {
       workspaceRoot = directory;
     }
@@ -50,10 +47,7 @@ export async function findWorkspacePackageJsonFiles(
 
   for (const workspacePattern of workspacePatterns) {
     const normalizedPattern = normalizeWorkspacePattern(workspacePattern);
-    const packageJsonPattern = path.posix.join(
-      normalizedPattern,
-      "package.json",
-    );
+    const packageJsonPattern = path.posix.join(normalizedPattern, 'package.json');
     const glob = new Bun.Glob(packageJsonPattern);
 
     for await (const relativePath of glob.scan({
@@ -70,7 +64,7 @@ export async function findWorkspacePackageJsonFiles(
 export async function findInstalledAnkhoragePackageJsonFiles(
   packageRoot: string,
 ): Promise<readonly string[]> {
-  const scopeRoot = path.join(packageRoot, "node_modules", "@ankhorage");
+  const scopeRoot = path.join(packageRoot, 'node_modules', '@ankhorage');
 
   let entries: readonly string[];
   try {
@@ -84,7 +78,7 @@ export async function findInstalledAnkhoragePackageJsonFiles(
 
   const packageJsonPaths: string[] = [];
   for (const entry of entries) {
-    const packageJsonPath = path.join(scopeRoot, entry, "package.json");
+    const packageJsonPath = path.join(scopeRoot, entry, 'package.json');
     if (await fileExists(packageJsonPath)) {
       packageJsonPaths.push(packageJsonPath);
     }
@@ -93,21 +87,19 @@ export async function findInstalledAnkhoragePackageJsonFiles(
   return packageJsonPaths;
 }
 
-async function getWorkspacePatterns(
-  workspaceRoot: string,
-): Promise<readonly string[]> {
+async function getWorkspacePatterns(workspaceRoot: string): Promise<readonly string[]> {
   const packageJson = await readPackageJson(workspaceRoot);
   const packageJsonPatterns = getPatternsFromPackageJson(packageJson);
   if (packageJsonPatterns.length > 0) {
     return packageJsonPatterns;
   }
 
-  const pnpmWorkspacePath = path.join(workspaceRoot, "pnpm-workspace.yaml");
+  const pnpmWorkspacePath = path.join(workspaceRoot, 'pnpm-workspace.yaml');
   if (!(await fileExists(pnpmWorkspacePath))) {
     return [];
   }
 
-  const rawYaml = await readFile(pnpmWorkspacePath, "utf8");
+  const rawYaml = await readFile(pnpmWorkspacePath, 'utf8');
   const parsedYaml = parseYaml(rawYaml) as unknown;
   if (!isRecord(parsedYaml) || !Array.isArray(parsedYaml.packages)) {
     return [];
@@ -115,7 +107,7 @@ async function getWorkspacePatterns(
 
   const patterns: string[] = [];
   for (const value of parsedYaml.packages) {
-    if (typeof value === "string" && value.trim() !== "") {
+    if (typeof value === 'string' && value.trim() !== '') {
       patterns.push(value.trim());
     }
   }
@@ -134,9 +126,7 @@ function getPatternsFromPackageJson(
   if (Array.isArray(rawWorkspaces)) {
     return rawWorkspaces
       .filter((workspacePattern): workspacePattern is string => {
-        return (
-          typeof workspacePattern === "string" && workspacePattern.trim() !== ""
-        );
+        return typeof workspacePattern === 'string' && workspacePattern.trim() !== '';
       })
       .map((workspacePattern) => workspacePattern.trim());
   }
@@ -144,9 +134,7 @@ function getPatternsFromPackageJson(
   if (isRecord(rawWorkspaces) && Array.isArray(rawWorkspaces.packages)) {
     return rawWorkspaces.packages
       .filter((workspacePattern): workspacePattern is string => {
-        return (
-          typeof workspacePattern === "string" && workspacePattern.trim() !== ""
-        );
+        return typeof workspacePattern === 'string' && workspacePattern.trim() !== '';
       })
       .map((workspacePattern) => workspacePattern.trim());
   }
@@ -154,19 +142,15 @@ function getPatternsFromPackageJson(
   return [];
 }
 
-function hasWorkspaceField(
-  packageJson: Record<string, unknown> | null,
-): boolean {
+function hasWorkspaceField(packageJson: Record<string, unknown> | null): boolean {
   return getPatternsFromPackageJson(packageJson).length > 0;
 }
 
-async function readPackageJson(
-  directory: string,
-): Promise<Record<string, unknown> | null> {
-  const packageJsonPath = path.join(directory, "package.json");
+async function readPackageJson(directory: string): Promise<Record<string, unknown> | null> {
+  const packageJsonPath = path.join(directory, 'package.json');
 
   try {
-    const rawText = await readFile(packageJsonPath, "utf8");
+    const rawText = await readFile(packageJsonPath, 'utf8');
     const parsedJson = JSON.parse(rawText) as unknown;
     return isRecord(parsedJson) ? parsedJson : null;
   } catch {
@@ -201,9 +185,9 @@ function getAncestorDirectories(cwd: string): readonly string[] {
 
 function normalizeWorkspacePattern(workspacePattern: string): string {
   const posixPattern = workspacePattern.replaceAll(path.sep, path.posix.sep);
-  return posixPattern.endsWith("/") ? posixPattern.slice(0, -1) : posixPattern;
+  return posixPattern.endsWith('/') ? posixPattern.slice(0, -1) : posixPattern;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }

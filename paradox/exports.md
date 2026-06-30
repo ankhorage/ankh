@@ -32,23 +32,26 @@ Source: `src/commandContext.ts:3:1`
 
 Kind: `type`
 Module: `src/providerRegistry.ts`
-Source: `src/providerRegistry.ts:6:1`
+Source: `src/providerRegistry.ts:5:1`
 
 ### Members
 
-| Name       | Kind     | Type                             | Required | Description |
-| ---------- | -------- | -------------------------------- | -------- | ----------- |
-| capability | property | `${string}.${string}`            | yes      |             |
-| category   | property | `string`                         | yes      |             |
-| path       | property | `readonly [string, ...string[]]` | yes      |             |
-| providerId | property | `string`                         | yes      |             |
-| summary    | property | `string`                         | yes      |             |
+| Name        | Kind     | Type                             | Required | Description |
+| ----------- | -------- | -------------------------------- | -------- | ----------- |
+| aliases     | property | `readonly string[] \| undefined` | no       |             |
+| capability  | property | `${string}.${string}`            | yes      |             |
+| category    | property | `string`                         | yes      |             |
+| examples    | property | `readonly string[] \| undefined` | no       |             |
+| packageName | property | `string`                         | yes      |             |
+| path        | property | `readonly [string, ...string[]]` | yes      |             |
+| providerId  | property | `string`                         | yes      |             |
+| summary     | property | `string`                         | yes      |             |
 
 ## AnkhDiscoveredPackage
 
 Kind: `type`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:15:1`
+Source: `src/discovery.ts:14:1`
 
 ### Members
 
@@ -66,11 +69,26 @@ Kind: `unknown`
 Module: `src/discovery.ts`
 Source: `src/discovery.ts:12:1`
 
+## AnkhLoadedProvider
+
+Kind: `type`
+Module: `src/providerManifestLoader.ts`
+Source: `src/providerManifestLoader.ts:22:1`
+
+### Members
+
+| Name               | Kind     | Type                          | Required | Description |
+| ------------------ | -------- | ----------------------------- | -------- | ----------- |
+| discoveredPackage  | property | `AnkhDiscoveredPackage`       | yes      |             |
+| manifest           | property | `AnkhCommandProviderManifest` | yes      |             |
+| providerModulePath | property | `string`                      | yes      |             |
+| providerModuleUrl  | property | `string`                      | yes      |             |
+
 ## AnkhMetadataDiscoveryDiagnostic
 
 Kind: `type`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:23:1`
+Source: `src/discovery.ts:22:1`
 
 ### Members
 
@@ -87,7 +105,7 @@ Source: `src/discovery.ts:23:1`
 
 Kind: `type`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:32:1`
+Source: `src/discovery.ts:31:1`
 
 ### Members
 
@@ -104,24 +122,44 @@ Source: `src/packageRegistry.ts:3:1`
 
 ### Members
 
-| Name         | Kind   | Type                                     | Required | Description |
-| ------------ | ------ | ---------------------------------------- | -------- | ----------- |
-| hasCategory  | method | `(category: string) => boolean`          | yes      |             |
-| listPackages | method | `() => readonly AnkhDiscoveredPackage[]` | yes      |             |
+| Name           | Kind   | Type                                                  | Required | Description |
+| -------------- | ------ | ----------------------------------------------------- | -------- | ----------- |
+| findByCategory | method | `(category: string) => AnkhDiscoveredPackage \| null` | yes      |             |
+| hasCategory    | method | `(category: string) => boolean`                       | yes      |             |
+| listPackages   | method | `() => readonly AnkhDiscoveredPackage[]`              | yes      |             |
+
+## AnkhProviderManifestDiagnostic
+
+Kind: `type`
+Module: `src/providerManifestLoader.ts`
+Source: `src/providerManifestLoader.ts:12:1`
+
+### Members
+
+| Name               | Kind     | Type                   | Required | Description |
+| ------------------ | -------- | ---------------------- | -------- | ----------- |
+| category           | property | `string \| undefined`  | no       |             |
+| code               | property | `string`               | yes      |             |
+| message            | property | `string`               | yes      |             |
+| packageJsonPath    | property | `string`               | yes      |             |
+| packageName        | property | `string`               | yes      |             |
+| providerModulePath | property | `string \| undefined`  | no       |             |
+| severity           | property | `"warning" \| "error"` | yes      |             |
 
 ## AnkhProviderRegistry
 
 Kind: `type`
 Module: `src/providerRegistry.ts`
-Source: `src/providerRegistry.ts:14:1`
+Source: `src/providerRegistry.ts:16:1`
 
 ### Members
 
-| Name          | Kind   | Type                                           | Required | Description |
-| ------------- | ------ | ---------------------------------------------- | -------- | ----------- |
-| hasCategory   | method | `(category: string) => boolean`                | yes      |             |
-| listCommands  | method | `() => readonly AnkhCommandListing[]`          | yes      |             |
-| listProviders | method | `() => readonly AnkhCommandProviderManifest[]` | yes      |             |
+| Name           | Kind   | Type                                               | Required | Description |
+| -------------- | ------ | -------------------------------------------------- | -------- | ----------- |
+| findByCategory | method | `(category: string) => AnkhLoadedProvider \| null` | yes      |             |
+| hasCategory    | method | `(category: string) => boolean`                    | yes      |             |
+| listCommands   | method | `() => readonly AnkhCommandListing[]`              | yes      |             |
+| listProviders  | method | `() => readonly AnkhLoadedProvider[]`              | yes      |             |
 
 ## createDefaultCommandContext
 
@@ -138,7 +176,7 @@ Source: `src/commandContext.ts:18:1`
 
 Kind: `function`
 Module: `src/packageRegistry.ts`
-Source: `src/packageRegistry.ts:8:1`
+Source: `src/packageRegistry.ts:9:1`
 
 ### Signatures
 
@@ -154,15 +192,15 @@ Source: `src/providerRegistry.ts:23:1`
 
 ### Signatures
 
-- `(providers?: readonly AnkhCommandProviderManifest[]) => AnkhProviderRegistry`
-  - providers: `readonly AnkhCommandProviderManifest[]` (optional)
+- `(providers?: readonly AnkhLoadedProvider[]) => AnkhProviderRegistry`
+  - providers: `readonly AnkhLoadedProvider[]` (optional)
   - returns: `AnkhProviderRegistry`
 
 ## discoverAnkhPackages
 
 Kind: `function`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:46:1`
+Source: `src/discovery.ts:45:1`
 
 ### Signatures
 
@@ -170,11 +208,36 @@ Source: `src/discovery.ts:46:1`
   - options: `DiscoverAnkhPackagesOptions`
   - returns: `Promise<AnkhMetadataDiscoveryResult>`
 
+## loadProviderManifests
+
+Kind: `function`
+Module: `src/providerManifestLoader.ts`
+Source: `src/providerManifestLoader.ts:34:1`
+
+### Signatures
+
+- `(packages: readonly AnkhDiscoveredPackage[]) => Promise<LoadProviderManifestsResult>`
+  - packages: `readonly AnkhDiscoveredPackage[]`
+  - returns: `Promise<LoadProviderManifestsResult>`
+
+## LoadProviderManifestsResult
+
+Kind: `type`
+Module: `src/providerManifestLoader.ts`
+Source: `src/providerManifestLoader.ts:29:1`
+
+### Members
+
+| Name        | Kind     | Type                                        | Required | Description |
+| ----------- | -------- | ------------------------------------------- | -------- | ----------- |
+| diagnostics | property | `readonly AnkhProviderManifestDiagnostic[]` | yes      |             |
+| providers   | property | `readonly AnkhLoadedProvider[]`             | yes      |             |
+
 ## parseArgv
 
 Kind: `function`
 Module: `src/parser.ts`
-Source: `src/parser.ts:16:1`
+Source: `src/parser.ts:17:1`
 
 ### Signatures
 
@@ -192,7 +255,7 @@ Source: `src/parser.ts:1:1`
 
 Kind: `function`
 Module: `src/cli.ts`
-Source: `src/cli.ts:32:1`
+Source: `src/cli.ts:58:1`
 
 ### Signatures
 
