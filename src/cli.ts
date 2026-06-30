@@ -1,20 +1,17 @@
-import type { AnkhCliRunResult, AnkhCommandContext } from "./commandContext.js";
-import { createDefaultCommandContext } from "./commandContext.js";
-import type {
-  AnkhMetadataDiscoveryResult,
-  DiscoverAnkhPackagesOptions,
-} from "./discovery.js";
-import { discoverAnkhPackages } from "./discovery.js";
+import type { AnkhCliRunResult, AnkhCommandContext } from './commandContext.js';
+import { createDefaultCommandContext } from './commandContext.js';
+import type { AnkhMetadataDiscoveryResult, DiscoverAnkhPackagesOptions } from './discovery.js';
+import { discoverAnkhPackages } from './discovery.js';
 import {
   renderCommands,
   renderDiscoveryFailure,
   renderMetadataDiscoveryDiagnostics,
   renderRootHelp,
   renderUnknownCommand,
-} from "./help.js";
-import type { AnkhPackageRegistry } from "./packageRegistry.js";
-import { createPackageRegistry } from "./packageRegistry.js";
-import { parseArgv } from "./parser.js";
+} from './help.js';
+import type { AnkhPackageRegistry } from './packageRegistry.js';
+import { createPackageRegistry } from './packageRegistry.js';
+import { parseArgv } from './parser.js';
 
 export type DiscoverAnkhPackagesFn = (
   options: DiscoverAnkhPackagesOptions,
@@ -38,13 +35,13 @@ export async function runCli(
   const request = await Promise.resolve(parseArgv(argv));
 
   switch (request.kind) {
-    case "help":
+    case 'help':
       context.writeStdout(renderRootHelp());
       return { exitCode: 0 };
-    case "version":
+    case 'version':
       context.writeStdout(`${context.version}\n`);
       return { exitCode: 0 };
-    case "commands": {
+    case 'commands': {
       if (options.registry !== undefined) {
         context.writeStdout(renderCommands(options.registry.listPackages()));
         return { exitCode: 0 };
@@ -55,10 +52,8 @@ export async function runCli(
         const registry = createPackageRegistry(discoveryResult.packages);
         context.writeStdout(renderCommands(registry.listPackages()));
 
-        const diagnosticsOutput = renderMetadataDiscoveryDiagnostics(
-          discoveryResult.diagnostics,
-        );
-        if (diagnosticsOutput !== "") {
+        const diagnosticsOutput = renderMetadataDiscoveryDiagnostics(discoveryResult.diagnostics);
+        if (diagnosticsOutput !== '') {
           context.writeStderr(diagnosticsOutput);
         }
 
@@ -68,7 +63,7 @@ export async function runCli(
         return { exitCode: 1 };
       }
     }
-    case "dispatch":
+    case 'dispatch':
       context.writeStderr(renderUnknownCommand(request.tokens));
       return { exitCode: 1 };
   }

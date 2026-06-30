@@ -27,9 +27,9 @@ execution are deferred beyond `ankhorage/ankh#2`.
 Source: `src/readme-usage.ts`
 
 ```ts
-import { runCli } from "./cli.js";
+import { runCli } from './cli.js';
 
-await runCli(["--help"]);
+await runCli(['--help']);
 ```
 
 ## Installation

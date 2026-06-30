@@ -113,11 +113,7 @@
       "path": "src/commandContext.ts",
       "isEntrypoint": false,
       "dependencies": ["package.json"],
-      "exports": [
-        "AnkhCliRunResult",
-        "AnkhCommandContext",
-        "createDefaultCommandContext"
-      ]
+      "exports": ["AnkhCliRunResult", "AnkhCommandContext", "createDefaultCommandContext"]
     },
     {
       "path": "src/discovery.ts",
@@ -193,11 +189,7 @@
       "path": "src/providerRegistry.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "AnkhCommandListing",
-        "AnkhProviderRegistry",
-        "createProviderRegistry"
-      ]
+      "exports": ["AnkhCommandListing", "AnkhProviderRegistry", "createProviderRegistry"]
     },
     {
       "path": "src/workspace.ts",
@@ -213,12 +205,7 @@
     {
       "path": "tests/cli.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "package.json",
-        "src/cli.ts",
-        "src/commandContext.ts",
-        "src/discovery.ts"
-      ],
+      "dependencies": ["package.json", "src/cli.ts", "src/commandContext.ts", "src/discovery.ts"],
       "exports": []
     },
     {
@@ -533,10 +520,7 @@
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": [
-        "AnkhDiscoveredPackage",
-        "AnkhMetadataDiscoveryDiagnostic"
-      ],
+      "relatedSymbols": ["AnkhDiscoveredPackage", "AnkhMetadataDiscoveryDiagnostic"],
       "signatures": [],
       "members": [
         {
