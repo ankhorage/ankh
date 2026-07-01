@@ -30,9 +30,9 @@ Provider command execution remains deferred until `ankhorage/ankh#6`.
 Source: `src/readme-usage.ts`
 
 ```ts
-import { runCli } from "./cli.js";
+import { runCli } from './cli.js';
 
-await runCli(["--help"]);
+await runCli(['--help']);
 ```
 
 ## Installation

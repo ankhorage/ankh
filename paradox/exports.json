@@ -347,10 +347,7 @@
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
-    "relatedSymbols": [
-      "AnkhDiscoveredPackage",
-      "AnkhMetadataDiscoveryDiagnostic"
-    ],
+    "relatedSymbols": ["AnkhDiscoveredPackage", "AnkhMetadataDiscoveryDiagnostic"],
     "signatures": [],
     "members": [
       {
