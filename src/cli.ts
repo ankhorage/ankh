@@ -28,6 +28,14 @@ import {
 import type { AnkhPackageRegistry } from "./packageRegistry.js";
 import { createPackageRegistry } from "./packageRegistry.js";
 import { parseArgv } from "./parser.js";
+import {
+  hasCommandPlanErrors,
+  renderCommandPlan,
+  renderCommandPlanJson,
+  renderPlanningDiagnostics,
+  resolvePlannableCommand,
+  type AnkhPlanningContext,
+} from "./planning.js";
 import type {
   AnkhProviderManifestDiagnostic,
   LoadProviderManifestsResult,
@@ -57,6 +65,11 @@ interface ResolvedCliState {
   readonly providerRegistry: AnkhProviderRegistry;
   readonly metadataDiagnostics: AnkhMetadataDiscoveryResult["diagnostics"];
   readonly providerDiagnostics: readonly AnkhProviderManifestDiagnostic[];
+}
+
+interface ParsedPlanRequest {
+  readonly commandTokens: readonly string[];
+  readonly format: "human" | "json";
 }
 
 /**
@@ -172,6 +185,132 @@ export async function runCli(
         options,
         tokens: request.tokens,
       });
+    case "plan":
+      return dispatchProviderPlan({
+        context,
+        discoverPackages,
+        loadProviders,
+        options,
+        tokens: request.tokens,
+      });
+    case "run":
+      context.writeStderr(renderRunDeferred(request.tokens));
+      return { exitCode: 1 };
+  }
+}
+
+async function dispatchProviderPlan(input: {
+  readonly context: AnkhCommandContext;
+  readonly discoverPackages: DiscoverAnkhPackagesFn;
+  readonly loadProviders: LoadProviderManifestsFn;
+  readonly options: RunCliOptions;
+  readonly tokens: readonly string[];
+}): Promise<AnkhCliRunResult> {
+  const parsedPlanRequest = parsePlanRequest(input.tokens);
+  if (parsedPlanRequest === null) {
+    input.context.writeStderr(renderPlanUsage());
+    return { exitCode: 1 };
+  }
+
+  const resolvedState = await resolveCliState({
+    context: input.context,
+    discoverPackages: input.discoverPackages,
+    loadProviders: input.loadProviders,
+    options: input.options,
+  });
+
+  if ("exitCode" in resolvedState) {
+    return resolvedState;
+  }
+
+  const [category, ...commandTokens] = parsedPlanRequest.commandTokens;
+  if (category === undefined || commandTokens.length === 0) {
+    input.context.writeStderr(renderPlanUsage());
+    return { exitCode: 1 };
+  }
+
+  const discoveredPackage =
+    resolvedState.packageRegistry.findByCategory(category);
+  if (discoveredPackage === null) {
+    input.context.writeStderr(renderUnknownCommand(["plan", ...input.tokens]));
+    return { exitCode: 1 };
+  }
+
+  const loadedProvider =
+    resolvedState.providerRegistry.findByCategory(category);
+  if (loadedProvider === null) {
+    const providerDiagnostics = resolvedState.providerDiagnostics.filter(
+      (diagnostic) =>
+        diagnostic.packageName === discoveredPackage.packageName ||
+        diagnostic.category === category,
+    );
+
+    if (providerDiagnostics.length > 0) {
+      input.context.writeStderr(
+        renderProviderManifestDiagnostics(providerDiagnostics),
+      );
+    } else {
+      input.context.writeStderr(
+        renderCategoryProviderUnavailable(
+          category,
+          discoveredPackage.packageName,
+        ),
+      );
+    }
+
+    return { exitCode: 1 };
+  }
+
+  const planningResult = resolvePlannableCommand(
+    resolvedState.providerRegistry,
+    category,
+    commandTokens,
+  );
+
+  if (planningResult.resolvedCommand === null) {
+    if (planningResult.diagnostics.length > 0) {
+      input.context.writeStderr(
+        renderPlanningDiagnostics(planningResult.diagnostics),
+      );
+      return { exitCode: 1 };
+    }
+
+    input.context.writeStderr(
+      renderUnknownProviderCommand(category, commandTokens),
+    );
+    return { exitCode: 1 };
+  }
+
+  const planningContext: AnkhPlanningContext = {
+    ...input.context,
+    packageRegistry: resolvedState.packageRegistry,
+    providerRegistry: resolvedState.providerRegistry,
+  };
+
+  try {
+    const plan = await planningResult.resolvedCommand.handler({
+      argv: planningResult.resolvedCommand.argv,
+      command: planningResult.resolvedCommand.command,
+      provider: planningResult.resolvedCommand.provider,
+      context: planningContext,
+    });
+
+    input.context.writeStdout(
+      parsedPlanRequest.format === "json"
+        ? renderCommandPlanJson(plan)
+        : renderCommandPlan(plan),
+    );
+
+    return { exitCode: hasCommandPlanErrors(plan) ? 1 : 0 };
+  } catch (error) {
+    input.context.writeStderr(
+      renderPlanningFailure(
+        category,
+        planningResult.resolvedCommand.command.path,
+        error,
+      ),
+    );
+    return { exitCode: 1 };
   }
 }
 
@@ -327,4 +466,67 @@ async function resolveCliState(input: {
     input.context.writeStderr(renderDiscoveryFailure(error));
     return { exitCode: 1 };
   }
+}
+
+function parsePlanRequest(tokens: readonly string[]): ParsedPlanRequest | null {
+  if (tokens.length < 2) {
+    return null;
+  }
+
+  const commandTokens: string[] = [];
+  let format: ParsedPlanRequest["format"] = "human";
+
+  for (const token of tokens) {
+    if (token === "--json") {
+      format = "json";
+      continue;
+    }
+
+    commandTokens.push(token);
+  }
+
+  return commandTokens.length >= 2
+    ? {
+        commandTokens,
+        format,
+      }
+    : null;
+}
+
+function renderPlanUsage(): string {
+  return [
+    "Usage: ankh plan <category> <command> [--json]",
+    "Planning prints provider-declared command plans without executing them.",
+    "",
+  ].join("\n");
+}
+
+function renderRunDeferred(tokens: readonly string[]): string {
+  const attempted = tokens.length === 0 ? "(missing)" : tokens.join(" ");
+  return [
+    `ankh run is deferred until command execution semantics are explicitly designed: ${attempted}`,
+    "Use `ankh plan <category> <command>` to inspect provider plans first.",
+    "",
+  ].join("\n");
+}
+
+function renderPlanningFailure(
+  category: string,
+  commandPath: readonly string[],
+  error: unknown,
+): string {
+  return [
+    `Ankh command planning failed for "${category} ${commandPath.join(
+      " ",
+    )}": ${getErrorMessage(error)}`,
+    "",
+  ].join("\n");
+}
+
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return "unknown error";
 }
