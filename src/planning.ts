@@ -87,38 +87,36 @@ export function resolvePlannableCommand(
       diagnostics:
         provider === undefined
           ? []
-          : [
-              createPlanningDiagnostic(provider, {
-                code: "provider-duplicate-category",
-                message: `More than one loaded provider declares the category "${category}", so planning is ambiguous.`,
-              }),
-            ],
+          : [createDiagnostic(provider, "provider-duplicate-category")],
       resolvedCommand: null,
     };
   }
 
   const resolvedCommand = providerRegistry.resolveCommand(category, tokens);
   if (resolvedCommand === null) {
-    return { diagnostics: [], resolvedCommand: null };
+    return {
+      diagnostics: [],
+      resolvedCommand: null,
+    };
   }
 
-  const validation = validateProviderPlanningHandlers(resolvedCommand.provider);
+  const validation = getPlanningHandlers(resolvedCommand.provider);
   if (validation.handlersByPath === null) {
-    return { diagnostics: validation.diagnostics, resolvedCommand: null };
+    return {
+      diagnostics: validation.diagnostics,
+      resolvedCommand: null,
+    };
   }
 
-  const handler = validation.handlersByPath.get(
-    getCommandPathKey(resolvedCommand.command.path),
-  );
+  const pathKey = getCommandPathKey(resolvedCommand.command.path);
+  const handler = validation.handlersByPath.get(pathKey);
   if (handler === undefined) {
     return {
       diagnostics: [
-        createPlanningDiagnostic(resolvedCommand.provider, {
-          code: "provider-command-planning-handler-missing",
-          message: `Provider command "${resolvedCommand.command.path.join(
-            " ",
-          )}" does not have a planning handler binding.`,
-        }),
+        createDiagnostic(
+          resolvedCommand.provider,
+          "provider-command-planning-handler-missing",
+        ),
       ],
       resolvedCommand: null,
     };
@@ -126,7 +124,10 @@ export function resolvePlannableCommand(
 
   return {
     diagnostics: [],
-    resolvedCommand: { ...resolvedCommand, handler },
+    resolvedCommand: {
+      ...resolvedCommand,
+      handler,
+    },
   };
 }
 
@@ -153,11 +154,7 @@ export function renderCommandPlan(plan: AnkhCommandPlan): string {
       lines.push(`     id: ${step.id}`);
       lines.push(`     provider: ${step.providerId}`);
       lines.push(`     capability: ${step.capability}`);
-      lines.push(
-        `     dependsOn: ${
-          step.dependsOn.length === 0 ? "none" : step.dependsOn.join(", ")
-        }`,
-      );
+      lines.push(`     dependsOn: ${renderDependencyList(step.dependsOn)}`);
       lines.push(`     destructive: ${step.destructive ? "yes" : "no"}`);
       lines.push(`     status: ${step.status}`);
     }
@@ -168,11 +165,7 @@ export function renderCommandPlan(plan: AnkhCommandPlan): string {
     lines.push("  - none");
   } else {
     for (const diagnostic of plan.diagnostics) {
-      const stepSuffix =
-        diagnostic.stepId === undefined ? "" : ` step=${diagnostic.stepId}`;
-      lines.push(
-        `  [${diagnostic.severity}] ${diagnostic.code}: ${diagnostic.message}${stepSuffix}`,
-      );
+      lines.push(renderPlanDiagnostic(diagnostic));
     }
   }
 
@@ -187,17 +180,13 @@ export function renderCommandPlanJson(plan: AnkhCommandPlan): string {
 export function renderPlanningDiagnostics(
   diagnostics: readonly AnkhCommandPlanningDiagnostic[],
 ): string {
-  if (diagnostics.length === 0) return "";
+  if (diagnostics.length === 0) {
+    return "";
+  }
 
   const lines = ["Ankh command planning diagnostics:", ""];
   for (const diagnostic of diagnostics) {
-    const scopeParts = [
-      diagnostic.category,
-      diagnostic.packageName,
-      diagnostic.packageJsonPath,
-      diagnostic.providerModulePath,
-    ].filter((part): part is string => part !== undefined);
-    const scope = scopeParts.length === 0 ? "" : ` (${scopeParts.join(" | ")})`;
+    const scope = renderDiagnosticScope(diagnostic);
     lines.push(
       `  [${diagnostic.severity}] ${diagnostic.code}: ${diagnostic.message}${scope}`,
     );
@@ -207,142 +196,163 @@ export function renderPlanningDiagnostics(
   return lines.join("\n");
 }
 
-interface ValidateProviderPlanningHandlersResult {
+interface PlanningHandlerValidationResult {
   readonly diagnostics: readonly AnkhCommandPlanningDiagnostic[];
   readonly handlersByPath: ReadonlyMap<string, AnkhPlanningHandler> | null;
 }
 
-function validateProviderPlanningHandlers(
+function getPlanningHandlers(
   provider: AnkhLoadedProvider,
-): ValidateProviderPlanningHandlersResult {
+): PlanningHandlerValidationResult {
   if (!isRecord(provider.providerModuleDefaultExport)) {
     return {
-      diagnostics: [
-        createPlanningDiagnostic(provider, {
-          code: "provider-missing-planning-handlers",
-          message:
-            "Provider module default export does not expose planning handlers.",
-        }),
-      ],
+      diagnostics: [createDiagnostic(provider, "provider-missing-planning-handlers")],
       handlersByPath: null,
     };
   }
 
-  const rawPlanningHandlers =
-    provider.providerModuleDefaultExport.planningHandlers;
-  if (rawPlanningHandlers === undefined) {
+  const rawBindings = provider.providerModuleDefaultExport.planningHandlers;
+  if (rawBindings === undefined) {
     return {
-      diagnostics: [
-        createPlanningDiagnostic(provider, {
-          code: "provider-missing-planning-handlers",
-          message: "Provider does not define planning handlers.",
-        }),
-      ],
+      diagnostics: [createDiagnostic(provider, "provider-missing-planning-handlers")],
       handlersByPath: null,
     };
   }
 
-  if (!Array.isArray(rawPlanningHandlers)) {
+  if (!Array.isArray(rawBindings)) {
     return {
-      diagnostics: [
-        createPlanningDiagnostic(provider, {
-          code: "invalid-provider-planning-handlers",
-          message: 'Provider "planningHandlers" must be an array when present.',
-        }),
-      ],
+      diagnostics: [createDiagnostic(provider, "invalid-provider-planning-handlers")],
       handlersByPath: null,
     };
   }
 
   const diagnostics: AnkhCommandPlanningDiagnostic[] = [];
   const handlersByPath = new Map<string, AnkhPlanningHandler>();
-  const manifestCommandPaths = new Set(
+  const manifestPaths = new Set(
     provider.manifest.commands.map((command) =>
       getCommandPathKey(command.path),
     ),
   );
 
-  for (const rawHandlerBinding of rawPlanningHandlers) {
-    if (!isRecord(rawHandlerBinding)) {
+  for (const rawBinding of rawBindings) {
+    const binding = getPlanningBinding(provider, rawBinding, manifestPaths);
+    if (binding.diagnostic !== null) {
+      diagnostics.push(binding.diagnostic);
+      continue;
+    }
+
+    if (handlersByPath.has(binding.pathKey)) {
       diagnostics.push(
-        createPlanningDiagnostic(provider, {
-          code: "invalid-provider-planning-handler",
-          message: "Each provider planning handler binding must be an object.",
-        }),
+        createDiagnostic(provider, "provider-duplicate-planning-handler-path"),
       );
       continue;
     }
 
-    const path = getCommandPath(rawHandlerBinding.path);
-    if (path === null) {
-      diagnostics.push(
-        createPlanningDiagnostic(provider, {
-          code: "invalid-provider-planning-handler-path",
-          message:
-            'Each provider planning handler "path" must be a non-empty array of non-empty strings.',
-        }),
-      );
-      continue;
-    }
-
-    const pathKey = getCommandPathKey(path);
-    if (!manifestCommandPaths.has(pathKey)) {
-      diagnostics.push(
-        createPlanningDiagnostic(provider, {
-          code: "provider-planning-handler-unknown-path",
-          message: `Provider planning handler path "${path.join(
-            " ",
-          )}" does not match any manifest command path.`,
-        }),
-      );
-      continue;
-    }
-
-    if (handlersByPath.has(pathKey)) {
-      diagnostics.push(
-        createPlanningDiagnostic(provider, {
-          code: "provider-duplicate-planning-handler-path",
-          message: `Provider declares more than one planning handler for command path "${path.join(
-            " ",
-          )}".`,
-        }),
-      );
-      continue;
-    }
-
-    if (!isPlanningHandler(rawHandlerBinding.handler)) {
-      diagnostics.push(
-        createPlanningDiagnostic(provider, {
-          code: "provider-planning-handler-not-function",
-          message: `Provider planning handler for command path "${path.join(
-            " ",
-          )}" must be a function.`,
-        }),
-      );
-      continue;
-    }
-
-    handlersByPath.set(pathKey, rawHandlerBinding.handler);
+    handlersByPath.set(binding.pathKey, binding.handler);
   }
 
-  return diagnostics.length > 0
-    ? { diagnostics, handlersByPath: null }
-    : { diagnostics: [], handlersByPath };
+  if (diagnostics.length > 0) {
+    return {
+      diagnostics,
+      handlersByPath: null,
+    };
+  }
+
+  return {
+    diagnostics: [],
+    handlersByPath,
+  };
 }
 
-function createPlanningDiagnostic(
+function getPlanningBinding(
   provider: AnkhLoadedProvider,
-  details: { readonly code: string; readonly message: string },
+  rawBinding: unknown,
+  manifestPaths: ReadonlySet<string>,
+):
+  | {
+      readonly diagnostic: AnkhCommandPlanningDiagnostic;
+      readonly handler?: never;
+      readonly pathKey?: never;
+    }
+  | {
+      readonly diagnostic: null;
+      readonly handler: AnkhPlanningHandler;
+      readonly pathKey: string;
+    } {
+  if (!isRecord(rawBinding)) {
+    return {
+      diagnostic: createDiagnostic(provider, "invalid-provider-planning-handler"),
+    };
+  }
+
+  const path = getCommandPath(rawBinding.path);
+  if (path === null) {
+    return {
+      diagnostic: createDiagnostic(
+        provider,
+        "invalid-provider-planning-handler-path",
+      ),
+    };
+  }
+
+  const pathKey = getCommandPathKey(path);
+  if (!manifestPaths.has(pathKey)) {
+    return {
+      diagnostic: createDiagnostic(provider, "provider-planning-handler-unknown-path"),
+    };
+  }
+
+  if (!isPlanningHandler(rawBinding.handler)) {
+    return {
+      diagnostic: createDiagnostic(provider, "provider-planning-handler-not-function"),
+    };
+  }
+
+  return {
+    diagnostic: null,
+    handler: rawBinding.handler,
+    pathKey,
+  };
+}
+
+function createDiagnostic(
+  provider: AnkhLoadedProvider,
+  code: string,
 ): AnkhCommandPlanningDiagnostic {
   return {
     category: provider.manifest.category,
-    code: details.code,
-    message: details.message,
+    code,
+    message: getDiagnosticMessage(code),
     packageJsonPath: provider.discoveredPackage.packageJsonPath,
     packageName: provider.discoveredPackage.packageName,
     providerModulePath: provider.providerModulePath,
     severity: "error",
   };
+}
+
+function getDiagnosticMessage(code: string): string {
+  const messages: Record<string, string> = {
+    "invalid-provider-planning-handler":
+      "Each provider planning handler binding must be an object.",
+    "invalid-provider-planning-handler-path":
+      'Each provider planning handler "path" must be a non-empty array of non-empty strings.',
+    "invalid-provider-planning-handlers":
+      'Provider "planningHandlers" must be an array when present.',
+    "provider-command-planning-handler-missing":
+      "Provider command does not have a planning handler binding.",
+    "provider-duplicate-category":
+      "More than one loaded provider declares this category, so planning is ambiguous.",
+    "provider-duplicate-planning-handler-path":
+      "Provider declares more than one planning handler for the same command path.",
+    "provider-missing-planning-handlers":
+      "Provider does not define planning handlers.",
+    "provider-planning-handler-not-function":
+      "Provider planning handler must be a function.",
+    "provider-planning-handler-unknown-path":
+      "Provider planning handler path does not match any manifest command path.",
+  };
+
+  return messages[code] ?? "Provider planning handler is invalid.";
 }
 
 function getCommandPath(value: unknown): readonly [string, ...string[]] | null {
@@ -359,11 +369,7 @@ function getCommandPath(value: unknown): readonly [string, ...string[]] | null {
   }
 
   const [head, ...rest] = parts;
-  if (head === undefined) {
-    return null;
-  }
-
-  return [head, ...rest];
+  return head === undefined ? null : [head, ...rest];
 }
 
 function getCommandPathKey(path: readonly string[]): string {
@@ -376,4 +382,26 @@ function isPlanningHandler(value: unknown): value is AnkhPlanningHandler {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
+}
+
+function renderDependencyList(dependencies: readonly string[]): string {
+  return dependencies.length === 0 ? "none" : dependencies.join(", ");
+}
+
+function renderDiagnosticScope(
+  diagnostic: AnkhCommandPlanningDiagnostic,
+): string {
+  const parts = [
+    diagnostic.category,
+    diagnostic.packageName,
+    diagnostic.packageJsonPath,
+    diagnostic.providerModulePath,
+  ].filter((part): part is string => part !== undefined);
+  return parts.length === 0 ? "" : ` (${parts.join(" | ")})`;
+}
+
+function renderPlanDiagnostic(diagnostic: AnkhCommandPlanDiagnostic): string {
+  const stepSuffix =
+    diagnostic.stepId === undefined ? "" : ` step=${diagnostic.stepId}`;
+  return `  [${diagnostic.severity}] ${diagnostic.code}: ${diagnostic.message}${stepSuffix}`;
 }
