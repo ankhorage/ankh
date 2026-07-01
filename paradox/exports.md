@@ -51,7 +51,7 @@ Source: `src/providerRegistry.ts:5:1`
 
 Kind: `type`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:14:1`
+Source: `src/discovery.ts:15:1`
 
 ### Members
 
@@ -88,7 +88,7 @@ Source: `src/providerManifestLoader.ts:22:1`
 
 Kind: `type`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:22:1`
+Source: `src/discovery.ts:23:1`
 
 ### Members
 
@@ -105,7 +105,7 @@ Source: `src/discovery.ts:22:1`
 
 Kind: `type`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:31:1`
+Source: `src/discovery.ts:32:1`
 
 ### Members
 
@@ -200,7 +200,7 @@ Source: `src/providerRegistry.ts:23:1`
 
 Kind: `function`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:45:1`
+Source: `src/discovery.ts:46:1`
 
 ### Signatures
 

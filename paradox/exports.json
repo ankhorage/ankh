@@ -163,7 +163,7 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 14,
+      "line": 15,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -282,7 +282,7 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 22,
+      "line": 23,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -343,11 +343,14 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 31,
+      "line": 32,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhDiscoveredPackage", "AnkhMetadataDiscoveryDiagnostic"],
+    "relatedSymbols": [
+      "AnkhDiscoveredPackage",
+      "AnkhMetadataDiscoveryDiagnostic"
+    ],
     "signatures": [],
     "members": [
       {
@@ -620,7 +623,7 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 45,
+      "line": 46,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
