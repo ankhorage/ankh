@@ -46,6 +46,19 @@ export async function loadProviderManifests(
       discoveredPackage.packageRoot,
       discoveredPackage.metadata.provider,
     );
+
+    if (!isPathInsidePackageRoot(discoveredPackage.packageRoot, providerModulePath)) {
+      diagnostics.push(
+        createDiagnostic(discoveredPackage, {
+          code: 'provider-path-outside-package-root',
+          message: 'Resolved provider manifest path must stay inside the discovered package root.',
+          providerModulePath,
+          severity: 'error',
+        }),
+      );
+      continue;
+    }
+
     const providerModuleUrl = pathToFileURL(providerModulePath).href;
 
     let importedModule: unknown;
@@ -187,6 +200,7 @@ function validateProviderManifest(
   diagnostics.push(...capabilityResult.diagnostics);
 
   const commandResult = validateCommands({
+    declaredCapabilities: new Set(capabilityResult.capabilities),
     discoveredPackage: options.discoveredPackage,
     providerModulePath: options.providerModulePath,
     rawCommands: options.rawManifest.commands,
@@ -304,6 +318,7 @@ function validateCapabilities(
 
 interface ValidateCommandsOptions {
   readonly category: string | null;
+  readonly declaredCapabilities: ReadonlySet<AnkhCapabilityId>;
   readonly discoveredPackage: AnkhDiscoveredPackage;
   readonly providerModulePath: string;
   readonly rawCommands: unknown;
@@ -338,6 +353,7 @@ function validateCommands(
   for (const rawCommand of options.rawCommands) {
     const commandResult = validateCommand({
       category: options.category,
+      declaredCapabilities: options.declaredCapabilities,
       discoveredPackage: options.discoveredPackage,
       providerModulePath: options.providerModulePath,
       rawCommand,
@@ -357,6 +373,7 @@ function validateCommands(
 
 interface ValidateCommandOptions {
   readonly category: string | null;
+  readonly declaredCapabilities: ReadonlySet<AnkhCapabilityId>;
   readonly discoveredPackage: AnkhDiscoveredPackage;
   readonly providerModulePath: string;
   readonly rawCommand: unknown;
@@ -411,6 +428,16 @@ function validateCommand(
           'Each provider manifest command "capability" must be a dot-separated string identifier.',
         providerModulePath: options.providerModulePath,
         severity: "error",
+      }),
+    );
+  } else if (!options.declaredCapabilities.has(capabilityValue)) {
+    diagnostics.push(
+      createDiagnostic(options.discoveredPackage, {
+        category: options.category ?? capabilityValue.split('.')[0],
+        code: 'provider-command-capability-not-declared',
+        message: `Provider manifest command capability "${capabilityValue}" is not declared in provider manifest capabilities.`,
+        providerModulePath: options.providerModulePath,
+        severity: 'error',
       }),
     );
   }
@@ -554,6 +581,17 @@ function isCapabilityId(value: string): value is AnkhCapabilityId {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function isPathInsidePackageRoot(packageRoot: string, candidatePath: string): boolean {
+  const relativePath = path.relative(packageRoot, candidatePath);
+
+  return (
+    relativePath !== '..' &&
+    !relativePath.startsWith(`..${path.sep}`) &&
+    relativePath !== '' &&
+    !path.isAbsolute(relativePath)
+  );
 }
 
 function getErrorMessage(error: unknown): string {

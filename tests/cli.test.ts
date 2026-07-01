@@ -116,10 +116,10 @@ describe("runCli", () => {
     const result = await runCli([], { context });
 
     expect(result).toEqual({ exitCode: 0 });
-    expect(stdout.value).toContain("Ankh CLI");
-    expect(stdout.value).toContain("ankh commands");
-    expect(stdout.value).toContain("ankh infra --help");
-    expect(stderr.value).toBe("");
+    expect(stdout.value).toContain('Ankh CLI');
+    expect(stdout.value).toContain('ankh commands');
+    expect(stdout.value).toContain('ankh <category> --help');
+    expect(stderr.value).toBe('');
   });
 
   it("prints help for help aliases", async () => {

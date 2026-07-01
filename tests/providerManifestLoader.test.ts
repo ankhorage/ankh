@@ -95,8 +95,27 @@ describe("loadProviderManifests", () => {
     );
   });
 
-  it("reports invalid manifest shape", async () => {
-    const packageRoot = await createPackageRoot("infra");
+  it('rejects provider paths that escape the discovered package root', async () => {
+    const packageRoot = await createPackageRoot('infra-outside');
+
+    const result = await loadProviderManifests([
+      createDiscoveredPackage(packageRoot, '@ankhorage/infra', {
+        ...infraMetadata,
+        provider: './../outside.provider.js',
+      }),
+    ]);
+
+    expect(result.providers).toEqual([]);
+    expect(result.diagnostics.map((diagnostic) => diagnostic.code)).toContain(
+      'provider-path-outside-package-root',
+    );
+    expect(result.diagnostics.map((diagnostic) => diagnostic.code)).not.toContain(
+      'provider-import-failed',
+    );
+  });
+
+  it('reports invalid manifest shape', async () => {
+    const packageRoot = await createPackageRoot('infra');
     await writeProviderModule(
       packageRoot,
       `export default ${JSON.stringify(
@@ -184,6 +203,39 @@ describe("loadProviderManifests", () => {
       "infra.up",
       "infra.status",
     ]);
+  });
+
+  it('rejects command capabilities not declared in provider manifest capabilities', async () => {
+    const packageRoot = await createPackageRoot('infra-command-capability');
+    await writeProviderModule(
+      packageRoot,
+      `export default ${JSON.stringify(
+        {
+          ...validManifest,
+          commands: [
+            {
+              path: ['destroy'],
+              capability: 'infra.destroy',
+              summary: 'Destroy project infrastructure',
+            },
+          ],
+        },
+        null,
+        2,
+      )};\n`,
+    );
+
+    const result = await loadProviderManifests([
+      createDiscoveredPackage(packageRoot, '@ankhorage/infra', {
+        ...infraMetadata,
+        capabilities: ['infra.up', 'infra.status', 'infra.down', 'infra.destroy'],
+      }),
+    ]);
+
+    expect(result.providers).toEqual([]);
+    expect(result.diagnostics.map((diagnostic) => diagnostic.code)).toContain(
+      'provider-command-capability-not-declared',
+    );
   });
 });
 

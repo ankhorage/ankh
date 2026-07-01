@@ -7,22 +7,22 @@ import type { AnkhProviderRegistry } from "./providerRegistry.js";
 
 export function renderRootHelp(): string {
   return [
-    "Ankh CLI",
-    "",
-    "Usage:",
-    "  ankh <command>",
-    "",
-    "Built-ins:",
-    "  help       Show this help",
-    "  version    Show the CLI version",
-    "  commands   List discovered Ankh packages and loaded provider commands",
-    "",
-    "Try:",
-    "  ankh commands",
-    "  ankh infra --help",
-    "  ankh --help",
-    "",
-  ].join("\n");
+    'Ankh CLI',
+    '',
+    'Usage:',
+    '  ankh <command>',
+    '',
+    'Built-ins:',
+    '  help       Show this help',
+    '  version    Show the CLI version',
+    '  commands   List discovered Ankh packages and loaded provider commands',
+    '',
+    'Try:',
+    '  ankh commands',
+    '  ankh <category> --help',
+    '  ankh --help',
+    '',
+  ].join('\n');
 }
 
 export function renderCommands(
