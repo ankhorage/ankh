@@ -2,6 +2,7 @@ import type { AnkhCommandProviderManifest } from "@ankhorage/contracts/cli";
 
 import type { AnkhCommandContext } from "./commandContext.js";
 import type { AnkhPackageRegistry } from "./packageRegistry.js";
+import type { AnkhPlanningHandlerBinding } from "./planning.js";
 import type { AnkhLoadedProvider } from "./providerManifestLoader.js";
 import type {
   AnkhCommandListing,
@@ -39,6 +40,7 @@ export interface AnkhCommandHandlerBinding {
 
 export interface AnkhRuntimeCommandProvider extends AnkhCommandProviderManifest {
   readonly handlers?: readonly AnkhCommandHandlerBinding[];
+  readonly planningHandlers?: readonly AnkhPlanningHandlerBinding[];
 }
 
 export interface AnkhCommandExecutionDiagnostic {
