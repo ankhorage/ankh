@@ -1,13 +1,13 @@
-import path from "node:path";
-import { pathToFileURL } from "node:url";
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 import type {
   AnkhCapabilityId,
   AnkhCommandDescriptor,
   AnkhCommandProviderManifest,
-} from "@ankhorage/contracts/cli";
+} from '@ankhorage/contracts/cli';
 
-import type { AnkhDiscoveredPackage } from "./discovery.js";
+import type { AnkhDiscoveredPackage } from './discovery.js';
 
 export interface AnkhProviderManifestDiagnostic {
   readonly category?: string;
@@ -16,12 +16,13 @@ export interface AnkhProviderManifestDiagnostic {
   readonly packageJsonPath: string;
   readonly packageName: string;
   readonly providerModulePath?: string;
-  readonly severity: "warning" | "error";
+  readonly severity: 'warning' | 'error';
 }
 
 export interface AnkhLoadedProvider {
   readonly discoveredPackage: AnkhDiscoveredPackage;
   readonly manifest: AnkhCommandProviderManifest;
+  readonly providerModuleDefaultExport: unknown;
   readonly providerModulePath: string;
   readonly providerModuleUrl: string;
 }
@@ -47,19 +48,13 @@ export async function loadProviderManifests(
       discoveredPackage.metadata.provider,
     );
 
-    if (
-      !isPathInsidePackageRoot(
-        discoveredPackage.packageRoot,
-        providerModulePath,
-      )
-    ) {
+    if (!isPathInsidePackageRoot(discoveredPackage.packageRoot, providerModulePath)) {
       diagnostics.push(
         createDiagnostic(discoveredPackage, {
-          code: "provider-path-outside-package-root",
-          message:
-            "Resolved provider manifest path must stay inside the discovered package root.",
+          code: 'provider-path-outside-package-root',
+          message: 'Resolved provider manifest path must stay inside the discovered package root.',
           providerModulePath,
-          severity: "error",
+          severity: 'error',
         }),
       );
       continue;
@@ -73,23 +68,23 @@ export async function loadProviderManifests(
     } catch (error) {
       diagnostics.push(
         createDiagnostic(discoveredPackage, {
-          code: "provider-import-failed",
+          code: 'provider-import-failed',
           message: `Could not import provider manifest module: ${getErrorMessage(error)}`,
           providerModulePath,
-          severity: "error",
+          severity: 'error',
         }),
       );
       continue;
     }
 
-    if (!isRecord(importedModule) || !("default" in importedModule)) {
+    if (!isRecord(importedModule) || !('default' in importedModule)) {
       diagnostics.push(
         createDiagnostic(discoveredPackage, {
-          code: "missing-provider-default-export",
+          code: 'missing-provider-default-export',
           message:
-            "Provider manifest module must default-export an AnkhCommandProviderManifest object.",
+            'Provider manifest module must default-export an AnkhCommandProviderManifest object.',
           providerModulePath,
-          severity: "error",
+          severity: 'error',
         }),
       );
       continue;
@@ -134,10 +129,10 @@ function validateProviderManifest(
   if (!isRecord(options.rawManifest)) {
     diagnostics.push(
       createDiagnostic(options.discoveredPackage, {
-        code: "invalid-provider-manifest",
-        message: "Provider manifest default export must be a JSON-like object.",
+        code: 'invalid-provider-manifest',
+        message: 'Provider manifest default export must be a JSON-like object.',
         providerModulePath: options.providerModulePath,
-        severity: "error",
+        severity: 'error',
       }),
     );
 
@@ -152,10 +147,10 @@ function validateProviderManifest(
   if (id === null) {
     diagnostics.push(
       createDiagnostic(options.discoveredPackage, {
-        code: "invalid-provider-id",
+        code: 'invalid-provider-id',
         message: 'Provider manifest "id" must be a non-empty string.',
         providerModulePath: options.providerModulePath,
-        severity: "error",
+        severity: 'error',
       }),
     );
   }
@@ -165,20 +160,20 @@ function validateProviderManifest(
   if (category === null) {
     diagnostics.push(
       createDiagnostic(options.discoveredPackage, {
-        code: "invalid-provider-category",
+        code: 'invalid-provider-category',
         message: 'Provider manifest "category" must be a non-empty string.',
         providerModulePath: options.providerModulePath,
-        severity: "error",
+        severity: 'error',
       }),
     );
   } else if (category !== options.discoveredPackage.metadata.category) {
     diagnostics.push(
       createDiagnostic(options.discoveredPackage, {
         category,
-        code: "provider-category-mismatch",
+        code: 'provider-category-mismatch',
         message: `Provider manifest category "${category}" does not match package metadata category "${options.discoveredPackage.metadata.category}".`,
         providerModulePath: options.providerModulePath,
-        severity: "error",
+        severity: 'error',
       }),
     );
   }
@@ -189,10 +184,10 @@ function validateProviderManifest(
     diagnostics.push(
       createDiagnostic(options.discoveredPackage, {
         category: category ?? undefined,
-        code: "invalid-provider-version",
+        code: 'invalid-provider-version',
         message: 'Provider manifest "version" must be a non-empty string.',
         providerModulePath: options.providerModulePath,
-        severity: "error",
+        severity: 'error',
       }),
     );
   }
@@ -213,8 +208,16 @@ function validateProviderManifest(
     category,
   });
   diagnostics.push(...commandResult.diagnostics);
+  diagnostics.push(
+    ...validateCommandSelectors({
+      category,
+      commands: commandResult.commands,
+      discoveredPackage: options.discoveredPackage,
+      providerModulePath: options.providerModulePath,
+    }),
+  );
 
-  if (diagnostics.some((diagnostic) => diagnostic.severity === "error")) {
+  if (diagnostics.some((diagnostic) => diagnostic.severity === 'error')) {
     return {
       diagnostics,
       provider: null,
@@ -239,6 +242,7 @@ function validateProviderManifest(
         capabilities: capabilityResult.capabilities,
         commands: commandResult.commands,
       },
+      providerModuleDefaultExport: options.rawManifest,
       providerModulePath: options.providerModulePath,
       providerModuleUrl: options.providerModuleUrl,
     },
@@ -257,20 +261,18 @@ interface ValidateCapabilitiesResult {
   readonly diagnostics: readonly AnkhProviderManifestDiagnostic[];
 }
 
-function validateCapabilities(
-  options: ValidateCapabilitiesOptions,
-): ValidateCapabilitiesResult {
+function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCapabilitiesResult {
   if (!Array.isArray(options.rawCapabilities)) {
     return {
       capabilities: [],
       diagnostics: [
         createDiagnostic(options.discoveredPackage, {
           category: options.category ?? undefined,
-          code: "invalid-provider-capabilities",
+          code: 'invalid-provider-capabilities',
           message:
             'Provider manifest "capabilities" must be an array of dot-separated string identifiers.',
           providerModulePath: options.providerModulePath,
-          severity: "error",
+          severity: 'error',
         }),
       ],
     };
@@ -278,20 +280,18 @@ function validateCapabilities(
 
   const diagnostics: AnkhProviderManifestDiagnostic[] = [];
   const capabilities: AnkhCapabilityId[] = [];
-  const metadataCapabilities = new Set(
-    options.discoveredPackage.metadata.capabilities,
-  );
+  const metadataCapabilities = new Set(options.discoveredPackage.metadata.capabilities);
 
   for (const rawCapability of options.rawCapabilities) {
-    if (typeof rawCapability !== "string" || !isCapabilityId(rawCapability)) {
+    if (typeof rawCapability !== 'string' || !isCapabilityId(rawCapability)) {
       diagnostics.push(
         createDiagnostic(options.discoveredPackage, {
           category: options.category ?? undefined,
-          code: "invalid-provider-capabilities",
+          code: 'invalid-provider-capabilities',
           message:
             'Provider manifest "capabilities" must contain dot-separated string identifiers.',
           providerModulePath: options.providerModulePath,
-          severity: "error",
+          severity: 'error',
         }),
       );
       return {
@@ -303,11 +303,11 @@ function validateCapabilities(
     if (!metadataCapabilities.has(rawCapability)) {
       diagnostics.push(
         createDiagnostic(options.discoveredPackage, {
-          category: options.category ?? rawCapability.split(".")[0],
-          code: "provider-capability-not-declared",
+          category: options.category ?? rawCapability.split('.')[0],
+          code: 'provider-capability-not-declared',
           message: `Provider manifest capability "${rawCapability}" is not declared in package.json ankh.capabilities.`,
           providerModulePath: options.providerModulePath,
-          severity: "error",
+          severity: 'error',
         }),
       );
       continue;
@@ -335,19 +335,17 @@ interface ValidateCommandsResult {
   readonly diagnostics: readonly AnkhProviderManifestDiagnostic[];
 }
 
-function validateCommands(
-  options: ValidateCommandsOptions,
-): ValidateCommandsResult {
+function validateCommands(options: ValidateCommandsOptions): ValidateCommandsResult {
   if (!Array.isArray(options.rawCommands)) {
     return {
       commands: [],
       diagnostics: [
         createDiagnostic(options.discoveredPackage, {
           category: options.category ?? undefined,
-          code: "invalid-provider-commands",
+          code: 'invalid-provider-commands',
           message: 'Provider manifest "commands" must be an array.',
           providerModulePath: options.providerModulePath,
-          severity: "error",
+          severity: 'error',
         }),
       ],
     };
@@ -390,19 +388,17 @@ interface ValidateCommandResult {
   readonly diagnostics: readonly AnkhProviderManifestDiagnostic[];
 }
 
-function validateCommand(
-  options: ValidateCommandOptions,
-): ValidateCommandResult {
+function validateCommand(options: ValidateCommandOptions): ValidateCommandResult {
   if (!isRecord(options.rawCommand)) {
     return {
       command: null,
       diagnostics: [
         createDiagnostic(options.discoveredPackage, {
           category: options.category ?? undefined,
-          code: "invalid-provider-command",
-          message: "Each provider manifest command must be an object.",
+          code: 'invalid-provider-command',
+          message: 'Each provider manifest command must be an object.',
           providerModulePath: options.providerModulePath,
-          severity: "error",
+          severity: 'error',
         }),
       ],
     };
@@ -415,11 +411,11 @@ function validateCommand(
     diagnostics.push(
       createDiagnostic(options.discoveredPackage, {
         category: options.category ?? undefined,
-        code: "invalid-provider-command-path",
+        code: 'invalid-provider-command-path',
         message:
           'Each provider manifest command "path" must be a non-empty array of non-empty strings.',
         providerModulePath: options.providerModulePath,
-        severity: "error",
+        severity: 'error',
       }),
     );
   }
@@ -429,21 +425,21 @@ function validateCommand(
     diagnostics.push(
       createDiagnostic(options.discoveredPackage, {
         category: options.category ?? undefined,
-        code: "invalid-provider-command-capability",
+        code: 'invalid-provider-command-capability',
         message:
           'Each provider manifest command "capability" must be a dot-separated string identifier.',
         providerModulePath: options.providerModulePath,
-        severity: "error",
+        severity: 'error',
       }),
     );
   } else if (!options.declaredCapabilities.has(capabilityValue)) {
     diagnostics.push(
       createDiagnostic(options.discoveredPackage, {
-        category: options.category ?? capabilityValue.split(".")[0],
-        code: "provider-command-capability-not-declared",
+        category: options.category ?? capabilityValue.split('.')[0],
+        code: 'provider-command-capability-not-declared',
         message: `Provider manifest command capability "${capabilityValue}" is not declared in provider manifest capabilities.`,
         providerModulePath: options.providerModulePath,
-        severity: "error",
+        severity: 'error',
       }),
     );
   }
@@ -452,12 +448,11 @@ function validateCommand(
   if (summary === null) {
     diagnostics.push(
       createDiagnostic(options.discoveredPackage, {
-        category: options.category ?? capabilityValue?.split(".")[0],
-        code: "invalid-provider-command-summary",
-        message:
-          'Each provider manifest command "summary" must be a non-empty string.',
+        category: options.category ?? capabilityValue?.split('.')[0],
+        code: 'invalid-provider-command-summary',
+        message: 'Each provider manifest command "summary" must be a non-empty string.',
         providerModulePath: options.providerModulePath,
-        severity: "error",
+        severity: 'error',
       }),
     );
   }
@@ -467,11 +462,11 @@ function validateCommand(
     diagnostics.push(
       createDiagnostic(options.discoveredPackage, {
         category: options.category ?? undefined,
-        code: "invalid-provider-command-aliases",
+        code: 'invalid-provider-command-aliases',
         message:
           'Each provider manifest command "aliases" must be an array of non-empty strings when present.',
         providerModulePath: options.providerModulePath,
-        severity: "error",
+        severity: 'error',
       }),
     );
   }
@@ -481,16 +476,16 @@ function validateCommand(
     diagnostics.push(
       createDiagnostic(options.discoveredPackage, {
         category: options.category ?? undefined,
-        code: "invalid-provider-command-examples",
+        code: 'invalid-provider-command-examples',
         message:
           'Each provider manifest command "examples" must be an array of non-empty strings when present.',
         providerModulePath: options.providerModulePath,
-        severity: "error",
+        severity: 'error',
       }),
     );
   }
 
-  if (diagnostics.some((diagnostic) => diagnostic.severity === "error")) {
+  if (diagnostics.some((diagnostic) => diagnostic.severity === 'error')) {
     return {
       command: null,
       diagnostics,
@@ -522,6 +517,96 @@ function validateCommand(
   };
 }
 
+function validateCommandSelectors(options: {
+  readonly category: string | null;
+  readonly commands: readonly AnkhCommandDescriptor[];
+  readonly discoveredPackage: AnkhDiscoveredPackage;
+  readonly providerModulePath: string;
+}): readonly AnkhProviderManifestDiagnostic[] {
+  const diagnostics: AnkhProviderManifestDiagnostic[] = [];
+  const commandPathMap = new Map<string, string>();
+  const aliasMap = new Map<string, string>();
+
+  for (const command of options.commands) {
+    const commandPathLabel = command.path.join(' ');
+    const commandPathKey = getCommandPathKey(command.path);
+
+    if (commandPathMap.has(commandPathKey)) {
+      diagnostics.push(
+        createDiagnostic(options.discoveredPackage, {
+          category: options.category ?? command.capability.split('.')[0],
+          code: 'provider-duplicate-command-path',
+          message: `Provider manifest command path "${commandPathLabel}" is declared more than once.`,
+          providerModulePath: options.providerModulePath,
+          severity: 'error',
+        }),
+      );
+    } else {
+      commandPathMap.set(commandPathKey, commandPathLabel);
+    }
+
+    const singleTokenPath = command.path.length === 1 ? command.path[0] : null;
+    if (singleTokenPath !== null && aliasMap.has(singleTokenPath)) {
+      diagnostics.push(
+        createDiagnostic(options.discoveredPackage, {
+          category: options.category ?? command.capability.split('.')[0],
+          code: 'provider-command-alias-collides-with-path',
+          message: `Provider manifest alias "${singleTokenPath}" collides with canonical command path "${commandPathLabel}".`,
+          providerModulePath: options.providerModulePath,
+          severity: 'error',
+        }),
+      );
+    }
+
+    for (const alias of command.aliases ?? []) {
+      if (/\s/.test(alias)) {
+        diagnostics.push(
+          createDiagnostic(options.discoveredPackage, {
+            category: options.category ?? command.capability.split('.')[0],
+            code: 'provider-command-alias-has-whitespace',
+            message: `Provider manifest alias "${alias}" must be a single token without whitespace.`,
+            providerModulePath: options.providerModulePath,
+            severity: 'error',
+          }),
+        );
+      }
+
+      if (aliasMap.has(alias)) {
+        diagnostics.push(
+          createDiagnostic(options.discoveredPackage, {
+            category: options.category ?? command.capability.split('.')[0],
+            code: 'provider-duplicate-command-alias',
+            message: `Provider manifest alias "${alias}" is declared more than once.`,
+            providerModulePath: options.providerModulePath,
+            severity: 'error',
+          }),
+        );
+        continue;
+      }
+
+      if (commandPathMap.has(getCommandPathKey([alias]))) {
+        diagnostics.push(
+          createDiagnostic(options.discoveredPackage, {
+            category: options.category ?? command.capability.split('.')[0],
+            code: 'provider-command-alias-collides-with-path',
+            message: `Provider manifest alias "${alias}" collides with canonical command path "${alias}".`,
+            providerModulePath: options.providerModulePath,
+            severity: 'error',
+          }),
+        );
+      }
+
+      aliasMap.set(alias, commandPathLabel);
+    }
+  }
+
+  return diagnostics;
+}
+
+function getCommandPathKey(path: readonly string[]): string {
+  return path.join('\0');
+}
+
 function getCommandPath(value: unknown): readonly [string, ...string[]] | null {
   if (!Array.isArray(value) || value.length === 0) {
     return null;
@@ -545,7 +630,7 @@ function getCommandPath(value: unknown): readonly [string, ...string[]] | null {
 }
 
 function getCapabilityId(value: unknown): AnkhCapabilityId | null {
-  return typeof value === "string" && isCapabilityId(value) ? value : null;
+  return typeof value === 'string' && isCapabilityId(value) ? value : null;
 }
 
 function getOptionalStringArray(value: unknown): readonly string[] | null {
@@ -570,35 +655,30 @@ function getOptionalStringArray(value: unknown): readonly string[] | null {
 }
 
 function getNonEmptyString(value: unknown): string | null {
-  if (typeof value !== "string") {
+  if (typeof value !== 'string') {
     return null;
   }
 
   const trimmedValue = value.trim();
-  return trimmedValue === "" ? null : trimmedValue;
+  return trimmedValue === '' ? null : trimmedValue;
 }
 
 function isCapabilityId(value: string): value is AnkhCapabilityId {
-  const segments = value.split(".");
-  return (
-    segments.length >= 2 && segments.every((segment) => segment.length > 0)
-  );
+  const segments = value.split('.');
+  return segments.length >= 2 && segments.every((segment) => segment.length > 0);
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
-function isPathInsidePackageRoot(
-  packageRoot: string,
-  candidatePath: string,
-): boolean {
+function isPathInsidePackageRoot(packageRoot: string, candidatePath: string): boolean {
   const relativePath = path.relative(packageRoot, candidatePath);
 
   return (
-    relativePath !== ".." &&
+    relativePath !== '..' &&
     !relativePath.startsWith(`..${path.sep}`) &&
-    relativePath !== "" &&
+    relativePath !== '' &&
     !path.isAbsolute(relativePath)
   );
 }
@@ -608,7 +688,7 @@ function getErrorMessage(error: unknown): string {
     return error.message;
   }
 
-  return "unknown error";
+  return 'unknown error';
 }
 
 interface CreateDiagnosticInput {
@@ -616,7 +696,7 @@ interface CreateDiagnosticInput {
   readonly code: string;
   readonly message: string;
   readonly providerModulePath?: string;
-  readonly severity: "warning" | "error";
+  readonly severity: 'warning' | 'error';
 }
 
 function createDiagnostic(

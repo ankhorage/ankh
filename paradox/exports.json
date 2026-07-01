@@ -80,6 +80,198 @@
     "structuredRows": []
   },
   {
+    "name": "AnkhCommandExecutionContext",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/execution.ts",
+    "sourceLocation": {
+      "filePath": "src/execution.ts",
+      "line": 12,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhPackageRegistry", "AnkhProviderRegistry"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "cwd",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "env",
+        "kind": "property",
+        "type": "Readonly<Record<string, string | undefined>>",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "packageRegistry",
+        "kind": "property",
+        "type": "AnkhPackageRegistry",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "providerRegistry",
+        "kind": "property",
+        "type": "AnkhProviderRegistry",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "version",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "writeStderr",
+        "kind": "method",
+        "type": "(text: string) => void",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "writeStdout",
+        "kind": "method",
+        "type": "(text: string) => void",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhCommandExecutionRequest",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/execution.ts",
+    "sourceLocation": {
+      "filePath": "src/execution.ts",
+      "line": 17,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhCommandExecutionContext", "AnkhCommandListing", "AnkhLoadedProvider"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "argv",
+        "kind": "property",
+        "type": "readonly string[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "command",
+        "kind": "property",
+        "type": "AnkhCommandListing",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "context",
+        "kind": "property",
+        "type": "AnkhCommandExecutionContext",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "provider",
+        "kind": "property",
+        "type": "AnkhLoadedProvider",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhCommandExecutionResult",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/execution.ts",
+    "sourceLocation": {
+      "filePath": "src/execution.ts",
+      "line": 24,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "exitCode",
+        "kind": "property",
+        "type": "number",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhCommandHandler",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "unknown",
+    "modulePath": "src/execution.ts",
+    "sourceLocation": {
+      "filePath": "src/execution.ts",
+      "line": 28,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhCommandHandlerBinding",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/execution.ts",
+    "sourceLocation": {
+      "filePath": "src/execution.ts",
+      "line": 32,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhCommandHandler"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "handler",
+        "kind": "property",
+        "type": "AnkhCommandHandler",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "path",
+        "kind": "property",
+        "type": "readonly [string, ...string[]]",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
     "name": "AnkhCommandListing",
     "description": null,
     "isReadme": false,
@@ -163,7 +355,7 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 15,
+      "line": 14,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -257,6 +449,13 @@
         "description": null
       },
       {
+        "name": "providerModuleDefaultExport",
+        "kind": "property",
+        "type": "unknown",
+        "required": true,
+        "description": null
+      },
+      {
         "name": "providerModulePath",
         "kind": "property",
         "type": "string",
@@ -282,7 +481,7 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 23,
+      "line": 22,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -343,14 +542,11 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 32,
+      "line": 31,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
-    "relatedSymbols": [
-      "AnkhDiscoveredPackage",
-      "AnkhMetadataDiscoveryDiagnostic"
-    ],
+    "relatedSymbols": ["AnkhDiscoveredPackage", "AnkhMetadataDiscoveryDiagnostic"],
     "signatures": [],
     "members": [
       {
@@ -487,11 +683,11 @@
     "modulePath": "src/providerRegistry.ts",
     "sourceLocation": {
       "filePath": "src/providerRegistry.ts",
-      "line": 16,
+      "line": 22,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhCommandListing", "AnkhLoadedProvider"],
+    "relatedSymbols": ["AnkhCommandListing", "AnkhLoadedProvider", "AnkhResolvedProviderCommand"],
     "signatures": [],
     "members": [
       {
@@ -519,6 +715,114 @@
         "name": "listProviders",
         "kind": "method",
         "type": "() => readonly AnkhLoadedProvider[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "resolveCommand",
+        "kind": "method",
+        "type": "(category: string, tokens: readonly string[]) => AnkhResolvedProviderCommand | null",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhResolvedProviderCommand",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/providerRegistry.ts",
+    "sourceLocation": {
+      "filePath": "src/providerRegistry.ts",
+      "line": 16,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhCommandListing", "AnkhLoadedProvider"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "argv",
+        "kind": "property",
+        "type": "readonly string[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "command",
+        "kind": "property",
+        "type": "AnkhCommandListing",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "provider",
+        "kind": "property",
+        "type": "AnkhLoadedProvider",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhRuntimeCommandProvider",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/execution.ts",
+    "sourceLocation": {
+      "filePath": "src/execution.ts",
+      "line": 37,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhCommandHandlerBinding"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "capabilities",
+        "kind": "property",
+        "type": "readonly `${string}.${string}`[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "category",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "commands",
+        "kind": "property",
+        "type": "readonly AnkhCommandDescriptor[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "handlers",
+        "kind": "property",
+        "type": "readonly AnkhCommandHandlerBinding[] | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "id",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "version",
+        "kind": "property",
+        "type": "string",
         "required": true,
         "description": null
       }
@@ -591,7 +895,7 @@
     "modulePath": "src/providerRegistry.ts",
     "sourceLocation": {
       "filePath": "src/providerRegistry.ts",
-      "line": 23,
+      "line": 30,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -623,7 +927,7 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 46,
+      "line": 45,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -655,7 +959,7 @@
     "modulePath": "src/providerManifestLoader.ts",
     "sourceLocation": {
       "filePath": "src/providerManifestLoader.ts",
-      "line": 34,
+      "line": 35,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -687,7 +991,7 @@
     "modulePath": "src/providerManifestLoader.ts",
     "sourceLocation": {
       "filePath": "src/providerManifestLoader.ts",
-      "line": 29,
+      "line": 30,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -770,7 +1074,7 @@
     "modulePath": "src/cli.ts",
     "sourceLocation": {
       "filePath": "src/cli.ts",
-      "line": 58,
+      "line": 62,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
