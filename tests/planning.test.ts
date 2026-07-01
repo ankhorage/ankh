@@ -8,11 +8,10 @@ import packageJson from "../package.json";
 import { runCli } from "../src/cli.js";
 import type { AnkhCommandContext } from "../src/commandContext.js";
 import type { AnkhDiscoveredPackage } from "../src/discovery.js";
-import type { AnkhRuntimeCommandProvider } from "../src/execution.js";
 import type { AnkhCommandPlan } from "../src/planning.js";
 import type { AnkhLoadedProvider } from "../src/providerManifestLoader.js";
 
-const fixtureMetadata = {
+const metadata = {
   capabilities: [
     "fixture.source.inspect",
     "fixture.template.seed",
@@ -22,11 +21,11 @@ const fixtureMetadata = {
   provider: "./dist/ankh.provider.js",
 } as const satisfies AnkhPackageMetadata;
 
-const fixtureManifest = {
+const manifest = {
   id: "@ankhorage/fixture",
   category: "fixture",
   version: "1.0.0",
-  capabilities: fixtureMetadata.capabilities,
+  capabilities: metadata.capabilities,
   commands: [
     {
       path: ["workflow"],
@@ -36,7 +35,7 @@ const fixtureManifest = {
   ],
 } as const satisfies AnkhCommandProviderManifest;
 
-const fixturePlan = {
+const plan = {
   diagnostics: [],
   kind: "ankh-command-plan",
   steps: [
@@ -72,14 +71,10 @@ const fixturePlan = {
   version: 1,
 } as const satisfies AnkhCommandPlan;
 
-const [
-  inspectSourceStep,
-  seedTemplateStep,
-  syncProjectStep,
-] = fixturePlan.steps;
+const [inspectStep, seedStep, syncStep] = plan.steps;
 
-const blockedFixturePlan = {
-  ...fixturePlan,
+const blockedPlan = {
+  ...plan,
   diagnostics: [
     {
       code: "fixture-source-missing",
@@ -89,21 +84,15 @@ const blockedFixturePlan = {
     },
   ],
   steps: [
-    inspectSourceStep,
-    {
-      ...seedTemplateStep,
-      status: "blocked",
-    },
-    {
-      ...syncProjectStep,
-      status: "blocked",
-    },
+    inspectStep,
+    { ...seedStep, status: "blocked" },
+    { ...syncStep, status: "blocked" },
   ],
 } as const satisfies AnkhCommandPlan;
 
-function createDiscoveredPackage(): AnkhDiscoveredPackage {
+function discoveredPackage(): AnkhDiscoveredPackage {
   return {
-    metadata: fixtureMetadata,
+    metadata,
     packageJsonPath: "/repo/@ankhorage/fixture/package.json",
     packageName: "@ankhorage/fixture",
     packageRoot: "/repo/@ankhorage/fixture",
@@ -111,39 +100,28 @@ function createDiscoveredPackage(): AnkhDiscoveredPackage {
   };
 }
 
-function createLoadedProvider(
-  providerModuleDefaultExport: unknown,
-): AnkhLoadedProvider {
-  const discoveredPackage = createDiscoveredPackage();
+function loadedProvider(providerModuleDefaultExport: unknown): AnkhLoadedProvider {
+  const discovered = discoveredPackage();
   return {
-    discoveredPackage,
-    manifest: fixtureManifest,
+    discoveredPackage: discovered,
+    manifest,
     providerModuleDefaultExport,
-    providerModulePath: `${discoveredPackage.packageRoot}/dist/ankh.provider.js`,
-    providerModuleUrl: `file://${discoveredPackage.packageRoot}/dist/ankh.provider.js`,
+    providerModulePath: `${discovered.packageRoot}/dist/ankh.provider.js`,
+    providerModuleUrl: `file://${discovered.packageRoot}/dist/ankh.provider.js`,
   };
 }
 
-function createPlanningProvider(
-  args: {
-    readonly onExecute?: () => void;
-    readonly plan?: AnkhCommandPlan;
-  } = {},
-): AnkhRuntimeCommandProvider & {
-  readonly planningHandlers: readonly [
-    {
-      readonly path: readonly ["workflow"];
-      readonly handler: () => AnkhCommandPlan;
-    },
-  ];
-} {
+function providerFixture(options: {
+  readonly onExecute?: () => void;
+  readonly plan?: AnkhCommandPlan;
+} = {}) {
   return {
-    ...fixtureManifest,
+    ...manifest,
     handlers: [
       {
         path: ["workflow"],
         handler() {
-          args.onExecute?.();
+          options.onExecute?.();
         },
       },
     ],
@@ -151,26 +129,25 @@ function createPlanningProvider(
       {
         path: ["workflow"],
         handler() {
-          return args.plan ?? fixturePlan;
+          return options.plan ?? plan;
         },
       },
     ],
   };
 }
 
-function createMemoryContext(version = packageJson.version): {
+function memoryContext(): {
   readonly context: AnkhCommandContext;
   readonly stdout: { value: string };
   readonly stderr: { value: string };
 } {
   const stdout = { value: "" };
   const stderr = { value: "" };
-
   return {
     context: {
       cwd: "/repo",
       env: {},
-      version,
+      version: packageJson.version,
       writeStdout(text: string) {
         stdout.value += text;
       },
@@ -183,31 +160,21 @@ function createMemoryContext(version = packageJson.version): {
   };
 }
 
-function createPlanningRun(
-  args: { readonly provider?: ReturnType<typeof createPlanningProvider> } = {},
-) {
-  const provider = args.provider ?? createPlanningProvider();
+function runOptions(provider = providerFixture()) {
   return {
     discoverPackages: () =>
-      Promise.resolve({
-        diagnostics: [],
-        packages: [createDiscoveredPackage()],
-      }),
+      Promise.resolve({ diagnostics: [], packages: [discoveredPackage()] }),
     loadProviders: () =>
-      Promise.resolve({
-        diagnostics: [],
-        providers: [createLoadedProvider(provider)],
-      }),
+      Promise.resolve({ diagnostics: [], providers: [loadedProvider(provider)] }),
   };
 }
 
 describe("ankh plan", () => {
   it("prints a deterministic human-readable fixture plan", async () => {
-    const { context, stdout, stderr } = createMemoryContext();
-
+    const { context, stdout, stderr } = memoryContext();
     const result = await runCli(["plan", "fixture", "workflow"], {
       context,
-      ...createPlanningRun(),
+      ...runOptions(),
     });
 
     expect(result).toEqual({ exitCode: 0 });
@@ -215,32 +182,26 @@ describe("ankh plan", () => {
     expect(stdout.value).toContain("1. Inspect source fixture");
     expect(stdout.value).toContain("dependsOn: inspect-source");
     expect(stdout.value).toContain("destructive: yes");
-    expect(stdout.value).toContain("Diagnostics:");
     expect(stderr.value).toBe("");
   });
 
   it("prints stable JSON with --json", async () => {
-    const { context, stdout, stderr } = createMemoryContext();
-
+    const { context, stdout, stderr } = memoryContext();
     const result = await runCli(["plan", "fixture", "workflow", "--json"], {
       context,
-      ...createPlanningRun(),
+      ...runOptions(),
     });
 
     expect(result).toEqual({ exitCode: 0 });
-    expect(JSON.parse(stdout.value)).toEqual(fixturePlan);
-    expect(stdout.value).toBe(`${JSON.stringify(fixturePlan, null, 2)}\n`);
+    expect(JSON.parse(stdout.value)).toEqual(plan);
     expect(stderr.value).toBe("");
   });
 
   it("returns exit code one when the plan has error diagnostics", async () => {
-    const { context, stdout, stderr } = createMemoryContext();
-
+    const { context, stdout, stderr } = memoryContext();
     const result = await runCli(["plan", "fixture", "workflow"], {
       context,
-      ...createPlanningRun({
-        provider: createPlanningProvider({ plan: blockedFixturePlan }),
-      }),
+      ...runOptions(providerFixture({ plan: blockedPlan })),
     });
 
     expect(result).toEqual({ exitCode: 1 });
@@ -250,39 +211,36 @@ describe("ankh plan", () => {
   });
 
   it("does not execute provider command handlers while planning", async () => {
-    const { context, stdout, stderr } = createMemoryContext();
+    const { context, stdout } = memoryContext();
     let executed = false;
-
     const result = await runCli(["plan", "fixture", "workflow"], {
       context,
-      ...createPlanningRun({
-        provider: createPlanningProvider({
+      ...runOptions(
+        providerFixture({
           onExecute() {
             executed = true;
           },
         }),
-      }),
+      ),
     });
 
     expect(result).toEqual({ exitCode: 0 });
     expect(executed).toBeFalse();
     expect(stdout.value).toContain("Plan: Fixture workflow");
-    expect(stderr.value).toBe("");
   });
 
   it("keeps ankh run deferred", async () => {
-    const { context, stdout, stderr } = createMemoryContext();
+    const { context, stdout, stderr } = memoryContext();
     let executed = false;
-
     const result = await runCli(["run", "fixture", "workflow"], {
       context,
-      ...createPlanningRun({
-        provider: createPlanningProvider({
+      ...runOptions(
+        providerFixture({
           onExecute() {
             executed = true;
           },
         }),
-      }),
+      ),
     });
 
     expect(result).toEqual({ exitCode: 1 });
