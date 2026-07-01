@@ -90,12 +90,7 @@ export function resolvePlannableCommand(
     }
 
     return {
-      diagnostics: [
-        createPlanningDiagnostic(provider, {
-          code: "provider-duplicate-category",
-          message: `More than one loaded provider declares the category "${category}", so planning is ambiguous.`,
-        }),
-      ],
+      diagnostics: [createDiagnostic(provider, "provider-duplicate-category")],
       resolvedCommand: null,
     };
   }
@@ -122,12 +117,10 @@ export function resolvePlannableCommand(
   if (handler === undefined) {
     return {
       diagnostics: [
-        createPlanningDiagnostic(resolvedCommand.provider, {
-          code: "provider-command-planning-handler-missing",
-          message: `Provider command "${resolvedCommand.command.path.join(
-            " ",
-          )}" does not have a planning handler binding.`,
-        }),
+        createDiagnostic(
+          resolvedCommand.provider,
+          "provider-command-planning-handler-missing",
+        ),
       ],
       resolvedCommand: null,
     };
