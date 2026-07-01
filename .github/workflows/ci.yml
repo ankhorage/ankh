@@ -2,6 +2,7 @@ name: CI
 
 on:
   pull_request:
+  push: { branches: [main] }
 
 permissions:
   contents: read
@@ -46,4 +47,5 @@ jobs:
         run: bun run docs
 
       - name: Check changesets
+        if: github.event_name == 'pull_request'
         run: bun run changeset:status
