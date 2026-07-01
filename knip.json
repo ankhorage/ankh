@@ -1,0 +1,3 @@
+{
+  "ignoreExports": ["src/planning.ts"]
+}
