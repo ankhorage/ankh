@@ -1,6 +1,6 @@
-import type { AnkhCapabilityId } from '@ankhorage/contracts/cli';
+import type { AnkhCapabilityId } from "@ankhorage/contracts/cli";
 
-import type { AnkhLoadedProvider } from './providerManifestLoader.js';
+import type { AnkhLoadedProvider } from "./providerManifestLoader.js";
 
 export interface AnkhCommandListing {
   readonly aliases?: readonly string[];
@@ -25,7 +25,10 @@ export interface AnkhProviderRegistry {
   listProviders(): readonly AnkhLoadedProvider[];
   listCommands(): readonly AnkhCommandListing[];
   hasCategory(category: string): boolean;
-  resolveCommand(category: string, tokens: readonly string[]): AnkhResolvedProviderCommand | null;
+  resolveCommand(
+    category: string,
+    tokens: readonly string[],
+  ): AnkhResolvedProviderCommand | null;
 }
 
 export function createProviderRegistry(
@@ -33,19 +36,26 @@ export function createProviderRegistry(
 ): AnkhProviderRegistry {
   const providerList = [...providers];
   const commandList = providerList.flatMap<AnkhCommandListing>((provider) =>
-    provider.manifest.commands.map((command) => createCommandListing(provider, command)),
+    provider.manifest.commands.map((command) =>
+      createCommandListing(provider, command),
+    ),
   );
   const providersByCategory = new Map<string, AnkhLoadedProvider[]>();
 
   for (const provider of providerList) {
-    const categoryProviders = providersByCategory.get(provider.manifest.category) ?? [];
+    const categoryProviders =
+      providersByCategory.get(provider.manifest.category) ?? [];
     categoryProviders.push(provider);
     providersByCategory.set(provider.manifest.category, categoryProviders);
   }
 
   return {
     findByCategory(category: string) {
-      return providerList.find((provider) => provider.manifest.category === category) ?? null;
+      return (
+        providerList.find(
+          (provider) => provider.manifest.category === category,
+        ) ?? null
+      );
     },
     findAllByCategory(category: string) {
       return providersByCategory.get(category) ?? [];
@@ -57,7 +67,9 @@ export function createProviderRegistry(
       return commandList;
     },
     hasCategory(category: string) {
-      return providerList.some((provider) => provider.manifest.category === category);
+      return providerList.some(
+        (provider) => provider.manifest.category === category,
+      );
     },
     resolveCommand(category: string, tokens: readonly string[]) {
       const categoryProviders = providersByCategory.get(category) ?? [];
@@ -90,7 +102,9 @@ export function createProviderRegistry(
         return null;
       }
 
-      const aliasMatch = commands.find((command) => command.aliases?.includes(aliasToken));
+      const aliasMatch = commands.find((command) =>
+        command.aliases?.includes(aliasToken),
+      );
       if (aliasMatch === undefined) {
         return null;
       }
@@ -106,7 +120,7 @@ export function createProviderRegistry(
 
 function createCommandListing(
   provider: AnkhLoadedProvider,
-  command: AnkhLoadedProvider['manifest']['commands'][number],
+  command: AnkhLoadedProvider["manifest"]["commands"][number],
 ): AnkhCommandListing {
   return {
     ...(command.aliases !== undefined ? { aliases: command.aliases } : {}),
@@ -120,7 +134,10 @@ function createCommandListing(
   };
 }
 
-function matchesCommandPath(commandPath: readonly string[], tokens: readonly string[]): boolean {
+function matchesCommandPath(
+  commandPath: readonly string[],
+  tokens: readonly string[],
+): boolean {
   if (commandPath.length > tokens.length) {
     return false;
   }

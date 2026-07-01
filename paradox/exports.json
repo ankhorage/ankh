@@ -160,7 +160,11 @@
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhCommandExecutionContext", "AnkhCommandListing", "AnkhLoadedProvider"],
+    "relatedSymbols": [
+      "AnkhCommandExecutionContext",
+      "AnkhCommandListing",
+      "AnkhLoadedProvider"
+    ],
     "signatures": [],
     "members": [
       {
@@ -247,7 +251,7 @@
     "modulePath": "src/execution.ts",
     "sourceLocation": {
       "filePath": "src/execution.ts",
-      "line": 32,
+      "line": 35,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -355,7 +359,7 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 14,
+      "line": 15,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -481,7 +485,7 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 22,
+      "line": 23,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -542,11 +546,14 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 31,
+      "line": 32,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhDiscoveredPackage", "AnkhMetadataDiscoveryDiagnostic"],
+    "relatedSymbols": [
+      "AnkhDiscoveredPackage",
+      "AnkhMetadataDiscoveryDiagnostic"
+    ],
     "signatures": [],
     "members": [
       {
@@ -687,7 +694,11 @@
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhCommandListing", "AnkhLoadedProvider", "AnkhResolvedProviderCommand"],
+    "relatedSymbols": [
+      "AnkhCommandListing",
+      "AnkhLoadedProvider",
+      "AnkhResolvedProviderCommand"
+    ],
     "signatures": [],
     "members": [
       {
@@ -784,7 +795,7 @@
     "modulePath": "src/execution.ts",
     "sourceLocation": {
       "filePath": "src/execution.ts",
-      "line": 37,
+      "line": 40,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -902,7 +913,7 @@
     "modulePath": "src/providerRegistry.ts",
     "sourceLocation": {
       "filePath": "src/providerRegistry.ts",
-      "line": 31,
+      "line": 34,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -934,7 +945,7 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 45,
+      "line": 46,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1081,7 +1092,7 @@
     "modulePath": "src/cli.ts",
     "sourceLocation": {
       "filePath": "src/cli.ts",
-      "line": 62,
+      "line": 65,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
