@@ -72,6 +72,8 @@ const fixturePlan = {
   version: 1,
 } as const satisfies AnkhCommandPlan;
 
+const [inspectSourceStep, seedTemplateStep, syncProjectStep] = fixturePlan.steps;
+
 const blockedFixturePlan = {
   ...fixturePlan,
   diagnostics: [
@@ -83,13 +85,13 @@ const blockedFixturePlan = {
     },
   ],
   steps: [
-    fixturePlan.steps[0],
+    inspectSourceStep,
     {
-      ...fixturePlan.steps[1],
+      ...seedTemplateStep,
       status: "blocked",
     },
     {
-      ...fixturePlan.steps[2],
+      ...syncProjectStep,
       status: "blocked",
     },
   ],
