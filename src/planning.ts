@@ -65,7 +65,8 @@ export interface AnkhCommandPlanningDiagnostic {
   readonly severity: "error";
 }
 
-interface AnkhResolvedPlannableCommand extends AnkhResolvedProviderCommand {
+export interface AnkhResolvedPlannableCommand
+  extends AnkhResolvedProviderCommand {
   readonly handler: AnkhPlanningHandler;
 }
 
