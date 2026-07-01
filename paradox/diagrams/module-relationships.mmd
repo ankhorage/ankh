@@ -5,6 +5,7 @@ graph LR
   module_src_cli_ts["src/cli.ts"]
   module_src_commandContext_ts["src/commandContext.ts"]
   module_src_discovery_ts["src/discovery.ts"]
+  module_src_execution_ts["src/execution.ts"]
   module_src_help_ts["src/help.ts"]
   module_src_index_ts["src/index.ts"]
   module_src_packageMetadata_ts["src/packageMetadata.ts"]
@@ -15,6 +16,7 @@ graph LR
   module_src_workspace_ts["src/workspace.ts"]
   module_tests_cli_test_ts["tests/cli.test.ts"]
   module_tests_discovery_test_ts["tests/discovery.test.ts"]
+  module_tests_execution_test_ts["tests/execution.test.ts"]
   module_tests_package_test_ts["tests/package.test.ts"]
   module_tests_packageRegistry_test_ts["tests/packageRegistry.test.ts"]
   module_tests_parser_test_ts["tests/parser.test.ts"]
@@ -23,6 +25,7 @@ graph LR
   module_src_bin_ts --> module_src_cli_ts
   module_src_cli_ts --> module_src_commandContext_ts
   module_src_cli_ts --> module_src_discovery_ts
+  module_src_cli_ts --> module_src_execution_ts
   module_src_cli_ts --> module_src_help_ts
   module_src_cli_ts --> module_src_packageRegistry_ts
   module_src_cli_ts --> module_src_parser_ts
@@ -31,7 +34,12 @@ graph LR
   module_src_commandContext_ts --> module_package_json
   module_src_discovery_ts --> module_src_packageMetadata_ts
   module_src_discovery_ts --> module_src_workspace_ts
+  module_src_execution_ts --> module_src_commandContext_ts
+  module_src_execution_ts --> module_src_packageRegistry_ts
+  module_src_execution_ts --> module_src_providerManifestLoader_ts
+  module_src_execution_ts --> module_src_providerRegistry_ts
   module_src_help_ts --> module_src_discovery_ts
+  module_src_help_ts --> module_src_execution_ts
   module_src_help_ts --> module_src_providerManifestLoader_ts
   module_src_help_ts --> module_src_providerRegistry_ts
   module_src_packageMetadata_ts --> module_src_discovery_ts
@@ -42,8 +50,12 @@ graph LR
   module_tests_cli_test_ts --> module_src_cli_ts
   module_tests_cli_test_ts --> module_src_commandContext_ts
   module_tests_cli_test_ts --> module_src_discovery_ts
+  module_tests_cli_test_ts --> module_src_execution_ts
   module_tests_cli_test_ts --> module_src_providerManifestLoader_ts
   module_tests_discovery_test_ts --> module_src_discovery_ts
+  module_tests_execution_test_ts --> module_src_execution_ts
+  module_tests_execution_test_ts --> module_src_providerManifestLoader_ts
+  module_tests_execution_test_ts --> module_src_providerRegistry_ts
   module_tests_package_test_ts --> module_package_json
   module_tests_packageRegistry_test_ts --> module_src_packageRegistry_ts
   module_tests_parser_test_ts --> module_src_parser_ts

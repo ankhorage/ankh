@@ -2,6 +2,7 @@ import type {
   AnkhDiscoveredPackage,
   AnkhMetadataDiscoveryDiagnostic,
 } from "./discovery.js";
+import type { AnkhCommandExecutionDiagnostic } from "./execution.js";
 import type { AnkhProviderManifestDiagnostic } from "./providerManifestLoader.js";
 import type { AnkhProviderRegistry } from "./providerRegistry.js";
 
@@ -147,6 +148,12 @@ export function renderProviderManifestDiagnostics(
   return renderDiagnostics("Ankh provider manifest diagnostics:", diagnostics);
 }
 
+export function renderExecutionDiagnostics(
+  diagnostics: readonly AnkhCommandExecutionDiagnostic[],
+): string {
+  return renderDiagnostics("Ankh command execution diagnostics:", diagnostics);
+}
+
 export function renderCategoryProviderUnavailable(
   category: string,
   packageName: string,
@@ -190,10 +197,39 @@ export function renderUnknownCommand(tokens: readonly string[]): string {
   ].join("\n");
 }
 
+export function renderUnknownProviderCommand(
+  category: string,
+  tokens: readonly string[],
+): string {
+  const attemptedCommand = tokens.length > 0 ? tokens.join(" ") : "(missing)";
+
+  return [
+    `Unknown Ankh command for category "${category}": ${attemptedCommand}`,
+    "Try:",
+    `  ankh ${category} --help`,
+    "",
+  ].join("\n");
+}
+
+export function renderCommandExecutionFailure(
+  category: string,
+  commandPath: readonly string[],
+  error: unknown,
+): string {
+  return [
+    `Ankh command execution failed for "${category} ${commandPath.join(
+      " ",
+    )}": ${getErrorMessage(error)}`,
+    "",
+  ].join("\n");
+}
+
 function renderDiagnostics(
   header: string,
   diagnostics: readonly (
-    AnkhMetadataDiscoveryDiagnostic | AnkhProviderManifestDiagnostic
+    | AnkhCommandExecutionDiagnostic
+    | AnkhMetadataDiscoveryDiagnostic
+    | AnkhProviderManifestDiagnostic
   )[],
 ): string {
   if (diagnostics.length === 0) {

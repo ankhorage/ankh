@@ -17,7 +17,11 @@ import { runCli } from "./cli.js";
  * `ankh <category> --help` and `ankh <category> help` render provider-backed
  * category help when a valid provider manifest is available.
  *
- * Provider command execution remains deferred until `ankhorage/ankh#6`.
+ * `ankh <category> <command> ...args` now performs basic direct dispatch to a
+ * loaded provider handler. The root CLI stays a thin router: providers own
+ * option parsing, validation, output, and behavior.
+ *
+ * Planning/composition remains deferred until `ankhorage/ankh#3`.
  *
  * @usage
  */

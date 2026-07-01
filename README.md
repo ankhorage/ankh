@@ -3,7 +3,7 @@
 
 # @ankhorage/ankh
 
-![license: MIT](./paradox/badges/license.svg) ![npm: v0.3.0](./paradox/badges/npm.svg) ![runtime: bun](./paradox/badges/runtime.svg) ![typescript: strict](./paradox/badges/typescript.svg) ![eslint: checked](./paradox/badges/eslint.svg) ![prettier: checked](./paradox/badges/prettier.svg) ![build: checked](./paradox/badges/build.svg) ![tests: checked](./paradox/badges/tests.svg) ![docs: paradox](./paradox/badges/docs.svg)
+![license: MIT](./paradox/badges/license.svg) ![npm: v0.3.1](./paradox/badges/npm.svg) ![runtime: bun](./paradox/badges/runtime.svg) ![typescript: strict](./paradox/badges/typescript.svg) ![eslint: checked](./paradox/badges/eslint.svg) ![prettier: checked](./paradox/badges/prettier.svg) ![build: checked](./paradox/badges/build.svg) ![tests: checked](./paradox/badges/tests.svg) ![docs: paradox](./paradox/badges/docs.svg)
 
 Bun-first Ankh CLI front door and command bus bootstrap package.
 
@@ -25,7 +25,11 @@ Current built-ins are `help`, `commands`, and `version`.
 `ankh <category> --help` and `ankh <category> help` render provider-backed
 category help when a valid provider manifest is available.
 
-Provider command execution remains deferred until `ankhorage/ankh#6`.
+`ankh <category> <command> ...args` now performs basic direct dispatch to a
+loaded provider handler. The root CLI stays a thin router: providers own
+option parsing, validation, output, and behavior.
+
+Planning/composition remains deferred until `ankhorage/ankh#3`.
 
 Source: `src/readme-usage.ts`
 

@@ -7,16 +7,23 @@ import type {
 } from "./discovery.js";
 import { discoverAnkhPackages } from "./discovery.js";
 import {
+  type AnkhCommandExecutionContext,
+  resolveExecutableCommand,
+} from "./execution.js";
+import {
   renderCategoryHelp,
   renderCategoryProviderUnavailable,
+  renderCommandExecutionFailure,
   renderCommands,
   renderDiscoveryFailure,
+  renderExecutionDiagnostics,
   renderMetadataDiscoveryDiagnostics,
   renderProviderLoadFailure,
   renderProviderManifestDiagnostics,
   renderRootHelp,
   renderUnknownCategory,
   renderUnknownCommand,
+  renderUnknownProviderCommand,
 } from "./help.js";
 import type { AnkhPackageRegistry } from "./packageRegistry.js";
 import { createPackageRegistry } from "./packageRegistry.js";
@@ -158,8 +165,113 @@ export async function runCli(
       return { exitCode: 0 };
     }
     case "dispatch":
-      context.writeStderr(renderUnknownCommand(request.tokens));
+      return dispatchProviderCommand({
+        context,
+        discoverPackages,
+        loadProviders,
+        options,
+        tokens: request.tokens,
+      });
+  }
+}
+
+async function dispatchProviderCommand(input: {
+  readonly context: AnkhCommandContext;
+  readonly discoverPackages: DiscoverAnkhPackagesFn;
+  readonly loadProviders: LoadProviderManifestsFn;
+  readonly options: RunCliOptions;
+  readonly tokens: readonly [string, ...string[]];
+}): Promise<AnkhCliRunResult> {
+  const resolvedState = await resolveCliState({
+    context: input.context,
+    discoverPackages: input.discoverPackages,
+    loadProviders: input.loadProviders,
+    options: input.options,
+  });
+
+  if ("exitCode" in resolvedState) {
+    return resolvedState;
+  }
+
+  const [category, ...commandTokens] = input.tokens;
+  const discoveredPackage =
+    resolvedState.packageRegistry.findByCategory(category);
+  if (discoveredPackage === null) {
+    input.context.writeStderr(renderUnknownCommand(input.tokens));
+    return { exitCode: 1 };
+  }
+
+  const loadedProvider =
+    resolvedState.providerRegistry.findByCategory(category);
+  if (loadedProvider === null) {
+    const providerDiagnostics = resolvedState.providerDiagnostics.filter(
+      (diagnostic) =>
+        diagnostic.packageName === discoveredPackage.packageName ||
+        diagnostic.category === category,
+    );
+
+    if (providerDiagnostics.length > 0) {
+      input.context.writeStderr(
+        renderProviderManifestDiagnostics(providerDiagnostics),
+      );
+    } else {
+      input.context.writeStderr(
+        renderCategoryProviderUnavailable(
+          category,
+          discoveredPackage.packageName,
+        ),
+      );
+    }
+
+    return { exitCode: 1 };
+  }
+
+  const executionResult = resolveExecutableCommand(
+    resolvedState.providerRegistry,
+    category,
+    commandTokens,
+  );
+
+  if (executionResult.resolvedCommand === null) {
+    if (executionResult.diagnostics.length > 0) {
+      input.context.writeStderr(
+        renderExecutionDiagnostics(executionResult.diagnostics),
+      );
       return { exitCode: 1 };
+    }
+
+    input.context.writeStderr(
+      renderUnknownProviderCommand(category, commandTokens),
+    );
+    return { exitCode: 1 };
+  }
+
+  const executionContext: AnkhCommandExecutionContext = {
+    ...input.context,
+    packageRegistry: resolvedState.packageRegistry,
+    providerRegistry: resolvedState.providerRegistry,
+  };
+
+  try {
+    const commandResult = await executionResult.resolvedCommand.handler({
+      argv: executionResult.resolvedCommand.argv,
+      command: executionResult.resolvedCommand.command,
+      provider: executionResult.resolvedCommand.provider,
+      context: executionContext,
+    });
+
+    return {
+      exitCode: commandResult?.exitCode ?? 0,
+    };
+  } catch (error) {
+    input.context.writeStderr(
+      renderCommandExecutionFailure(
+        category,
+        executionResult.resolvedCommand.command.path,
+        error,
+      ),
+    );
+    return { exitCode: 1 };
   }
 }
 

@@ -28,6 +28,70 @@ Source: `src/commandContext.ts:3:1`
 | writeStderr | method   | `(text: string) => void`                        | yes      |             |
 | writeStdout | method   | `(text: string) => void`                        | yes      |             |
 
+## AnkhCommandExecutionContext
+
+Kind: `type`
+Module: `src/execution.ts`
+Source: `src/execution.ts:12:1`
+
+### Members
+
+| Name             | Kind     | Type                                            | Required | Description |
+| ---------------- | -------- | ----------------------------------------------- | -------- | ----------- |
+| cwd              | property | `string`                                        | yes      |             |
+| env              | property | `Readonly<Record<string, string \| undefined>>` | yes      |             |
+| packageRegistry  | property | `AnkhPackageRegistry`                           | yes      |             |
+| providerRegistry | property | `AnkhProviderRegistry`                          | yes      |             |
+| version          | property | `string`                                        | yes      |             |
+| writeStderr      | method   | `(text: string) => void`                        | yes      |             |
+| writeStdout      | method   | `(text: string) => void`                        | yes      |             |
+
+## AnkhCommandExecutionRequest
+
+Kind: `type`
+Module: `src/execution.ts`
+Source: `src/execution.ts:17:1`
+
+### Members
+
+| Name     | Kind     | Type                          | Required | Description |
+| -------- | -------- | ----------------------------- | -------- | ----------- |
+| argv     | property | `readonly string[]`           | yes      |             |
+| command  | property | `AnkhCommandListing`          | yes      |             |
+| context  | property | `AnkhCommandExecutionContext` | yes      |             |
+| provider | property | `AnkhLoadedProvider`          | yes      |             |
+
+## AnkhCommandExecutionResult
+
+Kind: `type`
+Module: `src/execution.ts`
+Source: `src/execution.ts:24:1`
+
+### Members
+
+| Name     | Kind     | Type     | Required | Description |
+| -------- | -------- | -------- | -------- | ----------- |
+| exitCode | property | `number` | yes      |             |
+
+## AnkhCommandHandler
+
+Kind: `unknown`
+Module: `src/execution.ts`
+Source: `src/execution.ts:28:1`
+
+## AnkhCommandHandlerBinding
+
+Kind: `type`
+Module: `src/execution.ts`
+Source: `src/execution.ts:35:1`
+
+### Members
+
+| Name    | Kind     | Type                             | Required | Description |
+| ------- | -------- | -------------------------------- | -------- | ----------- |
+| handler | property | `AnkhCommandHandler`             | yes      |             |
+| path    | property | `readonly [string, ...string[]]` | yes      |             |
+
 ## AnkhCommandListing
 
 Kind: `type`
@@ -77,12 +141,13 @@ Source: `src/providerManifestLoader.ts:22:1`
 
 ### Members
 
-| Name               | Kind     | Type                          | Required | Description |
-| ------------------ | -------- | ----------------------------- | -------- | ----------- |
-| discoveredPackage  | property | `AnkhDiscoveredPackage`       | yes      |             |
-| manifest           | property | `AnkhCommandProviderManifest` | yes      |             |
-| providerModulePath | property | `string`                      | yes      |             |
-| providerModuleUrl  | property | `string`                      | yes      |             |
+| Name                        | Kind     | Type                          | Required | Description |
+| --------------------------- | -------- | ----------------------------- | -------- | ----------- |
+| discoveredPackage           | property | `AnkhDiscoveredPackage`       | yes      |             |
+| manifest                    | property | `AnkhCommandProviderManifest` | yes      |             |
+| providerModuleDefaultExport | property | `unknown`                     | yes      |             |
+| providerModulePath          | property | `string`                      | yes      |             |
+| providerModuleUrl           | property | `string`                      | yes      |             |
 
 ## AnkhMetadataDiscoveryDiagnostic
 
@@ -150,16 +215,49 @@ Source: `src/providerManifestLoader.ts:12:1`
 
 Kind: `type`
 Module: `src/providerRegistry.ts`
+Source: `src/providerRegistry.ts:22:1`
+
+### Members
+
+| Name              | Kind   | Type                                                                                   | Required | Description |
+| ----------------- | ------ | -------------------------------------------------------------------------------------- | -------- | ----------- |
+| findAllByCategory | method | `(category: string) => readonly AnkhLoadedProvider[]`                                  | yes      |             |
+| findByCategory    | method | `(category: string) => AnkhLoadedProvider \| null`                                     | yes      |             |
+| hasCategory       | method | `(category: string) => boolean`                                                        | yes      |             |
+| listCommands      | method | `() => readonly AnkhCommandListing[]`                                                  | yes      |             |
+| listProviders     | method | `() => readonly AnkhLoadedProvider[]`                                                  | yes      |             |
+| resolveCommand    | method | `(category: string, tokens: readonly string[]) => AnkhResolvedProviderCommand \| null` | yes      |             |
+
+## AnkhResolvedProviderCommand
+
+Kind: `type`
+Module: `src/providerRegistry.ts`
 Source: `src/providerRegistry.ts:16:1`
 
 ### Members
 
-| Name           | Kind   | Type                                               | Required | Description |
-| -------------- | ------ | -------------------------------------------------- | -------- | ----------- |
-| findByCategory | method | `(category: string) => AnkhLoadedProvider \| null` | yes      |             |
-| hasCategory    | method | `(category: string) => boolean`                    | yes      |             |
-| listCommands   | method | `() => readonly AnkhCommandListing[]`              | yes      |             |
-| listProviders  | method | `() => readonly AnkhLoadedProvider[]`              | yes      |             |
+| Name     | Kind     | Type                 | Required | Description |
+| -------- | -------- | -------------------- | -------- | ----------- |
+| argv     | property | `readonly string[]`  | yes      |             |
+| command  | property | `AnkhCommandListing` | yes      |             |
+| provider | property | `AnkhLoadedProvider` | yes      |             |
+
+## AnkhRuntimeCommandProvider
+
+Kind: `type`
+Module: `src/execution.ts`
+Source: `src/execution.ts:40:1`
+
+### Members
+
+| Name         | Kind     | Type                                                | Required | Description |
+| ------------ | -------- | --------------------------------------------------- | -------- | ----------- |
+| capabilities | property | `readonly `${string}.${string}`[]`                  | yes      |             |
+| category     | property | `string`                                            | yes      |             |
+| commands     | property | `readonly AnkhCommandDescriptor[]`                  | yes      |             |
+| handlers     | property | `readonly AnkhCommandHandlerBinding[] \| undefined` | no       |             |
+| id           | property | `string`                                            | yes      |             |
+| version      | property | `string`                                            | yes      |             |
 
 ## createDefaultCommandContext
 
@@ -188,7 +286,7 @@ Source: `src/packageRegistry.ts:9:1`
 
 Kind: `function`
 Module: `src/providerRegistry.ts`
-Source: `src/providerRegistry.ts:23:1`
+Source: `src/providerRegistry.ts:34:1`
 
 ### Signatures
 
@@ -212,7 +310,7 @@ Source: `src/discovery.ts:46:1`
 
 Kind: `function`
 Module: `src/providerManifestLoader.ts`
-Source: `src/providerManifestLoader.ts:34:1`
+Source: `src/providerManifestLoader.ts:35:1`
 
 ### Signatures
 
@@ -224,7 +322,7 @@ Source: `src/providerManifestLoader.ts:34:1`
 
 Kind: `type`
 Module: `src/providerManifestLoader.ts`
-Source: `src/providerManifestLoader.ts:29:1`
+Source: `src/providerManifestLoader.ts:30:1`
 
 ### Members
 
@@ -255,7 +353,7 @@ Source: `src/parser.ts:1:1`
 
 Kind: `function`
 Module: `src/cli.ts`
-Source: `src/cli.ts:58:1`
+Source: `src/cli.ts:65:1`
 
 ### Signatures
 

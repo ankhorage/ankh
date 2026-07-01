@@ -57,6 +57,9 @@ describe("loadProviderManifests", () => {
     expect(result.diagnostics).toEqual([]);
     expect(result.providers).toHaveLength(1);
     expect(result.providers[0]?.manifest).toEqual(validManifest);
+    expect(result.providers[0]?.providerModuleDefaultExport).toEqual(
+      validManifest,
+    );
     expect(result.providers[0]?.providerModulePath).toBe(
       path.join(packageRoot, "dist", "ankh.provider.js"),
     );
@@ -240,6 +243,129 @@ describe("loadProviderManifests", () => {
     expect(result.providers).toEqual([]);
     expect(result.diagnostics.map((diagnostic) => diagnostic.code)).toContain(
       "provider-command-capability-not-declared",
+    );
+  });
+
+  it("rejects duplicate canonical command paths as manifest diagnostics", async () => {
+    const packageRoot = await createPackageRoot("infra-duplicate-path");
+    await writeProviderModule(
+      packageRoot,
+      `export default ${JSON.stringify(
+        {
+          ...validManifest,
+          commands: [
+            validManifest.commands[0],
+            {
+              path: ["up"],
+              capability: "infra.status",
+              summary: "Duplicate path",
+            },
+          ],
+        },
+        null,
+        2,
+      )};\n`,
+    );
+
+    const result = await loadProviderManifests([
+      createDiscoveredPackage(packageRoot, "@ankhorage/infra", infraMetadata),
+    ]);
+
+    expect(result.providers).toEqual([]);
+    expect(result.diagnostics.map((diagnostic) => diagnostic.code)).toContain(
+      "provider-duplicate-command-path",
+    );
+  });
+
+  it("rejects duplicate aliases as manifest diagnostics", async () => {
+    const packageRoot = await createPackageRoot("infra-duplicate-alias");
+    await writeProviderModule(
+      packageRoot,
+      `export default ${JSON.stringify(
+        {
+          ...validManifest,
+          commands: [
+            validManifest.commands[0],
+            {
+              path: ["status"],
+              capability: "infra.status",
+              summary: "Show status",
+              aliases: ["start"],
+            },
+          ],
+        },
+        null,
+        2,
+      )};\n`,
+    );
+
+    const result = await loadProviderManifests([
+      createDiscoveredPackage(packageRoot, "@ankhorage/infra", infraMetadata),
+    ]);
+
+    expect(result.providers).toEqual([]);
+    expect(result.diagnostics.map((diagnostic) => diagnostic.code)).toContain(
+      "provider-duplicate-command-alias",
+    );
+  });
+
+  it("rejects alias and canonical path collisions as manifest diagnostics", async () => {
+    const packageRoot = await createPackageRoot("infra-alias-collision");
+    await writeProviderModule(
+      packageRoot,
+      `export default ${JSON.stringify(
+        {
+          ...validManifest,
+          commands: [
+            validManifest.commands[0],
+            {
+              path: ["start"],
+              capability: "infra.status",
+              summary: "Canonical start command",
+            },
+          ],
+        },
+        null,
+        2,
+      )};\n`,
+    );
+
+    const result = await loadProviderManifests([
+      createDiscoveredPackage(packageRoot, "@ankhorage/infra", infraMetadata),
+    ]);
+
+    expect(result.providers).toEqual([]);
+    expect(result.diagnostics.map((diagnostic) => diagnostic.code)).toContain(
+      "provider-command-alias-collides-with-path",
+    );
+  });
+
+  it("rejects aliases with whitespace as manifest diagnostics", async () => {
+    const packageRoot = await createPackageRoot("infra-whitespace-alias");
+    await writeProviderModule(
+      packageRoot,
+      `export default ${JSON.stringify(
+        {
+          ...validManifest,
+          commands: [
+            {
+              ...validManifest.commands[0],
+              aliases: ["start now"],
+            },
+          ],
+        },
+        null,
+        2,
+      )};\n`,
+    );
+
+    const result = await loadProviderManifests([
+      createDiscoveredPackage(packageRoot, "@ankhorage/infra", infraMetadata),
+    ]);
+
+    expect(result.providers).toEqual([]);
+    expect(result.diagnostics.map((diagnostic) => diagnostic.code)).toContain(
+      "provider-command-alias-has-whitespace",
     );
   });
 });

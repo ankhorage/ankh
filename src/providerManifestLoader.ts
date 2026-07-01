@@ -22,6 +22,7 @@ export interface AnkhProviderManifestDiagnostic {
 export interface AnkhLoadedProvider {
   readonly discoveredPackage: AnkhDiscoveredPackage;
   readonly manifest: AnkhCommandProviderManifest;
+  readonly providerModuleDefaultExport: unknown;
   readonly providerModulePath: string;
   readonly providerModuleUrl: string;
 }
@@ -213,6 +214,14 @@ function validateProviderManifest(
     category,
   });
   diagnostics.push(...commandResult.diagnostics);
+  diagnostics.push(
+    ...validateCommandSelectors({
+      category,
+      commands: commandResult.commands,
+      discoveredPackage: options.discoveredPackage,
+      providerModulePath: options.providerModulePath,
+    }),
+  );
 
   if (diagnostics.some((diagnostic) => diagnostic.severity === "error")) {
     return {
@@ -239,6 +248,7 @@ function validateProviderManifest(
         capabilities: capabilityResult.capabilities,
         commands: commandResult.commands,
       },
+      providerModuleDefaultExport: options.rawManifest,
       providerModulePath: options.providerModulePath,
       providerModuleUrl: options.providerModuleUrl,
     },
@@ -520,6 +530,96 @@ function validateCommand(
     },
     diagnostics,
   };
+}
+
+function validateCommandSelectors(options: {
+  readonly category: string | null;
+  readonly commands: readonly AnkhCommandDescriptor[];
+  readonly discoveredPackage: AnkhDiscoveredPackage;
+  readonly providerModulePath: string;
+}): readonly AnkhProviderManifestDiagnostic[] {
+  const diagnostics: AnkhProviderManifestDiagnostic[] = [];
+  const commandPathMap = new Map<string, string>();
+  const aliasMap = new Map<string, string>();
+
+  for (const command of options.commands) {
+    const commandPathLabel = command.path.join(" ");
+    const commandPathKey = getCommandPathKey(command.path);
+
+    if (commandPathMap.has(commandPathKey)) {
+      diagnostics.push(
+        createDiagnostic(options.discoveredPackage, {
+          category: options.category ?? command.capability.split(".")[0],
+          code: "provider-duplicate-command-path",
+          message: `Provider manifest command path "${commandPathLabel}" is declared more than once.`,
+          providerModulePath: options.providerModulePath,
+          severity: "error",
+        }),
+      );
+    } else {
+      commandPathMap.set(commandPathKey, commandPathLabel);
+    }
+
+    const singleTokenPath = command.path.length === 1 ? command.path[0] : null;
+    if (singleTokenPath !== null && aliasMap.has(singleTokenPath)) {
+      diagnostics.push(
+        createDiagnostic(options.discoveredPackage, {
+          category: options.category ?? command.capability.split(".")[0],
+          code: "provider-command-alias-collides-with-path",
+          message: `Provider manifest alias "${singleTokenPath}" collides with canonical command path "${commandPathLabel}".`,
+          providerModulePath: options.providerModulePath,
+          severity: "error",
+        }),
+      );
+    }
+
+    for (const alias of command.aliases ?? []) {
+      if (/\s/.test(alias)) {
+        diagnostics.push(
+          createDiagnostic(options.discoveredPackage, {
+            category: options.category ?? command.capability.split(".")[0],
+            code: "provider-command-alias-has-whitespace",
+            message: `Provider manifest alias "${alias}" must be a single token without whitespace.`,
+            providerModulePath: options.providerModulePath,
+            severity: "error",
+          }),
+        );
+      }
+
+      if (aliasMap.has(alias)) {
+        diagnostics.push(
+          createDiagnostic(options.discoveredPackage, {
+            category: options.category ?? command.capability.split(".")[0],
+            code: "provider-duplicate-command-alias",
+            message: `Provider manifest alias "${alias}" is declared more than once.`,
+            providerModulePath: options.providerModulePath,
+            severity: "error",
+          }),
+        );
+        continue;
+      }
+
+      if (commandPathMap.has(getCommandPathKey([alias]))) {
+        diagnostics.push(
+          createDiagnostic(options.discoveredPackage, {
+            category: options.category ?? command.capability.split(".")[0],
+            code: "provider-command-alias-collides-with-path",
+            message: `Provider manifest alias "${alias}" collides with canonical command path "${alias}".`,
+            providerModulePath: options.providerModulePath,
+            severity: "error",
+          }),
+        );
+      }
+
+      aliasMap.set(alias, commandPathLabel);
+    }
+  }
+
+  return diagnostics;
+}
+
+function getCommandPathKey(path: readonly string[]): string {
+  return path.join("\0");
 }
 
 function getCommandPath(value: unknown): readonly [string, ...string[]] | null {
