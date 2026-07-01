@@ -83,47 +83,33 @@ export function resolvePlannableCommand(
   const categoryProviders = providerRegistry.findAllByCategory(category);
   if (categoryProviders.length > 1) {
     const [provider] = categoryProviders;
-
-    if (provider === undefined) {
-      return {
-        diagnostics: [],
-        resolvedCommand: null,
-      };
-    }
-
     return {
-      diagnostics: [
-        createPlanningDiagnostic(provider, {
-          code: "provider-duplicate-category",
-          message: `More than one loaded provider declares the category "${category}", so planning is ambiguous.`,
-        }),
-      ],
+      diagnostics:
+        provider === undefined
+          ? []
+          : [
+              createPlanningDiagnostic(provider, {
+                code: "provider-duplicate-category",
+                message: `More than one loaded provider declares the category "${category}", so planning is ambiguous.`,
+              }),
+            ],
       resolvedCommand: null,
     };
   }
 
   const resolvedCommand = providerRegistry.resolveCommand(category, tokens);
   if (resolvedCommand === null) {
-    return {
-      diagnostics: [],
-      resolvedCommand: null,
-    };
+    return { diagnostics: [], resolvedCommand: null };
   }
 
-  const planningHandlerResult = validateProviderPlanningHandlers(
-    resolvedCommand.provider,
-  );
-  if (planningHandlerResult.handlersByPath === null) {
-    return {
-      diagnostics: planningHandlerResult.diagnostics,
-      resolvedCommand: null,
-    };
+  const validation = validateProviderPlanningHandlers(resolvedCommand.provider);
+  if (validation.handlersByPath === null) {
+    return { diagnostics: validation.diagnostics, resolvedCommand: null };
   }
 
-  const handler = planningHandlerResult.handlersByPath.get(
+  const handler = validation.handlersByPath.get(
     getCommandPathKey(resolvedCommand.command.path),
   );
-
   if (handler === undefined) {
     return {
       diagnostics: [
@@ -140,10 +126,7 @@ export function resolvePlannableCommand(
 
   return {
     diagnostics: [],
-    resolvedCommand: {
-      ...resolvedCommand,
-      handler,
-    },
+    resolvedCommand: { ...resolvedCommand, handler },
   };
 }
 
@@ -204,9 +187,7 @@ export function renderCommandPlanJson(plan: AnkhCommandPlan): string {
 export function renderPlanningDiagnostics(
   diagnostics: readonly AnkhCommandPlanningDiagnostic[],
 ): string {
-  if (diagnostics.length === 0) {
-    return "";
-  }
+  if (diagnostics.length === 0) return "";
 
   const lines = ["Ankh command planning diagnostics:", ""];
   for (const diagnostic of diagnostics) {
@@ -344,25 +325,14 @@ function validateProviderPlanningHandlers(
     handlersByPath.set(pathKey, rawHandlerBinding.handler);
   }
 
-  if (diagnostics.length > 0) {
-    return {
-      diagnostics,
-      handlersByPath: null,
-    };
-  }
-
-  return {
-    diagnostics: [],
-    handlersByPath,
-  };
+  return diagnostics.length > 0
+    ? { diagnostics, handlersByPath: null }
+    : { diagnostics: [], handlersByPath };
 }
 
 function createPlanningDiagnostic(
   provider: AnkhLoadedProvider,
-  details: {
-    readonly code: string;
-    readonly message: string;
-  },
+  details: { readonly code: string; readonly message: string },
 ): AnkhCommandPlanningDiagnostic {
   return {
     category: provider.manifest.category,
@@ -380,18 +350,24 @@ function getCommandPath(value: unknown): readonly [string, ...string[]] | null {
     return null;
   }
 
-  const path = value.filter(
-    (segment): segment is string =>
-      typeof segment === "string" && segment.trim().length > 0,
-  );
+  const parts: string[] = [];
+  for (const segment of value) {
+    if (typeof segment !== "string" || segment.trim().length === 0) {
+      return null;
+    }
+    parts.push(segment);
+  }
 
-  return path.length === value.length
-    ? (path as readonly [string, ...string[]])
-    : null;
+  const [head, ...rest] = parts;
+  if (head === undefined) {
+    return null;
+  }
+
+  return [head, ...rest];
 }
 
 function getCommandPathKey(path: readonly string[]): string {
-  return path.join("\u0000");
+  return path.join("\0");
 }
 
 function isPlanningHandler(value: unknown): value is AnkhPlanningHandler {
