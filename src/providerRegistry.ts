@@ -21,6 +21,7 @@ export interface AnkhResolvedProviderCommand {
 
 export interface AnkhProviderRegistry {
   findByCategory(category: string): AnkhLoadedProvider | null;
+  findAllByCategory(category: string): readonly AnkhLoadedProvider[];
   listProviders(): readonly AnkhLoadedProvider[];
   listCommands(): readonly AnkhCommandListing[];
   hasCategory(category: string): boolean;
@@ -39,14 +40,13 @@ export function createProviderRegistry(
       createCommandListing(provider, command),
     ),
   );
-  const providerCommandMap = new Map(
-    providerList.map((provider) => [
-      provider.manifest.category,
-      provider.manifest.commands.map((command) =>
-        createCommandListing(provider, command),
-      ),
-    ]),
-  );
+  const providersByCategory = new Map<string, AnkhLoadedProvider[]>();
+
+  for (const provider of providerList) {
+    const categoryProviders = providersByCategory.get(provider.manifest.category) ?? [];
+    categoryProviders.push(provider);
+    providersByCategory.set(provider.manifest.category, categoryProviders);
+  }
 
   return {
     findByCategory(category: string) {
@@ -55,6 +55,9 @@ export function createProviderRegistry(
           (provider) => provider.manifest.category === category,
         ) ?? null
       );
+    },
+    findAllByCategory(category: string) {
+      return providersByCategory.get(category) ?? [];
     },
     listProviders() {
       return providerList;
@@ -68,14 +71,19 @@ export function createProviderRegistry(
       );
     },
     resolveCommand(category: string, tokens: readonly string[]) {
-      const provider = providerList.find(
-        (candidate) => candidate.manifest.category === category,
-      );
+      const categoryProviders = providersByCategory.get(category) ?? [];
+      if (categoryProviders.length !== 1) {
+        return null;
+      }
+
+      const [provider] = categoryProviders;
       if (provider === undefined) {
         return null;
       }
 
-      const commands = providerCommandMap.get(category) ?? [];
+      const commands = provider.manifest.commands.map((command) =>
+        createCommandListing(provider, command),
+      );
       const [pathMatch] = commands
         .filter((command) => matchesCommandPath(command.path, tokens))
         .sort((left, right) => right.path.length - left.path.length);

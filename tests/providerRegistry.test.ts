@@ -141,4 +141,42 @@ describe("createProviderRegistry", () => {
     ).toEqual(["port", "forward"]);
     expect(registry.resolveCommand("infra", ["missing"])).toBeNull();
   });
+
+  it('does not resolve commands when more than one loaded provider shares a category', () => {
+    const duplicateProvider = {
+      discoveredPackage: {
+        metadata: infraMetadata,
+        packageJsonPath: '/repo/packages/infra-alt/package.json',
+        packageName: '@ankhorage/infra-alt',
+        packageRoot: '/repo/packages/infra-alt',
+        source: 'workspace' as const,
+      },
+      manifest: {
+        ...infraManifest,
+        id: '@ankhorage/infra-alt',
+      },
+      providerModuleDefaultExport: infraManifest,
+      providerModulePath: '/repo/packages/infra-alt/dist/ankh.provider.js',
+      providerModuleUrl: 'file:///repo/packages/infra-alt/dist/ankh.provider.js',
+    };
+    const registry = createProviderRegistry([
+      {
+        discoveredPackage: {
+          metadata: infraMetadata,
+          packageJsonPath: '/repo/packages/infra/package.json',
+          packageName: '@ankhorage/infra',
+          packageRoot: '/repo/packages/infra',
+          source: 'workspace' as const,
+        },
+        manifest: infraManifest,
+        providerModuleDefaultExport: infraManifest,
+        providerModulePath: '/repo/packages/infra/dist/ankh.provider.js',
+        providerModuleUrl: 'file:///repo/packages/infra/dist/ankh.provider.js',
+      },
+      duplicateProvider,
+    ]);
+
+    expect(registry.findAllByCategory('infra')).toHaveLength(2);
+    expect(registry.resolveCommand('infra', ['up'])).toBeNull();
+  });
 });

@@ -65,6 +65,28 @@ export function resolveExecutableCommand(
   category: string,
   tokens: readonly string[],
 ): ResolveExecutableCommandResult {
+  const categoryProviders = providerRegistry.findAllByCategory(category);
+  if (categoryProviders.length > 1) {
+    const [provider] = categoryProviders;
+
+    if (provider === undefined) {
+      return {
+        diagnostics: [],
+        resolvedCommand: null,
+      };
+    }
+
+    return {
+      diagnostics: [
+        createExecutionDiagnostic(provider, {
+          code: 'provider-duplicate-category',
+          message: `More than one loaded provider declares the category "${category}", so direct dispatch is ambiguous.`,
+        }),
+      ],
+      resolvedCommand: null,
+    };
+  }
+
   const resolvedCommand = providerRegistry.resolveCommand(category, tokens);
   if (resolvedCommand === null) {
     return {

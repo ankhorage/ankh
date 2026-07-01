@@ -731,6 +731,68 @@ describe("runCli", () => {
   });
 
   it("prints provider diagnostics and exits one when category metadata exists but the manifest is invalid", async () => {
+  it('treats duplicate loaded provider categories as dispatch-ambiguous without executing either provider', async () => {
+    const { context, stdout, stderr } = createMemoryContext();
+    const primaryPackage = createDiscoveredPackage('@ankhorage/infra', infraMetadata);
+    const duplicatePackage = createDiscoveredPackage('@ankhorage/infra-alt', infraMetadata);
+    const executedProviders: string[] = [];
+    const primaryProvider = {
+      ...infraManifest,
+      handlers: [
+        {
+          path: ['up'],
+          handler() {
+            executedProviders.push('@ankhorage/infra');
+          },
+        },
+        {
+          path: ['status'],
+          handler: noopHandler,
+        },
+      ],
+    } as const satisfies AnkhRuntimeCommandProvider;
+    const duplicateProvider = {
+      ...infraManifest,
+      id: '@ankhorage/infra-alt',
+      handlers: [
+        {
+          path: ['up'],
+          handler() {
+            executedProviders.push('@ankhorage/infra-alt');
+          },
+        },
+        {
+          path: ['status'],
+          handler: noopHandler,
+        },
+      ],
+    } as const satisfies AnkhRuntimeCommandProvider;
+
+    const result = await runCli(['infra', 'up'], {
+      context,
+      discoverPackages: () =>
+        Promise.resolve({
+          diagnostics: [],
+          packages: [primaryPackage, duplicatePackage],
+        }),
+      loadProviders: () =>
+        Promise.resolve({
+          diagnostics: [],
+          providers: [
+            createLoadedProvider(primaryPackage, primaryProvider, primaryProvider),
+            createLoadedProvider(duplicatePackage, duplicateProvider, duplicateProvider),
+          ],
+        }),
+    });
+
+    expect(result).toEqual({ exitCode: 1 });
+    expect(executedProviders).toEqual([]);
+    expect(stdout.value).toBe('');
+    expect(stderr.value).toContain('Ankh command execution diagnostics:');
+    expect(stderr.value).toContain('provider-duplicate-category');
+  });
+
+  it('prints provider diagnostics and exits one when category metadata exists but the manifest is invalid', async () => {
     const { context, stdout, stderr } = createMemoryContext();
     const providerDiagnostic = {
       category: "infra",
