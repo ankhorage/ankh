@@ -22,6 +22,17 @@ describe("parseArgv", () => {
     expect(parseArgv(["commands"])).toEqual({ kind: "commands" });
   });
 
+  it("recognizes category help requests", () => {
+    expect(parseArgv(["infra", "--help"])).toEqual({
+      kind: "category-help",
+      category: "infra",
+    });
+    expect(parseArgv(["infra", "help"])).toEqual({
+      kind: "category-help",
+      category: "infra",
+    });
+  });
+
   it("passes other tokens through as dispatch input", () => {
     expect(parseArgv(["foo"])).toEqual({ kind: "dispatch", tokens: ["foo"] });
     expect(parseArgv(["foo", "bar"])).toEqual({

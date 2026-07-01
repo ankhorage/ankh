@@ -209,7 +209,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/cli.ts">
                 src/cli.ts
-                <small>1 function</small>
+                <small>2 functions</small>
               </button>
             </li>
             <li>
@@ -239,7 +239,7 @@
                 data-target="src/help.ts"
               >
                 src/help.ts
-                <small>6 functions</small>
+                <small>12 functions</small>
               </button>
             </li>
             <li>
@@ -276,6 +276,16 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/providerManifestLoader.ts"
+              >
+                src/providerManifestLoader.ts
+                <small>14 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/providerRegistry.ts"
               >
                 src/providerRegistry.ts
@@ -301,10 +311,10 @@
             <h2>Package overview</h2>
             <div class="summary">
               <div>
-                <strong>16</strong><span class="muted">public exports</span>
+                <strong>20</strong><span class="muted">public exports</span>
               </div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>19</strong><span class="muted">modules</span></div>
+              <div><strong>21</strong><span class="muted">modules</span></div>
               <div>
                 <strong>1</strong><span class="muted">entrypoints</span>
               </div>
@@ -341,7 +351,7 @@
             </article>
             <article
               class="item"
-              data-search="src/cli.ts src/commandContext.ts src/discovery.ts src/help.ts src/packageRegistry.ts src/parser.ts DiscoverAnkhPackagesFn runCli RunCliOptions"
+              data-search="src/cli.ts src/commandContext.ts src/discovery.ts src/help.ts src/packageRegistry.ts src/parser.ts src/providerManifestLoader.ts src/providerRegistry.ts DiscoverAnkhPackagesFn LoadProviderManifestsFn runCli RunCliOptions"
             >
               <h3>src/cli.ts</h3>
               <p class="muted">Referenced module</p>
@@ -349,11 +359,14 @@
                 <strong>Dependencies:</strong>
                 <code>src/commandContext.ts</code>,
                 <code>src/discovery.ts</code>, <code>src/help.ts</code>,
-                <code>src/packageRegistry.ts</code>, <code>src/parser.ts</code>
+                <code>src/packageRegistry.ts</code>, <code>src/parser.ts</code>,
+                <code>src/providerManifestLoader.ts</code>,
+                <code>src/providerRegistry.ts</code>
               </p>
               <p>
                 <strong>Exports:</strong> <code>DiscoverAnkhPackagesFn</code>,
-                <code>runCli</code>, <code>RunCliOptions</code>
+                <code>LoadProviderManifestsFn</code>, <code>runCli</code>,
+                <code>RunCliOptions</code>
               </p>
             </article>
             <article
@@ -391,23 +404,30 @@
             </article>
             <article
               class="item"
-              data-search="src/help.ts src/discovery.ts renderCommands renderDiscoveryFailure renderMetadataDiscoveryDiagnostics renderRootHelp renderUnknownCommand"
+              data-search="src/help.ts src/discovery.ts src/providerManifestLoader.ts src/providerRegistry.ts renderCategoryHelp renderCategoryProviderUnavailable renderCommands renderDiscoveryFailure renderMetadataDiscoveryDiagnostics renderProviderLoadFailure renderProviderManifestDiagnostics renderRootHelp renderUnknownCategory renderUnknownCommand"
             >
               <h3>src/help.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
-                <strong>Dependencies:</strong> <code>src/discovery.ts</code>
+                <strong>Dependencies:</strong> <code>src/discovery.ts</code>,
+                <code>src/providerManifestLoader.ts</code>,
+                <code>src/providerRegistry.ts</code>
               </p>
               <p>
-                <strong>Exports:</strong> <code>renderCommands</code>,
+                <strong>Exports:</strong> <code>renderCategoryHelp</code>,
+                <code>renderCategoryProviderUnavailable</code>,
+                <code>renderCommands</code>,
                 <code>renderDiscoveryFailure</code>,
                 <code>renderMetadataDiscoveryDiagnostics</code>,
-                <code>renderRootHelp</code>, <code>renderUnknownCommand</code>
+                <code>renderProviderLoadFailure</code>,
+                <code>renderProviderManifestDiagnostics</code>,
+                <code>renderRootHelp</code>, <code>renderUnknownCategory</code>,
+                <code>renderUnknownCommand</code>
               </p>
             </article>
             <article
               class="item"
-              data-search="src/index.ts AnkhCliRunResult AnkhCommandContext AnkhCommandListing AnkhDiscoveredPackage AnkhDiscoverySource AnkhMetadataDiscoveryDiagnostic AnkhMetadataDiscoveryResult AnkhPackageRegistry AnkhProviderRegistry createDefaultCommandContext createPackageRegistry createProviderRegistry discoverAnkhPackages parseArgv ParsedCliRequest runCli"
+              data-search="src/index.ts AnkhCliRunResult AnkhCommandContext AnkhCommandListing AnkhDiscoveredPackage AnkhDiscoverySource AnkhLoadedProvider AnkhMetadataDiscoveryDiagnostic AnkhMetadataDiscoveryResult AnkhPackageRegistry AnkhProviderManifestDiagnostic AnkhProviderRegistry createDefaultCommandContext createPackageRegistry createProviderRegistry discoverAnkhPackages loadProviderManifests LoadProviderManifestsResult parseArgv ParsedCliRequest runCli"
             >
               <h3>src/index.ts</h3>
               <p class="muted">Configured entrypoint</p>
@@ -420,15 +440,20 @@
                 <code>AnkhCommandListing</code>,
                 <code>AnkhDiscoveredPackage</code>,
                 <code>AnkhDiscoverySource</code>,
+                <code>AnkhLoadedProvider</code>,
                 <code>AnkhMetadataDiscoveryDiagnostic</code>,
                 <code>AnkhMetadataDiscoveryResult</code>,
                 <code>AnkhPackageRegistry</code>,
+                <code>AnkhProviderManifestDiagnostic</code>,
                 <code>AnkhProviderRegistry</code>,
                 <code>createDefaultCommandContext</code>,
                 <code>createPackageRegistry</code>,
                 <code>createProviderRegistry</code>,
-                <code>discoverAnkhPackages</code>, <code>parseArgv</code>,
-                <code>ParsedCliRequest</code>, <code>runCli</code>
+                <code>discoverAnkhPackages</code>,
+                <code>loadProviderManifests</code>,
+                <code>LoadProviderManifestsResult</code>,
+                <code>parseArgv</code>, <code>ParsedCliRequest</code>,
+                <code>runCli</code>
               </p>
             </article>
             <article
@@ -476,12 +501,29 @@
             </article>
             <article
               class="item"
-              data-search="src/providerRegistry.ts AnkhCommandListing AnkhProviderRegistry createProviderRegistry"
+              data-search="src/providerManifestLoader.ts src/discovery.ts AnkhLoadedProvider AnkhProviderManifestDiagnostic loadProviderManifests LoadProviderManifestsResult"
+            >
+              <h3>src/providerManifestLoader.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/discovery.ts</code>
+              </p>
+              <p>
+                <strong>Exports:</strong> <code>AnkhLoadedProvider</code>,
+                <code>AnkhProviderManifestDiagnostic</code>,
+                <code>loadProviderManifests</code>,
+                <code>LoadProviderManifestsResult</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/providerRegistry.ts src/providerManifestLoader.ts AnkhCommandListing AnkhProviderRegistry createProviderRegistry"
             >
               <h3>src/providerRegistry.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
-                <strong>Dependencies:</strong> <span class="empty">None</span>
+                <strong>Dependencies:</strong>
+                <code>src/providerManifestLoader.ts</code>
               </p>
               <p>
                 <strong>Exports:</strong> <code>AnkhCommandListing</code>,
@@ -507,14 +549,15 @@
             </article>
             <article
               class="item"
-              data-search="tests/cli.test.ts package.json src/cli.ts src/commandContext.ts src/discovery.ts"
+              data-search="tests/cli.test.ts package.json src/cli.ts src/commandContext.ts src/discovery.ts src/providerManifestLoader.ts"
             >
               <h3>tests/cli.test.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>package.json</code>,
                 <code>src/cli.ts</code>, <code>src/commandContext.ts</code>,
-                <code>src/discovery.ts</code>
+                <code>src/discovery.ts</code>,
+                <code>src/providerManifestLoader.ts</code>
               </p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
@@ -561,6 +604,18 @@
             </article>
             <article
               class="item"
+              data-search="tests/providerManifestLoader.test.ts src/providerManifestLoader.ts"
+            >
+              <h3>tests/providerManifestLoader.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong>
+                <code>src/providerManifestLoader.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
               data-search="tests/providerRegistry.test.ts src/providerRegistry.ts"
             >
               <h3>tests/providerRegistry.test.ts</h3>
@@ -583,7 +638,7 @@
                 data-search="runCli function src/cli.ts  AnkhCliRunResult (argv: readonly string[], options?: RunCliOptions) =&gt; Promise&lt;AnkhCliRunResult&gt;"
               >
                 <h4>runCli</h4>
-                <p class="muted">function • <code>src/cli.ts:32:1</code></p>
+                <p class="muted">function • <code>src/cli.ts:58:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -1045,6 +1100,18 @@
                   </thead>
                   <tbody>
                     <tr>
+                      <td><code>findByCategory</code></td>
+                      <td>method</td>
+                      <td>
+                        <code
+                          >(category: string) =&gt; AnkhDiscoveredPackage |
+                          null</code
+                        >
+                      </td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
                       <td><code>hasCategory</code></td>
                       <td>method</td>
                       <td><code>(category: string) =&gt; boolean</code></td>
@@ -1070,7 +1137,7 @@
               >
                 <h4>createPackageRegistry</h4>
                 <p class="muted">
-                  function • <code>src/packageRegistry.ts:8:1</code>
+                  function • <code>src/packageRegistry.ts:9:1</code>
                 </p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
@@ -1117,7 +1184,7 @@
                 data-search="parseArgv function src/parser.ts  ParsedCliRequest (argv: readonly string[]) =&gt; ParsedCliRequest"
               >
                 <h4>parseArgv</h4>
-                <p class="muted">function • <code>src/parser.ts:16:1</code></p>
+                <p class="muted">function • <code>src/parser.ts:17:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -1166,15 +1233,75 @@
               </article>
             </section>
             <section>
-              <h3>src/providerRegistry.ts</h3>
+              <h3>src/providerManifestLoader.ts</h3>
               <article
                 class="item"
-                id="symbol-ankhcommandlisting"
-                data-search="AnkhCommandListing type src/providerRegistry.ts "
+                id="symbol-ankhloadedprovider"
+                data-search="AnkhLoadedProvider type src/providerManifestLoader.ts  AnkhDiscoveredPackage"
               >
-                <h4>AnkhCommandListing</h4>
+                <h4>AnkhLoadedProvider</h4>
                 <p class="muted">
-                  type • <code>src/providerRegistry.ts:6:1</code>
+                  type • <code>src/providerManifestLoader.ts:22:1</code>
+                </p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">AnkhDiscoveredPackage</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>discoveredPackage</code></td>
+                      <td>property</td>
+                      <td><code>AnkhDiscoveredPackage</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>manifest</code></td>
+                      <td>property</td>
+                      <td><code>AnkhCommandProviderManifest</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>providerModulePath</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>providerModuleUrl</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-ankhprovidermanifestdiagnostic"
+                data-search="AnkhProviderManifestDiagnostic type src/providerManifestLoader.ts "
+              >
+                <h4>AnkhProviderManifestDiagnostic</h4>
+                <p class="muted">
+                  type • <code>src/providerManifestLoader.ts:12:1</code>
                 </p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
@@ -1195,6 +1322,192 @@
                   </thead>
                   <tbody>
                     <tr>
+                      <td><code>category</code></td>
+                      <td>property</td>
+                      <td><code>string | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>code</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>message</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>packageJsonPath</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>packageName</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>providerModulePath</code></td>
+                      <td>property</td>
+                      <td><code>string | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>severity</code></td>
+                      <td>property</td>
+                      <td>
+                        <code>&quot;warning&quot; | &quot;error&quot;</code>
+                      </td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-loadprovidermanifests"
+                data-search="loadProviderManifests function src/providerManifestLoader.ts  AnkhDiscoveredPackage LoadProviderManifestsResult (packages: readonly AnkhDiscoveredPackage[]) =&gt; Promise&lt;LoadProviderManifestsResult&gt;"
+              >
+                <h4>loadProviderManifests</h4>
+                <p class="muted">
+                  function • <code>src/providerManifestLoader.ts:34:1</code>
+                </p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">AnkhDiscoveredPackage</li>
+                    <li class="chip">LoadProviderManifestsResult</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>
+(packages: readonly AnkhDiscoveredPackage[]) =&gt; Promise&lt;LoadProviderManifestsResult&gt;</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>packages</code></td>
+                        <td><code>readonly AnkhDiscoveredPackage[]</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>
+                    <strong>Returns:</strong>
+                    <code>Promise&lt;LoadProviderManifestsResult&gt;</code>
+                  </p>
+                </div>
+              </article>
+              <article
+                class="item"
+                id="symbol-loadprovidermanifestsresult"
+                data-search="LoadProviderManifestsResult type src/providerManifestLoader.ts  AnkhLoadedProvider AnkhProviderManifestDiagnostic"
+              >
+                <h4>LoadProviderManifestsResult</h4>
+                <p class="muted">
+                  type • <code>src/providerManifestLoader.ts:29:1</code>
+                </p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">AnkhLoadedProvider</li>
+                    <li class="chip">AnkhProviderManifestDiagnostic</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>diagnostics</code></td>
+                      <td>property</td>
+                      <td>
+                        <code>readonly AnkhProviderManifestDiagnostic[]</code>
+                      </td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>providers</code></td>
+                      <td>property</td>
+                      <td><code>readonly AnkhLoadedProvider[]</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+            </section>
+            <section>
+              <h3>src/providerRegistry.ts</h3>
+              <article
+                class="item"
+                id="symbol-ankhcommandlisting"
+                data-search="AnkhCommandListing type src/providerRegistry.ts "
+              >
+                <h4>AnkhCommandListing</h4>
+                <p class="muted">
+                  type • <code>src/providerRegistry.ts:5:1</code>
+                </p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <span class="empty">None</span>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>aliases</code></td>
+                      <td>property</td>
+                      <td><code>readonly string[] | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
                       <td><code>capability</code></td>
                       <td>property</td>
                       <td><code>`${string}.${string}`</code></td>
@@ -1203,6 +1516,20 @@
                     </tr>
                     <tr>
                       <td><code>category</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>examples</code></td>
+                      <td>property</td>
+                      <td><code>readonly string[] | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>packageName</code></td>
                       <td>property</td>
                       <td><code>string</code></td>
                       <td>yes</td>
@@ -1235,11 +1562,11 @@
               <article
                 class="item"
                 id="symbol-ankhproviderregistry"
-                data-search="AnkhProviderRegistry type src/providerRegistry.ts  AnkhCommandListing"
+                data-search="AnkhProviderRegistry type src/providerRegistry.ts  AnkhCommandListing AnkhLoadedProvider"
               >
                 <h4>AnkhProviderRegistry</h4>
                 <p class="muted">
-                  type • <code>src/providerRegistry.ts:14:1</code>
+                  type • <code>src/providerRegistry.ts:16:1</code>
                 </p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
@@ -1247,6 +1574,7 @@
                   <strong>Related symbols:</strong>
                   <ul class="chips">
                     <li class="chip">AnkhCommandListing</li>
+                    <li class="chip">AnkhLoadedProvider</li>
                   </ul>
                 </div>
 
@@ -1261,6 +1589,18 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <tr>
+                      <td><code>findByCategory</code></td>
+                      <td>method</td>
+                      <td>
+                        <code
+                          >(category: string) =&gt; AnkhLoadedProvider |
+                          null</code
+                        >
+                      </td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
                     <tr>
                       <td><code>hasCategory</code></td>
                       <td>method</td>
@@ -1281,9 +1621,7 @@
                       <td><code>listProviders</code></td>
                       <td>method</td>
                       <td>
-                        <code
-                          >() =&gt; readonly AnkhCommandProviderManifest[]</code
-                        >
+                        <code>() =&gt; readonly AnkhLoadedProvider[]</code>
                       </td>
                       <td>yes</td>
                       <td></td>
@@ -1294,7 +1632,7 @@
               <article
                 class="item"
                 id="symbol-createproviderregistry"
-                data-search="createProviderRegistry function src/providerRegistry.ts  AnkhProviderRegistry (providers?: readonly AnkhCommandProviderManifest[]) =&gt; AnkhProviderRegistry"
+                data-search="createProviderRegistry function src/providerRegistry.ts  AnkhLoadedProvider AnkhProviderRegistry (providers?: readonly AnkhLoadedProvider[]) =&gt; AnkhProviderRegistry"
               >
                 <h4>createProviderRegistry</h4>
                 <p class="muted">
@@ -1305,13 +1643,14 @@
                 <div>
                   <strong>Related symbols:</strong>
                   <ul class="chips">
+                    <li class="chip">AnkhLoadedProvider</li>
                     <li class="chip">AnkhProviderRegistry</li>
                   </ul>
                 </div>
                 <div>
                   <h5>Signature</h5>
                   <pre>
-(providers?: readonly AnkhCommandProviderManifest[]) =&gt; AnkhProviderRegistry</pre>
+(providers?: readonly AnkhLoadedProvider[]) =&gt; AnkhProviderRegistry</pre>
                   <table>
                     <thead>
                       <tr>
@@ -1324,9 +1663,7 @@
                     <tbody>
                       <tr>
                         <td><code>providers</code></td>
-                        <td>
-                          <code>readonly AnkhCommandProviderManifest[]</code>
-                        </td>
+                        <td><code>readonly AnkhLoadedProvider[]</code></td>
                         <td>no</td>
                         <td></td>
                       </tr>
@@ -1370,7 +1707,9 @@
                 module_src_cli_ts --&gt; module_src_discovery_ts
                 module_src_cli_ts --&gt; module_src_help_ts module_src_cli_ts
                 --&gt; module_src_packageRegistry_ts module_src_cli_ts --&gt;
-                module_src_parser_ts
+                module_src_parser_ts module_src_cli_ts --&gt;
+                module_src_providerManifestLoader_ts module_src_cli_ts --&gt;
+                module_src_providerRegistry_ts
                 module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_src_commandContext_ts
                 module_src_commandContext_ts --&gt; module_package_json
@@ -1381,6 +1720,8 @@
                 module_src_help_ts[&quot;src/help.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_src_help_ts
                 module_src_help_ts --&gt; module_src_discovery_ts
+                module_src_help_ts --&gt; module_src_providerManifestLoader_ts
+                module_src_help_ts --&gt; module_src_providerRegistry_ts
                 module_src_index_ts[&quot;src/index.ts&quot;]
                 module_src_packageMetadata_ts[&quot;src/packageMetadata.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_src_packageMetadata_ts
@@ -1390,8 +1731,15 @@
                 module_src_packageRegistry_ts --&gt; module_src_discovery_ts
                 module_src_parser_ts[&quot;src/parser.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_src_parser_ts
+                module_src_providerManifestLoader_ts[&quot;src/providerManifestLoader.ts&quot;]
+                package__ankhorage_ankh -.-&gt;
+                module_src_providerManifestLoader_ts
+                module_src_providerManifestLoader_ts --&gt;
+                module_src_discovery_ts
                 module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_src_providerRegistry_ts
+                module_src_providerRegistry_ts --&gt;
+                module_src_providerManifestLoader_ts
                 module_src_workspace_ts[&quot;src/workspace.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_src_workspace_ts
                 module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
@@ -1400,6 +1748,8 @@
                 module_tests_cli_test_ts --&gt; module_src_cli_ts
                 module_tests_cli_test_ts --&gt; module_src_commandContext_ts
                 module_tests_cli_test_ts --&gt; module_src_discovery_ts
+                module_tests_cli_test_ts --&gt;
+                module_src_providerManifestLoader_ts
                 module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_tests_discovery_test_ts
                 module_tests_discovery_test_ts --&gt; module_src_discovery_ts
@@ -1414,6 +1764,11 @@
                 module_tests_parser_test_ts[&quot;tests/parser.test.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_tests_parser_test_ts
                 module_tests_parser_test_ts --&gt; module_src_parser_ts
+                module_tests_providerManifestLoader_test_ts[&quot;tests/providerManifestLoader.test.ts&quot;]
+                package__ankhorage_ankh -.-&gt;
+                module_tests_providerManifestLoader_test_ts
+                module_tests_providerManifestLoader_test_ts --&gt;
+                module_src_providerManifestLoader_ts
                 module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
                 package__ankhorage_ankh -.-&gt;
                 module_tests_providerRegistry_test_ts
@@ -1441,6 +1796,8 @@ graph TD
   module_src_cli_ts --&gt; module_src_help_ts
   module_src_cli_ts --&gt; module_src_packageRegistry_ts
   module_src_cli_ts --&gt; module_src_parser_ts
+  module_src_cli_ts --&gt; module_src_providerManifestLoader_ts
+  module_src_cli_ts --&gt; module_src_providerRegistry_ts
   module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_commandContext_ts
   module_src_commandContext_ts --&gt; module_package_json
@@ -1451,6 +1808,8 @@ graph TD
   module_src_help_ts[&quot;src/help.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_help_ts
   module_src_help_ts --&gt; module_src_discovery_ts
+  module_src_help_ts --&gt; module_src_providerManifestLoader_ts
+  module_src_help_ts --&gt; module_src_providerRegistry_ts
   module_src_index_ts[&quot;src/index.ts&quot;]
   module_src_packageMetadata_ts[&quot;src/packageMetadata.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_packageMetadata_ts
@@ -1460,8 +1819,12 @@ graph TD
   module_src_packageRegistry_ts --&gt; module_src_discovery_ts
   module_src_parser_ts[&quot;src/parser.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_parser_ts
+  module_src_providerManifestLoader_ts[&quot;src/providerManifestLoader.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_providerManifestLoader_ts
+  module_src_providerManifestLoader_ts --&gt; module_src_discovery_ts
   module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_providerRegistry_ts
+  module_src_providerRegistry_ts --&gt; module_src_providerManifestLoader_ts
   module_src_workspace_ts[&quot;src/workspace.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_workspace_ts
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
@@ -1470,6 +1833,7 @@ graph TD
   module_tests_cli_test_ts --&gt; module_src_cli_ts
   module_tests_cli_test_ts --&gt; module_src_commandContext_ts
   module_tests_cli_test_ts --&gt; module_src_discovery_ts
+  module_tests_cli_test_ts --&gt; module_src_providerManifestLoader_ts
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_discovery_test_ts
   module_tests_discovery_test_ts --&gt; module_src_discovery_ts
@@ -1482,6 +1846,9 @@ graph TD
   module_tests_parser_test_ts[&quot;tests/parser.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_parser_test_ts
   module_tests_parser_test_ts --&gt; module_src_parser_ts
+  module_tests_providerManifestLoader_test_ts[&quot;tests/providerManifestLoader.test.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_providerManifestLoader_test_ts
+  module_tests_providerManifestLoader_test_ts --&gt; module_src_providerManifestLoader_ts
   module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_providerRegistry_test_ts
   module_tests_providerRegistry_test_ts --&gt; module_src_providerRegistry_ts
@@ -1508,6 +1875,7 @@ graph TD
                 module_src_packageMetadata_ts[&quot;src/packageMetadata.ts&quot;]
                 module_src_packageRegistry_ts[&quot;src/packageRegistry.ts&quot;]
                 module_src_parser_ts[&quot;src/parser.ts&quot;]
+                module_src_providerManifestLoader_ts[&quot;src/providerManifestLoader.ts&quot;]
                 module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
                 module_src_workspace_ts[&quot;src/workspace.ts&quot;]
                 module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
@@ -1515,28 +1883,40 @@ graph TD
                 module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
                 module_tests_packageRegistry_test_ts[&quot;tests/packageRegistry.test.ts&quot;]
                 module_tests_parser_test_ts[&quot;tests/parser.test.ts&quot;]
+                module_tests_providerManifestLoader_test_ts[&quot;tests/providerManifestLoader.test.ts&quot;]
                 module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
                 module_src_bin_ts --&gt; module_src_cli_ts module_src_cli_ts
                 --&gt; module_src_commandContext_ts module_src_cli_ts --&gt;
                 module_src_discovery_ts module_src_cli_ts --&gt;
                 module_src_help_ts module_src_cli_ts --&gt;
                 module_src_packageRegistry_ts module_src_cli_ts --&gt;
-                module_src_parser_ts module_src_commandContext_ts --&gt;
-                module_package_json module_src_discovery_ts --&gt;
+                module_src_parser_ts module_src_cli_ts --&gt;
+                module_src_providerManifestLoader_ts module_src_cli_ts --&gt;
+                module_src_providerRegistry_ts module_src_commandContext_ts
+                --&gt; module_package_json module_src_discovery_ts --&gt;
                 module_src_packageMetadata_ts module_src_discovery_ts --&gt;
                 module_src_workspace_ts module_src_help_ts --&gt;
-                module_src_discovery_ts module_src_packageMetadata_ts --&gt;
-                module_src_discovery_ts module_src_packageRegistry_ts --&gt;
-                module_src_discovery_ts module_tests_cli_test_ts --&gt;
-                module_package_json module_tests_cli_test_ts --&gt;
+                module_src_discovery_ts module_src_help_ts --&gt;
+                module_src_providerManifestLoader_ts module_src_help_ts --&gt;
+                module_src_providerRegistry_ts module_src_packageMetadata_ts
+                --&gt; module_src_discovery_ts module_src_packageRegistry_ts
+                --&gt; module_src_discovery_ts
+                module_src_providerManifestLoader_ts --&gt;
+                module_src_discovery_ts module_src_providerRegistry_ts --&gt;
+                module_src_providerManifestLoader_ts module_tests_cli_test_ts
+                --&gt; module_package_json module_tests_cli_test_ts --&gt;
                 module_src_cli_ts module_tests_cli_test_ts --&gt;
                 module_src_commandContext_ts module_tests_cli_test_ts --&gt;
-                module_src_discovery_ts module_tests_discovery_test_ts --&gt;
-                module_src_discovery_ts module_tests_package_test_ts --&gt;
-                module_package_json module_tests_packageRegistry_test_ts --&gt;
+                module_src_discovery_ts module_tests_cli_test_ts --&gt;
+                module_src_providerManifestLoader_ts
+                module_tests_discovery_test_ts --&gt; module_src_discovery_ts
+                module_tests_package_test_ts --&gt; module_package_json
+                module_tests_packageRegistry_test_ts --&gt;
                 module_src_packageRegistry_ts module_tests_parser_test_ts --&gt;
-                module_src_parser_ts module_tests_providerRegistry_test_ts
-                --&gt; module_src_providerRegistry_ts
+                module_src_parser_ts module_tests_providerManifestLoader_test_ts
+                --&gt; module_src_providerManifestLoader_ts
+                module_tests_providerRegistry_test_ts --&gt;
+                module_src_providerRegistry_ts
               </div>
               <details>
                 <summary>View Mermaid source</summary>
@@ -1553,6 +1933,7 @@ graph LR
   module_src_packageMetadata_ts[&quot;src/packageMetadata.ts&quot;]
   module_src_packageRegistry_ts[&quot;src/packageRegistry.ts&quot;]
   module_src_parser_ts[&quot;src/parser.ts&quot;]
+  module_src_providerManifestLoader_ts[&quot;src/providerManifestLoader.ts&quot;]
   module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
   module_src_workspace_ts[&quot;src/workspace.ts&quot;]
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
@@ -1560,6 +1941,7 @@ graph LR
   module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
   module_tests_packageRegistry_test_ts[&quot;tests/packageRegistry.test.ts&quot;]
   module_tests_parser_test_ts[&quot;tests/parser.test.ts&quot;]
+  module_tests_providerManifestLoader_test_ts[&quot;tests/providerManifestLoader.test.ts&quot;]
   module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
   module_src_bin_ts --&gt; module_src_cli_ts
   module_src_cli_ts --&gt; module_src_commandContext_ts
@@ -1567,20 +1949,28 @@ graph LR
   module_src_cli_ts --&gt; module_src_help_ts
   module_src_cli_ts --&gt; module_src_packageRegistry_ts
   module_src_cli_ts --&gt; module_src_parser_ts
+  module_src_cli_ts --&gt; module_src_providerManifestLoader_ts
+  module_src_cli_ts --&gt; module_src_providerRegistry_ts
   module_src_commandContext_ts --&gt; module_package_json
   module_src_discovery_ts --&gt; module_src_packageMetadata_ts
   module_src_discovery_ts --&gt; module_src_workspace_ts
   module_src_help_ts --&gt; module_src_discovery_ts
+  module_src_help_ts --&gt; module_src_providerManifestLoader_ts
+  module_src_help_ts --&gt; module_src_providerRegistry_ts
   module_src_packageMetadata_ts --&gt; module_src_discovery_ts
   module_src_packageRegistry_ts --&gt; module_src_discovery_ts
+  module_src_providerManifestLoader_ts --&gt; module_src_discovery_ts
+  module_src_providerRegistry_ts --&gt; module_src_providerManifestLoader_ts
   module_tests_cli_test_ts --&gt; module_package_json
   module_tests_cli_test_ts --&gt; module_src_cli_ts
   module_tests_cli_test_ts --&gt; module_src_commandContext_ts
   module_tests_cli_test_ts --&gt; module_src_discovery_ts
+  module_tests_cli_test_ts --&gt; module_src_providerManifestLoader_ts
   module_tests_discovery_test_ts --&gt; module_src_discovery_ts
   module_tests_package_test_ts --&gt; module_package_json
   module_tests_packageRegistry_test_ts --&gt; module_src_packageRegistry_ts
   module_tests_parser_test_ts --&gt; module_src_parser_ts
+  module_tests_providerManifestLoader_test_ts --&gt; module_src_providerManifestLoader_ts
   module_tests_providerRegistry_test_ts --&gt; module_src_providerRegistry_ts
 </pre>
               </details>
@@ -1603,6 +1993,7 @@ graph LR
                 module_src_packageMetadata_ts[&quot;src/packageMetadata.ts&quot;]
                 module_src_packageRegistry_ts[&quot;src/packageRegistry.ts&quot;]
                 module_src_parser_ts[&quot;src/parser.ts&quot;]
+                module_src_providerManifestLoader_ts[&quot;src/providerManifestLoader.ts&quot;]
                 module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
                 module_src_workspace_ts[&quot;src/workspace.ts&quot;]
                 module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
@@ -1610,6 +2001,7 @@ graph LR
                 module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
                 module_tests_packageRegistry_test_ts[&quot;tests/packageRegistry.test.ts&quot;]
                 module_tests_parser_test_ts[&quot;tests/parser.test.ts&quot;]
+                module_tests_providerManifestLoader_test_ts[&quot;tests/providerManifestLoader.test.ts&quot;]
                 module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
                 export_AnkhCliRunResult[&quot;AnkhCliRunResult&quot;]
                 module_src_commandContext_ts --&gt; export_AnkhCliRunResult
@@ -1622,6 +2014,10 @@ graph LR
                 export_AnkhDiscoveredPackage -.-&gt; export_AnkhDiscoverySource
                 export_AnkhDiscoverySource[&quot;AnkhDiscoverySource&quot;]
                 module_src_discovery_ts --&gt; export_AnkhDiscoverySource
+                export_AnkhLoadedProvider[&quot;AnkhLoadedProvider&quot;]
+                module_src_providerManifestLoader_ts --&gt;
+                export_AnkhLoadedProvider export_AnkhLoadedProvider -.-&gt;
+                export_AnkhDiscoveredPackage
                 export_AnkhMetadataDiscoveryDiagnostic[&quot;AnkhMetadataDiscoveryDiagnostic&quot;]
                 module_src_discovery_ts --&gt;
                 export_AnkhMetadataDiscoveryDiagnostic
@@ -1636,10 +2032,14 @@ graph LR
                 export_AnkhPackageRegistry[&quot;AnkhPackageRegistry&quot;]
                 module_src_packageRegistry_ts --&gt; export_AnkhPackageRegistry
                 export_AnkhPackageRegistry -.-&gt; export_AnkhDiscoveredPackage
+                export_AnkhProviderManifestDiagnostic[&quot;AnkhProviderManifestDiagnostic&quot;]
+                module_src_providerManifestLoader_ts --&gt;
+                export_AnkhProviderManifestDiagnostic
                 export_AnkhProviderRegistry[&quot;AnkhProviderRegistry&quot;]
                 module_src_providerRegistry_ts --&gt;
                 export_AnkhProviderRegistry export_AnkhProviderRegistry -.-&gt;
-                export_AnkhCommandListing
+                export_AnkhCommandListing export_AnkhProviderRegistry -.-&gt;
+                export_AnkhLoadedProvider
                 export_createDefaultCommandContext[&quot;createDefaultCommandContext&quot;]
                 module_src_commandContext_ts --&gt;
                 export_createDefaultCommandContext
@@ -1653,11 +2053,24 @@ graph LR
                 export_createProviderRegistry[&quot;createProviderRegistry&quot;]
                 module_src_providerRegistry_ts --&gt;
                 export_createProviderRegistry export_createProviderRegistry
+                -.-&gt; export_AnkhLoadedProvider export_createProviderRegistry
                 -.-&gt; export_AnkhProviderRegistry
                 export_discoverAnkhPackages[&quot;discoverAnkhPackages&quot;]
                 module_src_discovery_ts --&gt; export_discoverAnkhPackages
                 export_discoverAnkhPackages -.-&gt;
                 export_AnkhMetadataDiscoveryResult
+                export_loadProviderManifests[&quot;loadProviderManifests&quot;]
+                module_src_providerManifestLoader_ts --&gt;
+                export_loadProviderManifests export_loadProviderManifests
+                -.-&gt; export_AnkhDiscoveredPackage
+                export_loadProviderManifests -.-&gt;
+                export_LoadProviderManifestsResult
+                export_LoadProviderManifestsResult[&quot;LoadProviderManifestsResult&quot;]
+                module_src_providerManifestLoader_ts --&gt;
+                export_LoadProviderManifestsResult
+                export_LoadProviderManifestsResult -.-&gt;
+                export_AnkhLoadedProvider export_LoadProviderManifestsResult
+                -.-&gt; export_AnkhProviderManifestDiagnostic
                 export_parseArgv[&quot;parseArgv&quot;] module_src_parser_ts
                 --&gt; export_parseArgv export_parseArgv -.-&gt;
                 export_ParsedCliRequest
@@ -1681,6 +2094,7 @@ graph LR
   module_src_packageMetadata_ts[&quot;src/packageMetadata.ts&quot;]
   module_src_packageRegistry_ts[&quot;src/packageRegistry.ts&quot;]
   module_src_parser_ts[&quot;src/parser.ts&quot;]
+  module_src_providerManifestLoader_ts[&quot;src/providerManifestLoader.ts&quot;]
   module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
   module_src_workspace_ts[&quot;src/workspace.ts&quot;]
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
@@ -1688,6 +2102,7 @@ graph LR
   module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
   module_tests_packageRegistry_test_ts[&quot;tests/packageRegistry.test.ts&quot;]
   module_tests_parser_test_ts[&quot;tests/parser.test.ts&quot;]
+  module_tests_providerManifestLoader_test_ts[&quot;tests/providerManifestLoader.test.ts&quot;]
   module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
   export_AnkhCliRunResult[&quot;AnkhCliRunResult&quot;]
   module_src_commandContext_ts --&gt; export_AnkhCliRunResult
@@ -1700,6 +2115,9 @@ graph LR
   export_AnkhDiscoveredPackage -.-&gt; export_AnkhDiscoverySource
   export_AnkhDiscoverySource[&quot;AnkhDiscoverySource&quot;]
   module_src_discovery_ts --&gt; export_AnkhDiscoverySource
+  export_AnkhLoadedProvider[&quot;AnkhLoadedProvider&quot;]
+  module_src_providerManifestLoader_ts --&gt; export_AnkhLoadedProvider
+  export_AnkhLoadedProvider -.-&gt; export_AnkhDiscoveredPackage
   export_AnkhMetadataDiscoveryDiagnostic[&quot;AnkhMetadataDiscoveryDiagnostic&quot;]
   module_src_discovery_ts --&gt; export_AnkhMetadataDiscoveryDiagnostic
   export_AnkhMetadataDiscoveryDiagnostic -.-&gt; export_AnkhDiscoverySource
@@ -1710,9 +2128,12 @@ graph LR
   export_AnkhPackageRegistry[&quot;AnkhPackageRegistry&quot;]
   module_src_packageRegistry_ts --&gt; export_AnkhPackageRegistry
   export_AnkhPackageRegistry -.-&gt; export_AnkhDiscoveredPackage
+  export_AnkhProviderManifestDiagnostic[&quot;AnkhProviderManifestDiagnostic&quot;]
+  module_src_providerManifestLoader_ts --&gt; export_AnkhProviderManifestDiagnostic
   export_AnkhProviderRegistry[&quot;AnkhProviderRegistry&quot;]
   module_src_providerRegistry_ts --&gt; export_AnkhProviderRegistry
   export_AnkhProviderRegistry -.-&gt; export_AnkhCommandListing
+  export_AnkhProviderRegistry -.-&gt; export_AnkhLoadedProvider
   export_createDefaultCommandContext[&quot;createDefaultCommandContext&quot;]
   module_src_commandContext_ts --&gt; export_createDefaultCommandContext
   export_createDefaultCommandContext -.-&gt; export_AnkhCommandContext
@@ -1722,10 +2143,19 @@ graph LR
   export_createPackageRegistry -.-&gt; export_AnkhPackageRegistry
   export_createProviderRegistry[&quot;createProviderRegistry&quot;]
   module_src_providerRegistry_ts --&gt; export_createProviderRegistry
+  export_createProviderRegistry -.-&gt; export_AnkhLoadedProvider
   export_createProviderRegistry -.-&gt; export_AnkhProviderRegistry
   export_discoverAnkhPackages[&quot;discoverAnkhPackages&quot;]
   module_src_discovery_ts --&gt; export_discoverAnkhPackages
   export_discoverAnkhPackages -.-&gt; export_AnkhMetadataDiscoveryResult
+  export_loadProviderManifests[&quot;loadProviderManifests&quot;]
+  module_src_providerManifestLoader_ts --&gt; export_loadProviderManifests
+  export_loadProviderManifests -.-&gt; export_AnkhDiscoveredPackage
+  export_loadProviderManifests -.-&gt; export_LoadProviderManifestsResult
+  export_LoadProviderManifestsResult[&quot;LoadProviderManifestsResult&quot;]
+  module_src_providerManifestLoader_ts --&gt; export_LoadProviderManifestsResult
+  export_LoadProviderManifestsResult -.-&gt; export_AnkhLoadedProvider
+  export_LoadProviderManifestsResult -.-&gt; export_AnkhProviderManifestDiagnostic
   export_parseArgv[&quot;parseArgv&quot;]
   module_src_parser_ts --&gt; export_parseArgv
   export_parseArgv -.-&gt; export_ParsedCliRequest
@@ -1749,7 +2179,12 @@ graph LR
             <h2>src/cli.ts</h2>
             <article class="item" data-search="runCli src/cli.ts ">
               <h3>runCli</h3>
-              <p class="muted"><code>src/cli.ts:32:1</code></p>
+              <p class="muted"><code>src/cli.ts:58:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="resolveCliState src/cli.ts ">
+              <h3>resolveCliState</h3>
+              <p class="muted"><code>src/cli.ts:166:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -1821,12 +2256,17 @@ graph LR
             <h2>src/help.ts</h2>
             <article class="item" data-search="renderRootHelp src/help.ts ">
               <h3>renderRootHelp</h3>
-              <p class="muted"><code>src/help.ts:6:1</code></p>
+              <p class="muted"><code>src/help.ts:8:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="renderCommands src/help.ts ">
               <h3>renderCommands</h3>
-              <p class="muted"><code>src/help.ts:25:1</code></p>
+              <p class="muted"><code>src/help.ts:28:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="renderCategoryHelp src/help.ts ">
+              <h3>renderCategoryHelp</h3>
+              <p class="muted"><code>src/help.ts:93:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -1834,7 +2274,23 @@ graph LR
               data-search="renderMetadataDiscoveryDiagnostics src/help.ts "
             >
               <h3>renderMetadataDiscoveryDiagnostics</h3>
-              <p class="muted"><code>src/help.ts:54:1</code></p>
+              <p class="muted"><code>src/help.ts:138:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="renderProviderManifestDiagnostics src/help.ts "
+            >
+              <h3>renderProviderManifestDiagnostics</h3>
+              <p class="muted"><code>src/help.ts:144:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="renderCategoryProviderUnavailable src/help.ts "
+            >
+              <h3>renderCategoryProviderUnavailable</h3>
+              <p class="muted"><code>src/help.ts:150:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -1842,7 +2298,23 @@ graph LR
               data-search="renderDiscoveryFailure src/help.ts "
             >
               <h3>renderDiscoveryFailure</h3>
-              <p class="muted"><code>src/help.ts:80:1</code></p>
+              <p class="muted"><code>src/help.ts:160:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="renderProviderLoadFailure src/help.ts "
+            >
+              <h3>renderProviderLoadFailure</h3>
+              <p class="muted"><code>src/help.ts:167:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="renderUnknownCategory src/help.ts "
+            >
+              <h3>renderUnknownCategory</h3>
+              <p class="muted"><code>src/help.ts:174:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -1850,12 +2322,17 @@ graph LR
               data-search="renderUnknownCommand src/help.ts "
             >
               <h3>renderUnknownCommand</h3>
-              <p class="muted"><code>src/help.ts:87:1</code></p>
+              <p class="muted"><code>src/help.ts:183:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="renderDiagnostics src/help.ts ">
+              <h3>renderDiagnostics</h3>
+              <p class="muted"><code>src/help.ts:193:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getErrorMessage src/help.ts ">
               <h3>getErrorMessage</h3>
-              <p class="muted"><code>src/help.ts:97:1</code></p>
+              <p class="muted"><code>src/help.ts:226:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -1939,7 +2416,7 @@ graph LR
               data-search="createPackageRegistry src/packageRegistry.ts "
             >
               <h3>createPackageRegistry</h3>
-              <p class="muted"><code>src/packageRegistry.ts:8:1</code></p>
+              <p class="muted"><code>src/packageRegistry.ts:9:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -1954,7 +2431,157 @@ graph LR
             <h2>src/parser.ts</h2>
             <article class="item" data-search="parseArgv src/parser.ts ">
               <h3>parseArgv</h3>
-              <p class="muted"><code>src/parser.ts:16:1</code></p>
+              <p class="muted"><code>src/parser.ts:17:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-providermanifestloader-ts"
+          class="view"
+          data-view="src/providerManifestLoader.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/providerManifestLoader.ts</h2>
+            <article
+              class="item"
+              data-search="loadProviderManifests src/providerManifestLoader.ts "
+            >
+              <h3>loadProviderManifests</h3>
+              <p class="muted">
+                <code>src/providerManifestLoader.ts:34:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="validateProviderManifest src/providerManifestLoader.ts "
+            >
+              <h3>validateProviderManifest</h3>
+              <p class="muted">
+                <code>src/providerManifestLoader.ts:129:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="validateCapabilities src/providerManifestLoader.ts "
+            >
+              <h3>validateCapabilities</h3>
+              <p class="muted">
+                <code>src/providerManifestLoader.ts:260:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="validateCommands src/providerManifestLoader.ts "
+            >
+              <h3>validateCommands</h3>
+              <p class="muted">
+                <code>src/providerManifestLoader.ts:338:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="validateCommand src/providerManifestLoader.ts "
+            >
+              <h3>validateCommand</h3>
+              <p class="muted">
+                <code>src/providerManifestLoader.ts:393:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="getCommandPath src/providerManifestLoader.ts "
+            >
+              <h3>getCommandPath</h3>
+              <p class="muted">
+                <code>src/providerManifestLoader.ts:525:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="getCapabilityId src/providerManifestLoader.ts "
+            >
+              <h3>getCapabilityId</h3>
+              <p class="muted">
+                <code>src/providerManifestLoader.ts:547:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="getOptionalStringArray src/providerManifestLoader.ts "
+            >
+              <h3>getOptionalStringArray</h3>
+              <p class="muted">
+                <code>src/providerManifestLoader.ts:551:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="getNonEmptyString src/providerManifestLoader.ts "
+            >
+              <h3>getNonEmptyString</h3>
+              <p class="muted">
+                <code>src/providerManifestLoader.ts:572:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isCapabilityId src/providerManifestLoader.ts "
+            >
+              <h3>isCapabilityId</h3>
+              <p class="muted">
+                <code>src/providerManifestLoader.ts:581:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isRecord src/providerManifestLoader.ts "
+            >
+              <h3>isRecord</h3>
+              <p class="muted">
+                <code>src/providerManifestLoader.ts:588:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isPathInsidePackageRoot src/providerManifestLoader.ts "
+            >
+              <h3>isPathInsidePackageRoot</h3>
+              <p class="muted">
+                <code>src/providerManifestLoader.ts:592:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="getErrorMessage src/providerManifestLoader.ts "
+            >
+              <h3>getErrorMessage</h3>
+              <p class="muted">
+                <code>src/providerManifestLoader.ts:606:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createDiagnostic src/providerManifestLoader.ts "
+            >
+              <h3>createDiagnostic</h3>
+              <p class="muted">
+                <code>src/providerManifestLoader.ts:622:1</code>
+              </p>
               <p class="empty">No description available.</p>
             </article>
           </section>

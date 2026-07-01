@@ -2,6 +2,7 @@ export type ParsedCliRequest =
   | { readonly kind: "help" }
   | { readonly kind: "version" }
   | { readonly kind: "commands" }
+  | { readonly kind: "category-help"; readonly category: string }
   | {
       readonly kind: "dispatch";
       readonly tokens: readonly [string, ...string[]];
@@ -30,6 +31,13 @@ export function parseArgv(argv: readonly string[]): ParsedCliRequest {
 
   if (firstToken === "commands") {
     return { kind: "commands" };
+  }
+
+  if (restTokens.length === 1 && HELP_TOKENS.has(restTokens[0] ?? "")) {
+    return {
+      kind: "category-help",
+      category: firstToken,
+    };
   }
 
   return {

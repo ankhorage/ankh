@@ -13,6 +13,12 @@ export { createPackageRegistry } from "./packageRegistry.js";
 export type { ParsedCliRequest } from "./parser.js";
 export { parseArgv } from "./parser.js";
 export type {
+  AnkhLoadedProvider,
+  AnkhProviderManifestDiagnostic,
+  LoadProviderManifestsResult,
+} from "./providerManifestLoader.js";
+export { loadProviderManifests } from "./providerManifestLoader.js";
+export type {
   AnkhCommandListing,
   AnkhProviderRegistry,
 } from "./providerRegistry.js";

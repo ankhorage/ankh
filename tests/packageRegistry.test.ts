@@ -14,6 +14,7 @@ describe("createPackageRegistry", () => {
     const registry = createPackageRegistry();
 
     expect(registry.listPackages()).toEqual([]);
+    expect(registry.findByCategory("infra")).toBeNull();
     expect(registry.hasCategory("infra")).toBeFalse();
   });
 
@@ -32,6 +33,10 @@ describe("createPackageRegistry", () => {
     expect(registry.listPackages()[0]?.packageName).toBe(
       "@ankhorage/contracts",
     );
+    expect(registry.findByCategory("contracts")?.packageName).toBe(
+      "@ankhorage/contracts",
+    );
+    expect(registry.findByCategory("infra")).toBeNull();
     expect(registry.hasCategory("contracts")).toBeTrue();
     expect(registry.hasCategory("infra")).toBeFalse();
   });
