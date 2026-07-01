@@ -100,7 +100,9 @@ function discoveredPackage(): AnkhDiscoveredPackage {
   };
 }
 
-function loadedProvider(providerModuleDefaultExport: unknown): AnkhLoadedProvider {
+function loadedProvider(
+  providerModuleDefaultExport: unknown,
+): AnkhLoadedProvider {
   const discovered = discoveredPackage();
   return {
     discoveredPackage: discovered,
@@ -111,10 +113,12 @@ function loadedProvider(providerModuleDefaultExport: unknown): AnkhLoadedProvide
   };
 }
 
-function providerFixture(options: {
-  readonly onExecute?: () => void;
-  readonly plan?: AnkhCommandPlan;
-} = {}) {
+function providerFixture(
+  options: {
+    readonly onExecute?: () => void;
+    readonly plan?: AnkhCommandPlan;
+  } = {},
+) {
   return {
     ...manifest,
     handlers: [
@@ -165,7 +169,10 @@ function runOptions(provider = providerFixture()) {
     discoverPackages: () =>
       Promise.resolve({ diagnostics: [], packages: [discoveredPackage()] }),
     loadProviders: () =>
-      Promise.resolve({ diagnostics: [], providers: [loadedProvider(provider)] }),
+      Promise.resolve({
+        diagnostics: [],
+        providers: [loadedProvider(provider)],
+      }),
   };
 }
 
