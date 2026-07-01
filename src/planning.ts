@@ -65,8 +65,7 @@ export interface AnkhCommandPlanningDiagnostic {
   readonly severity: "error";
 }
 
-export interface AnkhResolvedPlannableCommand
-  extends AnkhResolvedProviderCommand {
+export interface AnkhResolvedPlannableCommand extends AnkhResolvedProviderCommand {
   readonly handler: AnkhPlanningHandler;
 }
 
@@ -83,11 +82,20 @@ export function resolvePlannableCommand(
   const categoryProviders = providerRegistry.findAllByCategory(category);
   if (categoryProviders.length > 1) {
     const [provider] = categoryProviders;
+    if (provider === undefined) {
+      return {
+        diagnostics: [],
+        resolvedCommand: null,
+      };
+    }
+
     return {
-      diagnostics:
-        provider === undefined
-          ? []
-          : [createDiagnostic(provider, "provider-duplicate-category")],
+      diagnostics: [
+        createPlanningDiagnostic(provider, {
+          code: "provider-duplicate-category",
+          message: `More than one loaded provider declares the category "${category}", so planning is ambiguous.`,
+        }),
+      ],
       resolvedCommand: null,
     };
   }
@@ -100,7 +108,7 @@ export function resolvePlannableCommand(
     };
   }
 
-  const validation = getPlanningHandlers(resolvedCommand.provider);
+  const validation = validateProviderPlanningHandlers(resolvedCommand.provider);
   if (validation.handlersByPath === null) {
     return {
       diagnostics: validation.diagnostics,
@@ -108,15 +116,18 @@ export function resolvePlannableCommand(
     };
   }
 
-  const pathKey = getCommandPathKey(resolvedCommand.command.path);
-  const handler = validation.handlersByPath.get(pathKey);
+  const handler = validation.handlersByPath.get(
+    getCommandPathKey(resolvedCommand.command.path),
+  );
   if (handler === undefined) {
     return {
       diagnostics: [
-        createDiagnostic(
-          resolvedCommand.provider,
-          "provider-command-planning-handler-missing",
-        ),
+        createPlanningDiagnostic(resolvedCommand.provider, {
+          code: "provider-command-planning-handler-missing",
+          message: `Provider command "${resolvedCommand.command.path.join(
+            " ",
+          )}" does not have a planning handler binding.`,
+        }),
       ],
       resolvedCommand: null,
     };
@@ -132,9 +143,7 @@ export function resolvePlannableCommand(
 }
 
 export function hasCommandPlanErrors(plan: AnkhCommandPlan): boolean {
-  return plan.diagnostics.some(
-    (diagnostic) => diagnostic.severity === "error",
-  );
+  return plan.diagnostics.some((diagnostic) => diagnostic.severity === "error");
 }
 
 export function renderCommandPlan(plan: AnkhCommandPlan): string {
@@ -201,7 +210,7 @@ interface PlanningHandlerValidationResult {
   readonly handlersByPath: ReadonlyMap<string, AnkhPlanningHandler> | null;
 }
 
-function getPlanningHandlers(
+function validateProviderPlanningHandlers(
   provider: AnkhLoadedProvider,
 ): PlanningHandlerValidationResult {
   if (!isRecord(provider.providerModuleDefaultExport)) {
