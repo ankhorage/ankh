@@ -34,9 +34,9 @@ Planning/composition remains deferred until `ankhorage/ankh#3`.
 Source: `src/readme-usage.ts`
 
 ```ts
-import { runCli } from './cli.js';
+import { runCli } from "./cli.js";
 
-await runCli(['--help']);
+await runCli(["--help"]);
 ```
 
 ## Installation
