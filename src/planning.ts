@@ -170,7 +170,9 @@ export function renderCommandPlan(plan: AnkhCommandPlan): string {
       lines.push(`     provider: ${step.providerId}`);
       lines.push(`     capability: ${step.capability}`);
       lines.push(
-        `     dependsOn: ${step.dependsOn.length === 0 ? "none" : step.dependsOn.join(", ")}`,
+        `     dependsOn: ${
+          step.dependsOn.length === 0 ? "none" : step.dependsOn.join(", ")
+        }`,
       );
       lines.push(`     destructive: ${step.destructive ? "yes" : "no"}`);
       lines.push(`     status: ${step.status}`);
@@ -244,7 +246,8 @@ function validateProviderPlanningHandlers(
     };
   }
 
-  const rawPlanningHandlers = provider.providerModuleDefaultExport.planningHandlers;
+  const rawPlanningHandlers =
+    provider.providerModuleDefaultExport.planningHandlers;
   if (rawPlanningHandlers === undefined) {
     return {
       diagnostics: [
@@ -317,7 +320,9 @@ function validateProviderPlanningHandlers(
       diagnostics.push(
         createPlanningDiagnostic(provider, {
           code: "provider-duplicate-planning-handler-path",
-          message: `Provider declares more than one planning handler for command path "${path.join(" ")}".`,
+          message: `Provider declares more than one planning handler for command path "${path.join(
+            " ",
+          )}".`,
         }),
       );
       continue;
@@ -327,7 +332,9 @@ function validateProviderPlanningHandlers(
       diagnostics.push(
         createPlanningDiagnostic(provider, {
           code: "provider-planning-handler-not-function",
-          message: `Provider planning handler for command path "${path.join(" ")}" must be a function.`,
+          message: `Provider planning handler for command path "${path.join(
+            " ",
+          )}" must be a function.`,
         }),
       );
       continue;
