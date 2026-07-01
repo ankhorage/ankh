@@ -208,7 +208,9 @@ function validateProviderPlanningHandlers(
 ): PlanningHandlerValidationResult {
   if (!isRecord(provider.providerModuleDefaultExport)) {
     return {
-      diagnostics: [createDiagnostic(provider, "provider-missing-planning-handlers")],
+      diagnostics: [
+        createDiagnostic(provider, "provider-missing-planning-handlers"),
+      ],
       handlersByPath: null,
     };
   }
@@ -216,14 +218,18 @@ function validateProviderPlanningHandlers(
   const rawBindings = provider.providerModuleDefaultExport.planningHandlers;
   if (rawBindings === undefined) {
     return {
-      diagnostics: [createDiagnostic(provider, "provider-missing-planning-handlers")],
+      diagnostics: [
+        createDiagnostic(provider, "provider-missing-planning-handlers"),
+      ],
       handlersByPath: null,
     };
   }
 
   if (!Array.isArray(rawBindings)) {
     return {
-      diagnostics: [createDiagnostic(provider, "invalid-provider-planning-handlers")],
+      diagnostics: [
+        createDiagnostic(provider, "invalid-provider-planning-handlers"),
+      ],
       handlersByPath: null,
     };
   }
@@ -283,7 +289,10 @@ function getPlanningBinding(
     } {
   if (!isRecord(rawBinding)) {
     return {
-      diagnostic: createDiagnostic(provider, "invalid-provider-planning-handler"),
+      diagnostic: createDiagnostic(
+        provider,
+        "invalid-provider-planning-handler",
+      ),
     };
   }
 
@@ -300,13 +309,19 @@ function getPlanningBinding(
   const pathKey = getCommandPathKey(path);
   if (!manifestPaths.has(pathKey)) {
     return {
-      diagnostic: createDiagnostic(provider, "provider-planning-handler-unknown-path"),
+      diagnostic: createDiagnostic(
+        provider,
+        "provider-planning-handler-unknown-path",
+      ),
     };
   }
 
   if (!isPlanningHandler(rawBinding.handler)) {
     return {
-      diagnostic: createDiagnostic(provider, "provider-planning-handler-not-function"),
+      diagnostic: createDiagnostic(
+        provider,
+        "provider-planning-handler-not-function",
+      ),
     };
   }
 
