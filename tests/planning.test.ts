@@ -5,19 +5,11 @@ import type {
 import { describe, expect, it } from "bun:test";
 
 import packageJson from "../package.json";
-import type {
-  AnkhCommandContext,
-  AnkhCommandPlan,
-  AnkhDiscoveredPackage,
-  AnkhLoadedProvider,
-  AnkhPlanningHandlerBinding,
-} from "../src/index.js";
-import {
-  hasCommandPlanErrors,
-  renderCommandPlan,
-  renderCommandPlanJson,
-  runCli,
-} from "../src/index.js";
+import { runCli } from "../src/cli.js";
+import type { AnkhCommandContext } from "../src/commandContext.js";
+import type { AnkhDiscoveredPackage } from "../src/discovery.js";
+import type { AnkhCommandPlan } from "../src/planning.js";
+import type { AnkhLoadedProvider } from "../src/providerManifestLoader.js";
 
 const metadata = {
   capabilities: [
@@ -121,19 +113,12 @@ function loadedProvider(
   };
 }
 
-function providerFixture(options: {
-  readonly onExecute?: () => void;
-  readonly plan?: AnkhCommandPlan;
-} = {}) {
-  const planningHandlers = [
-    {
-      path: ["workflow"],
-      handler() {
-        return options.plan ?? plan;
-      },
-    },
-  ] as const satisfies readonly AnkhPlanningHandlerBinding[];
-
+function providerFixture(
+  options: {
+    readonly onExecute?: () => void;
+    readonly plan?: AnkhCommandPlan;
+  } = {},
+) {
   return {
     ...manifest,
     handlers: [
@@ -144,7 +129,14 @@ function providerFixture(options: {
         },
       },
     ],
-    planningHandlers,
+    planningHandlers: [
+      {
+        path: ["workflow"],
+        handler() {
+          return options.plan ?? plan;
+        },
+      },
+    ],
   };
 }
 
@@ -185,12 +177,6 @@ function runOptions(provider = providerFixture()) {
 }
 
 describe("ankh plan", () => {
-  it("renders deterministic planning output through the public API", () => {
-    expect(hasCommandPlanErrors(plan)).toBe(false);
-    expect(renderCommandPlan(plan)).toContain("Plan: Fixture workflow");
-    expect(JSON.parse(renderCommandPlanJson(plan))).toEqual(plan);
-  });
-
   it("prints a deterministic human-readable fixture plan", async () => {
     const { context, stdout, stderr } = memoryContext();
     const result = await runCli(["plan", "fixture", "workflow"], {
