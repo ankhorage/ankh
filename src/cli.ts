@@ -29,12 +29,12 @@ import type { AnkhPackageRegistry } from "./packageRegistry.js";
 import { createPackageRegistry } from "./packageRegistry.js";
 import { parseArgv } from "./parser.js";
 import {
+  type AnkhPlanningContext,
   hasCommandPlanErrors,
   renderCommandPlan,
   renderCommandPlanJson,
   renderPlanningDiagnostics,
   resolvePlannableCommand,
-  type AnkhPlanningContext,
 } from "./planning.js";
 import type {
   AnkhProviderManifestDiagnostic,
