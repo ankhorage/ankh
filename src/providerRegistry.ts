@@ -1,6 +1,6 @@
-import type { AnkhCapabilityId } from '@ankhorage/contracts/cli';
+import type { AnkhCapabilityId } from "@ankhorage/contracts/cli";
 
-import type { AnkhLoadedProvider } from './providerManifestLoader.js';
+import type { AnkhLoadedProvider } from "./providerManifestLoader.js";
 
 export interface AnkhCommandListing {
   readonly aliases?: readonly string[];
@@ -39,7 +39,11 @@ export function createProviderRegistry(
 
   return {
     findByCategory(category: string) {
-      return providerList.find((provider) => provider.manifest.category === category) ?? null;
+      return (
+        providerList.find(
+          (provider) => provider.manifest.category === category,
+        ) ?? null
+      );
     },
     listProviders() {
       return providerList;
@@ -48,7 +52,9 @@ export function createProviderRegistry(
       return commandList;
     },
     hasCategory(category: string) {
-      return providerList.some((provider) => provider.manifest.category === category);
+      return providerList.some(
+        (provider) => provider.manifest.category === category,
+      );
     },
   };
 }
