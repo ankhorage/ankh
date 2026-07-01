@@ -22,6 +22,17 @@ describe("parseArgv", () => {
     expect(parseArgv(["commands"])).toEqual({ kind: "commands" });
   });
 
+  it("recognizes plan and run as root built-ins", () => {
+    expect(parseArgv(["plan", "fixture", "workflow", "--json"])).toEqual({
+      kind: "plan",
+      tokens: ["fixture", "workflow", "--json"],
+    });
+    expect(parseArgv(["run", "fixture", "workflow"])).toEqual({
+      kind: "run",
+      tokens: ["fixture", "workflow"],
+    });
+  });
+
   it("recognizes category help requests", () => {
     expect(parseArgv(["infra", "--help"])).toEqual({
       kind: "category-help",
