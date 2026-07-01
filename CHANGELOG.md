@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1
+
+### Patch Changes
+
+- d0f9565: Load provider manifests for detailed `ankh commands` output and provider-backed category help.
+
 ## 0.3.0
 
 ### Minor Changes
