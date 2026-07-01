@@ -1,13 +1,13 @@
-import type { AnkhCommandProviderManifest } from "@ankhorage/contracts/cli";
+import type { AnkhCommandProviderManifest } from '@ankhorage/contracts/cli';
 
-import type { AnkhCommandContext } from "./commandContext.js";
-import type { AnkhPackageRegistry } from "./packageRegistry.js";
-import type { AnkhLoadedProvider } from "./providerManifestLoader.js";
+import type { AnkhCommandContext } from './commandContext.js';
+import type { AnkhPackageRegistry } from './packageRegistry.js';
+import type { AnkhLoadedProvider } from './providerManifestLoader.js';
 import type {
   AnkhCommandListing,
   AnkhProviderRegistry,
   AnkhResolvedProviderCommand,
-} from "./providerRegistry.js";
+} from './providerRegistry.js';
 
 export interface AnkhCommandExecutionContext extends AnkhCommandContext {
   readonly packageRegistry: AnkhPackageRegistry;
@@ -27,10 +27,7 @@ export interface AnkhCommandExecutionResult {
 
 export type AnkhCommandHandler = (
   request: AnkhCommandExecutionRequest,
-) =>
-  | void
-  | AnkhCommandExecutionResult
-  | Promise<void | AnkhCommandExecutionResult>;
+) => void | AnkhCommandExecutionResult | Promise<void | AnkhCommandExecutionResult>;
 
 export interface AnkhCommandHandlerBinding {
   readonly path: readonly [string, ...string[]];
@@ -48,7 +45,7 @@ export interface AnkhCommandExecutionDiagnostic {
   readonly packageJsonPath: string;
   readonly packageName: string;
   readonly providerModulePath?: string;
-  readonly severity: "error";
+  readonly severity: 'error';
 }
 
 interface AnkhResolvedExecutableCommand extends AnkhResolvedProviderCommand {
@@ -103,17 +100,15 @@ export function resolveExecutableCommand(
     };
   }
 
-  const handler = handlerResult.handlersByPath.get(
-    getCommandPathKey(resolvedCommand.command.path),
-  );
+  const handler = handlerResult.handlersByPath.get(getCommandPathKey(resolvedCommand.command.path));
 
   if (handler === undefined) {
     return {
       diagnostics: [
         createExecutionDiagnostic(resolvedCommand.provider, {
-          code: "provider-command-handler-missing",
+          code: 'provider-command-handler-missing',
           message: `Provider command "${resolvedCommand.command.path.join(
-            " ",
+            ' ',
           )}" does not have a handler binding.`,
         }),
       ],
@@ -135,16 +130,13 @@ interface ValidateProviderHandlersResult {
   readonly handlersByPath: ReadonlyMap<string, AnkhCommandHandler> | null;
 }
 
-function validateProviderHandlers(
-  provider: AnkhLoadedProvider,
-): ValidateProviderHandlersResult {
+function validateProviderHandlers(provider: AnkhLoadedProvider): ValidateProviderHandlersResult {
   if (!isRecord(provider.providerModuleDefaultExport)) {
     return {
       diagnostics: [
         createExecutionDiagnostic(provider, {
-          code: "provider-missing-command-handlers",
-          message:
-            "Provider module default export does not expose execution handlers.",
+          code: 'provider-missing-command-handlers',
+          message: 'Provider module default export does not expose execution handlers.',
         }),
       ],
       handlersByPath: null,
@@ -156,8 +148,8 @@ function validateProviderHandlers(
     return {
       diagnostics: [
         createExecutionDiagnostic(provider, {
-          code: "provider-missing-command-handlers",
-          message: "Provider does not define command handlers.",
+          code: 'provider-missing-command-handlers',
+          message: 'Provider does not define command handlers.',
         }),
       ],
       handlersByPath: null,
@@ -168,7 +160,7 @@ function validateProviderHandlers(
     return {
       diagnostics: [
         createExecutionDiagnostic(provider, {
-          code: "invalid-provider-command-handlers",
+          code: 'invalid-provider-command-handlers',
           message: 'Provider "handlers" must be an array when present.',
         }),
       ],
@@ -179,17 +171,15 @@ function validateProviderHandlers(
   const diagnostics: AnkhCommandExecutionDiagnostic[] = [];
   const handlersByPath = new Map<string, AnkhCommandHandler>();
   const manifestCommandPaths = new Set(
-    provider.manifest.commands.map((command) =>
-      getCommandPathKey(command.path),
-    ),
+    provider.manifest.commands.map((command) => getCommandPathKey(command.path)),
   );
 
   for (const rawHandlerBinding of rawHandlers) {
     if (!isRecord(rawHandlerBinding)) {
       diagnostics.push(
         createExecutionDiagnostic(provider, {
-          code: "invalid-provider-command-handler",
-          message: "Each provider command handler binding must be an object.",
+          code: 'invalid-provider-command-handler',
+          message: 'Each provider command handler binding must be an object.',
         }),
       );
       continue;
@@ -199,7 +189,7 @@ function validateProviderHandlers(
     if (path === null) {
       diagnostics.push(
         createExecutionDiagnostic(provider, {
-          code: "invalid-provider-command-handler-path",
+          code: 'invalid-provider-command-handler-path',
           message:
             'Each provider command handler "path" must be a non-empty array of non-empty strings.',
         }),
@@ -211,9 +201,9 @@ function validateProviderHandlers(
     if (!manifestCommandPaths.has(pathKey)) {
       diagnostics.push(
         createExecutionDiagnostic(provider, {
-          code: "provider-command-handler-unknown-path",
+          code: 'provider-command-handler-unknown-path',
           message: `Provider handler path "${path.join(
-            " ",
+            ' ',
           )}" does not match any manifest command path.`,
         }),
       );
@@ -223,8 +213,8 @@ function validateProviderHandlers(
     if (handlersByPath.has(pathKey)) {
       diagnostics.push(
         createExecutionDiagnostic(provider, {
-          code: "provider-duplicate-command-handler-path",
-          message: `Provider declares more than one handler for command path "${path.join(" ")}".`,
+          code: 'provider-duplicate-command-handler-path',
+          message: `Provider declares more than one handler for command path "${path.join(' ')}".`,
         }),
       );
       continue;
@@ -233,8 +223,8 @@ function validateProviderHandlers(
     if (!isCommandHandler(rawHandlerBinding.handler)) {
       diagnostics.push(
         createExecutionDiagnostic(provider, {
-          code: "provider-command-handler-not-function",
-          message: `Provider handler for command path "${path.join(" ")}" must be a function.`,
+          code: 'provider-command-handler-not-function',
+          message: `Provider handler for command path "${path.join(' ')}" must be a function.`,
         }),
       );
       continue;
@@ -248,8 +238,8 @@ function validateProviderHandlers(
     if (!handlersByPath.has(pathKey)) {
       diagnostics.push(
         createExecutionDiagnostic(provider, {
-          code: "provider-command-handler-missing",
-          message: `Provider command "${command.path.join(" ")}" does not have a handler binding.`,
+          code: 'provider-command-handler-missing',
+          message: `Provider command "${command.path.join(' ')}" does not have a handler binding.`,
         }),
       );
     }
@@ -282,7 +272,7 @@ function createExecutionDiagnostic(
     packageJsonPath: provider.discoveredPackage.packageJsonPath,
     packageName: provider.discoveredPackage.packageName,
     providerModulePath: provider.providerModulePath,
-    severity: "error",
+    severity: 'error',
   };
 }
 
@@ -293,7 +283,7 @@ function getCommandPath(value: unknown): readonly [string, ...string[]] | null {
 
   const parts: string[] = [];
   for (const segment of value) {
-    if (typeof segment !== "string" || segment.trim().length === 0) {
+    if (typeof segment !== 'string' || segment.trim().length === 0) {
       return null;
     }
     parts.push(segment);
@@ -308,13 +298,13 @@ function getCommandPath(value: unknown): readonly [string, ...string[]] | null {
 }
 
 function getCommandPathKey(path: readonly string[]): string {
-  return path.join("\0");
+  return path.join('\0');
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
+  return typeof value === 'object' && value !== null;
 }
 
 function isCommandHandler(value: unknown): value is AnkhCommandHandler {
-  return typeof value === "function";
+  return typeof value === 'function';
 }

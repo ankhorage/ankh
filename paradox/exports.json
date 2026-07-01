@@ -160,11 +160,7 @@
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
-    "relatedSymbols": [
-      "AnkhCommandExecutionContext",
-      "AnkhCommandListing",
-      "AnkhLoadedProvider"
-    ],
+    "relatedSymbols": ["AnkhCommandExecutionContext", "AnkhCommandListing", "AnkhLoadedProvider"],
     "signatures": [],
     "members": [
       {
@@ -251,7 +247,7 @@
     "modulePath": "src/execution.ts",
     "sourceLocation": {
       "filePath": "src/execution.ts",
-      "line": 35,
+      "line": 32,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -359,7 +355,7 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 15,
+      "line": 14,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -485,7 +481,7 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 23,
+      "line": 22,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -546,14 +542,11 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 32,
+      "line": 31,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
-    "relatedSymbols": [
-      "AnkhDiscoveredPackage",
-      "AnkhMetadataDiscoveryDiagnostic"
-    ],
+    "relatedSymbols": ["AnkhDiscoveredPackage", "AnkhMetadataDiscoveryDiagnostic"],
     "signatures": [],
     "members": [
       {
@@ -694,13 +687,16 @@
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
-    "relatedSymbols": [
-      "AnkhCommandListing",
-      "AnkhLoadedProvider",
-      "AnkhResolvedProviderCommand"
-    ],
+    "relatedSymbols": ["AnkhCommandListing", "AnkhLoadedProvider", "AnkhResolvedProviderCommand"],
     "signatures": [],
     "members": [
+      {
+        "name": "findAllByCategory",
+        "kind": "method",
+        "type": "(category: string) => readonly AnkhLoadedProvider[]",
+        "required": true,
+        "description": null
+      },
       {
         "name": "findByCategory",
         "kind": "method",
@@ -788,7 +784,7 @@
     "modulePath": "src/execution.ts",
     "sourceLocation": {
       "filePath": "src/execution.ts",
-      "line": 40,
+      "line": 37,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -906,7 +902,7 @@
     "modulePath": "src/providerRegistry.ts",
     "sourceLocation": {
       "filePath": "src/providerRegistry.ts",
-      "line": 33,
+      "line": 31,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -938,7 +934,7 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 46,
+      "line": 45,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1085,7 +1081,7 @@
     "modulePath": "src/cli.ts",
     "sourceLocation": {
       "filePath": "src/cli.ts",
-      "line": 65,
+      "line": 62,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],

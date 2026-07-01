@@ -1,15 +1,12 @@
-import type { AnkhCliRunResult, AnkhCommandContext } from "./commandContext.js";
-import { createDefaultCommandContext } from "./commandContext.js";
+import type { AnkhCliRunResult, AnkhCommandContext } from './commandContext.js';
+import { createDefaultCommandContext } from './commandContext.js';
 import type {
   AnkhDiscoveredPackage,
   AnkhMetadataDiscoveryResult,
   DiscoverAnkhPackagesOptions,
-} from "./discovery.js";
-import { discoverAnkhPackages } from "./discovery.js";
-import {
-  type AnkhCommandExecutionContext,
-  resolveExecutableCommand,
-} from "./execution.js";
+} from './discovery.js';
+import { discoverAnkhPackages } from './discovery.js';
+import { type AnkhCommandExecutionContext, resolveExecutableCommand } from './execution.js';
 import {
   renderCategoryHelp,
   renderCategoryProviderUnavailable,
@@ -24,17 +21,17 @@ import {
   renderUnknownCategory,
   renderUnknownCommand,
   renderUnknownProviderCommand,
-} from "./help.js";
-import type { AnkhPackageRegistry } from "./packageRegistry.js";
-import { createPackageRegistry } from "./packageRegistry.js";
-import { parseArgv } from "./parser.js";
+} from './help.js';
+import type { AnkhPackageRegistry } from './packageRegistry.js';
+import { createPackageRegistry } from './packageRegistry.js';
+import { parseArgv } from './parser.js';
 import type {
   AnkhProviderManifestDiagnostic,
   LoadProviderManifestsResult,
-} from "./providerManifestLoader.js";
-import { loadProviderManifests } from "./providerManifestLoader.js";
-import type { AnkhProviderRegistry } from "./providerRegistry.js";
-import { createProviderRegistry } from "./providerRegistry.js";
+} from './providerManifestLoader.js';
+import { loadProviderManifests } from './providerManifestLoader.js';
+import type { AnkhProviderRegistry } from './providerRegistry.js';
+import { createProviderRegistry } from './providerRegistry.js';
 
 export type DiscoverAnkhPackagesFn = (
   options: DiscoverAnkhPackagesOptions,
@@ -55,7 +52,7 @@ export interface RunCliOptions {
 interface ResolvedCliState {
   readonly packageRegistry: AnkhPackageRegistry;
   readonly providerRegistry: AnkhProviderRegistry;
-  readonly metadataDiagnostics: AnkhMetadataDiscoveryResult["diagnostics"];
+  readonly metadataDiagnostics: AnkhMetadataDiscoveryResult['diagnostics'];
   readonly providerDiagnostics: readonly AnkhProviderManifestDiagnostic[];
 }
 
@@ -72,13 +69,13 @@ export async function runCli(
   const request = await Promise.resolve(parseArgv(argv));
 
   switch (request.kind) {
-    case "help":
+    case 'help':
       context.writeStdout(renderRootHelp());
       return { exitCode: 0 };
-    case "version":
+    case 'version':
       context.writeStdout(`${context.version}\n`);
       return { exitCode: 0 };
-    case "commands": {
+    case 'commands': {
       const resolvedState = await resolveCliState({
         context,
         discoverPackages,
@@ -86,7 +83,7 @@ export async function runCli(
         options,
       });
 
-      if ("exitCode" in resolvedState) {
+      if ('exitCode' in resolvedState) {
         return resolvedState;
       }
 
@@ -100,20 +97,20 @@ export async function runCli(
       const metadataDiagnosticsOutput = renderMetadataDiscoveryDiagnostics(
         resolvedState.metadataDiagnostics,
       );
-      if (metadataDiagnosticsOutput !== "") {
+      if (metadataDiagnosticsOutput !== '') {
         context.writeStderr(metadataDiagnosticsOutput);
       }
 
       const providerDiagnosticsOutput = renderProviderManifestDiagnostics(
         resolvedState.providerDiagnostics,
       );
-      if (providerDiagnosticsOutput !== "") {
+      if (providerDiagnosticsOutput !== '') {
         context.writeStderr(providerDiagnosticsOutput);
       }
 
       return { exitCode: 0 };
     }
-    case "category-help": {
+    case 'category-help': {
       const resolvedState = await resolveCliState({
         context,
         discoverPackages,
@@ -121,21 +118,17 @@ export async function runCli(
         options,
       });
 
-      if ("exitCode" in resolvedState) {
+      if ('exitCode' in resolvedState) {
         return resolvedState;
       }
 
-      const discoveredPackage = resolvedState.packageRegistry.findByCategory(
-        request.category,
-      );
+      const discoveredPackage = resolvedState.packageRegistry.findByCategory(request.category);
       if (discoveredPackage === null) {
         context.writeStderr(renderUnknownCategory(request.category));
         return { exitCode: 1 };
       }
 
-      const loadedProvider = resolvedState.providerRegistry.findByCategory(
-        request.category,
-      );
+      const loadedProvider = resolvedState.providerRegistry.findByCategory(request.category);
       if (loadedProvider === null) {
         const providerDiagnostics = resolvedState.providerDiagnostics.filter(
           (diagnostic) =>
@@ -144,27 +137,20 @@ export async function runCli(
         );
 
         if (providerDiagnostics.length > 0) {
-          context.writeStderr(
-            renderProviderManifestDiagnostics(providerDiagnostics),
-          );
+          context.writeStderr(renderProviderManifestDiagnostics(providerDiagnostics));
         } else {
           context.writeStderr(
-            renderCategoryProviderUnavailable(
-              request.category,
-              discoveredPackage.packageName,
-            ),
+            renderCategoryProviderUnavailable(request.category, discoveredPackage.packageName),
           );
         }
 
         return { exitCode: 1 };
       }
 
-      context.writeStdout(
-        renderCategoryHelp(request.category, resolvedState.providerRegistry),
-      );
+      context.writeStdout(renderCategoryHelp(request.category, resolvedState.providerRegistry));
       return { exitCode: 0 };
     }
-    case "dispatch":
+    case 'dispatch':
       return dispatchProviderCommand({
         context,
         discoverPackages,
@@ -189,20 +175,18 @@ async function dispatchProviderCommand(input: {
     options: input.options,
   });
 
-  if ("exitCode" in resolvedState) {
+  if ('exitCode' in resolvedState) {
     return resolvedState;
   }
 
   const [category, ...commandTokens] = input.tokens;
-  const discoveredPackage =
-    resolvedState.packageRegistry.findByCategory(category);
+  const discoveredPackage = resolvedState.packageRegistry.findByCategory(category);
   if (discoveredPackage === null) {
     input.context.writeStderr(renderUnknownCommand(input.tokens));
     return { exitCode: 1 };
   }
 
-  const loadedProvider =
-    resolvedState.providerRegistry.findByCategory(category);
+  const loadedProvider = resolvedState.providerRegistry.findByCategory(category);
   if (loadedProvider === null) {
     const providerDiagnostics = resolvedState.providerDiagnostics.filter(
       (diagnostic) =>
@@ -211,15 +195,10 @@ async function dispatchProviderCommand(input: {
     );
 
     if (providerDiagnostics.length > 0) {
-      input.context.writeStderr(
-        renderProviderManifestDiagnostics(providerDiagnostics),
-      );
+      input.context.writeStderr(renderProviderManifestDiagnostics(providerDiagnostics));
     } else {
       input.context.writeStderr(
-        renderCategoryProviderUnavailable(
-          category,
-          discoveredPackage.packageName,
-        ),
+        renderCategoryProviderUnavailable(category, discoveredPackage.packageName),
       );
     }
 
@@ -234,15 +213,11 @@ async function dispatchProviderCommand(input: {
 
   if (executionResult.resolvedCommand === null) {
     if (executionResult.diagnostics.length > 0) {
-      input.context.writeStderr(
-        renderExecutionDiagnostics(executionResult.diagnostics),
-      );
+      input.context.writeStderr(renderExecutionDiagnostics(executionResult.diagnostics));
       return { exitCode: 1 };
     }
 
-    input.context.writeStderr(
-      renderUnknownProviderCommand(category, commandTokens),
-    );
+    input.context.writeStderr(renderUnknownProviderCommand(category, commandTokens));
     return { exitCode: 1 };
   }
 
@@ -265,11 +240,7 @@ async function dispatchProviderCommand(input: {
     };
   } catch (error) {
     input.context.writeStderr(
-      renderCommandExecutionFailure(
-        category,
-        executionResult.resolvedCommand.command.path,
-        error,
-      ),
+      renderCommandExecutionFailure(category, executionResult.resolvedCommand.command.path, error),
     );
     return { exitCode: 1 };
   }
@@ -281,10 +252,7 @@ async function resolveCliState(input: {
   readonly loadProviders: LoadProviderManifestsFn;
   readonly options: RunCliOptions;
 }): Promise<ResolvedCliState | AnkhCliRunResult> {
-  if (
-    input.options.registry !== undefined &&
-    input.options.providerRegistry !== undefined
-  ) {
+  if (input.options.registry !== undefined && input.options.providerRegistry !== undefined) {
     return {
       packageRegistry: input.options.registry,
       providerRegistry: input.options.providerRegistry,
@@ -310,8 +278,7 @@ async function resolveCliState(input: {
           : await input.loadProviders(discoveryResult.packages);
 
       const providerRegistry =
-        input.options.providerRegistry ??
-        createProviderRegistry(providerLoadResult.providers);
+        input.options.providerRegistry ?? createProviderRegistry(providerLoadResult.providers);
 
       return {
         packageRegistry,

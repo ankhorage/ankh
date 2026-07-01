@@ -72,7 +72,7 @@
       "title": "Bootstrap status",
       "description": "Bootstrap status\n\n`@ankhorage/ankh` is the root CLI front door and command bus for Ankhorage.\n\n`ankh commands` discovers Ankh package metadata, attempts to load provider\nmanifests, and renders detailed command descriptors for providers that load\nsuccessfully.\n\nNo domain behavior belongs in the root CLI. Domain behavior stays in provider\npackages such as infra, templates, studio, board, doctor, and dev.\n\nCurrent built-ins are `help`, `commands`, and `version`.\n\n`ankh <category> --help` and `ankh <category> help` render provider-backed\ncategory help when a valid provider manifest is available.\n\n`ankh <category> <command> ...args` now performs basic direct dispatch to a\nloaded provider handler. The root CLI stays a thin router: providers own\noption parsing, validation, output, and behavior.\n\nPlanning/composition remains deferred until `ankhorage/ankh#3`.",
       "language": "ts",
-      "code": "import { runCli } from \"./cli.js\";\n\nawait runCli([\"--help\"]);",
+      "code": "import { runCli } from './cli.js';\n\nawait runCli(['--help']);",
       "sourcePath": "src/readme-usage.ts"
     }
   ],
@@ -110,22 +110,13 @@
         "src/providerManifestLoader.ts",
         "src/providerRegistry.ts"
       ],
-      "exports": [
-        "DiscoverAnkhPackagesFn",
-        "LoadProviderManifestsFn",
-        "runCli",
-        "RunCliOptions"
-      ]
+      "exports": ["DiscoverAnkhPackagesFn", "LoadProviderManifestsFn", "runCli", "RunCliOptions"]
     },
     {
       "path": "src/commandContext.ts",
       "isEntrypoint": false,
       "dependencies": ["package.json"],
-      "exports": [
-        "AnkhCliRunResult",
-        "AnkhCommandContext",
-        "createDefaultCommandContext"
-      ]
+      "exports": ["AnkhCliRunResult", "AnkhCommandContext", "createDefaultCommandContext"]
     },
     {
       "path": "src/discovery.ts",
@@ -497,11 +488,7 @@
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": [
-        "AnkhCommandExecutionContext",
-        "AnkhCommandListing",
-        "AnkhLoadedProvider"
-      ],
+      "relatedSymbols": ["AnkhCommandExecutionContext", "AnkhCommandListing", "AnkhLoadedProvider"],
       "signatures": [],
       "members": [
         {
@@ -588,7 +575,7 @@
       "modulePath": "src/execution.ts",
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 35,
+        "line": 32,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -696,7 +683,7 @@
       "modulePath": "src/discovery.ts",
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 15,
+        "line": 14,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -822,7 +809,7 @@
       "modulePath": "src/discovery.ts",
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 23,
+        "line": 22,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -883,14 +870,11 @@
       "modulePath": "src/discovery.ts",
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 32,
+        "line": 31,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": [
-        "AnkhDiscoveredPackage",
-        "AnkhMetadataDiscoveryDiagnostic"
-      ],
+      "relatedSymbols": ["AnkhDiscoveredPackage", "AnkhMetadataDiscoveryDiagnostic"],
       "signatures": [],
       "members": [
         {
@@ -1031,13 +1015,16 @@
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": [
-        "AnkhCommandListing",
-        "AnkhLoadedProvider",
-        "AnkhResolvedProviderCommand"
-      ],
+      "relatedSymbols": ["AnkhCommandListing", "AnkhLoadedProvider", "AnkhResolvedProviderCommand"],
       "signatures": [],
       "members": [
+        {
+          "name": "findAllByCategory",
+          "kind": "method",
+          "type": "(category: string) => readonly AnkhLoadedProvider[]",
+          "required": true,
+          "description": null
+        },
         {
           "name": "findByCategory",
           "kind": "method",
@@ -1125,7 +1112,7 @@
       "modulePath": "src/execution.ts",
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 40,
+        "line": 37,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -1243,7 +1230,7 @@
       "modulePath": "src/providerRegistry.ts",
       "sourceLocation": {
         "filePath": "src/providerRegistry.ts",
-        "line": 33,
+        "line": 31,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -1275,7 +1262,7 @@
       "modulePath": "src/discovery.ts",
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 46,
+        "line": 45,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -1311,10 +1298,7 @@
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": [
-        "AnkhDiscoveredPackage",
-        "LoadProviderManifestsResult"
-      ],
+      "relatedSymbols": ["AnkhDiscoveredPackage", "LoadProviderManifestsResult"],
       "signatures": [
         {
           "label": "(packages: readonly AnkhDiscoveredPackage[]) => Promise<LoadProviderManifestsResult>",
@@ -1346,10 +1330,7 @@
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": [
-        "AnkhLoadedProvider",
-        "AnkhProviderManifestDiagnostic"
-      ],
+      "relatedSymbols": ["AnkhLoadedProvider", "AnkhProviderManifestDiagnostic"],
       "signatures": [],
       "members": [
         {
@@ -1428,7 +1409,7 @@
       "modulePath": "src/cli.ts",
       "sourceLocation": {
         "filePath": "src/cli.ts",
-        "line": 65,
+        "line": 62,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -1465,7 +1446,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli.ts",
-        "line": 65,
+        "line": 62,
         "column": 1
       }
     },
@@ -1474,7 +1455,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli.ts",
-        "line": 178,
+        "line": 164,
         "column": 1
       }
     },
@@ -1483,7 +1464,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli.ts",
-        "line": 278,
+        "line": 249,
         "column": 1
       }
     },
@@ -1501,7 +1482,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 46,
+        "line": 45,
         "column": 1
       }
     },
@@ -1510,7 +1491,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 97,
+        "line": 96,
         "column": 1
       }
     },
@@ -1519,7 +1500,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 140,
+        "line": 136,
         "column": 1
       }
     },
@@ -1528,7 +1509,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 157,
+        "line": 153,
         "column": 1
       }
     },
@@ -1537,7 +1518,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 63,
+        "line": 60,
         "column": 1
       }
     },
@@ -1546,7 +1527,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 116,
+        "line": 133,
         "column": 1
       }
     },
@@ -1555,7 +1536,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 249,
+        "line": 261,
         "column": 1
       }
     },
@@ -1564,7 +1545,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 267,
+        "line": 279,
         "column": 1
       }
     },
@@ -1573,7 +1554,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 288,
+        "line": 300,
         "column": 1
       }
     },
@@ -1582,7 +1563,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 292,
+        "line": 304,
         "column": 1
       }
     },
@@ -1591,7 +1572,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 296,
+        "line": 308,
         "column": 1
       }
     },
@@ -1600,7 +1581,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 9,
+        "line": 6,
         "column": 1
       }
     },
@@ -1609,7 +1590,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 29,
+        "line": 26,
         "column": 1
       }
     },
@@ -1618,7 +1599,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 94,
+        "line": 85,
         "column": 1
       }
     },
@@ -1627,7 +1608,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 139,
+        "line": 130,
         "column": 1
       }
     },
@@ -1636,7 +1617,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 145,
+        "line": 136,
         "column": 1
       }
     },
@@ -1645,7 +1626,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 151,
+        "line": 142,
         "column": 1
       }
     },
@@ -1654,7 +1635,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 157,
+        "line": 148,
         "column": 1
       }
     },
@@ -1663,7 +1644,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 167,
+        "line": 155,
         "column": 1
       }
     },
@@ -1672,7 +1653,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 174,
+        "line": 162,
         "column": 1
       }
     },
@@ -1681,7 +1662,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 181,
+        "line": 168,
         "column": 1
       }
     },
@@ -1690,7 +1671,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 190,
+        "line": 172,
         "column": 1
       }
     },
@@ -1699,7 +1680,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 200,
+        "line": 182,
         "column": 1
       }
     },
@@ -1708,7 +1689,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 214,
+        "line": 193,
         "column": 1
       }
     },
@@ -1717,7 +1698,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 227,
+        "line": 206,
         "column": 1
       }
     },
@@ -1726,7 +1707,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 262,
+        "line": 237,
         "column": 1
       }
     },
@@ -1735,7 +1716,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 32,
+        "line": 29,
         "column": 1
       }
     },
@@ -1744,7 +1725,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 147,
+        "line": 143,
         "column": 1
       }
     },
@@ -1753,7 +1734,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 258,
+        "line": 251,
         "column": 1
       }
     },
@@ -1762,7 +1743,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 267,
+        "line": 260,
         "column": 1
       }
     },
@@ -1771,7 +1752,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 274,
+        "line": 265,
         "column": 1
       }
     },
@@ -1780,7 +1761,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 278,
+        "line": 269,
         "column": 1
       }
     },
@@ -1789,7 +1770,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 291,
+        "line": 282,
         "column": 1
       }
     },
@@ -1825,7 +1806,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 130,
+        "line": 124,
         "column": 1
       }
     },
@@ -1834,7 +1815,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 270,
+        "line": 264,
         "column": 1
       }
     },
@@ -1843,7 +1824,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 348,
+        "line": 338,
         "column": 1
       }
     },
@@ -1852,7 +1833,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 403,
+        "line": 391,
         "column": 1
       }
     },
@@ -1861,7 +1842,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 535,
+        "line": 520,
         "column": 1
       }
     },
@@ -1870,7 +1851,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 621,
+        "line": 606,
         "column": 1
       }
     },
@@ -1879,7 +1860,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 625,
+        "line": 610,
         "column": 1
       }
     },
@@ -1888,7 +1869,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 647,
+        "line": 632,
         "column": 1
       }
     },
@@ -1897,7 +1878,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 651,
+        "line": 636,
         "column": 1
       }
     },
@@ -1906,7 +1887,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 672,
+        "line": 657,
         "column": 1
       }
     },
@@ -1915,7 +1896,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 681,
+        "line": 666,
         "column": 1
       }
     },
@@ -1924,7 +1905,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 688,
+        "line": 671,
         "column": 1
       }
     },
@@ -1933,7 +1914,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 692,
+        "line": 675,
         "column": 1
       }
     },
@@ -1942,7 +1923,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 706,
+        "line": 686,
         "column": 1
       }
     },
@@ -1951,7 +1932,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 722,
+        "line": 702,
         "column": 1
       }
     },
@@ -1960,7 +1941,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerRegistry.ts",
-        "line": 33,
+        "line": 31,
         "column": 1
       }
     },
@@ -1969,7 +1950,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerRegistry.ts",
-        "line": 112,
+        "line": 107,
         "column": 1
       }
     },
@@ -1978,7 +1959,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerRegistry.ts",
-        "line": 128,
+        "line": 123,
         "column": 1
       }
     },
@@ -1996,7 +1977,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 45,
+        "line": 42,
         "column": 1
       }
     },
@@ -2005,7 +1986,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 70,
+        "line": 64,
         "column": 1
       }
     },
@@ -2014,7 +1995,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 96,
+        "line": 90,
         "column": 1
       }
     },
@@ -2023,7 +2004,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 126,
+        "line": 118,
         "column": 1
       }
     },
@@ -2032,7 +2013,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 157,
+        "line": 145,
         "column": 1
       }
     },
@@ -2041,7 +2022,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 163,
+        "line": 149,
         "column": 1
       }
     },
@@ -2050,7 +2031,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 177,
+        "line": 161,
         "column": 1
       }
     },
@@ -2059,7 +2040,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 186,
+        "line": 170,
         "column": 1
       }
     },
@@ -2068,7 +2049,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 202,
+        "line": 186,
         "column": 1
       }
     },
@@ -2077,7 +2058,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 207,
+        "line": 191,
         "column": 1
       }
     }
@@ -2656,6 +2637,18 @@
       },
       {
         "fromSymbol": "resolveExecutableCommand",
+        "toSymbol": "findAllByCategory",
+        "callExpression": "providerRegistry.findAllByCategory",
+        "sourcePath": "src/execution.ts"
+      },
+      {
+        "fromSymbol": "resolveExecutableCommand",
+        "toSymbol": "createExecutionDiagnostic",
+        "callExpression": "createExecutionDiagnostic",
+        "sourcePath": "src/execution.ts"
+      },
+      {
+        "fromSymbol": "resolveExecutableCommand",
         "toSymbol": "resolveCommand",
         "callExpression": "providerRegistry.resolveCommand",
         "sourcePath": "src/execution.ts"
@@ -2670,12 +2663,6 @@
         "fromSymbol": "resolveExecutableCommand",
         "toSymbol": "getCommandPathKey",
         "callExpression": "getCommandPathKey",
-        "sourcePath": "src/execution.ts"
-      },
-      {
-        "fromSymbol": "resolveExecutableCommand",
-        "toSymbol": "createExecutionDiagnostic",
-        "callExpression": "createExecutionDiagnostic",
         "sourcePath": "src/execution.ts"
       },
       {
@@ -3528,6 +3515,12 @@
         "fromSymbol": "tests/providerRegistry.test.ts",
         "toSymbol": "resolveCommand",
         "callExpression": "registry.resolveCommand",
+        "sourcePath": "tests/providerRegistry.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerRegistry.test.ts",
+        "toSymbol": "findAllByCategory",
+        "callExpression": "registry.findAllByCategory",
         "sourcePath": "tests/providerRegistry.test.ts"
       }
     ],
