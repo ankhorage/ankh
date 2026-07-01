@@ -72,7 +72,11 @@ const fixturePlan = {
   version: 1,
 } as const satisfies AnkhCommandPlan;
 
-const [inspectSourceStep, seedTemplateStep, syncProjectStep] = fixturePlan.steps;
+const [
+  inspectSourceStep,
+  seedTemplateStep,
+  syncProjectStep,
+] = fixturePlan.steps;
 
 const blockedFixturePlan = {
   ...fixturePlan,
@@ -120,10 +124,12 @@ function createLoadedProvider(
   };
 }
 
-function createPlanningProvider(args: {
-  readonly onExecute?: () => void;
-  readonly plan?: AnkhCommandPlan;
-} = {}): AnkhRuntimeCommandProvider & {
+function createPlanningProvider(
+  args: {
+    readonly onExecute?: () => void;
+    readonly plan?: AnkhCommandPlan;
+  } = {},
+): AnkhRuntimeCommandProvider & {
   readonly planningHandlers: readonly [
     {
       readonly path: readonly ["workflow"];
@@ -177,9 +183,9 @@ function createMemoryContext(version = packageJson.version): {
   };
 }
 
-function createPlanningRun(args: {
-  readonly provider?: ReturnType<typeof createPlanningProvider>;
-} = {}) {
+function createPlanningRun(
+  args: { readonly provider?: ReturnType<typeof createPlanningProvider> } = {},
+) {
   const provider = args.provider ?? createPlanningProvider();
   return {
     discoverPackages: () =>
