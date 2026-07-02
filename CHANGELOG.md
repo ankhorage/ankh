@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.1
+
+### Patch Changes
+
+- 3c2284c: Release trigger
+
 ## 0.6.0
 
 ### Minor Changes
