@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0
+
+### Minor Changes
+
+- 283dd45: Add inspectable provider command planning infrastructure for `ankh plan` with deterministic human and JSON output.
+
 ## 0.4.0
 
 ### Minor Changes
