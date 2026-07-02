@@ -25,6 +25,12 @@ import { runCli } from "./cli.js";
  * inspectable `AnkhCommandPlan` without executing provider command handlers.
  * Use `--json` for stable machine-readable output.
  *
+ * Provider packages expose planning through optional `planningHandlers` on
+ * their `AnkhRuntimeCommandProvider` default export. Planning is a provider
+ * contract, not workflow execution: the root CLI routes to provider planning
+ * handlers and renders returned plans, but it does not compose real workflows,
+ * create projects, run commands, or execute destructive steps.
+ *
  * `ankh run ...` remains deferred until explicit execution semantics are
  * designed.
  *
