@@ -88,7 +88,7 @@
     "modulePath": "src/execution.ts",
     "sourceLocation": {
       "filePath": "src/execution.ts",
-      "line": 12,
+      "line": 13,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -156,7 +156,7 @@
     "modulePath": "src/execution.ts",
     "sourceLocation": {
       "filePath": "src/execution.ts",
-      "line": 17,
+      "line": 18,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -207,7 +207,7 @@
     "modulePath": "src/execution.ts",
     "sourceLocation": {
       "filePath": "src/execution.ts",
-      "line": 24,
+      "line": 25,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -233,7 +233,7 @@
     "modulePath": "src/execution.ts",
     "sourceLocation": {
       "filePath": "src/execution.ts",
-      "line": 28,
+      "line": 29,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -251,7 +251,7 @@
     "modulePath": "src/execution.ts",
     "sourceLocation": {
       "filePath": "src/execution.ts",
-      "line": 35,
+      "line": 36,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -344,6 +344,189 @@
         "name": "summary",
         "kind": "property",
         "type": "string",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhCommandPlan",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/planning.ts",
+    "sourceLocation": {
+      "filePath": "src/planning.ts",
+      "line": 29,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhCommandPlanDiagnostic", "AnkhCommandPlanStep"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "diagnostics",
+        "kind": "property",
+        "type": "readonly AnkhCommandPlanDiagnostic[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "kind",
+        "kind": "property",
+        "type": "\"ankh-command-plan\"",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "steps",
+        "kind": "property",
+        "type": "readonly AnkhCommandPlanStep[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "title",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "version",
+        "kind": "property",
+        "type": "1",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhCommandPlanDiagnostic",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/planning.ts",
+    "sourceLocation": {
+      "filePath": "src/planning.ts",
+      "line": 10,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "code",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "message",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "severity",
+        "kind": "property",
+        "type": "\"warning\" | \"error\" | \"info\"",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "stepId",
+        "kind": "property",
+        "type": "string | undefined",
+        "required": false,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhCommandPlanStep",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/planning.ts",
+    "sourceLocation": {
+      "filePath": "src/planning.ts",
+      "line": 17,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "capability",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "dependsOn",
+        "kind": "property",
+        "type": "readonly string[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "destructive",
+        "kind": "property",
+        "type": "boolean",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "id",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "inputs",
+        "kind": "property",
+        "type": "unknown",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "label",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "outputs",
+        "kind": "property",
+        "type": "unknown",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "providerId",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "status",
+        "kind": "property",
+        "type": "\"planned\" | \"blocked\"",
         "required": true,
         "description": null
       }
@@ -614,6 +797,176 @@
     "structuredRows": []
   },
   {
+    "name": "AnkhPlanningContext",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/planning.ts",
+    "sourceLocation": {
+      "filePath": "src/planning.ts",
+      "line": 37,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhPackageRegistry", "AnkhProviderRegistry"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "cwd",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "env",
+        "kind": "property",
+        "type": "Readonly<Record<string, string | undefined>>",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "packageRegistry",
+        "kind": "property",
+        "type": "AnkhPackageRegistry",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "providerRegistry",
+        "kind": "property",
+        "type": "AnkhProviderRegistry",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "version",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "writeStderr",
+        "kind": "method",
+        "type": "(text: string) => void",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "writeStdout",
+        "kind": "method",
+        "type": "(text: string) => void",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhPlanningHandler",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "unknown",
+    "modulePath": "src/planning.ts",
+    "sourceLocation": {
+      "filePath": "src/planning.ts",
+      "line": 49,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhPlanningHandlerBinding",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/planning.ts",
+    "sourceLocation": {
+      "filePath": "src/planning.ts",
+      "line": 53,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhPlanningHandler"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "handler",
+        "kind": "property",
+        "type": "AnkhPlanningHandler",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "path",
+        "kind": "property",
+        "type": "readonly [string, ...string[]]",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhPlanningRequest",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/planning.ts",
+    "sourceLocation": {
+      "filePath": "src/planning.ts",
+      "line": 42,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [
+      "AnkhCommandListing",
+      "AnkhLoadedProvider",
+      "AnkhPlanningContext"
+    ],
+    "signatures": [],
+    "members": [
+      {
+        "name": "argv",
+        "kind": "property",
+        "type": "readonly string[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "command",
+        "kind": "property",
+        "type": "AnkhCommandListing",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "context",
+        "kind": "property",
+        "type": "AnkhPlanningContext",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "provider",
+        "kind": "property",
+        "type": "AnkhLoadedProvider",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
     "name": "AnkhProviderManifestDiagnostic",
     "description": null,
     "isReadme": false,
@@ -795,11 +1148,14 @@
     "modulePath": "src/execution.ts",
     "sourceLocation": {
       "filePath": "src/execution.ts",
-      "line": 40,
+      "line": 41,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhCommandHandlerBinding"],
+    "relatedSymbols": [
+      "AnkhCommandHandlerBinding",
+      "AnkhPlanningHandlerBinding"
+    ],
     "signatures": [],
     "members": [
       {
@@ -835,6 +1191,13 @@
         "kind": "property",
         "type": "string",
         "required": true,
+        "description": null
+      },
+      {
+        "name": "planningHandlers",
+        "kind": "property",
+        "type": "readonly AnkhPlanningHandlerBinding[] | undefined",
+        "required": false,
         "description": null
       },
       {
@@ -1042,7 +1405,7 @@
     "modulePath": "src/parser.ts",
     "sourceLocation": {
       "filePath": "src/parser.ts",
-      "line": 17,
+      "line": 19,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1092,7 +1455,7 @@
     "modulePath": "src/cli.ts",
     "sourceLocation": {
       "filePath": "src/cli.ts",
-      "line": 65,
+      "line": 78,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],

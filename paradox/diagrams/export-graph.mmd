@@ -11,6 +11,7 @@ graph LR
   module_src_packageMetadata_ts["src/packageMetadata.ts"]
   module_src_packageRegistry_ts["src/packageRegistry.ts"]
   module_src_parser_ts["src/parser.ts"]
+  module_src_planning_ts["src/planning.ts"]
   module_src_providerManifestLoader_ts["src/providerManifestLoader.ts"]
   module_src_providerRegistry_ts["src/providerRegistry.ts"]
   module_src_workspace_ts["src/workspace.ts"]
@@ -20,6 +21,7 @@ graph LR
   module_tests_package_test_ts["tests/package.test.ts"]
   module_tests_packageRegistry_test_ts["tests/packageRegistry.test.ts"]
   module_tests_parser_test_ts["tests/parser.test.ts"]
+  module_tests_planning_test_ts["tests/planning.test.ts"]
   module_tests_providerManifestLoader_test_ts["tests/providerManifestLoader.test.ts"]
   module_tests_providerRegistry_test_ts["tests/providerRegistry.test.ts"]
   export_AnkhCliRunResult["AnkhCliRunResult"]
@@ -44,6 +46,14 @@ graph LR
   export_AnkhCommandHandlerBinding -.-> export_AnkhCommandHandler
   export_AnkhCommandListing["AnkhCommandListing"]
   module_src_providerRegistry_ts --> export_AnkhCommandListing
+  export_AnkhCommandPlan["AnkhCommandPlan"]
+  module_src_planning_ts --> export_AnkhCommandPlan
+  export_AnkhCommandPlan -.-> export_AnkhCommandPlanDiagnostic
+  export_AnkhCommandPlan -.-> export_AnkhCommandPlanStep
+  export_AnkhCommandPlanDiagnostic["AnkhCommandPlanDiagnostic"]
+  module_src_planning_ts --> export_AnkhCommandPlanDiagnostic
+  export_AnkhCommandPlanStep["AnkhCommandPlanStep"]
+  module_src_planning_ts --> export_AnkhCommandPlanStep
   export_AnkhDiscoveredPackage["AnkhDiscoveredPackage"]
   module_src_discovery_ts --> export_AnkhDiscoveredPackage
   export_AnkhDiscoveredPackage -.-> export_AnkhDiscoverySource
@@ -62,6 +72,20 @@ graph LR
   export_AnkhPackageRegistry["AnkhPackageRegistry"]
   module_src_packageRegistry_ts --> export_AnkhPackageRegistry
   export_AnkhPackageRegistry -.-> export_AnkhDiscoveredPackage
+  export_AnkhPlanningContext["AnkhPlanningContext"]
+  module_src_planning_ts --> export_AnkhPlanningContext
+  export_AnkhPlanningContext -.-> export_AnkhPackageRegistry
+  export_AnkhPlanningContext -.-> export_AnkhProviderRegistry
+  export_AnkhPlanningHandler["AnkhPlanningHandler"]
+  module_src_planning_ts --> export_AnkhPlanningHandler
+  export_AnkhPlanningHandlerBinding["AnkhPlanningHandlerBinding"]
+  module_src_planning_ts --> export_AnkhPlanningHandlerBinding
+  export_AnkhPlanningHandlerBinding -.-> export_AnkhPlanningHandler
+  export_AnkhPlanningRequest["AnkhPlanningRequest"]
+  module_src_planning_ts --> export_AnkhPlanningRequest
+  export_AnkhPlanningRequest -.-> export_AnkhCommandListing
+  export_AnkhPlanningRequest -.-> export_AnkhLoadedProvider
+  export_AnkhPlanningRequest -.-> export_AnkhPlanningContext
   export_AnkhProviderManifestDiagnostic["AnkhProviderManifestDiagnostic"]
   module_src_providerManifestLoader_ts --> export_AnkhProviderManifestDiagnostic
   export_AnkhProviderRegistry["AnkhProviderRegistry"]
@@ -76,6 +100,7 @@ graph LR
   export_AnkhRuntimeCommandProvider["AnkhRuntimeCommandProvider"]
   module_src_execution_ts --> export_AnkhRuntimeCommandProvider
   export_AnkhRuntimeCommandProvider -.-> export_AnkhCommandHandlerBinding
+  export_AnkhRuntimeCommandProvider -.-> export_AnkhPlanningHandlerBinding
   export_createDefaultCommandContext["createDefaultCommandContext"]
   module_src_commandContext_ts --> export_createDefaultCommandContext
   export_createDefaultCommandContext -.-> export_AnkhCommandContext

@@ -32,7 +32,7 @@ Source: `src/commandContext.ts:3:1`
 
 Kind: `type`
 Module: `src/execution.ts`
-Source: `src/execution.ts:12:1`
+Source: `src/execution.ts:13:1`
 
 ### Members
 
@@ -50,7 +50,7 @@ Source: `src/execution.ts:12:1`
 
 Kind: `type`
 Module: `src/execution.ts`
-Source: `src/execution.ts:17:1`
+Source: `src/execution.ts:18:1`
 
 ### Members
 
@@ -65,7 +65,7 @@ Source: `src/execution.ts:17:1`
 
 Kind: `type`
 Module: `src/execution.ts`
-Source: `src/execution.ts:24:1`
+Source: `src/execution.ts:25:1`
 
 ### Members
 
@@ -77,13 +77,13 @@ Source: `src/execution.ts:24:1`
 
 Kind: `unknown`
 Module: `src/execution.ts`
-Source: `src/execution.ts:28:1`
+Source: `src/execution.ts:29:1`
 
 ## AnkhCommandHandlerBinding
 
 Kind: `type`
 Module: `src/execution.ts`
-Source: `src/execution.ts:35:1`
+Source: `src/execution.ts:36:1`
 
 ### Members
 
@@ -110,6 +110,57 @@ Source: `src/providerRegistry.ts:5:1`
 | path        | property | `readonly [string, ...string[]]` | yes      |             |
 | providerId  | property | `string`                         | yes      |             |
 | summary     | property | `string`                         | yes      |             |
+
+## AnkhCommandPlan
+
+Kind: `type`
+Module: `src/planning.ts`
+Source: `src/planning.ts:29:1`
+
+### Members
+
+| Name        | Kind     | Type                                   | Required | Description |
+| ----------- | -------- | -------------------------------------- | -------- | ----------- |
+| diagnostics | property | `readonly AnkhCommandPlanDiagnostic[]` | yes      |             |
+| kind        | property | `"ankh-command-plan"`                  | yes      |             |
+| steps       | property | `readonly AnkhCommandPlanStep[]`       | yes      |             |
+| title       | property | `string`                               | yes      |             |
+| version     | property | `1`                                    | yes      |             |
+
+## AnkhCommandPlanDiagnostic
+
+Kind: `type`
+Module: `src/planning.ts`
+Source: `src/planning.ts:10:1`
+
+### Members
+
+| Name     | Kind     | Type                             | Required | Description |
+| -------- | -------- | -------------------------------- | -------- | ----------- |
+| code     | property | `string`                         | yes      |             |
+| message  | property | `string`                         | yes      |             |
+| severity | property | `"warning" \| "error" \| "info"` | yes      |             |
+| stepId   | property | `string \| undefined`            | no       |             |
+
+## AnkhCommandPlanStep
+
+Kind: `type`
+Module: `src/planning.ts`
+Source: `src/planning.ts:17:1`
+
+### Members
+
+| Name        | Kind     | Type                     | Required | Description |
+| ----------- | -------- | ------------------------ | -------- | ----------- |
+| capability  | property | `string`                 | yes      |             |
+| dependsOn   | property | `readonly string[]`      | yes      |             |
+| destructive | property | `boolean`                | yes      |             |
+| id          | property | `string`                 | yes      |             |
+| inputs      | property | `unknown`                | no       |             |
+| label       | property | `string`                 | yes      |             |
+| outputs     | property | `unknown`                | no       |             |
+| providerId  | property | `string`                 | yes      |             |
+| status      | property | `"planned" \| "blocked"` | yes      |             |
 
 ## AnkhDiscoveredPackage
 
@@ -193,6 +244,58 @@ Source: `src/packageRegistry.ts:3:1`
 | hasCategory    | method | `(category: string) => boolean`                       | yes      |             |
 | listPackages   | method | `() => readonly AnkhDiscoveredPackage[]`              | yes      |             |
 
+## AnkhPlanningContext
+
+Kind: `type`
+Module: `src/planning.ts`
+Source: `src/planning.ts:37:1`
+
+### Members
+
+| Name             | Kind     | Type                                            | Required | Description |
+| ---------------- | -------- | ----------------------------------------------- | -------- | ----------- |
+| cwd              | property | `string`                                        | yes      |             |
+| env              | property | `Readonly<Record<string, string \| undefined>>` | yes      |             |
+| packageRegistry  | property | `AnkhPackageRegistry`                           | yes      |             |
+| providerRegistry | property | `AnkhProviderRegistry`                          | yes      |             |
+| version          | property | `string`                                        | yes      |             |
+| writeStderr      | method   | `(text: string) => void`                        | yes      |             |
+| writeStdout      | method   | `(text: string) => void`                        | yes      |             |
+
+## AnkhPlanningHandler
+
+Kind: `unknown`
+Module: `src/planning.ts`
+Source: `src/planning.ts:49:1`
+
+## AnkhPlanningHandlerBinding
+
+Kind: `type`
+Module: `src/planning.ts`
+Source: `src/planning.ts:53:1`
+
+### Members
+
+| Name    | Kind     | Type                             | Required | Description |
+| ------- | -------- | -------------------------------- | -------- | ----------- |
+| handler | property | `AnkhPlanningHandler`            | yes      |             |
+| path    | property | `readonly [string, ...string[]]` | yes      |             |
+
+## AnkhPlanningRequest
+
+Kind: `type`
+Module: `src/planning.ts`
+Source: `src/planning.ts:42:1`
+
+### Members
+
+| Name     | Kind     | Type                  | Required | Description |
+| -------- | -------- | --------------------- | -------- | ----------- |
+| argv     | property | `readonly string[]`   | yes      |             |
+| command  | property | `AnkhCommandListing`  | yes      |             |
+| context  | property | `AnkhPlanningContext` | yes      |             |
+| provider | property | `AnkhLoadedProvider`  | yes      |             |
+
 ## AnkhProviderManifestDiagnostic
 
 Kind: `type`
@@ -246,18 +349,19 @@ Source: `src/providerRegistry.ts:16:1`
 
 Kind: `type`
 Module: `src/execution.ts`
-Source: `src/execution.ts:40:1`
+Source: `src/execution.ts:41:1`
 
 ### Members
 
-| Name         | Kind     | Type                                                | Required | Description |
-| ------------ | -------- | --------------------------------------------------- | -------- | ----------- |
-| capabilities | property | `readonly `${string}.${string}`[]`                  | yes      |             |
-| category     | property | `string`                                            | yes      |             |
-| commands     | property | `readonly AnkhCommandDescriptor[]`                  | yes      |             |
-| handlers     | property | `readonly AnkhCommandHandlerBinding[] \| undefined` | no       |             |
-| id           | property | `string`                                            | yes      |             |
-| version      | property | `string`                                            | yes      |             |
+| Name             | Kind     | Type                                                 | Required | Description |
+| ---------------- | -------- | ---------------------------------------------------- | -------- | ----------- |
+| capabilities     | property | `readonly `${string}.${string}`[]`                   | yes      |             |
+| category         | property | `string`                                             | yes      |             |
+| commands         | property | `readonly AnkhCommandDescriptor[]`                   | yes      |             |
+| handlers         | property | `readonly AnkhCommandHandlerBinding[] \| undefined`  | no       |             |
+| id               | property | `string`                                             | yes      |             |
+| planningHandlers | property | `readonly AnkhPlanningHandlerBinding[] \| undefined` | no       |             |
+| version          | property | `string`                                             | yes      |             |
 
 ## createDefaultCommandContext
 
@@ -335,7 +439,7 @@ Source: `src/providerManifestLoader.ts:30:1`
 
 Kind: `function`
 Module: `src/parser.ts`
-Source: `src/parser.ts:17:1`
+Source: `src/parser.ts:19:1`
 
 ### Signatures
 
@@ -353,7 +457,7 @@ Source: `src/parser.ts:1:1`
 
 Kind: `function`
 Module: `src/cli.ts`
-Source: `src/cli.ts:65:1`
+Source: `src/cli.ts:78:1`
 
 ### Signatures
 

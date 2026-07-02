@@ -11,6 +11,7 @@ graph LR
   module_src_packageMetadata_ts["src/packageMetadata.ts"]
   module_src_packageRegistry_ts["src/packageRegistry.ts"]
   module_src_parser_ts["src/parser.ts"]
+  module_src_planning_ts["src/planning.ts"]
   module_src_providerManifestLoader_ts["src/providerManifestLoader.ts"]
   module_src_providerRegistry_ts["src/providerRegistry.ts"]
   module_src_workspace_ts["src/workspace.ts"]
@@ -20,6 +21,7 @@ graph LR
   module_tests_package_test_ts["tests/package.test.ts"]
   module_tests_packageRegistry_test_ts["tests/packageRegistry.test.ts"]
   module_tests_parser_test_ts["tests/parser.test.ts"]
+  module_tests_planning_test_ts["tests/planning.test.ts"]
   module_tests_providerManifestLoader_test_ts["tests/providerManifestLoader.test.ts"]
   module_tests_providerRegistry_test_ts["tests/providerRegistry.test.ts"]
   module_src_bin_ts --> module_src_cli_ts
@@ -29,6 +31,7 @@ graph LR
   module_src_cli_ts --> module_src_help_ts
   module_src_cli_ts --> module_src_packageRegistry_ts
   module_src_cli_ts --> module_src_parser_ts
+  module_src_cli_ts --> module_src_planning_ts
   module_src_cli_ts --> module_src_providerManifestLoader_ts
   module_src_cli_ts --> module_src_providerRegistry_ts
   module_src_commandContext_ts --> module_package_json
@@ -36,6 +39,7 @@ graph LR
   module_src_discovery_ts --> module_src_workspace_ts
   module_src_execution_ts --> module_src_commandContext_ts
   module_src_execution_ts --> module_src_packageRegistry_ts
+  module_src_execution_ts --> module_src_planning_ts
   module_src_execution_ts --> module_src_providerManifestLoader_ts
   module_src_execution_ts --> module_src_providerRegistry_ts
   module_src_help_ts --> module_src_discovery_ts
@@ -44,6 +48,10 @@ graph LR
   module_src_help_ts --> module_src_providerRegistry_ts
   module_src_packageMetadata_ts --> module_src_discovery_ts
   module_src_packageRegistry_ts --> module_src_discovery_ts
+  module_src_planning_ts --> module_src_commandContext_ts
+  module_src_planning_ts --> module_src_packageRegistry_ts
+  module_src_planning_ts --> module_src_providerManifestLoader_ts
+  module_src_planning_ts --> module_src_providerRegistry_ts
   module_src_providerManifestLoader_ts --> module_src_discovery_ts
   module_src_providerRegistry_ts --> module_src_providerManifestLoader_ts
   module_tests_cli_test_ts --> module_package_json
@@ -59,5 +67,11 @@ graph LR
   module_tests_package_test_ts --> module_package_json
   module_tests_packageRegistry_test_ts --> module_src_packageRegistry_ts
   module_tests_parser_test_ts --> module_src_parser_ts
+  module_tests_planning_test_ts --> module_package_json
+  module_tests_planning_test_ts --> module_src_cli_ts
+  module_tests_planning_test_ts --> module_src_commandContext_ts
+  module_tests_planning_test_ts --> module_src_discovery_ts
+  module_tests_planning_test_ts --> module_src_index_ts
+  module_tests_planning_test_ts --> module_src_providerManifestLoader_ts
   module_tests_providerManifestLoader_test_ts --> module_src_providerManifestLoader_ts
   module_tests_providerRegistry_test_ts --> module_src_providerRegistry_ts
