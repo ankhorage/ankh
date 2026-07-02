@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.0
+
+### Minor Changes
+
+- 1d71ed8: Promote command planning handler types as a public provider contract.
+
 ## 0.5.0
 
 ### Minor Changes
