@@ -317,9 +317,7 @@ describe("ankh plan", () => {
     expect(result).toEqual({ exitCode: 1 });
     expect(stdout.value).toBe("");
     expect(stderr.value).toContain("Ankh command planning diagnostics:");
-    expect(stderr.value).toContain(
-      "provider-command-planning-handler-missing",
-    );
+    expect(stderr.value).toContain("provider-command-planning-handler-missing");
   });
 
   it("keeps ankh run deferred", async () => {
