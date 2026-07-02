@@ -21,6 +21,15 @@ export { createPackageRegistry } from "./packageRegistry.js";
 export type { ParsedCliRequest } from "./parser.js";
 export { parseArgv } from "./parser.js";
 export type {
+  AnkhCommandPlan,
+  AnkhCommandPlanDiagnostic,
+  AnkhCommandPlanStep,
+  AnkhPlanningContext,
+  AnkhPlanningHandler,
+  AnkhPlanningHandlerBinding,
+  AnkhPlanningRequest,
+} from "./planning.js";
+export type {
   AnkhLoadedProvider,
   AnkhProviderManifestDiagnostic,
   LoadProviderManifestsResult,

@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.3.1",
+      "value": "v0.5.0",
       "color": "cb3837"
     },
     {
@@ -70,7 +70,7 @@
   "readmeUsage": [
     {
       "title": "Bootstrap status",
-      "description": "Bootstrap status\n\n`@ankhorage/ankh` is the root CLI front door and command bus for Ankhorage.\n\n`ankh commands` discovers Ankh package metadata, attempts to load provider\nmanifests, and renders detailed command descriptors for providers that load\nsuccessfully.\n\nNo domain behavior belongs in the root CLI. Domain behavior stays in provider\npackages such as infra, templates, studio, board, doctor, and dev.\n\nCurrent built-ins are `help`, `commands`, and `version`.\n\n`ankh <category> --help` and `ankh <category> help` render provider-backed\ncategory help when a valid provider manifest is available.\n\n`ankh <category> <command> ...args` now performs basic direct dispatch to a\nloaded provider handler. The root CLI stays a thin router: providers own\noption parsing, validation, output, and behavior.\n\nPlanning/composition remains deferred until `ankhorage/ankh#3`.",
+      "description": "Bootstrap status\n\n`@ankhorage/ankh` is the root CLI front door and command bus for Ankhorage.\n\n`ankh commands` discovers Ankh package metadata, attempts to load provider\nmanifests, and renders detailed command descriptors for providers that load\nsuccessfully.\n\nNo domain behavior belongs in the root CLI. Domain behavior stays in provider\npackages such as infra, templates, studio, board, doctor, and dev.\n\nCurrent built-ins are `help`, `commands`, `plan`, and `version`.\n\n`ankh <category> --help` and `ankh <category> help` render provider-backed\ncategory help when a valid provider manifest is available.\n\n`ankh <category> <command> ...args` performs basic direct dispatch to a\nloaded provider handler. The root CLI stays a thin router: providers own\noption parsing, validation, output, and behavior.\n\n`ankh plan <category> <command>` asks a provider planning handler for an\ninspectable `AnkhCommandPlan` without executing provider command handlers.\nUse `--json` for stable machine-readable output.\n\nProvider packages expose planning through optional `planningHandlers` on\ntheir `AnkhRuntimeCommandProvider` default export. Planning is a provider\ncontract, not workflow execution: the root CLI routes to provider planning\nhandlers and renders returned plans, but it does not compose real workflows,\ncreate projects, run commands, or execute destructive steps.\n\n`ankh run ...` remains deferred until explicit execution semantics are\ndesigned.",
       "language": "ts",
       "code": "import { runCli } from \"./cli.js\";\n\nawait runCli([\"--help\"]);",
       "sourcePath": "src/readme-usage.ts"
@@ -107,6 +107,7 @@
         "src/help.ts",
         "src/packageRegistry.ts",
         "src/parser.ts",
+        "src/planning.ts",
         "src/providerManifestLoader.ts",
         "src/providerRegistry.ts"
       ],
@@ -146,6 +147,7 @@
       "dependencies": [
         "src/commandContext.ts",
         "src/packageRegistry.ts",
+        "src/planning.ts",
         "src/providerManifestLoader.ts",
         "src/providerRegistry.ts"
       ],
@@ -199,12 +201,19 @@
         "AnkhCommandHandler",
         "AnkhCommandHandlerBinding",
         "AnkhCommandListing",
+        "AnkhCommandPlan",
+        "AnkhCommandPlanDiagnostic",
+        "AnkhCommandPlanStep",
         "AnkhDiscoveredPackage",
         "AnkhDiscoverySource",
         "AnkhLoadedProvider",
         "AnkhMetadataDiscoveryDiagnostic",
         "AnkhMetadataDiscoveryResult",
         "AnkhPackageRegistry",
+        "AnkhPlanningContext",
+        "AnkhPlanningHandler",
+        "AnkhPlanningHandlerBinding",
+        "AnkhPlanningRequest",
         "AnkhProviderManifestDiagnostic",
         "AnkhProviderRegistry",
         "AnkhResolvedProviderCommand",
@@ -241,6 +250,33 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["parseArgv", "ParsedCliRequest"]
+    },
+    {
+      "path": "src/planning.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/commandContext.ts",
+        "src/packageRegistry.ts",
+        "src/providerManifestLoader.ts",
+        "src/providerRegistry.ts"
+      ],
+      "exports": [
+        "AnkhCommandPlan",
+        "AnkhCommandPlanDiagnostic",
+        "AnkhCommandPlanningDiagnostic",
+        "AnkhCommandPlanStep",
+        "AnkhPlanningContext",
+        "AnkhPlanningHandler",
+        "AnkhPlanningHandlerBinding",
+        "AnkhPlanningRequest",
+        "AnkhResolvedPlannableCommand",
+        "hasCommandPlanErrors",
+        "renderCommandPlan",
+        "renderCommandPlanJson",
+        "renderPlanningDiagnostics",
+        "resolvePlannableCommand",
+        "ResolvePlannableCommandResult"
+      ]
     },
     {
       "path": "src/providerManifestLoader.ts",
@@ -320,6 +356,19 @@
       "path": "tests/parser.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/parser.ts"],
+      "exports": []
+    },
+    {
+      "path": "tests/planning.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "package.json",
+        "src/cli.ts",
+        "src/commandContext.ts",
+        "src/discovery.ts",
+        "src/index.ts",
+        "src/providerManifestLoader.ts"
+      ],
       "exports": []
     },
     {
@@ -425,7 +474,7 @@
       "modulePath": "src/execution.ts",
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 12,
+        "line": 13,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -493,7 +542,7 @@
       "modulePath": "src/execution.ts",
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 17,
+        "line": 18,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -544,7 +593,7 @@
       "modulePath": "src/execution.ts",
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 24,
+        "line": 25,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -570,7 +619,7 @@
       "modulePath": "src/execution.ts",
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 28,
+        "line": 29,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -588,7 +637,7 @@
       "modulePath": "src/execution.ts",
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 35,
+        "line": 36,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -681,6 +730,189 @@
           "name": "summary",
           "kind": "property",
           "type": "string",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "AnkhCommandPlan",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/planning.ts",
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 29,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["AnkhCommandPlanDiagnostic", "AnkhCommandPlanStep"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "diagnostics",
+          "kind": "property",
+          "type": "readonly AnkhCommandPlanDiagnostic[]",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "kind",
+          "kind": "property",
+          "type": "\"ankh-command-plan\"",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "steps",
+          "kind": "property",
+          "type": "readonly AnkhCommandPlanStep[]",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "title",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "version",
+          "kind": "property",
+          "type": "1",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "AnkhCommandPlanDiagnostic",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/planning.ts",
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 10,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "code",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "message",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "severity",
+          "kind": "property",
+          "type": "\"warning\" | \"error\" | \"info\"",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "stepId",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "AnkhCommandPlanStep",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/planning.ts",
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 17,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "capability",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "dependsOn",
+          "kind": "property",
+          "type": "readonly string[]",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "destructive",
+          "kind": "property",
+          "type": "boolean",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "id",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "inputs",
+          "kind": "property",
+          "type": "unknown",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "label",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "outputs",
+          "kind": "property",
+          "type": "unknown",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "providerId",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "status",
+          "kind": "property",
+          "type": "\"planned\" | \"blocked\"",
           "required": true,
           "description": null
         }
@@ -951,6 +1183,176 @@
       "structuredRows": []
     },
     {
+      "name": "AnkhPlanningContext",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/planning.ts",
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 37,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["AnkhPackageRegistry", "AnkhProviderRegistry"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "cwd",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "env",
+          "kind": "property",
+          "type": "Readonly<Record<string, string | undefined>>",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "packageRegistry",
+          "kind": "property",
+          "type": "AnkhPackageRegistry",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "providerRegistry",
+          "kind": "property",
+          "type": "AnkhProviderRegistry",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "version",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "writeStderr",
+          "kind": "method",
+          "type": "(text: string) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "writeStdout",
+          "kind": "method",
+          "type": "(text: string) => void",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "AnkhPlanningHandler",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/planning.ts",
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 49,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "AnkhPlanningHandlerBinding",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/planning.ts",
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 53,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["AnkhPlanningHandler"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "handler",
+          "kind": "property",
+          "type": "AnkhPlanningHandler",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "path",
+          "kind": "property",
+          "type": "readonly [string, ...string[]]",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "AnkhPlanningRequest",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/planning.ts",
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 42,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [
+        "AnkhCommandListing",
+        "AnkhLoadedProvider",
+        "AnkhPlanningContext"
+      ],
+      "signatures": [],
+      "members": [
+        {
+          "name": "argv",
+          "kind": "property",
+          "type": "readonly string[]",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "command",
+          "kind": "property",
+          "type": "AnkhCommandListing",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "context",
+          "kind": "property",
+          "type": "AnkhPlanningContext",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "provider",
+          "kind": "property",
+          "type": "AnkhLoadedProvider",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
       "name": "AnkhProviderManifestDiagnostic",
       "description": null,
       "isReadme": false,
@@ -1132,11 +1534,14 @@
       "modulePath": "src/execution.ts",
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 40,
+        "line": 41,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": ["AnkhCommandHandlerBinding"],
+      "relatedSymbols": [
+        "AnkhCommandHandlerBinding",
+        "AnkhPlanningHandlerBinding"
+      ],
       "signatures": [],
       "members": [
         {
@@ -1172,6 +1577,13 @@
           "kind": "property",
           "type": "string",
           "required": true,
+          "description": null
+        },
+        {
+          "name": "planningHandlers",
+          "kind": "property",
+          "type": "readonly AnkhPlanningHandlerBinding[] | undefined",
+          "required": false,
           "description": null
         },
         {
@@ -1385,7 +1797,7 @@
       "modulePath": "src/parser.ts",
       "sourceLocation": {
         "filePath": "src/parser.ts",
-        "line": 17,
+        "line": 19,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -1435,7 +1847,7 @@
       "modulePath": "src/cli.ts",
       "sourceLocation": {
         "filePath": "src/cli.ts",
-        "line": 65,
+        "line": 78,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -1472,7 +1884,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli.ts",
-        "line": 65,
+        "line": 78,
+        "column": 1
+      }
+    },
+    {
+      "name": "dispatchProviderPlan",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli.ts",
+        "line": 202,
         "column": 1
       }
     },
@@ -1481,7 +1902,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli.ts",
-        "line": 178,
+        "line": 317,
         "column": 1
       }
     },
@@ -1490,7 +1911,52 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli.ts",
-        "line": 278,
+        "line": 417,
+        "column": 1
+      }
+    },
+    {
+      "name": "parsePlanRequest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli.ts",
+        "line": 471,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderPlanUsage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli.ts",
+        "line": 496,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderRunDeferred",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli.ts",
+        "line": 504,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderPlanningFailure",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli.ts",
+        "line": 513,
+        "column": 1
+      }
+    },
+    {
+      "name": "getErrorMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli.ts",
+        "line": 526,
         "column": 1
       }
     },
@@ -1544,7 +2010,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 63,
+        "line": 65,
         "column": 1
       }
     },
@@ -1553,7 +2019,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 138,
+        "line": 140,
         "column": 1
       }
     },
@@ -1562,7 +2028,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 271,
+        "line": 273,
         "column": 1
       }
     },
@@ -1571,7 +2037,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 289,
+        "line": 291,
         "column": 1
       }
     },
@@ -1580,7 +2046,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 310,
+        "line": 312,
         "column": 1
       }
     },
@@ -1589,7 +2055,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 314,
+        "line": 316,
         "column": 1
       }
     },
@@ -1598,7 +2064,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 318,
+        "line": 320,
         "column": 1
       }
     },
@@ -1814,7 +2280,151 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/parser.ts",
-        "line": 17,
+        "line": 19,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolvePlannableCommand",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 77,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasCommandPlanErrors",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 138,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderCommandPlan",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 142,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderCommandPlanJson",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 178,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderPlanningDiagnostics",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 182,
+        "column": 1
+      }
+    },
+    {
+      "name": "validateProviderPlanningHandlers",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 206,
+        "column": 1
+      }
+    },
+    {
+      "name": "getPlanningBinding",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 275,
+        "column": 1
+      }
+    },
+    {
+      "name": "createDiagnostic",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 335,
+        "column": 1
+      }
+    },
+    {
+      "name": "getDiagnosticMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 350,
+        "column": 1
+      }
+    },
+    {
+      "name": "getCommandPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 375,
+        "column": 1
+      }
+    },
+    {
+      "name": "getCommandPathKey",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 392,
+        "column": 1
+      }
+    },
+    {
+      "name": "isPlanningHandler",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 396,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 400,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderDependencyList",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 404,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderDiagnosticScope",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 408,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderPlanDiagnostic",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/planning.ts",
+        "line": 420,
         "column": 1
       }
     },
@@ -2186,6 +2796,11 @@
       },
       {
         "fromPath": "src/cli.ts",
+        "toPath": "src/planning.ts",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromPath": "src/cli.ts",
         "toPath": "src/providerManifestLoader.ts",
         "sourcePath": "src/cli.ts"
       },
@@ -2217,6 +2832,11 @@
       {
         "fromPath": "src/execution.ts",
         "toPath": "src/packageRegistry.ts",
+        "sourcePath": "src/execution.ts"
+      },
+      {
+        "fromPath": "src/execution.ts",
+        "toPath": "src/planning.ts",
         "sourcePath": "src/execution.ts"
       },
       {
@@ -2281,6 +2901,11 @@
       },
       {
         "fromPath": "src/index.ts",
+        "toPath": "src/planning.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
         "toPath": "src/providerManifestLoader.ts",
         "sourcePath": "src/index.ts"
       },
@@ -2298,6 +2923,26 @@
         "fromPath": "src/packageRegistry.ts",
         "toPath": "src/discovery.ts",
         "sourcePath": "src/packageRegistry.ts"
+      },
+      {
+        "fromPath": "src/planning.ts",
+        "toPath": "src/commandContext.ts",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromPath": "src/planning.ts",
+        "toPath": "src/packageRegistry.ts",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromPath": "src/planning.ts",
+        "toPath": "src/providerManifestLoader.ts",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromPath": "src/planning.ts",
+        "toPath": "src/providerRegistry.ts",
+        "sourcePath": "src/planning.ts"
       },
       {
         "fromPath": "src/providerManifestLoader.ts",
@@ -2378,6 +3023,36 @@
         "fromPath": "tests/parser.test.ts",
         "toPath": "src/parser.ts",
         "sourcePath": "tests/parser.test.ts"
+      },
+      {
+        "fromPath": "tests/planning.test.ts",
+        "toPath": "package.json",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
+        "fromPath": "tests/planning.test.ts",
+        "toPath": "src/cli.ts",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
+        "fromPath": "tests/planning.test.ts",
+        "toPath": "src/commandContext.ts",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
+        "fromPath": "tests/planning.test.ts",
+        "toPath": "src/discovery.ts",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
+        "fromPath": "tests/planning.test.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
+        "fromPath": "tests/planning.test.ts",
+        "toPath": "src/providerManifestLoader.ts",
+        "sourcePath": "tests/planning.test.ts"
       },
       {
         "fromPath": "tests/providerManifestLoader.test.ts",
@@ -2500,6 +3175,126 @@
         "sourcePath": "src/cli.ts"
       },
       {
+        "fromSymbol": "runCli",
+        "toSymbol": "dispatchProviderPlan",
+        "callExpression": "dispatchProviderPlan",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "renderRunDeferred",
+        "callExpression": "renderRunDeferred",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "parsePlanRequest",
+        "callExpression": "parsePlanRequest",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "writeStderr",
+        "callExpression": "input.context.writeStderr",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "renderPlanUsage",
+        "callExpression": "renderPlanUsage",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "resolveCliState",
+        "callExpression": "resolveCliState",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "findByCategory",
+        "callExpression": "resolvedState.packageRegistry.findByCategory",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "renderUnknownCommand",
+        "callExpression": "renderUnknownCommand",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "findByCategory",
+        "callExpression": "resolvedState.providerRegistry.findByCategory",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "renderProviderManifestDiagnostics",
+        "callExpression": "renderProviderManifestDiagnostics",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "renderCategoryProviderUnavailable",
+        "callExpression": "renderCategoryProviderUnavailable",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "resolvePlannableCommand",
+        "callExpression": "resolvePlannableCommand",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "renderPlanningDiagnostics",
+        "callExpression": "renderPlanningDiagnostics",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "renderUnknownProviderCommand",
+        "callExpression": "renderUnknownProviderCommand",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "handler",
+        "callExpression": "planningResult.resolvedCommand.handler",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "writeStdout",
+        "callExpression": "input.context.writeStdout",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "renderCommandPlanJson",
+        "callExpression": "renderCommandPlanJson",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "renderCommandPlan",
+        "callExpression": "renderCommandPlan",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "hasCommandPlanErrors",
+        "callExpression": "hasCommandPlanErrors",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "renderPlanningFailure",
+        "callExpression": "renderPlanningFailure",
+        "sourcePath": "src/cli.ts"
+      },
+      {
         "fromSymbol": "dispatchProviderCommand",
         "toSymbol": "resolveCliState",
         "callExpression": "resolveCliState",
@@ -2617,6 +3412,12 @@
         "fromSymbol": "resolveCliState",
         "toSymbol": "renderDiscoveryFailure",
         "callExpression": "renderDiscoveryFailure",
+        "sourcePath": "src/cli.ts"
+      },
+      {
+        "fromSymbol": "renderPlanningFailure",
+        "toSymbol": "getErrorMessage",
+        "callExpression": "getErrorMessage",
         "sourcePath": "src/cli.ts"
       },
       {
@@ -2828,6 +3629,114 @@
         "toSymbol": "isCapabilityId",
         "callExpression": "isCapabilityId",
         "sourcePath": "src/packageMetadata.ts"
+      },
+      {
+        "fromSymbol": "resolvePlannableCommand",
+        "toSymbol": "findAllByCategory",
+        "callExpression": "providerRegistry.findAllByCategory",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "resolvePlannableCommand",
+        "toSymbol": "createDiagnostic",
+        "callExpression": "createDiagnostic",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "resolvePlannableCommand",
+        "toSymbol": "resolveCommand",
+        "callExpression": "providerRegistry.resolveCommand",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "resolvePlannableCommand",
+        "toSymbol": "validateProviderPlanningHandlers",
+        "callExpression": "validateProviderPlanningHandlers",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "resolvePlannableCommand",
+        "toSymbol": "getCommandPathKey",
+        "callExpression": "getCommandPathKey",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "renderCommandPlan",
+        "toSymbol": "renderDependencyList",
+        "callExpression": "renderDependencyList",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "renderCommandPlan",
+        "toSymbol": "renderPlanDiagnostic",
+        "callExpression": "renderPlanDiagnostic",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "renderPlanningDiagnostics",
+        "toSymbol": "renderDiagnosticScope",
+        "callExpression": "renderDiagnosticScope",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "validateProviderPlanningHandlers",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "validateProviderPlanningHandlers",
+        "toSymbol": "createDiagnostic",
+        "callExpression": "createDiagnostic",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "src/planning.ts",
+        "toSymbol": "getCommandPathKey",
+        "callExpression": "getCommandPathKey",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "validateProviderPlanningHandlers",
+        "toSymbol": "getPlanningBinding",
+        "callExpression": "getPlanningBinding",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "getPlanningBinding",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "getPlanningBinding",
+        "toSymbol": "createDiagnostic",
+        "callExpression": "createDiagnostic",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "getPlanningBinding",
+        "toSymbol": "getCommandPath",
+        "callExpression": "getCommandPath",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "getPlanningBinding",
+        "toSymbol": "getCommandPathKey",
+        "callExpression": "getCommandPathKey",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "getPlanningBinding",
+        "toSymbol": "isPlanningHandler",
+        "callExpression": "isPlanningHandler",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "createDiagnostic",
+        "toSymbol": "getDiagnosticMessage",
+        "callExpression": "getDiagnosticMessage",
+        "sourcePath": "src/planning.ts"
       },
       {
         "fromSymbol": "loadProviderManifests",
@@ -3412,6 +4321,84 @@
         "sourcePath": "tests/parser.test.ts"
       },
       {
+        "fromSymbol": "loadedProvider",
+        "toSymbol": "discoveredPackage",
+        "callExpression": "discoveredPackage",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
+        "fromSymbol": "handler",
+        "toSymbol": "onExecute",
+        "callExpression": "options.onExecute",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
+        "fromSymbol": "handler",
+        "toSymbol": "onPlan",
+        "callExpression": "options.onPlan",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
+        "fromSymbol": "runOptions",
+        "toSymbol": "providerFixture",
+        "callExpression": "providerFixture",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
+        "fromSymbol": "discoverPackages",
+        "toSymbol": "discoveredPackage",
+        "callExpression": "discoveredPackage",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
+        "fromSymbol": "loadProviders",
+        "toSymbol": "loadedProvider",
+        "callExpression": "loadedProvider",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
+        "fromSymbol": "tests/planning.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
+        "fromSymbol": "tests/planning.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
+        "fromSymbol": "tests/planning.test.ts",
+        "toSymbol": "memoryContext",
+        "callExpression": "memoryContext",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
+        "fromSymbol": "tests/planning.test.ts",
+        "toSymbol": "runCli",
+        "callExpression": "runCli",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
+        "fromSymbol": "tests/planning.test.ts",
+        "toSymbol": "runOptions",
+        "callExpression": "runOptions",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
+        "fromSymbol": "tests/planning.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
+        "fromSymbol": "tests/planning.test.ts",
+        "toSymbol": "providerFixture",
+        "callExpression": "providerFixture",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
         "fromSymbol": "tests/providerManifestLoader.test.ts",
         "toSymbol": "afterEach",
         "callExpression": "afterEach",
@@ -3652,6 +4639,11 @@
         "sourcePath": "src/execution.ts"
       },
       {
+        "fromSymbol": "AnkhRuntimeCommandProvider",
+        "toType": "AnkhPlanningHandlerBinding",
+        "sourcePath": "src/execution.ts"
+      },
+      {
         "fromSymbol": "AnkhPackageRegistry",
         "toType": "AnkhDiscoveredPackage",
         "sourcePath": "src/packageRegistry.ts"
@@ -3670,6 +4662,51 @@
         "fromSymbol": "parseArgv",
         "toType": "ParsedCliRequest",
         "sourcePath": "src/parser.ts"
+      },
+      {
+        "fromSymbol": "AnkhCommandPlan",
+        "toType": "AnkhCommandPlanDiagnostic",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "AnkhCommandPlan",
+        "toType": "AnkhCommandPlanStep",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "AnkhPlanningContext",
+        "toType": "AnkhPackageRegistry",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "AnkhPlanningContext",
+        "toType": "AnkhProviderRegistry",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "AnkhPlanningContext",
+        "toType": "Readonly",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "AnkhPlanningHandlerBinding",
+        "toType": "AnkhPlanningHandler",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "AnkhPlanningRequest",
+        "toType": "AnkhCommandListing",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "AnkhPlanningRequest",
+        "toType": "AnkhLoadedProvider",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "AnkhPlanningRequest",
+        "toType": "AnkhPlanningContext",
+        "sourcePath": "src/planning.ts"
       },
       {
         "fromSymbol": "AnkhLoadedProvider",

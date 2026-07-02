@@ -8,7 +8,11 @@ import packageJson from "../package.json";
 import { runCli } from "../src/cli.js";
 import type { AnkhCommandContext } from "../src/commandContext.js";
 import type { AnkhDiscoveredPackage } from "../src/discovery.js";
-import type { AnkhCommandPlan } from "../src/planning.js";
+import type {
+  AnkhCommandPlan,
+  AnkhPlanningRequest,
+  AnkhRuntimeCommandProvider,
+} from "../src/index.js";
 import type { AnkhLoadedProvider } from "../src/providerManifestLoader.js";
 
 const metadata = {
@@ -16,6 +20,7 @@ const metadata = {
     "fixture.source.inspect",
     "fixture.template.seed",
     "fixture.project.sync",
+    "fixture.status",
   ],
   category: "fixture",
   provider: "./dist/ankh.provider.js",
@@ -31,6 +36,11 @@ const manifest = {
       path: ["workflow"],
       capability: "fixture.source.inspect",
       summary: "Plan a fixture workflow.",
+    },
+    {
+      path: ["status"],
+      capability: "fixture.status",
+      summary: "Plan fixture status.",
     },
   ],
 } as const satisfies AnkhCommandProviderManifest;
@@ -68,6 +78,24 @@ const plan = {
     },
   ],
   title: "Fixture workflow",
+  version: 1,
+} as const satisfies AnkhCommandPlan;
+
+const statusPlan = {
+  diagnostics: [],
+  kind: "ankh-command-plan",
+  steps: [
+    {
+      capability: "fixture.status",
+      dependsOn: [],
+      destructive: false,
+      id: "inspect-status",
+      label: "Inspect fixture status",
+      providerId: "@ankhorage/fixture",
+      status: "planned",
+    },
+  ],
+  title: "Fixture status",
   version: 1,
 } as const satisfies AnkhCommandPlan;
 
@@ -116,9 +144,10 @@ function loadedProvider(
 function providerFixture(
   options: {
     readonly onExecute?: () => void;
+    readonly onPlan?: (request: AnkhPlanningRequest) => void;
     readonly plan?: AnkhCommandPlan;
   } = {},
-) {
+): AnkhRuntimeCommandProvider {
   return {
     ...manifest,
     handlers: [
@@ -128,11 +157,18 @@ function providerFixture(
           options.onExecute?.();
         },
       },
+      {
+        path: ["status"],
+        handler() {
+          options.onExecute?.();
+        },
+      },
     ],
     planningHandlers: [
       {
         path: ["workflow"],
-        handler() {
+        handler(request) {
+          options.onPlan?.(request);
           return options.plan ?? plan;
         },
       },
@@ -204,6 +240,40 @@ describe("ankh plan", () => {
     expect(stderr.value).toBe("");
   });
 
+  it("matches planning handlers by command path", async () => {
+    const { context, stdout, stderr } = memoryContext();
+    const planningRequests: AnkhPlanningRequest[] = [];
+    const provider = {
+      ...providerFixture(),
+      planningHandlers: [
+        {
+          path: ["workflow"],
+          handler() {
+            return plan;
+          },
+        },
+        {
+          path: ["status"],
+          handler(request) {
+            planningRequests.push(request);
+            return statusPlan;
+          },
+        },
+      ],
+    } as const satisfies AnkhRuntimeCommandProvider;
+
+    const result = await runCli(["plan", "fixture", "status", "--json"], {
+      context,
+      ...runOptions(provider),
+    });
+
+    expect(result).toEqual({ exitCode: 0 });
+    expect(JSON.parse(stdout.value)).toEqual(statusPlan);
+    expect(planningRequests).toHaveLength(1);
+    expect(planningRequests[0]?.command.path).toEqual(["status"]);
+    expect(stderr.value).toBe("");
+  });
+
   it("returns exit code one when the plan has error diagnostics", async () => {
     const { context, stdout, stderr } = memoryContext();
     const result = await runCli(["plan", "fixture", "workflow"], {
@@ -234,6 +304,20 @@ describe("ankh plan", () => {
     expect(result).toEqual({ exitCode: 0 });
     expect(executed).toBeFalse();
     expect(stdout.value).toContain("Plan: Fixture workflow");
+  });
+
+  it("prints planning diagnostics for provider commands without planning handlers", async () => {
+    const { context, stdout, stderr } = memoryContext();
+
+    const result = await runCli(["plan", "fixture", "status"], {
+      context,
+      ...runOptions(),
+    });
+
+    expect(result).toEqual({ exitCode: 1 });
+    expect(stdout.value).toBe("");
+    expect(stderr.value).toContain("Ankh command planning diagnostics:");
+    expect(stderr.value).toContain("provider-command-planning-handler-missing");
   });
 
   it("keeps ankh run deferred", async () => {

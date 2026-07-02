@@ -3,7 +3,7 @@
 
 # @ankhorage/ankh
 
-![license: MIT](./paradox/badges/license.svg) ![npm: v0.3.1](./paradox/badges/npm.svg) ![runtime: bun](./paradox/badges/runtime.svg) ![typescript: strict](./paradox/badges/typescript.svg) ![eslint: checked](./paradox/badges/eslint.svg) ![prettier: checked](./paradox/badges/prettier.svg) ![build: checked](./paradox/badges/build.svg) ![tests: checked](./paradox/badges/tests.svg) ![docs: paradox](./paradox/badges/docs.svg)
+![license: MIT](./paradox/badges/license.svg) ![npm: v0.5.0](./paradox/badges/npm.svg) ![runtime: bun](./paradox/badges/runtime.svg) ![typescript: strict](./paradox/badges/typescript.svg) ![eslint: checked](./paradox/badges/eslint.svg) ![prettier: checked](./paradox/badges/prettier.svg) ![build: checked](./paradox/badges/build.svg) ![tests: checked](./paradox/badges/tests.svg) ![docs: paradox](./paradox/badges/docs.svg)
 
 Bun-first Ankh CLI front door and command bus bootstrap package.
 
@@ -25,15 +25,22 @@ Current built-ins are `help`, `commands`, `plan`, and `version`.
 `ankh <category> --help` and `ankh <category> help` render provider-backed
 category help when a valid provider manifest is available.
 
-`ankh <category> <command> ...args` performs basic direct dispatch to a loaded
-provider handler. The root CLI stays a thin router: providers own option parsing,
-validation, output, and behavior.
+`ankh <category> <command> ...args` performs basic direct dispatch to a
+loaded provider handler. The root CLI stays a thin router: providers own
+option parsing, validation, output, and behavior.
 
 `ankh plan <category> <command>` asks a provider planning handler for an
-inspectable `AnkhCommandPlan` without executing provider command handlers. Use
-`--json` for stable machine-readable output.
+inspectable `AnkhCommandPlan` without executing provider command handlers.
+Use `--json` for stable machine-readable output.
 
-`ankh run ...` remains deferred until explicit execution semantics are designed.
+Provider packages expose planning through optional `planningHandlers` on
+their `AnkhRuntimeCommandProvider` default export. Planning is a provider
+contract, not workflow execution: the root CLI routes to provider planning
+handlers and renders returned plans, but it does not compose real workflows,
+create projects, run commands, or execute destructive steps.
+
+`ankh run ...` remains deferred until explicit execution semantics are
+designed.
 
 Source: `src/readme-usage.ts`
 

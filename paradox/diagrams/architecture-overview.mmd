@@ -17,6 +17,7 @@ graph TD
   module_src_cli_ts --> module_src_help_ts
   module_src_cli_ts --> module_src_packageRegistry_ts
   module_src_cli_ts --> module_src_parser_ts
+  module_src_cli_ts --> module_src_planning_ts
   module_src_cli_ts --> module_src_providerManifestLoader_ts
   module_src_cli_ts --> module_src_providerRegistry_ts
   module_src_commandContext_ts["src/commandContext.ts"]
@@ -30,6 +31,7 @@ graph TD
   package__ankhorage_ankh -.-> module_src_execution_ts
   module_src_execution_ts --> module_src_commandContext_ts
   module_src_execution_ts --> module_src_packageRegistry_ts
+  module_src_execution_ts --> module_src_planning_ts
   module_src_execution_ts --> module_src_providerManifestLoader_ts
   module_src_execution_ts --> module_src_providerRegistry_ts
   module_src_help_ts["src/help.ts"]
@@ -47,6 +49,12 @@ graph TD
   module_src_packageRegistry_ts --> module_src_discovery_ts
   module_src_parser_ts["src/parser.ts"]
   package__ankhorage_ankh -.-> module_src_parser_ts
+  module_src_planning_ts["src/planning.ts"]
+  package__ankhorage_ankh -.-> module_src_planning_ts
+  module_src_planning_ts --> module_src_commandContext_ts
+  module_src_planning_ts --> module_src_packageRegistry_ts
+  module_src_planning_ts --> module_src_providerManifestLoader_ts
+  module_src_planning_ts --> module_src_providerRegistry_ts
   module_src_providerManifestLoader_ts["src/providerManifestLoader.ts"]
   package__ankhorage_ankh -.-> module_src_providerManifestLoader_ts
   module_src_providerManifestLoader_ts --> module_src_discovery_ts
@@ -80,6 +88,14 @@ graph TD
   module_tests_parser_test_ts["tests/parser.test.ts"]
   package__ankhorage_ankh -.-> module_tests_parser_test_ts
   module_tests_parser_test_ts --> module_src_parser_ts
+  module_tests_planning_test_ts["tests/planning.test.ts"]
+  package__ankhorage_ankh -.-> module_tests_planning_test_ts
+  module_tests_planning_test_ts --> module_package_json
+  module_tests_planning_test_ts --> module_src_cli_ts
+  module_tests_planning_test_ts --> module_src_commandContext_ts
+  module_tests_planning_test_ts --> module_src_discovery_ts
+  module_tests_planning_test_ts --> module_src_index_ts
+  module_tests_planning_test_ts --> module_src_providerManifestLoader_ts
   module_tests_providerManifestLoader_test_ts["tests/providerManifestLoader.test.ts"]
   package__ankhorage_ankh -.-> module_tests_providerManifestLoader_test_ts
   module_tests_providerManifestLoader_test_ts --> module_src_providerManifestLoader_ts
