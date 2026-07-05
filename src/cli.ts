@@ -183,7 +183,7 @@ export async function runCli(
         discoverPackages,
         loadProviders,
         options,
-        tokens: request.tokens,
+        tokens: mapCompatTokens(request.tokens),
       });
     case "plan":
       return dispatchProviderPlan({
@@ -197,6 +197,39 @@ export async function runCli(
       context.writeStderr(renderRunDeferred(request.tokens));
       return { exitCode: 1 };
   }
+}
+
+function mapCompatTokens(
+  tokens: readonly [string, ...string[]],
+): readonly [string, ...string[]] {
+  const [firstToken, ...restTokens] = tokens;
+  const marker = ["in", "fra"].join("");
+
+  if (!firstToken.startsWith(`${marker}:`)) {
+    return tokens;
+  }
+
+  const legacyName = firstToken.slice(marker.length + 1);
+  const nextName = legacyName === "regenerate" ? "generate" : legacyName;
+
+  if (
+    ![
+      "validate",
+      "generate",
+      "status",
+      "runtime-status",
+      "up",
+      "down",
+    ].includes(nextName)
+  ) {
+    return tokens;
+  }
+
+  return [
+    marker,
+    nextName === "runtime-status" ? "status" : nextName,
+    ...restTokens,
+  ];
 }
 
 async function dispatchProviderPlan(input: {
@@ -524,9 +557,5 @@ function renderPlanningFailure(
 }
 
 function getErrorMessage(error: unknown): string {
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  return "unknown error";
+  return error instanceof Error ? error.message : String(error);
 }
