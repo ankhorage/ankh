@@ -212,11 +212,24 @@ function mapCompatTokens(
   const legacyName = firstToken.slice(marker.length + 1);
   const nextName = legacyName === "regenerate" ? "generate" : legacyName;
 
-  if (!["validate", "generate", "status", "runtime-status", "up", "down"].includes(nextName)) {
+  if (
+    ![
+      "validate",
+      "generate",
+      "status",
+      "runtime-status",
+      "up",
+      "down",
+    ].includes(nextName)
+  ) {
     return tokens;
   }
 
-  return [marker, nextName === "runtime-status" ? "status" : nextName, ...restTokens];
+  return [
+    marker,
+    nextName === "runtime-status" ? "status" : nextName,
+    ...restTokens,
+  ];
 }
 
 async function dispatchProviderPlan(input: {
