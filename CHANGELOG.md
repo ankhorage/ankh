@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.2
+
+### Patch Changes
+
+- 2ee5d9a: Route legacy compatibility command names to provider-backed command paths.
+
 ## 0.6.1
 
 ### Patch Changes
