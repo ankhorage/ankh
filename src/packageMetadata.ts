@@ -27,6 +27,7 @@ export interface ReadAnkhPackageMetadataResult {
 interface ParsedPackageJson {
   readonly name?: unknown;
   readonly ankh?: unknown;
+  readonly exports?: unknown;
 }
 
 export async function readAnkhPackageMetadata(
@@ -118,6 +119,7 @@ export async function readAnkhPackageMetadata(
         ];
 
   const metadataResult = validateAnkhMetadata({
+    packageExports: packageJson.exports,
     packageJsonPath: options.packageJsonPath,
     packageName,
     rawAnkhMetadata: packageJson.ankh,
@@ -133,6 +135,7 @@ export async function readAnkhPackageMetadata(
 }
 
 interface ValidateAnkhMetadataOptions {
+  readonly packageExports: unknown;
   readonly packageJsonPath: string;
   readonly packageName: string | null;
   readonly rawAnkhMetadata: unknown;
@@ -180,28 +183,18 @@ function validateAnkhMetadata(
     };
   }
 
-  const rawProvider = options.rawAnkhMetadata.provider;
-  const provider =
-    rawProvider === null
-      ? null
-      : typeof rawProvider === "string" && isProviderReference(rawProvider)
-        ? rawProvider
-        : undefined;
+  const providerResult = resolveAnkhProviderReference({
+    packageExports: options.packageExports,
+    packageJsonPath: options.packageJsonPath,
+    packageName: options.packageName,
+    rawProvider: options.rawAnkhMetadata.provider,
+    source: options.source,
+  });
 
-  if (provider === undefined) {
+  if (providerResult.diagnostic !== null) {
     return {
       metadata: null,
-      diagnostics: [
-        createDiagnostic({
-          code: "invalid-ankh-provider",
-          message:
-            'package.json "ankh.provider" must be null or a package-relative path starting with "./".',
-          packageJsonPath: options.packageJsonPath,
-          packageName: options.packageName,
-          severity: "error",
-          source: options.source,
-        }),
-      ],
+      diagnostics: [providerResult.diagnostic],
     };
   }
 
@@ -248,11 +241,72 @@ function validateAnkhMetadata(
   return {
     metadata: {
       category: rawCategory.trim(),
-      provider,
+      provider: providerResult.provider,
       capabilities,
     },
     diagnostics: [],
   };
+}
+
+function resolveAnkhProviderReference(options: {
+  readonly packageExports: unknown;
+  readonly packageJsonPath: string;
+  readonly packageName: string | null;
+  readonly rawProvider: unknown;
+  readonly source: AnkhDiscoverySource;
+}): {
+  readonly diagnostic: AnkhMetadataDiscoveryDiagnostic | null;
+  readonly provider: AnkhProviderReference | null;
+} {
+  if (options.rawProvider === null) {
+    return {
+      diagnostic: null,
+      provider: resolvePackageCliExport(options.packageExports),
+    };
+  }
+
+  if (typeof options.rawProvider === "string" && isProviderReference(options.rawProvider)) {
+    return {
+      diagnostic: null,
+      provider: options.rawProvider,
+    };
+  }
+
+  return {
+    diagnostic: createDiagnostic({
+      code: "invalid-ankh-provider",
+      message:
+        'package.json "ankh.provider" must be null or a package-relative path starting with "./".',
+      packageJsonPath: options.packageJsonPath,
+      packageName: options.packageName,
+      severity: "error",
+      source: options.source,
+    }),
+    provider: null,
+  };
+}
+
+function resolvePackageCliExport(value: unknown): AnkhProviderReference | null {
+  if (!isRecord(value)) {
+    return null;
+  }
+
+  const cliExport = value["./cli"];
+  if (typeof cliExport === "string" && isProviderReference(cliExport)) {
+    return cliExport;
+  }
+
+  if (!isRecord(cliExport)) {
+    return null;
+  }
+
+  for (const candidate of [cliExport.import, cliExport.default]) {
+    if (typeof candidate === "string" && isProviderReference(candidate)) {
+      return candidate;
+    }
+  }
+
+  return null;
 }
 
 function getPackageName(value: unknown): string | null {
