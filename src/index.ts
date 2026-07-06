@@ -1,4 +1,4 @@
-export { runCli } from "./cli.js";
+export { runCli } from "./cli/index.js";
 export type { AnkhCliRunResult, AnkhCommandContext } from "./commandContext.js";
 export { createDefaultCommandContext } from "./commandContext.js";
 export type {
