@@ -447,7 +447,9 @@ function writeProviderUnavailable(input: {
   );
 
   if (providerDiagnostics.length > 0) {
-    input.context.writeStderr(renderProviderManifestDiagnostics(providerDiagnostics));
+    input.context.writeStderr(
+      renderProviderManifestDiagnostics(providerDiagnostics),
+    );
     return;
   }
 
