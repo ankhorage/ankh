@@ -1,4 +1,7 @@
-import type { AnkhCliRunResult, AnkhCommandContext } from "../commandContext.js";
+import type {
+  AnkhCliRunResult,
+  AnkhCommandContext,
+} from "../commandContext.js";
 import { createDefaultCommandContext } from "../commandContext.js";
 import type {
   AnkhDiscoveredPackage,
@@ -447,7 +450,9 @@ function writeProviderUnavailable(input: {
   );
 
   if (providerDiagnostics.length > 0) {
-    input.context.writeStderr(renderProviderManifestDiagnostics(providerDiagnostics));
+    input.context.writeStderr(
+      renderProviderManifestDiagnostics(providerDiagnostics),
+    );
     return;
   }
 

@@ -456,8 +456,8 @@ Source: `src/parser.ts:1:1`
 ## runCli
 
 Kind: `function`
-Module: `src/cli.ts`
-Source: `src/cli.ts:78:1`
+Module: `src/cli/index.ts`
+Source: `src/cli/index.ts:78:1`
 
 ### Signatures
 

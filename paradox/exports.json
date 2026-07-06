@@ -1452,9 +1452,9 @@
     "isReadme": false,
     "examples": [],
     "kind": "function",
-    "modulePath": "src/cli.ts",
+    "modulePath": "src/cli/index.ts",
     "sourceLocation": {
-      "filePath": "src/cli.ts",
+      "filePath": "src/cli/index.ts",
       "line": 78,
       "column": 1
     },
