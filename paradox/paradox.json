@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.6.1",
+      "value": "v0.6.2",
       "color": "cb3837"
     },
     {
@@ -94,11 +94,22 @@
     {
       "path": "src/bin.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/cli.ts"],
+      "dependencies": ["src/cli/index.ts"],
       "exports": []
     },
     {
       "path": "src/cli.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "DiscoverAnkhPackagesFn",
+        "LoadProviderManifestsFn",
+        "runCli",
+        "RunCliOptions"
+      ]
+    },
+    {
+      "path": "src/cli/index.ts",
       "isEntrypoint": false,
       "dependencies": [
         "src/commandContext.ts",
@@ -1844,9 +1855,9 @@
       "isReadme": false,
       "examples": [],
       "kind": "function",
-      "modulePath": "src/cli.ts",
+      "modulePath": "src/cli/index.ts",
       "sourceLocation": {
-        "filePath": "src/cli.ts",
+        "filePath": "src/cli/index.ts",
         "line": 78,
         "column": 1
       },
@@ -1883,17 +1894,26 @@
       "name": "runCli",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/cli.ts",
+        "filePath": "src/cli/index.ts",
         "line": 78,
         "column": 1
       }
     },
     {
-      "name": "mapCompatTokens",
+      "name": "renderDiscoveredCommands",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/cli.ts",
-        "line": 202,
+        "filePath": "src/cli/index.ts",
+        "line": 131,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderDiscoveredCategoryHelp",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/index.ts",
+        "line": 167,
         "column": 1
       }
     },
@@ -1901,8 +1921,8 @@
       "name": "dispatchProviderPlan",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/cli.ts",
-        "line": 235,
+        "filePath": "src/cli/index.ts",
+        "line": 207,
         "column": 1
       }
     },
@@ -1910,8 +1930,8 @@
       "name": "dispatchProviderCommand",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/cli.ts",
-        "line": 350,
+        "filePath": "src/cli/index.ts",
+        "line": 304,
         "column": 1
       }
     },
@@ -1919,8 +1939,17 @@
       "name": "resolveCliState",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/cli.ts",
-        "line": 450,
+        "filePath": "src/cli/index.ts",
+        "line": 386,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeProviderUnavailable",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/index.ts",
+        "line": 440,
         "column": 1
       }
     },
@@ -1928,8 +1957,8 @@
       "name": "parsePlanRequest",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/cli.ts",
-        "line": 504,
+        "filePath": "src/cli/index.ts",
+        "line": 467,
         "column": 1
       }
     },
@@ -1937,8 +1966,8 @@
       "name": "renderPlanUsage",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/cli.ts",
-        "line": 529,
+        "filePath": "src/cli/index.ts",
+        "line": 492,
         "column": 1
       }
     },
@@ -1946,8 +1975,8 @@
       "name": "renderRunDeferred",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/cli.ts",
-        "line": 537,
+        "filePath": "src/cli/index.ts",
+        "line": 500,
         "column": 1
       }
     },
@@ -1955,8 +1984,8 @@
       "name": "renderPlanningFailure",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/cli.ts",
-        "line": 546,
+        "filePath": "src/cli/index.ts",
+        "line": 509,
         "column": 1
       }
     },
@@ -1964,8 +1993,8 @@
       "name": "getErrorMessage",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/cli.ts",
-        "line": 559,
+        "filePath": "src/cli/index.ts",
+        "line": 522,
         "column": 1
       }
     },
@@ -2217,7 +2246,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 32,
+        "line": 33,
         "column": 1
       }
     },
@@ -2226,7 +2255,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 147,
+        "line": 150,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveAnkhProviderReference",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/packageMetadata.ts",
+        "line": 251,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolvePackageCliExport",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/packageMetadata.ts",
+        "line": 292,
         "column": 1
       }
     },
@@ -2235,7 +2282,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 258,
+        "line": 315,
         "column": 1
       }
     },
@@ -2244,7 +2291,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 267,
+        "line": 324,
         "column": 1
       }
     },
@@ -2253,7 +2300,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 274,
+        "line": 331,
         "column": 1
       }
     },
@@ -2262,7 +2309,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 278,
+        "line": 335,
         "column": 1
       }
     },
@@ -2271,7 +2318,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 291,
+        "line": 348,
         "column": 1
       }
     },
@@ -2760,7 +2807,7 @@
     {
       "kind": "export",
       "name": "runCli",
-      "sourcePath": "src/cli.ts",
+      "sourcePath": "src/cli/index.ts",
       "symbolName": "runCli",
       "description": null,
       "isReadme": false
@@ -2770,52 +2817,12 @@
     "imports": [
       {
         "fromPath": "src/bin.ts",
-        "toPath": "src/cli.ts",
+        "toPath": "src/cli/index.ts",
         "sourcePath": "src/bin.ts"
       },
       {
         "fromPath": "src/cli.ts",
-        "toPath": "src/commandContext.ts",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromPath": "src/cli.ts",
-        "toPath": "src/discovery.ts",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromPath": "src/cli.ts",
-        "toPath": "src/execution.ts",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromPath": "src/cli.ts",
-        "toPath": "src/help.ts",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromPath": "src/cli.ts",
-        "toPath": "src/packageRegistry.ts",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromPath": "src/cli.ts",
-        "toPath": "src/parser.ts",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromPath": "src/cli.ts",
-        "toPath": "src/planning.ts",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromPath": "src/cli.ts",
-        "toPath": "src/providerManifestLoader.ts",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromPath": "src/cli.ts",
-        "toPath": "src/providerRegistry.ts",
+        "toPath": "src/cli/index.ts",
         "sourcePath": "src/cli.ts"
       },
       {
@@ -2880,7 +2887,7 @@
       },
       {
         "fromPath": "src/index.ts",
-        "toPath": "src/cli.ts",
+        "toPath": "src/cli/index.ts",
         "sourcePath": "src/index.ts"
       },
       {
@@ -3072,6 +3079,51 @@
         "fromPath": "tests/providerRegistry.test.ts",
         "toPath": "src/providerRegistry.ts",
         "sourcePath": "tests/providerRegistry.test.ts"
+      },
+      {
+        "fromPath": "src/cli/index.ts",
+        "toPath": "src/commandContext.ts",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromPath": "src/cli/index.ts",
+        "toPath": "src/discovery.ts",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromPath": "src/cli/index.ts",
+        "toPath": "src/execution.ts",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromPath": "src/cli/index.ts",
+        "toPath": "src/help.ts",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromPath": "src/cli/index.ts",
+        "toPath": "src/packageRegistry.ts",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromPath": "src/cli/index.ts",
+        "toPath": "src/parser.ts",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromPath": "src/cli/index.ts",
+        "toPath": "src/planning.ts",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromPath": "src/cli/index.ts",
+        "toPath": "src/providerManifestLoader.ts",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromPath": "src/cli/index.ts",
+        "toPath": "src/providerRegistry.ts",
+        "sourcePath": "src/cli/index.ts"
       }
     ],
     "calls": [
@@ -3086,354 +3138,6 @@
         "toSymbol": "runCli",
         "callExpression": "runCli",
         "sourcePath": "src/bin.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "createDefaultCommandContext",
-        "callExpression": "createDefaultCommandContext",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "parseArgv",
-        "callExpression": "parseArgv",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "writeStdout",
-        "callExpression": "context.writeStdout",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "renderRootHelp",
-        "callExpression": "renderRootHelp",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "resolveCliState",
-        "callExpression": "resolveCliState",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "renderCommands",
-        "callExpression": "renderCommands",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "listPackages",
-        "callExpression": "resolvedState.packageRegistry.listPackages",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "renderMetadataDiscoveryDiagnostics",
-        "callExpression": "renderMetadataDiscoveryDiagnostics",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "writeStderr",
-        "callExpression": "context.writeStderr",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "renderProviderManifestDiagnostics",
-        "callExpression": "renderProviderManifestDiagnostics",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "findByCategory",
-        "callExpression": "resolvedState.packageRegistry.findByCategory",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "renderUnknownCategory",
-        "callExpression": "renderUnknownCategory",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "findByCategory",
-        "callExpression": "resolvedState.providerRegistry.findByCategory",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "renderCategoryProviderUnavailable",
-        "callExpression": "renderCategoryProviderUnavailable",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "renderCategoryHelp",
-        "callExpression": "renderCategoryHelp",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "dispatchProviderCommand",
-        "callExpression": "dispatchProviderCommand",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "mapCompatTokens",
-        "callExpression": "mapCompatTokens",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "dispatchProviderPlan",
-        "callExpression": "dispatchProviderPlan",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "runCli",
-        "toSymbol": "renderRunDeferred",
-        "callExpression": "renderRunDeferred",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderPlan",
-        "toSymbol": "parsePlanRequest",
-        "callExpression": "parsePlanRequest",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderPlan",
-        "toSymbol": "writeStderr",
-        "callExpression": "input.context.writeStderr",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderPlan",
-        "toSymbol": "renderPlanUsage",
-        "callExpression": "renderPlanUsage",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderPlan",
-        "toSymbol": "resolveCliState",
-        "callExpression": "resolveCliState",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderPlan",
-        "toSymbol": "findByCategory",
-        "callExpression": "resolvedState.packageRegistry.findByCategory",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderPlan",
-        "toSymbol": "renderUnknownCommand",
-        "callExpression": "renderUnknownCommand",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderPlan",
-        "toSymbol": "findByCategory",
-        "callExpression": "resolvedState.providerRegistry.findByCategory",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderPlan",
-        "toSymbol": "renderProviderManifestDiagnostics",
-        "callExpression": "renderProviderManifestDiagnostics",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderPlan",
-        "toSymbol": "renderCategoryProviderUnavailable",
-        "callExpression": "renderCategoryProviderUnavailable",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderPlan",
-        "toSymbol": "resolvePlannableCommand",
-        "callExpression": "resolvePlannableCommand",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderPlan",
-        "toSymbol": "renderPlanningDiagnostics",
-        "callExpression": "renderPlanningDiagnostics",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderPlan",
-        "toSymbol": "renderUnknownProviderCommand",
-        "callExpression": "renderUnknownProviderCommand",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderPlan",
-        "toSymbol": "handler",
-        "callExpression": "planningResult.resolvedCommand.handler",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderPlan",
-        "toSymbol": "writeStdout",
-        "callExpression": "input.context.writeStdout",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderPlan",
-        "toSymbol": "renderCommandPlanJson",
-        "callExpression": "renderCommandPlanJson",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderPlan",
-        "toSymbol": "renderCommandPlan",
-        "callExpression": "renderCommandPlan",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderPlan",
-        "toSymbol": "hasCommandPlanErrors",
-        "callExpression": "hasCommandPlanErrors",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderPlan",
-        "toSymbol": "renderPlanningFailure",
-        "callExpression": "renderPlanningFailure",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderCommand",
-        "toSymbol": "resolveCliState",
-        "callExpression": "resolveCliState",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderCommand",
-        "toSymbol": "findByCategory",
-        "callExpression": "resolvedState.packageRegistry.findByCategory",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderCommand",
-        "toSymbol": "writeStderr",
-        "callExpression": "input.context.writeStderr",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderCommand",
-        "toSymbol": "renderUnknownCommand",
-        "callExpression": "renderUnknownCommand",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderCommand",
-        "toSymbol": "findByCategory",
-        "callExpression": "resolvedState.providerRegistry.findByCategory",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderCommand",
-        "toSymbol": "renderProviderManifestDiagnostics",
-        "callExpression": "renderProviderManifestDiagnostics",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderCommand",
-        "toSymbol": "renderCategoryProviderUnavailable",
-        "callExpression": "renderCategoryProviderUnavailable",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderCommand",
-        "toSymbol": "resolveExecutableCommand",
-        "callExpression": "resolveExecutableCommand",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderCommand",
-        "toSymbol": "renderExecutionDiagnostics",
-        "callExpression": "renderExecutionDiagnostics",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderCommand",
-        "toSymbol": "renderUnknownProviderCommand",
-        "callExpression": "renderUnknownProviderCommand",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderCommand",
-        "toSymbol": "handler",
-        "callExpression": "executionResult.resolvedCommand.handler",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "dispatchProviderCommand",
-        "toSymbol": "renderCommandExecutionFailure",
-        "callExpression": "renderCommandExecutionFailure",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "resolveCliState",
-        "toSymbol": "discoverPackages",
-        "callExpression": "input.discoverPackages",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "resolveCliState",
-        "toSymbol": "createPackageRegistry",
-        "callExpression": "createPackageRegistry",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "resolveCliState",
-        "toSymbol": "listProviders",
-        "callExpression": "input.options.providerRegistry.listProviders",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "resolveCliState",
-        "toSymbol": "loadProviders",
-        "callExpression": "input.loadProviders",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "resolveCliState",
-        "toSymbol": "createProviderRegistry",
-        "callExpression": "createProviderRegistry",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "resolveCliState",
-        "toSymbol": "writeStderr",
-        "callExpression": "input.context.writeStderr",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "resolveCliState",
-        "toSymbol": "renderProviderLoadFailure",
-        "callExpression": "renderProviderLoadFailure",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "resolveCliState",
-        "toSymbol": "renderDiscoveryFailure",
-        "callExpression": "renderDiscoveryFailure",
-        "sourcePath": "src/cli.ts"
-      },
-      {
-        "fromSymbol": "renderPlanningFailure",
-        "toSymbol": "getErrorMessage",
-        "callExpression": "getErrorMessage",
-        "sourcePath": "src/cli.ts"
       },
       {
         "fromSymbol": "discoverAnkhPackages",
@@ -3635,14 +3339,44 @@
       },
       {
         "fromSymbol": "validateAnkhMetadata",
-        "toSymbol": "isProviderReference",
-        "callExpression": "isProviderReference",
+        "toSymbol": "resolveAnkhProviderReference",
+        "callExpression": "resolveAnkhProviderReference",
         "sourcePath": "src/packageMetadata.ts"
       },
       {
         "fromSymbol": "validateAnkhMetadata",
         "toSymbol": "isCapabilityId",
         "callExpression": "isCapabilityId",
+        "sourcePath": "src/packageMetadata.ts"
+      },
+      {
+        "fromSymbol": "resolveAnkhProviderReference",
+        "toSymbol": "resolvePackageCliExport",
+        "callExpression": "resolvePackageCliExport",
+        "sourcePath": "src/packageMetadata.ts"
+      },
+      {
+        "fromSymbol": "resolveAnkhProviderReference",
+        "toSymbol": "isProviderReference",
+        "callExpression": "isProviderReference",
+        "sourcePath": "src/packageMetadata.ts"
+      },
+      {
+        "fromSymbol": "resolveAnkhProviderReference",
+        "toSymbol": "createDiagnostic",
+        "callExpression": "createDiagnostic",
+        "sourcePath": "src/packageMetadata.ts"
+      },
+      {
+        "fromSymbol": "resolvePackageCliExport",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/packageMetadata.ts"
+      },
+      {
+        "fromSymbol": "resolvePackageCliExport",
+        "toSymbol": "isProviderReference",
+        "callExpression": "isProviderReference",
         "sourcePath": "src/packageMetadata.ts"
       },
       {
@@ -4550,18 +4284,408 @@
         "toSymbol": "findAllByCategory",
         "callExpression": "registry.findAllByCategory",
         "sourcePath": "tests/providerRegistry.test.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "createDefaultCommandContext",
+        "callExpression": "createDefaultCommandContext",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "parseArgv",
+        "callExpression": "parseArgv",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "writeStdout",
+        "callExpression": "context.writeStdout",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "renderRootHelp",
+        "callExpression": "renderRootHelp",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "renderDiscoveredCommands",
+        "callExpression": "renderDiscoveredCommands",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "renderDiscoveredCategoryHelp",
+        "callExpression": "renderDiscoveredCategoryHelp",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "dispatchProviderCommand",
+        "callExpression": "dispatchProviderCommand",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "dispatchProviderPlan",
+        "callExpression": "dispatchProviderPlan",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "writeStderr",
+        "callExpression": "context.writeStderr",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "runCli",
+        "toSymbol": "renderRunDeferred",
+        "callExpression": "renderRunDeferred",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "renderDiscoveredCommands",
+        "toSymbol": "resolveCliState",
+        "callExpression": "resolveCliState",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "renderDiscoveredCommands",
+        "toSymbol": "writeStdout",
+        "callExpression": "input.context.writeStdout",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "renderDiscoveredCommands",
+        "toSymbol": "renderCommands",
+        "callExpression": "renderCommands",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "renderDiscoveredCommands",
+        "toSymbol": "listPackages",
+        "callExpression": "resolvedState.packageRegistry.listPackages",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "renderDiscoveredCommands",
+        "toSymbol": "renderMetadataDiscoveryDiagnostics",
+        "callExpression": "renderMetadataDiscoveryDiagnostics",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "renderDiscoveredCommands",
+        "toSymbol": "writeStderr",
+        "callExpression": "input.context.writeStderr",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "renderDiscoveredCommands",
+        "toSymbol": "renderProviderManifestDiagnostics",
+        "callExpression": "renderProviderManifestDiagnostics",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "renderDiscoveredCategoryHelp",
+        "toSymbol": "resolveCliState",
+        "callExpression": "resolveCliState",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "renderDiscoveredCategoryHelp",
+        "toSymbol": "findByCategory",
+        "callExpression": "resolvedState.packageRegistry.findByCategory",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "renderDiscoveredCategoryHelp",
+        "toSymbol": "writeStderr",
+        "callExpression": "input.context.writeStderr",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "renderDiscoveredCategoryHelp",
+        "toSymbol": "renderUnknownCategory",
+        "callExpression": "renderUnknownCategory",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "renderDiscoveredCategoryHelp",
+        "toSymbol": "findByCategory",
+        "callExpression": "resolvedState.providerRegistry.findByCategory",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "renderDiscoveredCategoryHelp",
+        "toSymbol": "writeProviderUnavailable",
+        "callExpression": "writeProviderUnavailable",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "renderDiscoveredCategoryHelp",
+        "toSymbol": "writeStdout",
+        "callExpression": "input.context.writeStdout",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "renderDiscoveredCategoryHelp",
+        "toSymbol": "renderCategoryHelp",
+        "callExpression": "renderCategoryHelp",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "parsePlanRequest",
+        "callExpression": "parsePlanRequest",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "writeStderr",
+        "callExpression": "input.context.writeStderr",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "renderPlanUsage",
+        "callExpression": "renderPlanUsage",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "resolveCliState",
+        "callExpression": "resolveCliState",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "findByCategory",
+        "callExpression": "resolvedState.packageRegistry.findByCategory",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "renderUnknownCommand",
+        "callExpression": "renderUnknownCommand",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "findByCategory",
+        "callExpression": "resolvedState.providerRegistry.findByCategory",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "writeProviderUnavailable",
+        "callExpression": "writeProviderUnavailable",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "resolvePlannableCommand",
+        "callExpression": "resolvePlannableCommand",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "renderPlanningDiagnostics",
+        "callExpression": "renderPlanningDiagnostics",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "renderUnknownProviderCommand",
+        "callExpression": "renderUnknownProviderCommand",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "handler",
+        "callExpression": "planningResult.resolvedCommand.handler",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "writeStdout",
+        "callExpression": "input.context.writeStdout",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "renderCommandPlanJson",
+        "callExpression": "renderCommandPlanJson",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "renderCommandPlan",
+        "callExpression": "renderCommandPlan",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "hasCommandPlanErrors",
+        "callExpression": "hasCommandPlanErrors",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderPlan",
+        "toSymbol": "renderPlanningFailure",
+        "callExpression": "renderPlanningFailure",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderCommand",
+        "toSymbol": "resolveCliState",
+        "callExpression": "resolveCliState",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderCommand",
+        "toSymbol": "findByCategory",
+        "callExpression": "resolvedState.packageRegistry.findByCategory",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderCommand",
+        "toSymbol": "writeStderr",
+        "callExpression": "input.context.writeStderr",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderCommand",
+        "toSymbol": "renderUnknownCommand",
+        "callExpression": "renderUnknownCommand",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderCommand",
+        "toSymbol": "findByCategory",
+        "callExpression": "resolvedState.providerRegistry.findByCategory",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderCommand",
+        "toSymbol": "writeProviderUnavailable",
+        "callExpression": "writeProviderUnavailable",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderCommand",
+        "toSymbol": "resolveExecutableCommand",
+        "callExpression": "resolveExecutableCommand",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderCommand",
+        "toSymbol": "renderExecutionDiagnostics",
+        "callExpression": "renderExecutionDiagnostics",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderCommand",
+        "toSymbol": "renderUnknownProviderCommand",
+        "callExpression": "renderUnknownProviderCommand",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderCommand",
+        "toSymbol": "handler",
+        "callExpression": "executionResult.resolvedCommand.handler",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "dispatchProviderCommand",
+        "toSymbol": "renderCommandExecutionFailure",
+        "callExpression": "renderCommandExecutionFailure",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
+        "toSymbol": "discoverPackages",
+        "callExpression": "input.discoverPackages",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
+        "toSymbol": "createPackageRegistry",
+        "callExpression": "createPackageRegistry",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
+        "toSymbol": "listProviders",
+        "callExpression": "input.options.providerRegistry.listProviders",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
+        "toSymbol": "loadProviders",
+        "callExpression": "input.loadProviders",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
+        "toSymbol": "createProviderRegistry",
+        "callExpression": "createProviderRegistry",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
+        "toSymbol": "writeStderr",
+        "callExpression": "input.context.writeStderr",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
+        "toSymbol": "renderProviderLoadFailure",
+        "callExpression": "renderProviderLoadFailure",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
+        "toSymbol": "renderDiscoveryFailure",
+        "callExpression": "renderDiscoveryFailure",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "writeProviderUnavailable",
+        "toSymbol": "writeStderr",
+        "callExpression": "input.context.writeStderr",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "writeProviderUnavailable",
+        "toSymbol": "renderProviderManifestDiagnostics",
+        "callExpression": "renderProviderManifestDiagnostics",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "writeProviderUnavailable",
+        "toSymbol": "renderCategoryProviderUnavailable",
+        "callExpression": "renderCategoryProviderUnavailable",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "renderPlanningFailure",
+        "toSymbol": "getErrorMessage",
+        "callExpression": "getErrorMessage",
+        "sourcePath": "src/cli/index.ts"
       }
     ],
     "typeReferences": [
       {
         "fromSymbol": "runCli",
         "toType": "AnkhCliRunResult",
-        "sourcePath": "src/cli.ts"
+        "sourcePath": "src/cli/index.ts"
       },
       {
         "fromSymbol": "runCli",
         "toType": "RunCliOptions",
-        "sourcePath": "src/cli.ts"
+        "sourcePath": "src/cli/index.ts"
       },
       {
         "fromSymbol": "AnkhCommandContext",

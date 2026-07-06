@@ -3,6 +3,7 @@ graph LR
   module_paradox_config_ts["paradox.config.ts"]
   module_src_bin_ts["src/bin.ts"]
   module_src_cli_ts["src/cli.ts"]
+  module_src_cli_index_ts["src/cli/index.ts"]
   module_src_commandContext_ts["src/commandContext.ts"]
   module_src_discovery_ts["src/discovery.ts"]
   module_src_execution_ts["src/execution.ts"]
@@ -24,16 +25,16 @@ graph LR
   module_tests_planning_test_ts["tests/planning.test.ts"]
   module_tests_providerManifestLoader_test_ts["tests/providerManifestLoader.test.ts"]
   module_tests_providerRegistry_test_ts["tests/providerRegistry.test.ts"]
-  module_src_bin_ts --> module_src_cli_ts
-  module_src_cli_ts --> module_src_commandContext_ts
-  module_src_cli_ts --> module_src_discovery_ts
-  module_src_cli_ts --> module_src_execution_ts
-  module_src_cli_ts --> module_src_help_ts
-  module_src_cli_ts --> module_src_packageRegistry_ts
-  module_src_cli_ts --> module_src_parser_ts
-  module_src_cli_ts --> module_src_planning_ts
-  module_src_cli_ts --> module_src_providerManifestLoader_ts
-  module_src_cli_ts --> module_src_providerRegistry_ts
+  module_src_bin_ts --> module_src_cli_index_ts
+  module_src_cli_index_ts --> module_src_commandContext_ts
+  module_src_cli_index_ts --> module_src_discovery_ts
+  module_src_cli_index_ts --> module_src_execution_ts
+  module_src_cli_index_ts --> module_src_help_ts
+  module_src_cli_index_ts --> module_src_packageRegistry_ts
+  module_src_cli_index_ts --> module_src_parser_ts
+  module_src_cli_index_ts --> module_src_planning_ts
+  module_src_cli_index_ts --> module_src_providerManifestLoader_ts
+  module_src_cli_index_ts --> module_src_providerRegistry_ts
   module_src_commandContext_ts --> module_package_json
   module_src_discovery_ts --> module_src_packageMetadata_ts
   module_src_discovery_ts --> module_src_workspace_ts

@@ -3,6 +3,7 @@ graph LR
   module_paradox_config_ts["paradox.config.ts"]
   module_src_bin_ts["src/bin.ts"]
   module_src_cli_ts["src/cli.ts"]
+  module_src_cli_index_ts["src/cli/index.ts"]
   module_src_commandContext_ts["src/commandContext.ts"]
   module_src_discovery_ts["src/discovery.ts"]
   module_src_execution_ts["src/execution.ts"]
@@ -129,5 +130,5 @@ graph LR
   export_ParsedCliRequest["ParsedCliRequest"]
   module_src_parser_ts --> export_ParsedCliRequest
   export_runCli["runCli"]
-  module_src_cli_ts --> export_runCli
+  module_src_cli_index_ts --> export_runCli
   export_runCli -.-> export_AnkhCliRunResult
