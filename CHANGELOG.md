@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.3
+
+### Patch Changes
+
+- 7707bc8: Expose the root CLI from the package CLI folder and discover provider modules from package CLI exports.
+
 ## 0.6.2
 
 ### Patch Changes
