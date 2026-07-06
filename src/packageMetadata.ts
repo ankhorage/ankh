@@ -265,7 +265,10 @@ function resolveAnkhProviderReference(options: {
     };
   }
 
-  if (typeof options.rawProvider === "string" && isProviderReference(options.rawProvider)) {
+  if (
+    typeof options.rawProvider === "string" &&
+    isProviderReference(options.rawProvider)
+  ) {
     return {
       diagnostic: null,
       provider: options.rawProvider,
