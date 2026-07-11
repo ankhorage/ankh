@@ -4,9 +4,9 @@ import type {
 } from "./discovery.js";
 import { readAnkhPackageMetadata } from "./packageMetadata.js";
 import {
-  loadProviderManifests,
   type AnkhLoadedProvider,
   type AnkhProviderManifestDiagnostic,
+  loadProviderManifests,
 } from "./providerManifestLoader.js";
 
 export interface AnkhCoreProviderState {

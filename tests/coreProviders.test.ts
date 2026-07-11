@@ -35,9 +35,14 @@ it("renders Doctor category help without discovered providers", async () => {
 
 it("lets a discovered Doctor package replace the bundled package metadata", () => {
   const corePackage = createDoctorPackage("/global/doctor", "core-provider");
-  const localPackage = createDoctorPackage("/workspace/doctor", "current-package");
+  const localPackage = createDoctorPackage(
+    "/workspace/doctor",
+    "current-package",
+  );
 
-  expect(mergeCorePackages([corePackage], [localPackage])).toEqual([localPackage]);
+  expect(mergeCorePackages([corePackage], [localPackage])).toEqual([
+    localPackage,
+  ]);
 });
 
 function createDoctorPackage(
