@@ -10,7 +10,7 @@ import {
 } from "./workspace.js";
 
 export type AnkhDiscoverySource =
-  "current-package" | "workspace" | "installed-dependency";
+  "core-provider" | "current-package" | "workspace" | "installed-dependency";
 
 export interface AnkhDiscoveredPackage {
   readonly metadata: AnkhPackageMetadata;

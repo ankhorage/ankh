@@ -3,6 +3,11 @@ import type {
   AnkhCommandContext,
 } from "../commandContext.js";
 import { createDefaultCommandContext } from "../commandContext.js";
+import {
+  loadCoreProviderState,
+  mergeCorePackages,
+  mergeCoreProviders,
+} from "../coreProviders.js";
 import type {
   AnkhDiscoveredPackage,
   AnkhMetadataDiscoveryResult,
@@ -405,8 +410,13 @@ async function resolveCliState(input: {
     const discoveryResult = await input.discoverPackages({
       cwd: input.context.cwd,
     });
+    const coreProviderState = await loadCoreProviderState();
+    const discoveredPackages = mergeCorePackages(
+      coreProviderState.packages,
+      discoveryResult.packages,
+    );
     const packageRegistry =
-      input.options.registry ?? createPackageRegistry(discoveryResult.packages);
+      input.options.registry ?? createPackageRegistry(discoveredPackages);
 
     try {
       const providerLoadResult =
@@ -419,13 +429,24 @@ async function resolveCliState(input: {
 
       const providerRegistry =
         input.options.providerRegistry ??
-        createProviderRegistry(providerLoadResult.providers);
+        createProviderRegistry(
+          mergeCoreProviders(
+            coreProviderState.providers,
+            providerLoadResult.providers,
+          ),
+        );
 
       return {
         packageRegistry,
         providerRegistry,
-        metadataDiagnostics: discoveryResult.diagnostics,
-        providerDiagnostics: providerLoadResult.diagnostics,
+        metadataDiagnostics: [
+          ...coreProviderState.metadataDiagnostics,
+          ...discoveryResult.diagnostics,
+        ],
+        providerDiagnostics: [
+          ...coreProviderState.providerDiagnostics,
+          ...providerLoadResult.diagnostics,
+        ],
       };
     } catch (error) {
       input.context.writeStderr(renderProviderLoadFailure(error));
