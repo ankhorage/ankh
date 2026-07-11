@@ -1,0 +1,13 @@
+$ ankhorage-eslint . --max-warnings=0
+
+/home/runner/work/ankh/ankh/src/coreProviders.ts
+  1:1  error  Run autofix to sort these imports!  simple-import-sort/imports
+
+/home/runner/work/ankh/ankh/tests/coreProviders.test.ts
+  38:44  error  Replace `"/workspace/doctor",·"current-package"` with `⏎····"/workspace/doctor",⏎····"current-package",⏎··`  prettier/prettier
+  40:69  error  Replace `localPackage` with `⏎····localPackage,⏎··`                                                          prettier/prettier
+
+✖ 3 problems (3 errors, 0 warnings)
+  3 errors and 0 warnings potentially fixable with the `--fix` option.
+
+error: script "lint" exited with code 1
