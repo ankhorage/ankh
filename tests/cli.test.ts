@@ -5,7 +5,7 @@ import type {
 import { describe, expect, it } from "bun:test";
 
 import packageJson from "../package.json";
-import { runCli } from "../src/cli.js";
+import { runCli } from "../src/cli/index.js";
 import type { AnkhCommandContext } from "../src/commandContext.js";
 import type {
   AnkhDiscoveredPackage,
