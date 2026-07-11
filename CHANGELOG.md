@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.5
+
+### Patch Changes
+
+- 21b157c: Register `@ankhorage/doctor` as an always-available core provider while allowing a locally discovered Doctor package to override the bundled instance during development.
+
 ## 0.6.4
 
 ### Patch Changes
