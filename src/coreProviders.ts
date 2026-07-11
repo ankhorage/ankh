@@ -1,51 +1,54 @@
-import path from "node:path";
-import { pathToFileURL } from "node:url";
-
-import doctorProvider from "@ankhorage/doctor/cli";
-
-import type { AnkhDiscoveredPackage } from "./discovery.js";
-import type { AnkhLoadedProvider } from "./providerManifestLoader.js";
-
-const DOCTOR_PACKAGE_NAME = "@ankhorage/doctor";
-const DOCTOR_PROVIDER_PATH = "./dist/cli/index.js";
+import type {
+  AnkhDiscoveredPackage,
+  AnkhMetadataDiscoveryDiagnostic,
+} from "./discovery.js";
+import { readAnkhPackageMetadata } from "./packageMetadata.js";
+import {
+  loadProviderManifests,
+  type AnkhLoadedProvider,
+  type AnkhProviderManifestDiagnostic,
+} from "./providerManifestLoader.js";
 
 export interface AnkhCoreProviderState {
+  readonly metadataDiagnostics: readonly AnkhMetadataDiscoveryDiagnostic[];
   readonly packages: readonly AnkhDiscoveredPackage[];
+  readonly providerDiagnostics: readonly AnkhProviderManifestDiagnostic[];
   readonly providers: readonly AnkhLoadedProvider[];
 }
 
-export function createCoreProviderState(): AnkhCoreProviderState {
+export async function loadCoreProviderState(): Promise<AnkhCoreProviderState> {
   const packageJsonPath = Bun.resolveSync(
     "@ankhorage/doctor/package.json",
     import.meta.dir,
   );
-  const providerModulePath = Bun.resolveSync(
-    "@ankhorage/doctor/cli",
-    import.meta.dir,
-  );
-  const discoveredPackage = {
-    metadata: {
-      category: doctorProvider.category,
-      provider: DOCTOR_PROVIDER_PATH,
-      capabilities: doctorProvider.capabilities,
-    },
+  const metadataResult = await readAnkhPackageMetadata({
     packageJsonPath,
-    packageName: DOCTOR_PACKAGE_NAME,
-    packageRoot: path.dirname(packageJsonPath),
+    source: "core-provider",
+  });
+
+  if (metadataResult.packageName === null || metadataResult.metadata === null) {
+    return {
+      metadataDiagnostics: metadataResult.diagnostics,
+      packages: [],
+      providerDiagnostics: [],
+      providers: [],
+    };
+  }
+
+  const discoveredPackage = {
+    metadata: metadataResult.metadata,
+    packageJsonPath,
+    packageName: metadataResult.packageName,
+    packageRoot: metadataResult.packageRoot,
     source: "core-provider",
   } satisfies AnkhDiscoveredPackage;
+  const providerLoadResult = await loadProviderManifests([discoveredPackage]);
 
   return {
+    metadataDiagnostics: metadataResult.diagnostics,
     packages: [discoveredPackage],
-    providers: [
-      {
-        discoveredPackage,
-        manifest: doctorProvider,
-        providerModuleDefaultExport: doctorProvider,
-        providerModulePath,
-        providerModuleUrl: pathToFileURL(providerModulePath).href,
-      },
-    ],
+    providerDiagnostics: providerLoadResult.diagnostics,
+    providers: providerLoadResult.providers,
   };
 }
 

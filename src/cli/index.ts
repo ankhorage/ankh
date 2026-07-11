@@ -4,7 +4,7 @@ import type {
 } from "../commandContext.js";
 import { createDefaultCommandContext } from "../commandContext.js";
 import {
-  createCoreProviderState,
+  loadCoreProviderState,
   mergeCorePackages,
   mergeCoreProviders,
 } from "../coreProviders.js";
@@ -410,7 +410,7 @@ async function resolveCliState(input: {
     const discoveryResult = await input.discoverPackages({
       cwd: input.context.cwd,
     });
-    const coreProviderState = createCoreProviderState();
+    const coreProviderState = await loadCoreProviderState();
     const discoveredPackages = mergeCorePackages(
       coreProviderState.packages,
       discoveryResult.packages,
@@ -439,8 +439,14 @@ async function resolveCliState(input: {
       return {
         packageRegistry,
         providerRegistry,
-        metadataDiagnostics: discoveryResult.diagnostics,
-        providerDiagnostics: providerLoadResult.diagnostics,
+        metadataDiagnostics: [
+          ...coreProviderState.metadataDiagnostics,
+          ...discoveryResult.diagnostics,
+        ],
+        providerDiagnostics: [
+          ...coreProviderState.providerDiagnostics,
+          ...providerLoadResult.diagnostics,
+        ],
       };
     } catch (error) {
       input.context.writeStderr(renderProviderLoadFailure(error));
