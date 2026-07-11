@@ -1,0 +1,279 @@
+name: Apply Doctor core provider integration v3
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/register-doctor-core-provider
+          fetch-depth: 0
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.13"
+
+      - name: Apply core provider changes
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          from textwrap import dedent
+          import json
+
+          package_path = Path('package.json')
+          package_json = json.loads(package_path.read_text())
+          dependencies = package_json['dependencies']
+          package_json['dependencies'] = {
+              '@ankhorage/contracts': dependencies['@ankhorage/contracts'],
+              '@ankhorage/doctor': '^0.5.0',
+              'yaml': dependencies['yaml'],
+          }
+          package_path.write_text(json.dumps(package_json, indent=2) + '\n')
+
+          Path('src/coreProviders.ts').write_text(dedent('''\
+          import path from "node:path";
+          import { pathToFileURL } from "node:url";
+
+          import doctorProvider from "@ankhorage/doctor/cli";
+
+          import type { AnkhDiscoveredPackage } from "./discovery.js";
+          import type { AnkhLoadedProvider } from "./providerManifestLoader.js";
+
+          const DOCTOR_PACKAGE_NAME = "@ankhorage/doctor";
+          const DOCTOR_PROVIDER_PATH = "./dist/cli/index.js";
+
+          export interface AnkhCoreProviderState {
+            readonly packages: readonly AnkhDiscoveredPackage[];
+            readonly providers: readonly AnkhLoadedProvider[];
+          }
+
+          export function createCoreProviderState(): AnkhCoreProviderState {
+            const packageJsonPath = Bun.resolveSync(
+              "@ankhorage/doctor/package.json",
+              import.meta.dir,
+            );
+            const providerModulePath = Bun.resolveSync(
+              "@ankhorage/doctor/cli",
+              import.meta.dir,
+            );
+            const discoveredPackage = {
+              metadata: {
+                category: doctorProvider.category,
+                provider: DOCTOR_PROVIDER_PATH,
+                capabilities: doctorProvider.capabilities,
+              },
+              packageJsonPath,
+              packageName: DOCTOR_PACKAGE_NAME,
+              packageRoot: path.dirname(packageJsonPath),
+              source: "core-provider",
+            } satisfies AnkhDiscoveredPackage;
+
+            return {
+              packages: [discoveredPackage],
+              providers: [
+                {
+                  discoveredPackage,
+                  manifest: doctorProvider,
+                  providerModuleDefaultExport: doctorProvider,
+                  providerModulePath,
+                  providerModuleUrl: pathToFileURL(providerModulePath).href,
+                },
+              ],
+            };
+          }
+
+          export function mergeCorePackages(
+            corePackages: readonly AnkhDiscoveredPackage[],
+            discoveredPackages: readonly AnkhDiscoveredPackage[],
+          ): readonly AnkhDiscoveredPackage[] {
+            return mergeByPackageName(
+              corePackages,
+              discoveredPackages,
+              (discoveredPackage) => discoveredPackage.packageName,
+            );
+          }
+
+          export function mergeCoreProviders(
+            coreProviders: readonly AnkhLoadedProvider[],
+            discoveredProviders: readonly AnkhLoadedProvider[],
+          ): readonly AnkhLoadedProvider[] {
+            return mergeByPackageName(
+              coreProviders,
+              discoveredProviders,
+              (provider) => provider.discoveredPackage.packageName,
+            );
+          }
+
+          function mergeByPackageName<T>(
+            coreValues: readonly T[],
+            discoveredValues: readonly T[],
+            getPackageName: (value: T) => string,
+          ): readonly T[] {
+            const valuesByPackageName = new Map(
+              coreValues.map((value) => [getPackageName(value), value]),
+            );
+
+            for (const value of discoveredValues) {
+              valuesByPackageName.set(getPackageName(value), value);
+            }
+
+            return [...valuesByPackageName.values()];
+          }
+          '''))
+
+          discovery_path = Path('src/discovery.ts')
+          discovery = discovery_path.read_text()
+          old_source = 'export type AnkhDiscoverySource =\n  "current-package" | "workspace" | "installed-dependency";'
+          new_source = 'export type AnkhDiscoverySource =\n  | "core-provider"\n  | "current-package"\n  | "workspace"\n  | "installed-dependency";'
+          if old_source not in discovery:
+              raise SystemExit('discovery source anchor not found')
+          discovery_path.write_text(discovery.replace(old_source, new_source, 1))
+
+          cli_path = Path('src/cli/index.ts')
+          cli = cli_path.read_text()
+          import_anchor = 'import { createDefaultCommandContext } from "../commandContext.js";\n'
+          import_block = dedent('''\
+          import {
+            createCoreProviderState,
+            mergeCorePackages,
+            mergeCoreProviders,
+          } from "../coreProviders.js";
+          ''')
+          if import_anchor not in cli:
+              raise SystemExit('CLI import anchor not found')
+          cli = cli.replace(import_anchor, import_anchor + import_block, 1)
+
+          old_state = '''    const packageRegistry =
+              input.options.registry ?? createPackageRegistry(discoveryResult.packages);
+
+            try {
+              const providerLoadResult =
+                input.options.providerRegistry !== undefined
+                  ? {
+                      diagnostics: [] as const,
+                      providers: input.options.providerRegistry.listProviders(),
+                    }
+                  : await input.loadProviders(discoveryResult.packages);
+
+              const providerRegistry =
+                input.options.providerRegistry ??
+                createProviderRegistry(providerLoadResult.providers);
+          '''
+          new_state = '''    const coreProviderState = createCoreProviderState();
+            const discoveredPackages = mergeCorePackages(
+              coreProviderState.packages,
+              discoveryResult.packages,
+            );
+            const packageRegistry =
+              input.options.registry ?? createPackageRegistry(discoveredPackages);
+
+            try {
+              const providerLoadResult =
+                input.options.providerRegistry !== undefined
+                  ? {
+                      diagnostics: [] as const,
+                      providers: input.options.providerRegistry.listProviders(),
+                    }
+                  : await input.loadProviders(discoveryResult.packages);
+
+              const providerRegistry =
+                input.options.providerRegistry ??
+                createProviderRegistry(
+                  mergeCoreProviders(coreProviderState.providers, providerLoadResult.providers),
+                );
+          '''
+          if old_state not in cli:
+              raise SystemExit('resolveCliState anchor not found')
+          cli_path.write_text(cli.replace(old_state, new_state, 1))
+
+          test_path = Path('tests/cli.test.ts')
+          tests = test_path.read_text()
+          old_name = 'it("prints the empty registry message for commands", async () => {'
+          new_name = 'it("lists the Doctor core provider when discovery is empty", async () => {'
+          old_expectation = '''    expect(stdout.value).toBe(
+                "No Ankh command providers are registered yet.\\n",
+              );'''
+          new_expectation = '''    expect(stdout.value).toContain("@ankhorage/doctor");
+              expect(stdout.value).toContain("category: doctor");
+              expect(stdout.value).toContain("- validate");
+              expect(stdout.value).toContain("- fix");
+              expect(stdout.value).toContain("- repo");
+              expect(stdout.value).toContain("- package");'''
+          if old_name not in tests or old_expectation not in tests:
+              raise SystemExit('empty registry assertion anchor not found')
+          tests = tests.replace(old_name, new_name, 1)
+          tests = tests.replace(old_expectation, new_expectation, 1)
+          test_path.write_text(tests)
+
+          Path('tests/coreProviders.test.ts').write_text(dedent('''\
+          import { expect, it } from "bun:test";
+
+          import { runCli } from "../src/cli.js";
+          import type { AnkhCommandContext } from "../src/commandContext.js";
+
+          it("renders Doctor category help without discovered providers", async () => {
+            const stdout = { value: "" };
+            const stderr = { value: "" };
+            const context: AnkhCommandContext = {
+              cwd: process.cwd(),
+              env: {},
+              version: "test",
+              writeStdout(text) {
+                stdout.value += text;
+              },
+              writeStderr(text) {
+                stderr.value += text;
+              },
+            };
+
+            const result = await runCli(["doctor", "--help"], {
+              context,
+              discoverPackages: () => Promise.resolve({ diagnostics: [], packages: [] }),
+              loadProviders: () => Promise.resolve({ diagnostics: [], providers: [] }),
+            });
+
+            expect(result).toEqual({ exitCode: 0 });
+            expect(stdout.value).toContain("Ankh category: doctor");
+            expect(stdout.value).toContain("Package: @ankhorage/doctor");
+            expect(stdout.value).toContain("doctor validate");
+            expect(stderr.value).toBe("");
+          });
+          '''))
+
+          Path('.changeset/core-doctor-provider.md').write_text(dedent('''\
+          ---
+          '@ankhorage/ankh': patch
+          ---
+
+          Register `@ankhorage/doctor` as an always-available core provider while allowing a locally discovered Doctor package to override the bundled instance during development.
+          '''))
+          PY
+
+      - name: Install and validate
+        run: |
+          bun install
+          bun run build
+          bun run typecheck
+          bun run lint
+          bun run format:check
+          bun run knip
+          bun run test
+
+      - name: Commit generated change
+        run: |
+          rm .github/workflows/apply-doctor-core-provider.yml
+          rm .github/workflows/apply-doctor-core-provider-v2.yml
+          rm .github/workflows/apply-doctor-core-provider-v3.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Register Doctor as a core provider"
+          git push origin HEAD:agent/register-doctor-core-provider
