@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.6
+
+### Patch Changes
+
+- 7501238: Keep internal CLI imports under `src/cli/` so package layout validation passes without breaking builds or tests.
+
 ## 0.6.5
 
 ### Patch Changes
