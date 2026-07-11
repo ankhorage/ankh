@@ -9,6 +9,9 @@ import { runCli } from "./cli.js";
  * manifests, and renders detailed command descriptors for providers that load
  * successfully.
  *
+ * Doctor is registered as a core provider, so `ankh doctor ...` remains
+ * available even when no repo-local provider package has been installed.
+ *
  * No domain behavior belongs in the root CLI. Domain behavior stays in provider
  * packages such as infra, templates, studio, board, doctor, and dev.
  *
