@@ -1,0 +1,12 @@
+$ ankhorage-eslint . --max-warnings=0
+
+/home/runner/work/ankh/ankh/src/coreProviders.ts
+  28:7   error  Unsafe assignment of an error typed value                             @typescript-eslint/no-unsafe-assignment
+  28:32  error  Unsafe member access .category on a type that cannot be resolved      @typescript-eslint/no-unsafe-member-access
+  30:7   error  Unsafe assignment of an error typed value                             @typescript-eslint/no-unsafe-assignment
+  30:36  error  Unsafe member access .capabilities on a type that cannot be resolved  @typescript-eslint/no-unsafe-member-access
+  43:9   error  Unsafe assignment of an error typed value                             @typescript-eslint/no-unsafe-assignment
+
+✖ 5 problems (5 errors, 0 warnings)
+
+error: script "lint" exited with code 1
