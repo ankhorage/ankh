@@ -1,6 +1,6 @@
 import { expect, it } from "bun:test";
 
-import { runCli } from "../src/cli.js";
+import { runCli } from "../src/cli/index.js";
 import type { AnkhCommandContext } from "../src/commandContext.js";
 import { mergeCorePackages } from "../src/coreProviders.js";
 import type { AnkhDiscoveredPackage } from "../src/discovery.js";

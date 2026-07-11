@@ -1,4 +1,4 @@
-import { runCli } from "./cli.js";
+import { runCli } from "./cli/index.js";
 
 /***
  * Bootstrap status
