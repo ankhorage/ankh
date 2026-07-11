@@ -3,6 +3,11 @@ import type {
   AnkhCommandContext,
 } from "../commandContext.js";
 import { createDefaultCommandContext } from "../commandContext.js";
+import {
+  createCoreProviderState,
+  mergeCorePackages,
+  mergeCoreProviders,
+} from "../coreProviders.js";
 import type {
   AnkhDiscoveredPackage,
   AnkhMetadataDiscoveryResult,
@@ -405,21 +410,29 @@ async function resolveCliState(input: {
     const discoveryResult = await input.discoverPackages({
       cwd: input.context.cwd,
     });
-    const packageRegistry =
-      input.options.registry ?? createPackageRegistry(discoveryResult.packages);
+const coreProviderState = createCoreProviderState();
+const discoveredPackages = mergeCorePackages(
+  coreProviderState.packages,
+  discoveryResult.packages,
+);
+const packageRegistry =
+  input.options.registry ?? createPackageRegistry(discoveredPackages);
 
-    try {
-      const providerLoadResult =
-        input.options.providerRegistry !== undefined
-          ? {
-              diagnostics: [] as const,
-              providers: input.options.providerRegistry.listProviders(),
-            }
-          : await input.loadProviders(discoveryResult.packages);
+try {
+  const providerLoadResult =
+    input.options.providerRegistry !== undefined
+      ? {
+          diagnostics: [] as const,
+          providers: input.options.providerRegistry.listProviders(),
+        }
+      : await input.loadProviders(discoveryResult.packages);
 
-      const providerRegistry =
-        input.options.providerRegistry ??
-        createProviderRegistry(providerLoadResult.providers);
+  const providerRegistry =
+    input.options.providerRegistry ??
+    createProviderRegistry(
+      mergeCoreProviders(coreProviderState.providers, providerLoadResult.providers),
+    );
+
 
       return {
         packageRegistry,

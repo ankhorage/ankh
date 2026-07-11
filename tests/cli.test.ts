@@ -164,7 +164,7 @@ describe("runCli", () => {
     }
   });
 
-  it("prints the empty registry message for commands", async () => {
+  it("lists the Doctor core provider when discovery is empty", async () => {
     const { context, stdout, stderr } = createMemoryContext();
 
     const result = await runCli(["commands"], {
@@ -182,9 +182,13 @@ describe("runCli", () => {
     });
 
     expect(result).toEqual({ exitCode: 0 });
-    expect(stdout.value).toBe(
-      "No Ankh command providers are registered yet.\n",
-    );
+expect(stdout.value).toContain("@ankhorage/doctor");
+expect(stdout.value).toContain("category: doctor");
+expect(stdout.value).toContain("- validate");
+expect(stdout.value).toContain("- fix");
+expect(stdout.value).toContain("- repo");
+expect(stdout.value).toContain("- package");
+
     expect(stderr.value).toBe("");
   });
 
