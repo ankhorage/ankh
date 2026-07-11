@@ -1,3 +1,5 @@
+import { createRequire } from "node:module";
+
 import type {
   AnkhDiscoveredPackage,
   AnkhMetadataDiscoveryDiagnostic,
@@ -9,6 +11,8 @@ import {
   loadProviderManifests,
 } from "./providerManifestLoader.js";
 
+const require = createRequire(import.meta.url);
+
 export interface AnkhCoreProviderState {
   readonly metadataDiagnostics: readonly AnkhMetadataDiscoveryDiagnostic[];
   readonly packages: readonly AnkhDiscoveredPackage[];
@@ -17,10 +21,7 @@ export interface AnkhCoreProviderState {
 }
 
 export async function loadCoreProviderState(): Promise<AnkhCoreProviderState> {
-  const packageJsonPath = Bun.resolveSync(
-    "@ankhorage/doctor/package.json",
-    import.meta.dir,
-  );
+  const packageJsonPath = require.resolve("@ankhorage/doctor/package.json");
   const metadataResult = await readAnkhPackageMetadata({
     packageJsonPath,
     source: "core-provider",
