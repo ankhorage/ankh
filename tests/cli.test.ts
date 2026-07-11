@@ -182,12 +182,12 @@ describe("runCli", () => {
     });
 
     expect(result).toEqual({ exitCode: 0 });
-expect(stdout.value).toContain("@ankhorage/doctor");
-expect(stdout.value).toContain("category: doctor");
-expect(stdout.value).toContain("- validate");
-expect(stdout.value).toContain("- fix");
-expect(stdout.value).toContain("- repo");
-expect(stdout.value).toContain("- package");
+    expect(stdout.value).toContain("@ankhorage/doctor");
+    expect(stdout.value).toContain("category: doctor");
+    expect(stdout.value).toContain("- validate");
+    expect(stdout.value).toContain("- fix");
+    expect(stdout.value).toContain("- repo");
+    expect(stdout.value).toContain("- package");
 
     expect(stderr.value).toBe("");
   });
