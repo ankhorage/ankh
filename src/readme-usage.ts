@@ -10,7 +10,8 @@ import { runCli } from "./cli.js";
  * successfully.
  *
  * Doctor is registered as a core provider, so `ankh doctor ...` remains
- * available even when no repo-local provider package has been installed.
+ * available even when no repo-local provider package has been installed. A
+ * discovered local `@ankhorage/doctor` package takes precedence for development.
  *
  * No domain behavior belongs in the root CLI. Domain behavior stays in provider
  * packages such as infra, templates, studio, board, doctor, and dev.
