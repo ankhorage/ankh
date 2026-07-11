@@ -1,4 +1,0 @@
-$ ankhorage-knip
-Unused dependencies (1)
-@ankhorage/doctor  package.json:64:6
-error: script "knip" exited with code 1
