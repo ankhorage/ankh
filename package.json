@@ -60,7 +60,7 @@
     "version-packages": "changeset version"
   },
   "dependencies": {
-    "@ankhorage/contracts": "^2.0.0",
+    "@ankhorage/contracts": "^2.1.0",
     "@ankhorage/doctor": "^0.5.0",
     "yaml": "^2.8.1"
   },
