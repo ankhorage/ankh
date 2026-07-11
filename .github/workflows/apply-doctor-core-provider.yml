@@ -1,9 +1,9 @@
 name: Apply Doctor core provider integration
 
 on:
-  push:
+  pull_request:
     branches:
-      - agent/register-doctor-core-provider
+      - main
 
 permissions:
   contents: write
