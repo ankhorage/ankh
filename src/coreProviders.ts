@@ -13,9 +13,9 @@ import {
 
 const require = createRequire(import.meta.url);
 
-const coreProviderPackageNames = [
-  "@ankhorage/doctor",
-  "@ankhorage/devtools",
+const coreProviderPackageJsonPaths = [
+  require.resolve("@ankhorage/doctor/package.json"),
+  require.resolve("@ankhorage/devtools/package.json"),
 ] as const;
 
 export interface AnkhCoreProviderState {
@@ -29,8 +29,7 @@ export async function loadCoreProviderState(): Promise<AnkhCoreProviderState> {
   const metadataDiagnostics: AnkhMetadataDiscoveryDiagnostic[] = [];
   const packages: AnkhDiscoveredPackage[] = [];
 
-  for (const packageName of coreProviderPackageNames) {
-    const packageJsonPath = require.resolve(`${packageName}/package.json`);
+  for (const packageJsonPath of coreProviderPackageJsonPaths) {
     const metadataResult = await readAnkhPackageMetadata({
       packageJsonPath,
       source: "core-provider",
