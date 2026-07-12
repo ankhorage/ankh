@@ -74,10 +74,7 @@ export async function findInstalledAnkhoragePackageJsonFiles(
 
   let entries: readonly string[];
   try {
-    entries = (await readdir(scopeRoot, { withFileTypes: true }))
-      .filter((entry) => entry.isDirectory())
-      .map((entry) => entry.name)
-      .sort();
+    entries = (await readdir(scopeRoot)).sort();
   } catch {
     return [];
   }
