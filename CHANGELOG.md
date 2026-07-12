@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.0
+
+### Minor Changes
+
+- f05ddff: Bundle `@ankhorage/devtools` as a core provider so globally installed Ankh CLIs expose the `ankh devtools ...` command namespace. Installed Ankhorage package discovery now also supports symlinked package directories.
+
 ## 0.6.7
 
 ### Patch Changes

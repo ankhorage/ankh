@@ -1,6 +1,6 @@
 {
   "name": "@ankhorage/ankh",
-  "version": "0.6.7",
+  "version": "0.7.0",
   "description": "Bun-first root CLI front door for Ankhorage provider commands.",
   "license": "MIT",
   "publishConfig": {
@@ -62,7 +62,7 @@
   "dependencies": {
     "@ankhorage/contracts": "^2.1.0",
     "@ankhorage/devtools": "^1.2.1",
-    "@ankhorage/doctor": "^0.5.0",
+    "@ankhorage/doctor": "^0.7.2",
     "yaml": "^2.8.1"
   },
   "devDependencies": {

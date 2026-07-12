@@ -7,7 +7,7 @@
       "dependencies": {
         "@ankhorage/contracts": "^2.1.0",
         "@ankhorage/devtools": "^1.2.1",
-        "@ankhorage/doctor": "^0.5.0",
+        "@ankhorage/doctor": "^0.7.2",
         "yaml": "^2.8.1",
       },
       "devDependencies": {
@@ -26,7 +26,7 @@
 
     "@ankhorage/devtools": ["@ankhorage/devtools@1.2.1", "", { "dependencies": { "@eslint/js": "^10.0.1", "eslint": "^10.2.0", "eslint-config-prettier": "^10.1.8", "eslint-plugin-import": "^2.32.0", "eslint-plugin-prettier": "^5.5.5", "eslint-plugin-simple-import-sort": "^12.1.1", "eslint-plugin-unused-imports": "^4.4.1", "knip": "^6.12.2", "prettier": "^3.8.1", "typescript-eslint": "^8.24.0" }, "bin": { "ankhorage-eslint": "dist/cli/bin/eslint.js", "ankhorage-knip": "dist/cli/bin/knip.js", "ankhorage-prettier": "dist/cli/bin/prettier.js" } }, "sha512-ub8jve1q+7kQyftz0WcbBurbq1R6BURqXkziDj3NG4sQ+80vDWYFzE4hwjm3DbPJNycHdIZZZCKq+yoFyiwOPQ=="],
 
-    "@ankhorage/doctor": ["@ankhorage/doctor@0.5.0", "", { "dependencies": { "@ankhorage/contracts": "^1.19.0" }, "bin": { "ankhorage-doctor": "dist/cli/standalone.js" } }, "sha512-IO0srzVuqBXURXSrViNpRUhkTG+z84Or8Bv+lA/q6HVUS2fIx1ZjqI8DyglXjqu6mfB9tG7J+0nTKvZ8t3rh9Q=="],
+    "@ankhorage/doctor": ["@ankhorage/doctor@0.7.2", "", { "dependencies": { "@ankhorage/contracts": "^2.1.0" }, "bin": { "ankhorage-doctor": "dist/cli/standalone.js" } }, "sha512-Ayi5/NvLhVNuBR6NHllJfq6YLSdo9C1S7F2VCi4dq5qaHybokWDkm60yb0rC8KIWhX3L5fLFrZguXTIZiRCKlQ=="],
 
     "@ankhorage/paradox": ["@ankhorage/paradox@0.1.10", "", { "dependencies": { "ts-morph": "^24.0.0" }, "bin": { "paradox": "dist/cli.js" } }, "sha512-e86ltBY37+BYGpM8oUVF/7mQU/4dKAQJBiIPSHuZ72mRDcJeN0eScnJrCA5YeV+aK8iXrfD6qPbEkyNRcUIRzQ=="],
 
@@ -741,8 +741,6 @@
     "yocto-queue": ["yocto-queue@0.1.0", "", {}, "sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q=="],
 
     "zod": ["zod@4.4.3", "", {}, "sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ=="],
-
-    "@ankhorage/doctor/@ankhorage/contracts": ["@ankhorage/contracts@1.19.1", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.7" } }, "sha512-GwmrUhEAvhjllsV38P/zLrPliru1hzZQsI5sgHDRP5OmvfKL9/gUJ53UuBageYqhW7aeXywacvMXRX9LiqZJfw=="],
 
     "@changesets/apply-release-plan/prettier": ["prettier@2.8.8", "", { "bin": { "prettier": "bin-prettier.js" } }, "sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q=="],
 
