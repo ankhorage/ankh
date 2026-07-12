@@ -38,7 +38,10 @@ export async function loadCoreProviderState(): Promise<AnkhCoreProviderState> {
 
     metadataDiagnostics.push(...metadataResult.diagnostics);
 
-    if (metadataResult.packageName === null || metadataResult.metadata === null) {
+    if (
+      metadataResult.packageName === null ||
+      metadataResult.metadata === null
+    ) {
       continue;
     }
 

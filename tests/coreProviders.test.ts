@@ -13,14 +13,12 @@ it("loads Doctor and Devtools as bundled core providers", async () => {
 
   expect(state.metadataDiagnostics).toEqual([]);
   expect(state.providerDiagnostics).toEqual([]);
-  expect(state.packages.map((discoveredPackage) => discoveredPackage.packageName)).toEqual([
-    "@ankhorage/doctor",
-    "@ankhorage/devtools",
-  ]);
-  expect(state.providers.map((provider) => provider.discoveredPackage.packageName)).toEqual([
-    "@ankhorage/doctor",
-    "@ankhorage/devtools",
-  ]);
+  expect(
+    state.packages.map((discoveredPackage) => discoveredPackage.packageName),
+  ).toEqual(["@ankhorage/doctor", "@ankhorage/devtools"]);
+  expect(
+    state.providers.map((provider) => provider.discoveredPackage.packageName),
+  ).toEqual(["@ankhorage/doctor", "@ankhorage/devtools"]);
 });
 
 it("renders Doctor category help without discovered providers", async () => {
