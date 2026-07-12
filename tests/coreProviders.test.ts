@@ -2,8 +2,26 @@ import { expect, it } from "bun:test";
 
 import { runCli } from "../src/cli/index.js";
 import type { AnkhCommandContext } from "../src/commandContext.js";
-import { mergeCorePackages } from "../src/coreProviders.js";
+import {
+  loadCoreProviderState,
+  mergeCorePackages,
+} from "../src/coreProviders.js";
 import type { AnkhDiscoveredPackage } from "../src/discovery.js";
+
+it("loads Doctor and Devtools as bundled core providers", async () => {
+  const state = await loadCoreProviderState();
+
+  expect(state.metadataDiagnostics).toEqual([]);
+  expect(state.providerDiagnostics).toEqual([]);
+  expect(state.packages.map((discoveredPackage) => discoveredPackage.packageName)).toEqual([
+    "@ankhorage/doctor",
+    "@ankhorage/devtools",
+  ]);
+  expect(state.providers.map((provider) => provider.discoveredPackage.packageName)).toEqual([
+    "@ankhorage/doctor",
+    "@ankhorage/devtools",
+  ]);
+});
 
 it("renders Doctor category help without discovered providers", async () => {
   const stdout = { value: "" };
