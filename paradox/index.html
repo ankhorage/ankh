@@ -348,7 +348,7 @@
                 <strong>34</strong><span class="muted">public exports</span>
               </div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>27</strong><span class="muted">modules</span></div>
+              <div><strong>28</strong><span class="muted">modules</span></div>
               <div>
                 <strong>1</strong><span class="muted">entrypoints</span>
               </div>
@@ -796,6 +796,17 @@
               <p>
                 <strong>Dependencies:</strong>
                 <code>src/providerRegistry.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="tests/workspace.test.ts src/workspace.ts"
+            >
+              <h3>tests/workspace.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/workspace.ts</code>
               </p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
@@ -2846,6 +2857,9 @@
                 module_tests_providerRegistry_test_ts
                 module_tests_providerRegistry_test_ts --&gt;
                 module_src_providerRegistry_ts
+                module_tests_workspace_test_ts[&quot;tests/workspace.test.ts&quot;]
+                package__ankhorage_ankh -.-&gt; module_tests_workspace_test_ts
+                module_tests_workspace_test_ts --&gt; module_src_workspace_ts
               </div>
               <details>
                 <summary>View Mermaid source</summary>
@@ -2966,6 +2980,9 @@ graph TD
   module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_providerRegistry_test_ts
   module_tests_providerRegistry_test_ts --&gt; module_src_providerRegistry_ts
+  module_tests_workspace_test_ts[&quot;tests/workspace.test.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_workspace_test_ts
+  module_tests_workspace_test_ts --&gt; module_src_workspace_ts
 </pre>
               </details>
             </article>
@@ -3005,6 +3022,7 @@ graph TD
                 module_tests_planning_test_ts[&quot;tests/planning.test.ts&quot;]
                 module_tests_providerManifestLoader_test_ts[&quot;tests/providerManifestLoader.test.ts&quot;]
                 module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
+                module_tests_workspace_test_ts[&quot;tests/workspace.test.ts&quot;]
                 module_src_bin_ts --&gt; module_src_cli_index_ts
                 module_src_cli_index_ts --&gt; module_src_commandContext_ts
                 module_src_cli_index_ts --&gt; module_src_coreProviders_ts
@@ -3071,7 +3089,8 @@ graph TD
                 module_tests_providerManifestLoader_test_ts --&gt;
                 module_src_providerManifestLoader_ts
                 module_tests_providerRegistry_test_ts --&gt;
-                module_src_providerRegistry_ts
+                module_src_providerRegistry_ts module_tests_workspace_test_ts
+                --&gt; module_src_workspace_ts
               </div>
               <details>
                 <summary>View Mermaid source</summary>
@@ -3104,6 +3123,7 @@ graph LR
   module_tests_planning_test_ts[&quot;tests/planning.test.ts&quot;]
   module_tests_providerManifestLoader_test_ts[&quot;tests/providerManifestLoader.test.ts&quot;]
   module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
+  module_tests_workspace_test_ts[&quot;tests/workspace.test.ts&quot;]
   module_src_bin_ts --&gt; module_src_cli_index_ts
   module_src_cli_index_ts --&gt; module_src_commandContext_ts
   module_src_cli_index_ts --&gt; module_src_coreProviders_ts
@@ -3163,6 +3183,7 @@ graph LR
   module_tests_planning_test_ts --&gt; module_src_providerManifestLoader_ts
   module_tests_providerManifestLoader_test_ts --&gt; module_src_providerManifestLoader_ts
   module_tests_providerRegistry_test_ts --&gt; module_src_providerRegistry_ts
+  module_tests_workspace_test_ts --&gt; module_src_workspace_ts
 </pre>
               </details>
             </article>
@@ -3200,6 +3221,7 @@ graph LR
                 module_tests_planning_test_ts[&quot;tests/planning.test.ts&quot;]
                 module_tests_providerManifestLoader_test_ts[&quot;tests/providerManifestLoader.test.ts&quot;]
                 module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
+                module_tests_workspace_test_ts[&quot;tests/workspace.test.ts&quot;]
                 export_AnkhCliRunResult[&quot;AnkhCliRunResult&quot;]
                 module_src_commandContext_ts --&gt; export_AnkhCliRunResult
                 export_AnkhCommandContext[&quot;AnkhCommandContext&quot;]
@@ -3365,6 +3387,7 @@ graph LR
   module_tests_planning_test_ts[&quot;tests/planning.test.ts&quot;]
   module_tests_providerManifestLoader_test_ts[&quot;tests/providerManifestLoader.test.ts&quot;]
   module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
+  module_tests_workspace_test_ts[&quot;tests/workspace.test.ts&quot;]
   export_AnkhCliRunResult[&quot;AnkhCliRunResult&quot;]
   module_src_commandContext_ts --&gt; export_AnkhCliRunResult
   export_AnkhCommandContext[&quot;AnkhCommandContext&quot;]
@@ -3611,7 +3634,7 @@ graph LR
               data-search="loadCoreProviderState src/coreProviders.ts "
             >
               <h3>loadCoreProviderState</h3>
-              <p class="muted"><code>src/coreProviders.ts:23:1</code></p>
+              <p class="muted"><code>src/coreProviders.ts:28:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -3619,7 +3642,7 @@ graph LR
               data-search="mergeCorePackages src/coreProviders.ts "
             >
               <h3>mergeCorePackages</h3>
-              <p class="muted"><code>src/coreProviders.ts:56:1</code></p>
+              <p class="muted"><code>src/coreProviders.ts:66:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -3627,7 +3650,7 @@ graph LR
               data-search="mergeCoreProviders src/coreProviders.ts "
             >
               <h3>mergeCoreProviders</h3>
-              <p class="muted"><code>src/coreProviders.ts:67:1</code></p>
+              <p class="muted"><code>src/coreProviders.ts:77:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -3635,7 +3658,7 @@ graph LR
               data-search="mergeByPackageName src/coreProviders.ts "
             >
               <h3>mergeByPackageName</h3>
-              <p class="muted"><code>src/coreProviders.ts:78:1</code></p>
+              <p class="muted"><code>src/coreProviders.ts:88:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -4345,7 +4368,7 @@ graph LR
               data-search="getWorkspacePatterns src/workspace.ts "
             >
               <h3>getWorkspacePatterns</h3>
-              <p class="muted"><code>src/workspace.ts:96:1</code></p>
+              <p class="muted"><code>src/workspace.ts:93:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -4353,7 +4376,7 @@ graph LR
               data-search="getPatternsFromPackageJson src/workspace.ts "
             >
               <h3>getPatternsFromPackageJson</h3>
-              <p class="muted"><code>src/workspace.ts:126:1</code></p>
+              <p class="muted"><code>src/workspace.ts:123:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -4361,7 +4384,7 @@ graph LR
               data-search="hasWorkspaceField src/workspace.ts "
             >
               <h3>hasWorkspaceField</h3>
-              <p class="muted"><code>src/workspace.ts:157:1</code></p>
+              <p class="muted"><code>src/workspace.ts:154:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -4369,12 +4392,12 @@ graph LR
               data-search="readPackageJson src/workspace.ts "
             >
               <h3>readPackageJson</h3>
-              <p class="muted"><code>src/workspace.ts:163:1</code></p>
+              <p class="muted"><code>src/workspace.ts:160:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="fileExists src/workspace.ts ">
               <h3>fileExists</h3>
-              <p class="muted"><code>src/workspace.ts:177:1</code></p>
+              <p class="muted"><code>src/workspace.ts:174:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -4382,7 +4405,7 @@ graph LR
               data-search="getAncestorDirectories src/workspace.ts "
             >
               <h3>getAncestorDirectories</h3>
-              <p class="muted"><code>src/workspace.ts:186:1</code></p>
+              <p class="muted"><code>src/workspace.ts:183:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -4390,12 +4413,12 @@ graph LR
               data-search="normalizeWorkspacePattern src/workspace.ts "
             >
               <h3>normalizeWorkspacePattern</h3>
-              <p class="muted"><code>src/workspace.ts:202:1</code></p>
+              <p class="muted"><code>src/workspace.ts:199:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isRecord src/workspace.ts ">
               <h3>isRecord</h3>
-              <p class="muted"><code>src/workspace.ts:207:1</code></p>
+              <p class="muted"><code>src/workspace.ts:204:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

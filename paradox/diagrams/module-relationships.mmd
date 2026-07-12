@@ -26,6 +26,7 @@ graph LR
   module_tests_planning_test_ts["tests/planning.test.ts"]
   module_tests_providerManifestLoader_test_ts["tests/providerManifestLoader.test.ts"]
   module_tests_providerRegistry_test_ts["tests/providerRegistry.test.ts"]
+  module_tests_workspace_test_ts["tests/workspace.test.ts"]
   module_src_bin_ts --> module_src_cli_index_ts
   module_src_cli_index_ts --> module_src_commandContext_ts
   module_src_cli_index_ts --> module_src_coreProviders_ts
@@ -85,3 +86,4 @@ graph LR
   module_tests_planning_test_ts --> module_src_providerManifestLoader_ts
   module_tests_providerManifestLoader_test_ts --> module_src_providerManifestLoader_ts
   module_tests_providerRegistry_test_ts --> module_src_providerRegistry_ts
+  module_tests_workspace_test_ts --> module_src_workspace_ts

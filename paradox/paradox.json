@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.6.6",
+      "value": "v0.6.7",
       "color": "cb3837"
     },
     {
@@ -408,6 +408,12 @@
       "path": "tests/providerRegistry.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/providerRegistry.ts"],
+      "exports": []
+    },
+    {
+      "path": "tests/workspace.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/workspace.ts"],
       "exports": []
     }
   ],
@@ -2028,7 +2034,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/coreProviders.ts",
-        "line": 23,
+        "line": 28,
         "column": 1
       }
     },
@@ -2037,7 +2043,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/coreProviders.ts",
-        "line": 56,
+        "line": 66,
         "column": 1
       }
     },
@@ -2046,7 +2052,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/coreProviders.ts",
-        "line": 67,
+        "line": 77,
         "column": 1
       }
     },
@@ -2055,7 +2061,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/coreProviders.ts",
-        "line": 78,
+        "line": 88,
         "column": 1
       }
     },
@@ -2739,7 +2745,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 96,
+        "line": 93,
         "column": 1
       }
     },
@@ -2748,7 +2754,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 126,
+        "line": 123,
         "column": 1
       }
     },
@@ -2757,7 +2763,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 157,
+        "line": 154,
         "column": 1
       }
     },
@@ -2766,7 +2772,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 163,
+        "line": 160,
         "column": 1
       }
     },
@@ -2775,7 +2781,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 177,
+        "line": 174,
         "column": 1
       }
     },
@@ -2784,7 +2790,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 186,
+        "line": 183,
         "column": 1
       }
     },
@@ -2793,7 +2799,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 202,
+        "line": 199,
         "column": 1
       }
     },
@@ -2802,7 +2808,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspace.ts",
-        "line": 207,
+        "line": 204,
         "column": 1
       }
     }
@@ -3161,6 +3167,11 @@
         "fromPath": "tests/providerRegistry.test.ts",
         "toPath": "src/providerRegistry.ts",
         "sourcePath": "tests/providerRegistry.test.ts"
+      },
+      {
+        "fromPath": "tests/workspace.test.ts",
+        "toPath": "src/workspace.ts",
+        "sourcePath": "tests/workspace.test.ts"
       },
       {
         "fromPath": "src/cli/index.ts",
@@ -3978,14 +3989,20 @@
       },
       {
         "fromSymbol": "tests/coreProviders.test.ts",
-        "toSymbol": "runCli",
-        "callExpression": "runCli",
+        "toSymbol": "loadCoreProviderState",
+        "callExpression": "loadCoreProviderState",
         "sourcePath": "tests/coreProviders.test.ts"
       },
       {
         "fromSymbol": "tests/coreProviders.test.ts",
         "toSymbol": "expect",
         "callExpression": "expect",
+        "sourcePath": "tests/coreProviders.test.ts"
+      },
+      {
+        "fromSymbol": "tests/coreProviders.test.ts",
+        "toSymbol": "runCli",
+        "callExpression": "runCli",
         "sourcePath": "tests/coreProviders.test.ts"
       },
       {
@@ -4443,6 +4460,66 @@
         "toSymbol": "findAllByCategory",
         "callExpression": "registry.findAllByCategory",
         "sourcePath": "tests/providerRegistry.test.ts"
+      },
+      {
+        "fromSymbol": "tests/workspace.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "tests/workspace.test.ts"
+      },
+      {
+        "fromSymbol": "tests/workspace.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "tests/workspace.test.ts"
+      },
+      {
+        "fromSymbol": "tests/workspace.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "tests/workspace.test.ts"
+      },
+      {
+        "fromSymbol": "tests/workspace.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "tests/workspace.test.ts"
+      },
+      {
+        "fromSymbol": "tests/workspace.test.ts",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "tests/workspace.test.ts"
+      },
+      {
+        "fromSymbol": "tests/workspace.test.ts",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "tests/workspace.test.ts"
+      },
+      {
+        "fromSymbol": "tests/workspace.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "tests/workspace.test.ts"
+      },
+      {
+        "fromSymbol": "tests/workspace.test.ts",
+        "toSymbol": "symlinkSync",
+        "callExpression": "symlinkSync",
+        "sourcePath": "tests/workspace.test.ts"
+      },
+      {
+        "fromSymbol": "tests/workspace.test.ts",
+        "toSymbol": "findInstalledAnkhoragePackageJsonFiles",
+        "callExpression": "findInstalledAnkhoragePackageJsonFiles",
+        "sourcePath": "tests/workspace.test.ts"
+      },
+      {
+        "fromSymbol": "tests/workspace.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "tests/workspace.test.ts"
       },
       {
         "fromSymbol": "runCli",
