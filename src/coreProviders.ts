@@ -13,6 +13,11 @@ import {
 
 const require = createRequire(import.meta.url);
 
+const coreProviderPackageNames = [
+  "@ankhorage/doctor",
+  "@ankhorage/devtools",
+] as const;
+
 export interface AnkhCoreProviderState {
   readonly metadataDiagnostics: readonly AnkhMetadataDiscoveryDiagnostic[];
   readonly packages: readonly AnkhDiscoveredPackage[];
@@ -21,33 +26,36 @@ export interface AnkhCoreProviderState {
 }
 
 export async function loadCoreProviderState(): Promise<AnkhCoreProviderState> {
-  const packageJsonPath = require.resolve("@ankhorage/doctor/package.json");
-  const metadataResult = await readAnkhPackageMetadata({
-    packageJsonPath,
-    source: "core-provider",
-  });
+  const metadataDiagnostics: AnkhMetadataDiscoveryDiagnostic[] = [];
+  const packages: AnkhDiscoveredPackage[] = [];
 
-  if (metadataResult.packageName === null || metadataResult.metadata === null) {
-    return {
-      metadataDiagnostics: metadataResult.diagnostics,
-      packages: [],
-      providerDiagnostics: [],
-      providers: [],
-    };
+  for (const packageName of coreProviderPackageNames) {
+    const packageJsonPath = require.resolve(`${packageName}/package.json`);
+    const metadataResult = await readAnkhPackageMetadata({
+      packageJsonPath,
+      source: "core-provider",
+    });
+
+    metadataDiagnostics.push(...metadataResult.diagnostics);
+
+    if (metadataResult.packageName === null || metadataResult.metadata === null) {
+      continue;
+    }
+
+    packages.push({
+      metadata: metadataResult.metadata,
+      packageJsonPath,
+      packageName: metadataResult.packageName,
+      packageRoot: metadataResult.packageRoot,
+      source: "core-provider",
+    });
   }
 
-  const discoveredPackage = {
-    metadata: metadataResult.metadata,
-    packageJsonPath,
-    packageName: metadataResult.packageName,
-    packageRoot: metadataResult.packageRoot,
-    source: "core-provider",
-  } satisfies AnkhDiscoveredPackage;
-  const providerLoadResult = await loadProviderManifests([discoveredPackage]);
+  const providerLoadResult = await loadProviderManifests(packages);
 
   return {
-    metadataDiagnostics: metadataResult.diagnostics,
-    packages: [discoveredPackage],
+    metadataDiagnostics,
+    packages,
     providerDiagnostics: providerLoadResult.diagnostics,
     providers: providerLoadResult.providers,
   };
