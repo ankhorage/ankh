@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.6.2",
+      "value": "v0.6.6",
       "color": "cb3837"
     },
     {
@@ -70,9 +70,9 @@
   "readmeUsage": [
     {
       "title": "Bootstrap status",
-      "description": "Bootstrap status\n\n`@ankhorage/ankh` is the root CLI front door and command bus for Ankhorage.\n\n`ankh commands` discovers Ankh package metadata, attempts to load provider\nmanifests, and renders detailed command descriptors for providers that load\nsuccessfully.\n\nNo domain behavior belongs in the root CLI. Domain behavior stays in provider\npackages such as infra, templates, studio, board, doctor, and dev.\n\nCurrent built-ins are `help`, `commands`, `plan`, and `version`.\n\n`ankh <category> --help` and `ankh <category> help` render provider-backed\ncategory help when a valid provider manifest is available.\n\n`ankh <category> <command> ...args` performs basic direct dispatch to a\nloaded provider handler. The root CLI stays a thin router: providers own\noption parsing, validation, output, and behavior.\n\n`ankh plan <category> <command>` asks a provider planning handler for an\ninspectable `AnkhCommandPlan` without executing provider command handlers.\nUse `--json` for stable machine-readable output.\n\nProvider packages expose planning through optional `planningHandlers` on\ntheir `AnkhRuntimeCommandProvider` default export. Planning is a provider\ncontract, not workflow execution: the root CLI routes to provider planning\nhandlers and renders returned plans, but it does not compose real workflows,\ncreate projects, run commands, or execute destructive steps.\n\n`ankh run ...` remains deferred until explicit execution semantics are\ndesigned.",
+      "description": "Bootstrap status\n\n`@ankhorage/ankh` is the root CLI front door and command bus for Ankhorage.\n\n`ankh commands` discovers Ankh package metadata, attempts to load provider\nmanifests, and renders detailed command descriptors for providers that load\nsuccessfully.\n\nDoctor is registered as a core provider, so `ankh doctor ...` remains\navailable even when no repo-local provider package has been installed. A\ndiscovered local `@ankhorage/doctor` package takes precedence for development.\n\nNo domain behavior belongs in the root CLI. Domain behavior stays in provider\npackages such as infra, templates, studio, board, doctor, and dev.\n\nCurrent built-ins are `help`, `commands`, `plan`, and `version`.\n\n`ankh <category> --help` and `ankh <category> help` render provider-backed\ncategory help when a valid provider manifest is available.\n\n`ankh <category> <command> ...args` performs basic direct dispatch to a\nloaded provider handler. The root CLI stays a thin router: providers own\noption parsing, validation, output, and behavior.\n\n`ankh plan <category> <command>` asks a provider planning handler for an\ninspectable `AnkhCommandPlan` without executing provider command handlers.\nUse `--json` for stable machine-readable output.\n\nProvider packages expose planning through optional `planningHandlers` on\ntheir `AnkhRuntimeCommandProvider` default export. Planning is a provider\ncontract, not workflow execution: the root CLI routes to provider planning\nhandlers and renders returned plans, but it does not compose real workflows,\ncreate projects, run commands, or execute destructive steps.\n\n`ankh run ...` remains deferred until explicit execution semantics are\ndesigned.",
       "language": "ts",
-      "code": "import { runCli } from \"./cli.js\";\n\nawait runCli([\"--help\"]);",
+      "code": "import { runCli } from \"./cli/index.js\";\n\nawait runCli([\"--help\"]);",
       "sourcePath": "src/readme-usage.ts"
     }
   ],
@@ -98,21 +98,11 @@
       "exports": []
     },
     {
-      "path": "src/cli.ts",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": [
-        "DiscoverAnkhPackagesFn",
-        "LoadProviderManifestsFn",
-        "runCli",
-        "RunCliOptions"
-      ]
-    },
-    {
       "path": "src/cli/index.ts",
       "isEntrypoint": false,
       "dependencies": [
         "src/commandContext.ts",
+        "src/coreProviders.ts",
         "src/discovery.ts",
         "src/execution.ts",
         "src/help.ts",
@@ -137,6 +127,21 @@
         "AnkhCliRunResult",
         "AnkhCommandContext",
         "createDefaultCommandContext"
+      ]
+    },
+    {
+      "path": "src/coreProviders.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/discovery.ts",
+        "src/packageMetadata.ts",
+        "src/providerManifestLoader.ts"
+      ],
+      "exports": [
+        "AnkhCoreProviderState",
+        "loadCoreProviderState",
+        "mergeCorePackages",
+        "mergeCoreProviders"
       ]
     },
     {
@@ -327,11 +332,22 @@
       "isEntrypoint": false,
       "dependencies": [
         "package.json",
-        "src/cli.ts",
+        "src/cli/index.ts",
         "src/commandContext.ts",
         "src/discovery.ts",
         "src/execution.ts",
         "src/providerManifestLoader.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "tests/coreProviders.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/cli/index.ts",
+        "src/commandContext.ts",
+        "src/coreProviders.ts",
+        "src/discovery.ts"
       ],
       "exports": []
     },
@@ -374,7 +390,7 @@
       "isEntrypoint": false,
       "dependencies": [
         "package.json",
-        "src/cli.ts",
+        "src/cli/index.ts",
         "src/commandContext.ts",
         "src/discovery.ts",
         "src/index.ts",
@@ -1858,7 +1874,7 @@
       "modulePath": "src/cli/index.ts",
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 78,
+        "line": 83,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -1895,7 +1911,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 78,
+        "line": 83,
         "column": 1
       }
     },
@@ -1904,7 +1920,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 131,
+        "line": 136,
         "column": 1
       }
     },
@@ -1913,7 +1929,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 167,
+        "line": 172,
         "column": 1
       }
     },
@@ -1922,7 +1938,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 207,
+        "line": 212,
         "column": 1
       }
     },
@@ -1931,7 +1947,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 304,
+        "line": 309,
         "column": 1
       }
     },
@@ -1940,7 +1956,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 386,
+        "line": 391,
         "column": 1
       }
     },
@@ -1949,7 +1965,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 440,
+        "line": 461,
         "column": 1
       }
     },
@@ -1958,7 +1974,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 467,
+        "line": 488,
         "column": 1
       }
     },
@@ -1967,7 +1983,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 492,
+        "line": 513,
         "column": 1
       }
     },
@@ -1976,7 +1992,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 500,
+        "line": 521,
         "column": 1
       }
     },
@@ -1985,7 +2001,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 509,
+        "line": 530,
         "column": 1
       }
     },
@@ -1994,7 +2010,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 522,
+        "line": 543,
         "column": 1
       }
     },
@@ -2004,6 +2020,42 @@
       "sourceLocation": {
         "filePath": "src/commandContext.ts",
         "line": 18,
+        "column": 1
+      }
+    },
+    {
+      "name": "loadCoreProviderState",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/coreProviders.ts",
+        "line": 23,
+        "column": 1
+      }
+    },
+    {
+      "name": "mergeCorePackages",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/coreProviders.ts",
+        "line": 56,
+        "column": 1
+      }
+    },
+    {
+      "name": "mergeCoreProviders",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/coreProviders.ts",
+        "line": 67,
+        "column": 1
+      }
+    },
+    {
+      "name": "mergeByPackageName",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/coreProviders.ts",
+        "line": 78,
         "column": 1
       }
     },
@@ -2821,14 +2873,24 @@
         "sourcePath": "src/bin.ts"
       },
       {
-        "fromPath": "src/cli.ts",
-        "toPath": "src/cli/index.ts",
-        "sourcePath": "src/cli.ts"
-      },
-      {
         "fromPath": "src/commandContext.ts",
         "toPath": "package.json",
         "sourcePath": "src/commandContext.ts"
+      },
+      {
+        "fromPath": "src/coreProviders.ts",
+        "toPath": "src/discovery.ts",
+        "sourcePath": "src/coreProviders.ts"
+      },
+      {
+        "fromPath": "src/coreProviders.ts",
+        "toPath": "src/packageMetadata.ts",
+        "sourcePath": "src/coreProviders.ts"
+      },
+      {
+        "fromPath": "src/coreProviders.ts",
+        "toPath": "src/providerManifestLoader.ts",
+        "sourcePath": "src/coreProviders.ts"
       },
       {
         "fromPath": "src/discovery.ts",
@@ -2972,7 +3034,7 @@
       },
       {
         "fromPath": "src/readme-usage.ts",
-        "toPath": "src/cli.ts",
+        "toPath": "src/cli/index.ts",
         "sourcePath": "src/readme-usage.ts"
       },
       {
@@ -2982,7 +3044,7 @@
       },
       {
         "fromPath": "tests/cli.test.ts",
-        "toPath": "src/cli.ts",
+        "toPath": "src/cli/index.ts",
         "sourcePath": "tests/cli.test.ts"
       },
       {
@@ -3004,6 +3066,26 @@
         "fromPath": "tests/cli.test.ts",
         "toPath": "src/providerManifestLoader.ts",
         "sourcePath": "tests/cli.test.ts"
+      },
+      {
+        "fromPath": "tests/coreProviders.test.ts",
+        "toPath": "src/cli/index.ts",
+        "sourcePath": "tests/coreProviders.test.ts"
+      },
+      {
+        "fromPath": "tests/coreProviders.test.ts",
+        "toPath": "src/commandContext.ts",
+        "sourcePath": "tests/coreProviders.test.ts"
+      },
+      {
+        "fromPath": "tests/coreProviders.test.ts",
+        "toPath": "src/coreProviders.ts",
+        "sourcePath": "tests/coreProviders.test.ts"
+      },
+      {
+        "fromPath": "tests/coreProviders.test.ts",
+        "toPath": "src/discovery.ts",
+        "sourcePath": "tests/coreProviders.test.ts"
       },
       {
         "fromPath": "tests/discovery.test.ts",
@@ -3047,7 +3129,7 @@
       },
       {
         "fromPath": "tests/planning.test.ts",
-        "toPath": "src/cli.ts",
+        "toPath": "src/cli/index.ts",
         "sourcePath": "tests/planning.test.ts"
       },
       {
@@ -3083,6 +3165,11 @@
       {
         "fromPath": "src/cli/index.ts",
         "toPath": "src/commandContext.ts",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromPath": "src/cli/index.ts",
+        "toPath": "src/coreProviders.ts",
         "sourcePath": "src/cli/index.ts"
       },
       {
@@ -3138,6 +3225,48 @@
         "toSymbol": "runCli",
         "callExpression": "runCli",
         "sourcePath": "src/bin.ts"
+      },
+      {
+        "fromSymbol": "src/coreProviders.ts",
+        "toSymbol": "createRequire",
+        "callExpression": "createRequire",
+        "sourcePath": "src/coreProviders.ts"
+      },
+      {
+        "fromSymbol": "loadCoreProviderState",
+        "toSymbol": "readAnkhPackageMetadata",
+        "callExpression": "readAnkhPackageMetadata",
+        "sourcePath": "src/coreProviders.ts"
+      },
+      {
+        "fromSymbol": "loadCoreProviderState",
+        "toSymbol": "loadProviderManifests",
+        "callExpression": "loadProviderManifests",
+        "sourcePath": "src/coreProviders.ts"
+      },
+      {
+        "fromSymbol": "mergeCorePackages",
+        "toSymbol": "mergeByPackageName",
+        "callExpression": "mergeByPackageName",
+        "sourcePath": "src/coreProviders.ts"
+      },
+      {
+        "fromSymbol": "mergeCoreProviders",
+        "toSymbol": "mergeByPackageName",
+        "callExpression": "mergeByPackageName",
+        "sourcePath": "src/coreProviders.ts"
+      },
+      {
+        "fromSymbol": "src/coreProviders.ts",
+        "toSymbol": "getPackageName",
+        "callExpression": "getPackageName",
+        "sourcePath": "src/coreProviders.ts"
+      },
+      {
+        "fromSymbol": "mergeByPackageName",
+        "toSymbol": "getPackageName",
+        "callExpression": "getPackageName",
+        "sourcePath": "src/coreProviders.ts"
       },
       {
         "fromSymbol": "discoverAnkhPackages",
@@ -3840,6 +3969,36 @@
         "toSymbol": "createRuntimeProvider",
         "callExpression": "createRuntimeProvider",
         "sourcePath": "tests/cli.test.ts"
+      },
+      {
+        "fromSymbol": "tests/coreProviders.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "tests/coreProviders.test.ts"
+      },
+      {
+        "fromSymbol": "tests/coreProviders.test.ts",
+        "toSymbol": "runCli",
+        "callExpression": "runCli",
+        "sourcePath": "tests/coreProviders.test.ts"
+      },
+      {
+        "fromSymbol": "tests/coreProviders.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "tests/coreProviders.test.ts"
+      },
+      {
+        "fromSymbol": "tests/coreProviders.test.ts",
+        "toSymbol": "createDoctorPackage",
+        "callExpression": "createDoctorPackage",
+        "sourcePath": "tests/coreProviders.test.ts"
+      },
+      {
+        "fromSymbol": "tests/coreProviders.test.ts",
+        "toSymbol": "mergeCorePackages",
+        "callExpression": "mergeCorePackages",
+        "sourcePath": "tests/coreProviders.test.ts"
       },
       {
         "fromSymbol": "tests/discovery.test.ts",
@@ -4611,6 +4770,18 @@
       },
       {
         "fromSymbol": "resolveCliState",
+        "toSymbol": "loadCoreProviderState",
+        "callExpression": "loadCoreProviderState",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
+        "toSymbol": "mergeCorePackages",
+        "callExpression": "mergeCorePackages",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
         "toSymbol": "createPackageRegistry",
         "callExpression": "createPackageRegistry",
         "sourcePath": "src/cli/index.ts"
@@ -4631,6 +4802,12 @@
         "fromSymbol": "resolveCliState",
         "toSymbol": "createProviderRegistry",
         "callExpression": "createProviderRegistry",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "resolveCliState",
+        "toSymbol": "mergeCoreProviders",
+        "callExpression": "mergeCoreProviders",
         "sourcePath": "src/cli/index.ts"
       },
       {

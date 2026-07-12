@@ -230,6 +230,16 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/coreProviders.ts"
+              >
+                src/coreProviders.ts
+                <small>4 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/discovery.ts"
               >
                 src/discovery.ts
@@ -338,7 +348,7 @@
                 <strong>34</strong><span class="muted">public exports</span>
               </div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>26</strong><span class="muted">modules</span></div>
+              <div><strong>27</strong><span class="muted">modules</span></div>
               <div>
                 <strong>1</strong><span class="muted">entrypoints</span>
               </div>
@@ -377,28 +387,14 @@
             </article>
             <article
               class="item"
-              data-search="src/cli.ts DiscoverAnkhPackagesFn LoadProviderManifestsFn runCli RunCliOptions"
-            >
-              <h3>src/cli.ts</h3>
-              <p class="muted">Referenced module</p>
-              <p>
-                <strong>Dependencies:</strong> <span class="empty">None</span>
-              </p>
-              <p>
-                <strong>Exports:</strong> <code>DiscoverAnkhPackagesFn</code>,
-                <code>LoadProviderManifestsFn</code>, <code>runCli</code>,
-                <code>RunCliOptions</code>
-              </p>
-            </article>
-            <article
-              class="item"
-              data-search="src/cli/index.ts src/commandContext.ts src/discovery.ts src/execution.ts src/help.ts src/packageRegistry.ts src/parser.ts src/planning.ts src/providerManifestLoader.ts src/providerRegistry.ts DiscoverAnkhPackagesFn LoadProviderManifestsFn runCli RunCliOptions"
+              data-search="src/cli/index.ts src/commandContext.ts src/coreProviders.ts src/discovery.ts src/execution.ts src/help.ts src/packageRegistry.ts src/parser.ts src/planning.ts src/providerManifestLoader.ts src/providerRegistry.ts DiscoverAnkhPackagesFn LoadProviderManifestsFn runCli RunCliOptions"
             >
               <h3>src/cli/index.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong>
                 <code>src/commandContext.ts</code>,
+                <code>src/coreProviders.ts</code>,
                 <code>src/discovery.ts</code>, <code>src/execution.ts</code>,
                 <code>src/help.ts</code>, <code>src/packageRegistry.ts</code>,
                 <code>src/parser.ts</code>, <code>src/planning.ts</code>,
@@ -422,6 +418,23 @@
                 <strong>Exports:</strong> <code>AnkhCliRunResult</code>,
                 <code>AnkhCommandContext</code>,
                 <code>createDefaultCommandContext</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/coreProviders.ts src/discovery.ts src/packageMetadata.ts src/providerManifestLoader.ts AnkhCoreProviderState loadCoreProviderState mergeCorePackages mergeCoreProviders"
+            >
+              <h3>src/coreProviders.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/discovery.ts</code>,
+                <code>src/packageMetadata.ts</code>,
+                <code>src/providerManifestLoader.ts</code>
+              </p>
+              <p>
+                <strong>Exports:</strong> <code>AnkhCoreProviderState</code>,
+                <code>loadCoreProviderState</code>,
+                <code>mergeCorePackages</code>, <code>mergeCoreProviders</code>
               </p>
             </article>
             <article
@@ -667,15 +680,29 @@
             </article>
             <article
               class="item"
-              data-search="tests/cli.test.ts package.json src/cli.ts src/commandContext.ts src/discovery.ts src/execution.ts src/providerManifestLoader.ts"
+              data-search="tests/cli.test.ts package.json src/cli/index.ts src/commandContext.ts src/discovery.ts src/execution.ts src/providerManifestLoader.ts"
             >
               <h3>tests/cli.test.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>package.json</code>,
-                <code>src/cli.ts</code>, <code>src/commandContext.ts</code>,
+                <code>src/cli/index.ts</code>,
+                <code>src/commandContext.ts</code>,
                 <code>src/discovery.ts</code>, <code>src/execution.ts</code>,
                 <code>src/providerManifestLoader.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="tests/coreProviders.test.ts src/cli/index.ts src/commandContext.ts src/coreProviders.ts src/discovery.ts"
+            >
+              <h3>tests/coreProviders.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/cli/index.ts</code>,
+                <code>src/commandContext.ts</code>,
+                <code>src/coreProviders.ts</code>, <code>src/discovery.ts</code>
               </p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
@@ -735,13 +762,14 @@
             </article>
             <article
               class="item"
-              data-search="tests/planning.test.ts package.json src/cli.ts src/commandContext.ts src/discovery.ts src/index.ts src/providerManifestLoader.ts"
+              data-search="tests/planning.test.ts package.json src/cli/index.ts src/commandContext.ts src/discovery.ts src/index.ts src/providerManifestLoader.ts"
             >
               <h3>tests/planning.test.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>package.json</code>,
-                <code>src/cli.ts</code>, <code>src/commandContext.ts</code>,
+                <code>src/cli/index.ts</code>,
+                <code>src/commandContext.ts</code>,
                 <code>src/discovery.ts</code>, <code>src/index.ts</code>,
                 <code>src/providerManifestLoader.ts</code>
               </p>
@@ -784,7 +812,7 @@
               >
                 <h4>runCli</h4>
                 <p class="muted">
-                  function • <code>src/cli/index.ts:78:1</code>
+                  function • <code>src/cli/index.ts:83:1</code>
                 </p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
@@ -2693,11 +2721,10 @@
                 module_src_bin_ts[&quot;src/bin.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_src_bin_ts
                 module_src_bin_ts --&gt; module_src_cli_index_ts
-                module_src_cli_ts[&quot;src/cli.ts&quot;]
-                package__ankhorage_ankh -.-&gt; module_src_cli_ts
                 module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_src_cli_index_ts
                 module_src_cli_index_ts --&gt; module_src_commandContext_ts
+                module_src_cli_index_ts --&gt; module_src_coreProviders_ts
                 module_src_cli_index_ts --&gt; module_src_discovery_ts
                 module_src_cli_index_ts --&gt; module_src_execution_ts
                 module_src_cli_index_ts --&gt; module_src_help_ts
@@ -2710,6 +2737,12 @@
                 module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_src_commandContext_ts
                 module_src_commandContext_ts --&gt; module_package_json
+                module_src_coreProviders_ts[&quot;src/coreProviders.ts&quot;]
+                package__ankhorage_ankh -.-&gt; module_src_coreProviders_ts
+                module_src_coreProviders_ts --&gt; module_src_discovery_ts
+                module_src_coreProviders_ts --&gt; module_src_packageMetadata_ts
+                module_src_coreProviders_ts --&gt;
+                module_src_providerManifestLoader_ts
                 module_src_discovery_ts[&quot;src/discovery.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_src_discovery_ts
                 module_src_discovery_ts --&gt; module_src_packageMetadata_ts
@@ -2758,12 +2791,21 @@
                 module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_tests_cli_test_ts
                 module_tests_cli_test_ts --&gt; module_package_json
-                module_tests_cli_test_ts --&gt; module_src_cli_ts
+                module_tests_cli_test_ts --&gt; module_src_cli_index_ts
                 module_tests_cli_test_ts --&gt; module_src_commandContext_ts
                 module_tests_cli_test_ts --&gt; module_src_discovery_ts
                 module_tests_cli_test_ts --&gt; module_src_execution_ts
                 module_tests_cli_test_ts --&gt;
                 module_src_providerManifestLoader_ts
+                module_tests_coreProviders_test_ts[&quot;tests/coreProviders.test.ts&quot;]
+                package__ankhorage_ankh -.-&gt;
+                module_tests_coreProviders_test_ts
+                module_tests_coreProviders_test_ts --&gt;
+                module_src_cli_index_ts module_tests_coreProviders_test_ts
+                --&gt; module_src_commandContext_ts
+                module_tests_coreProviders_test_ts --&gt;
+                module_src_coreProviders_ts module_tests_coreProviders_test_ts
+                --&gt; module_src_discovery_ts
                 module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_tests_discovery_test_ts
                 module_tests_discovery_test_ts --&gt; module_src_discovery_ts
@@ -2788,7 +2830,7 @@
                 module_tests_planning_test_ts[&quot;tests/planning.test.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_tests_planning_test_ts
                 module_tests_planning_test_ts --&gt; module_package_json
-                module_tests_planning_test_ts --&gt; module_src_cli_ts
+                module_tests_planning_test_ts --&gt; module_src_cli_index_ts
                 module_tests_planning_test_ts --&gt;
                 module_src_commandContext_ts module_tests_planning_test_ts
                 --&gt; module_src_discovery_ts module_tests_planning_test_ts
@@ -2819,11 +2861,10 @@ graph TD
   module_src_bin_ts[&quot;src/bin.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_bin_ts
   module_src_bin_ts --&gt; module_src_cli_index_ts
-  module_src_cli_ts[&quot;src/cli.ts&quot;]
-  package__ankhorage_ankh -.-&gt; module_src_cli_ts
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_cli_index_ts
   module_src_cli_index_ts --&gt; module_src_commandContext_ts
+  module_src_cli_index_ts --&gt; module_src_coreProviders_ts
   module_src_cli_index_ts --&gt; module_src_discovery_ts
   module_src_cli_index_ts --&gt; module_src_execution_ts
   module_src_cli_index_ts --&gt; module_src_help_ts
@@ -2835,6 +2876,11 @@ graph TD
   module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_commandContext_ts
   module_src_commandContext_ts --&gt; module_package_json
+  module_src_coreProviders_ts[&quot;src/coreProviders.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_coreProviders_ts
+  module_src_coreProviders_ts --&gt; module_src_discovery_ts
+  module_src_coreProviders_ts --&gt; module_src_packageMetadata_ts
+  module_src_coreProviders_ts --&gt; module_src_providerManifestLoader_ts
   module_src_discovery_ts[&quot;src/discovery.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_discovery_ts
   module_src_discovery_ts --&gt; module_src_packageMetadata_ts
@@ -2878,11 +2924,17 @@ graph TD
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_cli_test_ts
   module_tests_cli_test_ts --&gt; module_package_json
-  module_tests_cli_test_ts --&gt; module_src_cli_ts
+  module_tests_cli_test_ts --&gt; module_src_cli_index_ts
   module_tests_cli_test_ts --&gt; module_src_commandContext_ts
   module_tests_cli_test_ts --&gt; module_src_discovery_ts
   module_tests_cli_test_ts --&gt; module_src_execution_ts
   module_tests_cli_test_ts --&gt; module_src_providerManifestLoader_ts
+  module_tests_coreProviders_test_ts[&quot;tests/coreProviders.test.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_coreProviders_test_ts
+  module_tests_coreProviders_test_ts --&gt; module_src_cli_index_ts
+  module_tests_coreProviders_test_ts --&gt; module_src_commandContext_ts
+  module_tests_coreProviders_test_ts --&gt; module_src_coreProviders_ts
+  module_tests_coreProviders_test_ts --&gt; module_src_discovery_ts
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_discovery_test_ts
   module_tests_discovery_test_ts --&gt; module_src_discovery_ts
@@ -2903,7 +2955,7 @@ graph TD
   module_tests_planning_test_ts[&quot;tests/planning.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_planning_test_ts
   module_tests_planning_test_ts --&gt; module_package_json
-  module_tests_planning_test_ts --&gt; module_src_cli_ts
+  module_tests_planning_test_ts --&gt; module_src_cli_index_ts
   module_tests_planning_test_ts --&gt; module_src_commandContext_ts
   module_tests_planning_test_ts --&gt; module_src_discovery_ts
   module_tests_planning_test_ts --&gt; module_src_index_ts
@@ -2929,9 +2981,9 @@ graph TD
                 graph LR module_package_json[&quot;package.json&quot;]
                 module_paradox_config_ts[&quot;paradox.config.ts&quot;]
                 module_src_bin_ts[&quot;src/bin.ts&quot;]
-                module_src_cli_ts[&quot;src/cli.ts&quot;]
                 module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
                 module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
+                module_src_coreProviders_ts[&quot;src/coreProviders.ts&quot;]
                 module_src_discovery_ts[&quot;src/discovery.ts&quot;]
                 module_src_execution_ts[&quot;src/execution.ts&quot;]
                 module_src_help_ts[&quot;src/help.ts&quot;]
@@ -2944,6 +2996,7 @@ graph TD
                 module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
                 module_src_workspace_ts[&quot;src/workspace.ts&quot;]
                 module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
+                module_tests_coreProviders_test_ts[&quot;tests/coreProviders.test.ts&quot;]
                 module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
                 module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
                 module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
@@ -2954,6 +3007,7 @@ graph TD
                 module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
                 module_src_bin_ts --&gt; module_src_cli_index_ts
                 module_src_cli_index_ts --&gt; module_src_commandContext_ts
+                module_src_cli_index_ts --&gt; module_src_coreProviders_ts
                 module_src_cli_index_ts --&gt; module_src_discovery_ts
                 module_src_cli_index_ts --&gt; module_src_execution_ts
                 module_src_cli_index_ts --&gt; module_src_help_ts
@@ -2964,12 +3018,15 @@ graph TD
                 module_src_providerManifestLoader_ts module_src_cli_index_ts
                 --&gt; module_src_providerRegistry_ts
                 module_src_commandContext_ts --&gt; module_package_json
-                module_src_discovery_ts --&gt; module_src_packageMetadata_ts
-                module_src_discovery_ts --&gt; module_src_workspace_ts
-                module_src_execution_ts --&gt; module_src_commandContext_ts
-                module_src_execution_ts --&gt; module_src_packageRegistry_ts
-                module_src_execution_ts --&gt; module_src_planning_ts
-                module_src_execution_ts --&gt;
+                module_src_coreProviders_ts --&gt; module_src_discovery_ts
+                module_src_coreProviders_ts --&gt; module_src_packageMetadata_ts
+                module_src_coreProviders_ts --&gt;
+                module_src_providerManifestLoader_ts module_src_discovery_ts
+                --&gt; module_src_packageMetadata_ts module_src_discovery_ts
+                --&gt; module_src_workspace_ts module_src_execution_ts --&gt;
+                module_src_commandContext_ts module_src_execution_ts --&gt;
+                module_src_packageRegistry_ts module_src_execution_ts --&gt;
+                module_src_planning_ts module_src_execution_ts --&gt;
                 module_src_providerManifestLoader_ts module_src_execution_ts
                 --&gt; module_src_providerRegistry_ts module_src_help_ts --&gt;
                 module_src_discovery_ts module_src_help_ts --&gt;
@@ -2986,22 +3043,27 @@ graph TD
                 module_src_discovery_ts module_src_providerRegistry_ts --&gt;
                 module_src_providerManifestLoader_ts module_tests_cli_test_ts
                 --&gt; module_package_json module_tests_cli_test_ts --&gt;
-                module_src_cli_ts module_tests_cli_test_ts --&gt;
+                module_src_cli_index_ts module_tests_cli_test_ts --&gt;
                 module_src_commandContext_ts module_tests_cli_test_ts --&gt;
                 module_src_discovery_ts module_tests_cli_test_ts --&gt;
                 module_src_execution_ts module_tests_cli_test_ts --&gt;
                 module_src_providerManifestLoader_ts
-                module_tests_discovery_test_ts --&gt; module_src_discovery_ts
-                module_tests_execution_test_ts --&gt; module_src_execution_ts
-                module_tests_execution_test_ts --&gt;
-                module_src_providerManifestLoader_ts
+                module_tests_coreProviders_test_ts --&gt;
+                module_src_cli_index_ts module_tests_coreProviders_test_ts
+                --&gt; module_src_commandContext_ts
+                module_tests_coreProviders_test_ts --&gt;
+                module_src_coreProviders_ts module_tests_coreProviders_test_ts
+                --&gt; module_src_discovery_ts module_tests_discovery_test_ts
+                --&gt; module_src_discovery_ts module_tests_execution_test_ts
+                --&gt; module_src_execution_ts module_tests_execution_test_ts
+                --&gt; module_src_providerManifestLoader_ts
                 module_tests_execution_test_ts --&gt;
                 module_src_providerRegistry_ts module_tests_package_test_ts
                 --&gt; module_package_json module_tests_packageRegistry_test_ts
                 --&gt; module_src_packageRegistry_ts module_tests_parser_test_ts
                 --&gt; module_src_parser_ts module_tests_planning_test_ts --&gt;
                 module_package_json module_tests_planning_test_ts --&gt;
-                module_src_cli_ts module_tests_planning_test_ts --&gt;
+                module_src_cli_index_ts module_tests_planning_test_ts --&gt;
                 module_src_commandContext_ts module_tests_planning_test_ts
                 --&gt; module_src_discovery_ts module_tests_planning_test_ts
                 --&gt; module_src_index_ts module_tests_planning_test_ts --&gt;
@@ -3018,9 +3080,9 @@ graph LR
   module_package_json[&quot;package.json&quot;]
   module_paradox_config_ts[&quot;paradox.config.ts&quot;]
   module_src_bin_ts[&quot;src/bin.ts&quot;]
-  module_src_cli_ts[&quot;src/cli.ts&quot;]
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
+  module_src_coreProviders_ts[&quot;src/coreProviders.ts&quot;]
   module_src_discovery_ts[&quot;src/discovery.ts&quot;]
   module_src_execution_ts[&quot;src/execution.ts&quot;]
   module_src_help_ts[&quot;src/help.ts&quot;]
@@ -3033,6 +3095,7 @@ graph LR
   module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
   module_src_workspace_ts[&quot;src/workspace.ts&quot;]
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
+  module_tests_coreProviders_test_ts[&quot;tests/coreProviders.test.ts&quot;]
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
   module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
@@ -3043,6 +3106,7 @@ graph LR
   module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
   module_src_bin_ts --&gt; module_src_cli_index_ts
   module_src_cli_index_ts --&gt; module_src_commandContext_ts
+  module_src_cli_index_ts --&gt; module_src_coreProviders_ts
   module_src_cli_index_ts --&gt; module_src_discovery_ts
   module_src_cli_index_ts --&gt; module_src_execution_ts
   module_src_cli_index_ts --&gt; module_src_help_ts
@@ -3052,6 +3116,9 @@ graph LR
   module_src_cli_index_ts --&gt; module_src_providerManifestLoader_ts
   module_src_cli_index_ts --&gt; module_src_providerRegistry_ts
   module_src_commandContext_ts --&gt; module_package_json
+  module_src_coreProviders_ts --&gt; module_src_discovery_ts
+  module_src_coreProviders_ts --&gt; module_src_packageMetadata_ts
+  module_src_coreProviders_ts --&gt; module_src_providerManifestLoader_ts
   module_src_discovery_ts --&gt; module_src_packageMetadata_ts
   module_src_discovery_ts --&gt; module_src_workspace_ts
   module_src_execution_ts --&gt; module_src_commandContext_ts
@@ -3072,11 +3139,15 @@ graph LR
   module_src_providerManifestLoader_ts --&gt; module_src_discovery_ts
   module_src_providerRegistry_ts --&gt; module_src_providerManifestLoader_ts
   module_tests_cli_test_ts --&gt; module_package_json
-  module_tests_cli_test_ts --&gt; module_src_cli_ts
+  module_tests_cli_test_ts --&gt; module_src_cli_index_ts
   module_tests_cli_test_ts --&gt; module_src_commandContext_ts
   module_tests_cli_test_ts --&gt; module_src_discovery_ts
   module_tests_cli_test_ts --&gt; module_src_execution_ts
   module_tests_cli_test_ts --&gt; module_src_providerManifestLoader_ts
+  module_tests_coreProviders_test_ts --&gt; module_src_cli_index_ts
+  module_tests_coreProviders_test_ts --&gt; module_src_commandContext_ts
+  module_tests_coreProviders_test_ts --&gt; module_src_coreProviders_ts
+  module_tests_coreProviders_test_ts --&gt; module_src_discovery_ts
   module_tests_discovery_test_ts --&gt; module_src_discovery_ts
   module_tests_execution_test_ts --&gt; module_src_execution_ts
   module_tests_execution_test_ts --&gt; module_src_providerManifestLoader_ts
@@ -3085,7 +3156,7 @@ graph LR
   module_tests_packageRegistry_test_ts --&gt; module_src_packageRegistry_ts
   module_tests_parser_test_ts --&gt; module_src_parser_ts
   module_tests_planning_test_ts --&gt; module_package_json
-  module_tests_planning_test_ts --&gt; module_src_cli_ts
+  module_tests_planning_test_ts --&gt; module_src_cli_index_ts
   module_tests_planning_test_ts --&gt; module_src_commandContext_ts
   module_tests_planning_test_ts --&gt; module_src_discovery_ts
   module_tests_planning_test_ts --&gt; module_src_index_ts
@@ -3105,9 +3176,9 @@ graph LR
                 graph LR module_package_json[&quot;package.json&quot;]
                 module_paradox_config_ts[&quot;paradox.config.ts&quot;]
                 module_src_bin_ts[&quot;src/bin.ts&quot;]
-                module_src_cli_ts[&quot;src/cli.ts&quot;]
                 module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
                 module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
+                module_src_coreProviders_ts[&quot;src/coreProviders.ts&quot;]
                 module_src_discovery_ts[&quot;src/discovery.ts&quot;]
                 module_src_execution_ts[&quot;src/execution.ts&quot;]
                 module_src_help_ts[&quot;src/help.ts&quot;]
@@ -3120,6 +3191,7 @@ graph LR
                 module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
                 module_src_workspace_ts[&quot;src/workspace.ts&quot;]
                 module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
+                module_tests_coreProviders_test_ts[&quot;tests/coreProviders.test.ts&quot;]
                 module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
                 module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
                 module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
@@ -3269,9 +3341,9 @@ graph LR
   module_package_json[&quot;package.json&quot;]
   module_paradox_config_ts[&quot;paradox.config.ts&quot;]
   module_src_bin_ts[&quot;src/bin.ts&quot;]
-  module_src_cli_ts[&quot;src/cli.ts&quot;]
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
+  module_src_coreProviders_ts[&quot;src/coreProviders.ts&quot;]
   module_src_discovery_ts[&quot;src/discovery.ts&quot;]
   module_src_execution_ts[&quot;src/execution.ts&quot;]
   module_src_help_ts[&quot;src/help.ts&quot;]
@@ -3284,6 +3356,7 @@ graph LR
   module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
   module_src_workspace_ts[&quot;src/workspace.ts&quot;]
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
+  module_tests_coreProviders_test_ts[&quot;tests/coreProviders.test.ts&quot;]
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
   module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
@@ -3414,7 +3487,7 @@ graph LR
             <h2>src/cli/index.ts</h2>
             <article class="item" data-search="runCli src/cli/index.ts ">
               <h3>runCli</h3>
-              <p class="muted"><code>src/cli/index.ts:78:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:83:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -3422,7 +3495,7 @@ graph LR
               data-search="renderDiscoveredCommands src/cli/index.ts "
             >
               <h3>renderDiscoveredCommands</h3>
-              <p class="muted"><code>src/cli/index.ts:131:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:136:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -3430,7 +3503,7 @@ graph LR
               data-search="renderDiscoveredCategoryHelp src/cli/index.ts "
             >
               <h3>renderDiscoveredCategoryHelp</h3>
-              <p class="muted"><code>src/cli/index.ts:167:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:172:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -3438,7 +3511,7 @@ graph LR
               data-search="dispatchProviderPlan src/cli/index.ts "
             >
               <h3>dispatchProviderPlan</h3>
-              <p class="muted"><code>src/cli/index.ts:207:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:212:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -3446,7 +3519,7 @@ graph LR
               data-search="dispatchProviderCommand src/cli/index.ts "
             >
               <h3>dispatchProviderCommand</h3>
-              <p class="muted"><code>src/cli/index.ts:304:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:309:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -3454,7 +3527,7 @@ graph LR
               data-search="resolveCliState src/cli/index.ts "
             >
               <h3>resolveCliState</h3>
-              <p class="muted"><code>src/cli/index.ts:386:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:391:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -3462,7 +3535,7 @@ graph LR
               data-search="writeProviderUnavailable src/cli/index.ts "
             >
               <h3>writeProviderUnavailable</h3>
-              <p class="muted"><code>src/cli/index.ts:440:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:461:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -3470,7 +3543,7 @@ graph LR
               data-search="parsePlanRequest src/cli/index.ts "
             >
               <h3>parsePlanRequest</h3>
-              <p class="muted"><code>src/cli/index.ts:467:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:488:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -3478,7 +3551,7 @@ graph LR
               data-search="renderPlanUsage src/cli/index.ts "
             >
               <h3>renderPlanUsage</h3>
-              <p class="muted"><code>src/cli/index.ts:492:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:513:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -3486,7 +3559,7 @@ graph LR
               data-search="renderRunDeferred src/cli/index.ts "
             >
               <h3>renderRunDeferred</h3>
-              <p class="muted"><code>src/cli/index.ts:500:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:521:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -3494,7 +3567,7 @@ graph LR
               data-search="renderPlanningFailure src/cli/index.ts "
             >
               <h3>renderPlanningFailure</h3>
-              <p class="muted"><code>src/cli/index.ts:509:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:530:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -3502,7 +3575,7 @@ graph LR
               data-search="getErrorMessage src/cli/index.ts "
             >
               <h3>getErrorMessage</h3>
-              <p class="muted"><code>src/cli/index.ts:522:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:543:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -3521,6 +3594,48 @@ graph LR
             >
               <h3>createDefaultCommandContext</h3>
               <p class="muted"><code>src/commandContext.ts:18:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-coreproviders-ts"
+          class="view"
+          data-view="src/coreProviders.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/coreProviders.ts</h2>
+            <article
+              class="item"
+              data-search="loadCoreProviderState src/coreProviders.ts "
+            >
+              <h3>loadCoreProviderState</h3>
+              <p class="muted"><code>src/coreProviders.ts:23:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="mergeCorePackages src/coreProviders.ts "
+            >
+              <h3>mergeCorePackages</h3>
+              <p class="muted"><code>src/coreProviders.ts:56:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="mergeCoreProviders src/coreProviders.ts "
+            >
+              <h3>mergeCoreProviders</h3>
+              <p class="muted"><code>src/coreProviders.ts:67:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="mergeByPackageName src/coreProviders.ts "
+            >
+              <h3>mergeByPackageName</h3>
+              <p class="muted"><code>src/coreProviders.ts:78:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

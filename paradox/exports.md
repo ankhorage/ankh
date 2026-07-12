@@ -457,7 +457,7 @@ Source: `src/parser.ts:1:1`
 
 Kind: `function`
 Module: `src/cli/index.ts`
-Source: `src/cli/index.ts:78:1`
+Source: `src/cli/index.ts:83:1`
 
 ### Signatures
 

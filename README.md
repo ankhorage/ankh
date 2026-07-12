@@ -3,7 +3,7 @@
 
 # @ankhorage/ankh
 
-![license: MIT](./paradox/badges/license.svg) ![npm: v0.6.2](./paradox/badges/npm.svg) ![runtime: bun](./paradox/badges/runtime.svg) ![typescript: strict](./paradox/badges/typescript.svg) ![eslint: checked](./paradox/badges/eslint.svg) ![prettier: checked](./paradox/badges/prettier.svg) ![build: checked](./paradox/badges/build.svg) ![tests: checked](./paradox/badges/tests.svg) ![docs: paradox](./paradox/badges/docs.svg)
+![license: MIT](./paradox/badges/license.svg) ![npm: v0.6.6](./paradox/badges/npm.svg) ![runtime: bun](./paradox/badges/runtime.svg) ![typescript: strict](./paradox/badges/typescript.svg) ![eslint: checked](./paradox/badges/eslint.svg) ![prettier: checked](./paradox/badges/prettier.svg) ![build: checked](./paradox/badges/build.svg) ![tests: checked](./paradox/badges/tests.svg) ![docs: paradox](./paradox/badges/docs.svg)
 
 Bun-first Ankh CLI front door and command bus bootstrap package.
 
@@ -16,6 +16,10 @@ Bun-first Ankh CLI front door and command bus bootstrap package.
 `ankh commands` discovers Ankh package metadata, attempts to load provider
 manifests, and renders detailed command descriptors for providers that load
 successfully.
+
+Doctor is registered as a core provider, so `ankh doctor ...` remains
+available even when no repo-local provider package has been installed. A
+discovered local `@ankhorage/doctor` package takes precedence for development.
 
 No domain behavior belongs in the root CLI. Domain behavior stays in provider
 packages such as infra, templates, studio, board, doctor, and dev.
@@ -45,7 +49,7 @@ designed.
 Source: `src/readme-usage.ts`
 
 ```ts
-import { runCli } from "./cli.js";
+import { runCli } from "./cli/index.js";
 
 await runCli(["--help"]);
 ```
