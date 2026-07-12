@@ -1,4 +1,5 @@
-import { mkdir, mkdtemp, rm, symlink, writeFile } from "node:fs/promises";
+import { symlinkSync } from "node:fs";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -30,7 +31,7 @@ it("discovers installed Ankhorage packages linked through node_modules", async (
 
   const scopeRoot = path.join(root, "node_modules", "@ankhorage");
   await mkdir(scopeRoot, { recursive: true });
-  await symlink(packageRoot, path.join(scopeRoot, "devtools"), "dir");
+  symlinkSync(packageRoot, path.join(scopeRoot, "devtools"), "dir");
 
   await expect(findInstalledAnkhoragePackageJsonFiles(root)).resolves.toEqual([
     path.join(scopeRoot, "devtools", "package.json"),
