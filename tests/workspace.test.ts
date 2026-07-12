@@ -33,7 +33,9 @@ it("discovers installed Ankhorage packages linked through node_modules", async (
   await mkdir(scopeRoot, { recursive: true });
   symlinkSync(packageRoot, path.join(scopeRoot, "devtools"), "dir");
 
-  await expect(findInstalledAnkhoragePackageJsonFiles(root)).resolves.toEqual([
+  const packageJsonFiles = await findInstalledAnkhoragePackageJsonFiles(root);
+
+  expect(packageJsonFiles).toEqual([
     path.join(scopeRoot, "devtools", "package.json"),
   ]);
 });
