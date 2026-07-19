@@ -1,23 +1,13 @@
-import type {
-  AnkhCliRunResult,
-  AnkhCommandContext,
-} from "../commandContext.js";
-import { createDefaultCommandContext } from "../commandContext.js";
-import {
-  loadCoreProviderState,
-  mergeCorePackages,
-  mergeCoreProviders,
-} from "../coreProviders.js";
+import type { AnkhCliRunResult, AnkhCommandContext } from '../commandContext.js';
+import { createDefaultCommandContext } from '../commandContext.js';
+import { loadCoreProviderState, mergeCorePackages, mergeCoreProviders } from '../coreProviders.js';
 import type {
   AnkhDiscoveredPackage,
   AnkhMetadataDiscoveryResult,
   DiscoverAnkhPackagesOptions,
-} from "../discovery.js";
-import { discoverAnkhPackages } from "../discovery.js";
-import {
-  type AnkhCommandExecutionContext,
-  resolveExecutableCommand,
-} from "../execution.js";
+} from '../discovery.js';
+import { discoverAnkhPackages } from '../discovery.js';
+import { type AnkhCommandExecutionContext, resolveExecutableCommand } from '../execution.js';
 import {
   renderCategoryHelp,
   renderCategoryProviderUnavailable,
@@ -32,10 +22,10 @@ import {
   renderUnknownCategory,
   renderUnknownCommand,
   renderUnknownProviderCommand,
-} from "../help.js";
-import type { AnkhPackageRegistry } from "../packageRegistry.js";
-import { createPackageRegistry } from "../packageRegistry.js";
-import { parseArgv } from "../parser.js";
+} from '../help.js';
+import type { AnkhPackageRegistry } from '../packageRegistry.js';
+import { createPackageRegistry } from '../packageRegistry.js';
+import { parseArgv } from '../parser.js';
 import {
   type AnkhPlanningContext,
   hasCommandPlanErrors,
@@ -43,14 +33,14 @@ import {
   renderCommandPlanJson,
   renderPlanningDiagnostics,
   resolvePlannableCommand,
-} from "../planning.js";
+} from '../planning.js';
 import type {
   AnkhProviderManifestDiagnostic,
   LoadProviderManifestsResult,
-} from "../providerManifestLoader.js";
-import { loadProviderManifests } from "../providerManifestLoader.js";
-import type { AnkhProviderRegistry } from "../providerRegistry.js";
-import { createProviderRegistry } from "../providerRegistry.js";
+} from '../providerManifestLoader.js';
+import { loadProviderManifests } from '../providerManifestLoader.js';
+import type { AnkhProviderRegistry } from '../providerRegistry.js';
+import { createProviderRegistry } from '../providerRegistry.js';
 
 export type DiscoverAnkhPackagesFn = (
   options: DiscoverAnkhPackagesOptions,
@@ -71,13 +61,13 @@ export interface RunCliOptions {
 interface ResolvedCliState {
   readonly packageRegistry: AnkhPackageRegistry;
   readonly providerRegistry: AnkhProviderRegistry;
-  readonly metadataDiagnostics: AnkhMetadataDiscoveryResult["diagnostics"];
+  readonly metadataDiagnostics: AnkhMetadataDiscoveryResult['diagnostics'];
   readonly providerDiagnostics: readonly AnkhProviderManifestDiagnostic[];
 }
 
 interface ParsedPlanRequest {
   readonly commandTokens: readonly string[];
-  readonly format: "human" | "json";
+  readonly format: 'human' | 'json';
 }
 
 export async function runCli(
@@ -90,20 +80,20 @@ export async function runCli(
   const request = await Promise.resolve(parseArgv(argv));
 
   switch (request.kind) {
-    case "help":
+    case 'help':
       context.writeStdout(renderRootHelp());
       return { exitCode: 0 };
-    case "version":
+    case 'version':
       context.writeStdout(`${context.version}\n`);
       return { exitCode: 0 };
-    case "commands":
+    case 'commands':
       return renderDiscoveredCommands({
         context,
         discoverPackages,
         loadProviders,
         options,
       });
-    case "category-help":
+    case 'category-help':
       return renderDiscoveredCategoryHelp({
         category: request.category,
         context,
@@ -111,7 +101,7 @@ export async function runCli(
         loadProviders,
         options,
       });
-    case "dispatch":
+    case 'dispatch':
       return dispatchProviderCommand({
         context,
         discoverPackages,
@@ -119,7 +109,7 @@ export async function runCli(
         options,
         tokens: request.tokens,
       });
-    case "plan":
+    case 'plan':
       return dispatchProviderPlan({
         context,
         discoverPackages,
@@ -127,7 +117,7 @@ export async function runCli(
         options,
         tokens: request.tokens,
       });
-    case "run":
+    case 'run':
       context.writeStderr(renderRunDeferred(request.tokens));
       return { exitCode: 1 };
   }
@@ -141,28 +131,25 @@ async function renderDiscoveredCommands(input: {
 }): Promise<AnkhCliRunResult> {
   const resolvedState = await resolveCliState(input);
 
-  if ("exitCode" in resolvedState) {
+  if ('exitCode' in resolvedState) {
     return resolvedState;
   }
 
   input.context.writeStdout(
-    renderCommands(
-      resolvedState.packageRegistry.listPackages(),
-      resolvedState.providerRegistry,
-    ),
+    renderCommands(resolvedState.packageRegistry.listPackages(), resolvedState.providerRegistry),
   );
 
   const metadataDiagnosticsOutput = renderMetadataDiscoveryDiagnostics(
     resolvedState.metadataDiagnostics,
   );
-  if (metadataDiagnosticsOutput !== "") {
+  if (metadataDiagnosticsOutput !== '') {
     input.context.writeStderr(metadataDiagnosticsOutput);
   }
 
   const providerDiagnosticsOutput = renderProviderManifestDiagnostics(
     resolvedState.providerDiagnostics,
   );
-  if (providerDiagnosticsOutput !== "") {
+  if (providerDiagnosticsOutput !== '') {
     input.context.writeStderr(providerDiagnosticsOutput);
   }
 
@@ -178,21 +165,17 @@ async function renderDiscoveredCategoryHelp(input: {
 }): Promise<AnkhCliRunResult> {
   const resolvedState = await resolveCliState(input);
 
-  if ("exitCode" in resolvedState) {
+  if ('exitCode' in resolvedState) {
     return resolvedState;
   }
 
-  const discoveredPackage = resolvedState.packageRegistry.findByCategory(
-    input.category,
-  );
+  const discoveredPackage = resolvedState.packageRegistry.findByCategory(input.category);
   if (discoveredPackage === null) {
     input.context.writeStderr(renderUnknownCategory(input.category));
     return { exitCode: 1 };
   }
 
-  const loadedProvider = resolvedState.providerRegistry.findByCategory(
-    input.category,
-  );
+  const loadedProvider = resolvedState.providerRegistry.findByCategory(input.category);
   if (loadedProvider === null) {
     writeProviderUnavailable({
       category: input.category,
@@ -203,9 +186,7 @@ async function renderDiscoveredCategoryHelp(input: {
     return { exitCode: 1 };
   }
 
-  input.context.writeStdout(
-    renderCategoryHelp(input.category, resolvedState.providerRegistry),
-  );
+  input.context.writeStdout(renderCategoryHelp(input.category, resolvedState.providerRegistry));
   return { exitCode: 0 };
 }
 
@@ -224,7 +205,7 @@ async function dispatchProviderPlan(input: {
 
   const resolvedState = await resolveCliState(input);
 
-  if ("exitCode" in resolvedState) {
+  if ('exitCode' in resolvedState) {
     return resolvedState;
   }
 
@@ -234,15 +215,13 @@ async function dispatchProviderPlan(input: {
     return { exitCode: 1 };
   }
 
-  const discoveredPackage =
-    resolvedState.packageRegistry.findByCategory(category);
+  const discoveredPackage = resolvedState.packageRegistry.findByCategory(category);
   if (discoveredPackage === null) {
-    input.context.writeStderr(renderUnknownCommand(["plan", ...input.tokens]));
+    input.context.writeStderr(renderUnknownCommand(['plan', ...input.tokens]));
     return { exitCode: 1 };
   }
 
-  const loadedProvider =
-    resolvedState.providerRegistry.findByCategory(category);
+  const loadedProvider = resolvedState.providerRegistry.findByCategory(category);
   if (loadedProvider === null) {
     writeProviderUnavailable({
       category,
@@ -261,15 +240,11 @@ async function dispatchProviderPlan(input: {
 
   if (planningResult.resolvedCommand === null) {
     if (planningResult.diagnostics.length > 0) {
-      input.context.writeStderr(
-        renderPlanningDiagnostics(planningResult.diagnostics),
-      );
+      input.context.writeStderr(renderPlanningDiagnostics(planningResult.diagnostics));
       return { exitCode: 1 };
     }
 
-    input.context.writeStderr(
-      renderUnknownProviderCommand(category, commandTokens),
-    );
+    input.context.writeStderr(renderUnknownProviderCommand(category, commandTokens));
     return { exitCode: 1 };
   }
 
@@ -288,19 +263,13 @@ async function dispatchProviderPlan(input: {
     });
 
     input.context.writeStdout(
-      parsedPlanRequest.format === "json"
-        ? renderCommandPlanJson(plan)
-        : renderCommandPlan(plan),
+      parsedPlanRequest.format === 'json' ? renderCommandPlanJson(plan) : renderCommandPlan(plan),
     );
 
     return { exitCode: hasCommandPlanErrors(plan) ? 1 : 0 };
   } catch (error) {
     input.context.writeStderr(
-      renderPlanningFailure(
-        category,
-        planningResult.resolvedCommand.command.path,
-        error,
-      ),
+      renderPlanningFailure(category, planningResult.resolvedCommand.command.path, error),
     );
     return { exitCode: 1 };
   }
@@ -315,20 +284,18 @@ async function dispatchProviderCommand(input: {
 }): Promise<AnkhCliRunResult> {
   const resolvedState = await resolveCliState(input);
 
-  if ("exitCode" in resolvedState) {
+  if ('exitCode' in resolvedState) {
     return resolvedState;
   }
 
   const [category, ...commandTokens] = input.tokens;
-  const discoveredPackage =
-    resolvedState.packageRegistry.findByCategory(category);
+  const discoveredPackage = resolvedState.packageRegistry.findByCategory(category);
   if (discoveredPackage === null) {
     input.context.writeStderr(renderUnknownCommand(input.tokens));
     return { exitCode: 1 };
   }
 
-  const loadedProvider =
-    resolvedState.providerRegistry.findByCategory(category);
+  const loadedProvider = resolvedState.providerRegistry.findByCategory(category);
   if (loadedProvider === null) {
     writeProviderUnavailable({
       category,
@@ -347,15 +314,11 @@ async function dispatchProviderCommand(input: {
 
   if (executionResult.resolvedCommand === null) {
     if (executionResult.diagnostics.length > 0) {
-      input.context.writeStderr(
-        renderExecutionDiagnostics(executionResult.diagnostics),
-      );
+      input.context.writeStderr(renderExecutionDiagnostics(executionResult.diagnostics));
       return { exitCode: 1 };
     }
 
-    input.context.writeStderr(
-      renderUnknownProviderCommand(category, commandTokens),
-    );
+    input.context.writeStderr(renderUnknownProviderCommand(category, commandTokens));
     return { exitCode: 1 };
   }
 
@@ -378,11 +341,7 @@ async function dispatchProviderCommand(input: {
     };
   } catch (error) {
     input.context.writeStderr(
-      renderCommandExecutionFailure(
-        category,
-        executionResult.resolvedCommand.command.path,
-        error,
-      ),
+      renderCommandExecutionFailure(category, executionResult.resolvedCommand.command.path, error),
     );
     return { exitCode: 1 };
   }
@@ -394,10 +353,7 @@ async function resolveCliState(input: {
   readonly loadProviders: LoadProviderManifestsFn;
   readonly options: RunCliOptions;
 }): Promise<ResolvedCliState | AnkhCliRunResult> {
-  if (
-    input.options.registry !== undefined &&
-    input.options.providerRegistry !== undefined
-  ) {
+  if (input.options.registry !== undefined && input.options.providerRegistry !== undefined) {
     return {
       packageRegistry: input.options.registry,
       providerRegistry: input.options.providerRegistry,
@@ -415,8 +371,7 @@ async function resolveCliState(input: {
       coreProviderState.packages,
       discoveryResult.packages,
     );
-    const packageRegistry =
-      input.options.registry ?? createPackageRegistry(discoveredPackages);
+    const packageRegistry = input.options.registry ?? createPackageRegistry(discoveredPackages);
 
     try {
       const providerLoadResult =
@@ -430,10 +385,7 @@ async function resolveCliState(input: {
       const providerRegistry =
         input.options.providerRegistry ??
         createProviderRegistry(
-          mergeCoreProviders(
-            coreProviderState.providers,
-            providerLoadResult.providers,
-          ),
+          mergeCoreProviders(coreProviderState.providers, providerLoadResult.providers),
         );
 
       return {
@@ -471,17 +423,12 @@ function writeProviderUnavailable(input: {
   );
 
   if (providerDiagnostics.length > 0) {
-    input.context.writeStderr(
-      renderProviderManifestDiagnostics(providerDiagnostics),
-    );
+    input.context.writeStderr(renderProviderManifestDiagnostics(providerDiagnostics));
     return;
   }
 
   input.context.writeStderr(
-    renderCategoryProviderUnavailable(
-      input.category,
-      input.discoveredPackage.packageName,
-    ),
+    renderCategoryProviderUnavailable(input.category, input.discoveredPackage.packageName),
   );
 }
 
@@ -491,11 +438,11 @@ function parsePlanRequest(tokens: readonly string[]): ParsedPlanRequest | null {
   }
 
   const commandTokens: string[] = [];
-  let format: ParsedPlanRequest["format"] = "human";
+  let format: ParsedPlanRequest['format'] = 'human';
 
   for (const token of tokens) {
-    if (token === "--json") {
-      format = "json";
+    if (token === '--json') {
+      format = 'json';
       continue;
     }
 
@@ -512,19 +459,19 @@ function parsePlanRequest(tokens: readonly string[]): ParsedPlanRequest | null {
 
 function renderPlanUsage(): string {
   return [
-    "Usage: ankh plan <category> <command> [--json]",
-    "Planning prints provider-declared command plans without executing them.",
-    "",
-  ].join("\n");
+    'Usage: ankh plan <category> <command> [--json]',
+    'Planning prints provider-declared command plans without executing them.',
+    '',
+  ].join('\n');
 }
 
 function renderRunDeferred(tokens: readonly string[]): string {
-  const attempted = tokens.length === 0 ? "(missing)" : tokens.join(" ");
+  const attempted = tokens.length === 0 ? '(missing)' : tokens.join(' ');
   return [
     `ankh run is deferred until command execution semantics are explicitly designed: ${attempted}`,
-    "Use `ankh plan <category> <command>` to inspect provider plans first.",
-    "",
-  ].join("\n");
+    'Use `ankh plan <category> <command>` to inspect provider plans first.',
+    '',
+  ].join('\n');
 }
 
 function renderPlanningFailure(
@@ -534,10 +481,10 @@ function renderPlanningFailure(
 ): string {
   return [
     `Ankh command planning failed for "${category} ${commandPath.join(
-      " ",
+      ' ',
     )}": ${getErrorMessage(error)}`,
-    "",
-  ].join("\n");
+    '',
+  ].join('\n');
 }
 
 function getErrorMessage(error: unknown): string {

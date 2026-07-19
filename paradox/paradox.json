@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.7.3",
+      "value": "v0.7.4",
       "color": "cb3837"
     },
     {
@@ -112,22 +112,13 @@
         "src/providerManifestLoader.ts",
         "src/providerRegistry.ts"
       ],
-      "exports": [
-        "DiscoverAnkhPackagesFn",
-        "LoadProviderManifestsFn",
-        "runCli",
-        "RunCliOptions"
-      ]
+      "exports": ["DiscoverAnkhPackagesFn", "LoadProviderManifestsFn", "runCli", "RunCliOptions"]
     },
     {
       "path": "src/commandContext.ts",
       "isEntrypoint": false,
       "dependencies": ["package.json"],
-      "exports": [
-        "AnkhCliRunResult",
-        "AnkhCommandContext",
-        "createDefaultCommandContext"
-      ]
+      "exports": ["AnkhCliRunResult", "AnkhCommandContext", "createDefaultCommandContext"]
     },
     {
       "path": "src/coreProviders.ts",
@@ -579,11 +570,7 @@
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": [
-        "AnkhCommandExecutionContext",
-        "AnkhCommandListing",
-        "AnkhLoadedProvider"
-      ],
+      "relatedSymbols": ["AnkhCommandExecutionContext", "AnkhCommandListing", "AnkhLoadedProvider"],
       "signatures": [],
       "members": [
         {
@@ -1152,10 +1139,7 @@
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": [
-        "AnkhDiscoveredPackage",
-        "AnkhMetadataDiscoveryDiagnostic"
-      ],
+      "relatedSymbols": ["AnkhDiscoveredPackage", "AnkhMetadataDiscoveryDiagnostic"],
       "signatures": [],
       "members": [
         {
@@ -1347,11 +1331,7 @@
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": [
-        "AnkhCommandListing",
-        "AnkhLoadedProvider",
-        "AnkhPlanningContext"
-      ],
+      "relatedSymbols": ["AnkhCommandListing", "AnkhLoadedProvider", "AnkhPlanningContext"],
       "signatures": [],
       "members": [
         {
@@ -1466,11 +1446,7 @@
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": [
-        "AnkhCommandListing",
-        "AnkhLoadedProvider",
-        "AnkhResolvedProviderCommand"
-      ],
+      "relatedSymbols": ["AnkhCommandListing", "AnkhLoadedProvider", "AnkhResolvedProviderCommand"],
       "signatures": [],
       "members": [
         {
@@ -1571,10 +1547,7 @@
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": [
-        "AnkhCommandHandlerBinding",
-        "AnkhPlanningHandlerBinding"
-      ],
+      "relatedSymbols": ["AnkhCommandHandlerBinding", "AnkhPlanningHandlerBinding"],
       "signatures": [],
       "members": [
         {
@@ -1763,10 +1736,7 @@
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": [
-        "AnkhDiscoveredPackage",
-        "LoadProviderManifestsResult"
-      ],
+      "relatedSymbols": ["AnkhDiscoveredPackage", "LoadProviderManifestsResult"],
       "signatures": [
         {
           "label": "(packages: readonly AnkhDiscoveredPackage[]) => Promise<LoadProviderManifestsResult>",
@@ -1798,10 +1768,7 @@
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": [
-        "AnkhLoadedProvider",
-        "AnkhProviderManifestDiagnostic"
-      ],
+      "relatedSymbols": ["AnkhLoadedProvider", "AnkhProviderManifestDiagnostic"],
       "signatures": [],
       "members": [
         {

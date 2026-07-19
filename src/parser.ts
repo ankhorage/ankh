@@ -1,17 +1,17 @@
 export type ParsedCliRequest =
-  | { readonly kind: "help" }
-  | { readonly kind: "version" }
-  | { readonly kind: "commands" }
-  | { readonly kind: "category-help"; readonly category: string }
-  | { readonly kind: "plan"; readonly tokens: readonly string[] }
-  | { readonly kind: "run"; readonly tokens: readonly string[] }
+  | { readonly kind: 'help' }
+  | { readonly kind: 'version' }
+  | { readonly kind: 'commands' }
+  | { readonly kind: 'category-help'; readonly category: string }
+  | { readonly kind: 'plan'; readonly tokens: readonly string[] }
+  | { readonly kind: 'run'; readonly tokens: readonly string[] }
   | {
-      readonly kind: "dispatch";
+      readonly kind: 'dispatch';
       readonly tokens: readonly [string, ...string[]];
     };
 
-const HELP_TOKENS = new Set(["--help", "-h", "help"]);
-const VERSION_TOKENS = new Set(["--version", "-v"]);
+const HELP_TOKENS = new Set(['--help', '-h', 'help']);
+const VERSION_TOKENS = new Set(['--version', '-v']);
 
 /**
  * Parse only top-level Ankh bootstrap commands.
@@ -20,38 +20,38 @@ export function parseArgv(argv: readonly string[]): ParsedCliRequest {
   const [firstToken, ...restTokens] = argv;
 
   if (firstToken === undefined) {
-    return { kind: "help" };
+    return { kind: 'help' };
   }
 
   if (HELP_TOKENS.has(firstToken)) {
-    return { kind: "help" };
+    return { kind: 'help' };
   }
 
   if (VERSION_TOKENS.has(firstToken)) {
-    return { kind: "version" };
+    return { kind: 'version' };
   }
 
-  if (firstToken === "commands") {
-    return { kind: "commands" };
+  if (firstToken === 'commands') {
+    return { kind: 'commands' };
   }
 
-  if (firstToken === "plan") {
-    return { kind: "plan", tokens: restTokens };
+  if (firstToken === 'plan') {
+    return { kind: 'plan', tokens: restTokens };
   }
 
-  if (firstToken === "run") {
-    return { kind: "run", tokens: restTokens };
+  if (firstToken === 'run') {
+    return { kind: 'run', tokens: restTokens };
   }
 
-  if (restTokens.length === 1 && HELP_TOKENS.has(restTokens[0] ?? "")) {
+  if (restTokens.length === 1 && HELP_TOKENS.has(restTokens[0] ?? '')) {
     return {
-      kind: "category-help",
+      kind: 'category-help',
       category: firstToken,
     };
   }
 
   return {
-    kind: "dispatch",
+    kind: 'dispatch',
     tokens: [firstToken, ...restTokens],
   };
 }

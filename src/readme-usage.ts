@@ -1,4 +1,4 @@
-import { runCli } from "./cli/index.js";
+import { runCli } from './cli/index.js';
 
 /***
  * Bootstrap status
@@ -40,4 +40,4 @@ import { runCli } from "./cli/index.js";
  *
  * @usage
  */
-await runCli(["--help"]);
+await runCli(['--help']);

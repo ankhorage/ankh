@@ -1,21 +1,18 @@
-import { createRequire } from "node:module";
+import { createRequire } from 'node:module';
 
-import type {
-  AnkhDiscoveredPackage,
-  AnkhMetadataDiscoveryDiagnostic,
-} from "./discovery.js";
-import { readAnkhPackageMetadata } from "./packageMetadata.js";
+import type { AnkhDiscoveredPackage, AnkhMetadataDiscoveryDiagnostic } from './discovery.js';
+import { readAnkhPackageMetadata } from './packageMetadata.js';
 import {
   type AnkhLoadedProvider,
   type AnkhProviderManifestDiagnostic,
   loadProviderManifests,
-} from "./providerManifestLoader.js";
+} from './providerManifestLoader.js';
 
 const require = createRequire(import.meta.url);
 
 const coreProviderPackageJsonPaths = [
-  require.resolve("@ankhorage/doctor/package.json"),
-  require.resolve("@ankhorage/devtools/package.json"),
+  require.resolve('@ankhorage/doctor/package.json'),
+  require.resolve('@ankhorage/devtools/package.json'),
 ] as const;
 
 export interface AnkhCoreProviderState {
@@ -32,15 +29,12 @@ export async function loadCoreProviderState(): Promise<AnkhCoreProviderState> {
   for (const packageJsonPath of coreProviderPackageJsonPaths) {
     const metadataResult = await readAnkhPackageMetadata({
       packageJsonPath,
-      source: "core-provider",
+      source: 'core-provider',
     });
 
     metadataDiagnostics.push(...metadataResult.diagnostics);
 
-    if (
-      metadataResult.packageName === null ||
-      metadataResult.metadata === null
-    ) {
+    if (metadataResult.packageName === null || metadataResult.metadata === null) {
       continue;
     }
 
@@ -49,7 +43,7 @@ export async function loadCoreProviderState(): Promise<AnkhCoreProviderState> {
       packageJsonPath,
       packageName: metadataResult.packageName,
       packageRoot: metadataResult.packageRoot,
-      source: "core-provider",
+      source: 'core-provider',
     });
   }
 
@@ -90,9 +84,7 @@ function mergeByPackageName<T>(
   discoveredValues: readonly T[],
   getPackageName: (value: T) => string,
 ): readonly T[] {
-  const valuesByPackageName = new Map(
-    coreValues.map((value) => [getPackageName(value), value]),
-  );
+  const valuesByPackageName = new Map(coreValues.map((value) => [getPackageName(value), value]));
 
   for (const value of discoveredValues) {
     valuesByPackageName.set(getPackageName(value), value);
