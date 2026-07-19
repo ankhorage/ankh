@@ -142,5 +142,5 @@ function matchesCommandPath(
     return false;
   }
 
-  return commandPath.every((segment, index) => tokens[index] === segment);
+  return commandPath.every((segment, index) => tokens.at(index) === segment);
 }
