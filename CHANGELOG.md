@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.6
+
+### Patch Changes
+
+- bd3715e: update DOCTOR
+
 ## 0.7.5
 
 ### Patch Changes
