@@ -247,7 +247,7 @@
     "modulePath": "src/execution.ts",
     "sourceLocation": {
       "filePath": "src/execution.ts",
-      "line": 36,
+      "line": 33,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1133,7 +1133,7 @@
     "modulePath": "src/execution.ts",
     "sourceLocation": {
       "filePath": "src/execution.ts",
-      "line": 41,
+      "line": 38,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1258,7 +1258,7 @@
     "modulePath": "src/providerRegistry.ts",
     "sourceLocation": {
       "filePath": "src/providerRegistry.ts",
-      "line": 34,
+      "line": 31,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1437,7 +1437,7 @@
     "modulePath": "src/cli/index.ts",
     "sourceLocation": {
       "filePath": "src/cli/index.ts",
-      "line": 83,
+      "line": 73,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],

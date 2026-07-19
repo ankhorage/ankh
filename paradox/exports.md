@@ -83,7 +83,7 @@ Source: `src/execution.ts:29:1`
 
 Kind: `type`
 Module: `src/execution.ts`
-Source: `src/execution.ts:36:1`
+Source: `src/execution.ts:33:1`
 
 ### Members
 
@@ -349,7 +349,7 @@ Source: `src/providerRegistry.ts:16:1`
 
 Kind: `type`
 Module: `src/execution.ts`
-Source: `src/execution.ts:41:1`
+Source: `src/execution.ts:38:1`
 
 ### Members
 
@@ -390,7 +390,7 @@ Source: `src/packageRegistry.ts:9:1`
 
 Kind: `function`
 Module: `src/providerRegistry.ts`
-Source: `src/providerRegistry.ts:34:1`
+Source: `src/providerRegistry.ts:31:1`
 
 ### Signatures
 
@@ -457,7 +457,7 @@ Source: `src/parser.ts:1:1`
 
 Kind: `function`
 Module: `src/cli/index.ts`
-Source: `src/cli/index.ts:83:1`
+Source: `src/cli/index.ts:73:1`
 
 ### Signatures
 
