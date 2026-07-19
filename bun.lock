@@ -6,7 +6,7 @@
       "name": "@ankhorage/ankh",
       "dependencies": {
         "@ankhorage/contracts": "^2.1.0",
-        "@ankhorage/devtools": "^1.3.2",
+        "@ankhorage/devtools": "^1.3.3",
         "@ankhorage/doctor": "^0.7.3",
         "yaml": "^2.8.1",
       },
@@ -24,7 +24,7 @@
 
     "@ankhorage/contracts": ["@ankhorage/contracts@2.1.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.7" } }, "sha512-QGG0atpGDe9+BUWzWvV83Kj309TBOK76yBRbWOoQli8g0LY8QLb7Z4UquD+qVhtWJTp3Y1jHUTEttQ0WjdhY/Q=="],
 
-    "@ankhorage/devtools": ["@ankhorage/devtools@1.3.2", "", { "dependencies": { "@ankhorage/utility": "^0.1.1", "@eslint/compat": "^2.1.0", "@eslint/js": "^10.0.1", "eslint": "^10.7.0", "eslint-config-prettier": "^10.1.8", "eslint-plugin-import": "^2.32.0", "eslint-plugin-prettier": "^5.5.5", "eslint-plugin-react": "^7.37.5", "eslint-plugin-react-hooks": "^7.1.1", "eslint-plugin-react-native": "^5.0.0", "eslint-plugin-security": "^4.0.1", "eslint-plugin-simple-import-sort": "^12.1.1", "eslint-plugin-unused-imports": "^4.4.1", "knip": "^6.12.2", "prettier": "^3.8.1", "typescript-eslint": "^8.24.0" }, "bin": { "ankhorage-eslint": "dist/cli/bin/eslint.js", "ankhorage-knip": "dist/cli/bin/knip.js", "ankhorage-prettier": "dist/cli/bin/prettier.js" } }, "sha512-yxZdtoUQ3CfKwG3k8Xr6YCQcaQSTDW66zyQt1ikdEF6lZ1bOTZ9AWJfA7iVGH/Abmx3HVFyVS25KfEGJO9zBHQ=="],
+    "@ankhorage/devtools": ["@ankhorage/devtools@1.3.3", "", { "dependencies": { "@ankhorage/utility": "^0.1.1", "@eslint/compat": "^2.1.0", "@eslint/js": "^10.0.1", "eslint": "^10.7.0", "eslint-config-prettier": "^10.1.8", "eslint-plugin-import": "^2.32.0", "eslint-plugin-prettier": "^5.5.5", "eslint-plugin-react": "^7.37.5", "eslint-plugin-react-hooks": "^7.1.1", "eslint-plugin-react-native": "^5.0.0", "eslint-plugin-security": "^4.0.1", "eslint-plugin-simple-import-sort": "^12.1.1", "eslint-plugin-unused-imports": "^4.4.1", "knip": "^6.12.2", "prettier": "^3.8.1", "typescript-eslint": "^8.24.0" }, "bin": { "ankhorage-eslint": "dist/cli/bin/eslint.js", "ankhorage-knip": "dist/cli/bin/knip.js", "ankhorage-prettier": "dist/cli/bin/prettier.js" } }, "sha512-9Bcy7ZT4th78LBTTfJw3fKULCpzh8MFzlMHHL3utMElpfmTv0xQoTmjfP85uli/XrJZW11XR+8/FS8rcuehp3Q=="],
 
     "@ankhorage/doctor": ["@ankhorage/doctor@0.7.3", "", { "dependencies": { "@ankhorage/contracts": "^2.1.0" }, "bin": { "ankhorage-doctor": "dist/cli/standalone.js" } }, "sha512-mq/X13EZXisKX6FX6phNwXf85qyDS7fgGIfgEB4HXSRlaCf1npkeRCsYTr3q2BZ4DpSyC4jkJ0b4BNq1XGKzzA=="],
 
