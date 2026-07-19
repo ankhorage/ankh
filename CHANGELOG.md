@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.4
+
+### Patch Changes
+
+- 42205fc: update DEVTOOLS
+
 ## 0.7.3
 
 ### Patch Changes
