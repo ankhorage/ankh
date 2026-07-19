@@ -347,29 +347,50 @@ function createDiagnostic(
   };
 }
 
-function getDiagnosticMessage(code: string): string {
-  const messages: Record<string, string> = {
-    "invalid-provider-planning-handler":
-      "Each provider planning handler binding must be an object.",
-    "invalid-provider-planning-handler-path":
-      'Each provider planning handler "path" must be a non-empty array of non-empty strings.',
-    "invalid-provider-planning-handlers":
-      'Provider "planningHandlers" must be an array when present.',
-    "provider-command-planning-handler-missing":
-      "Provider command does not have a planning handler binding.",
-    "provider-duplicate-category":
-      "More than one loaded provider declares this category, so planning is ambiguous.",
-    "provider-duplicate-planning-handler-path":
-      "Provider declares more than one planning handler for the same command path.",
-    "provider-missing-planning-handlers":
-      "Provider does not define planning handlers.",
-    "provider-planning-handler-not-function":
-      "Provider planning handler must be a function.",
-    "provider-planning-handler-unknown-path":
-      "Provider planning handler path does not match any manifest command path.",
-  };
+const PLANNING_DIAGNOSTIC_MESSAGES = new Map<string, string>([
+  [
+    "invalid-provider-planning-handler",
+    "Each provider planning handler binding must be an object.",
+  ],
+  [
+    "invalid-provider-planning-handler-path",
+    'Each provider planning handler "path" must be a non-empty array of non-empty strings.',
+  ],
+  [
+    "invalid-provider-planning-handlers",
+    'Provider "planningHandlers" must be an array when present.',
+  ],
+  [
+    "provider-command-planning-handler-missing",
+    "Provider command does not have a planning handler binding.",
+  ],
+  [
+    "provider-duplicate-category",
+    "More than one loaded provider declares this category, so planning is ambiguous.",
+  ],
+  [
+    "provider-duplicate-planning-handler-path",
+    "Provider declares more than one planning handler for the same command path.",
+  ],
+  [
+    "provider-missing-planning-handlers",
+    "Provider does not define planning handlers.",
+  ],
+  [
+    "provider-planning-handler-not-function",
+    "Provider planning handler must be a function.",
+  ],
+  [
+    "provider-planning-handler-unknown-path",
+    "Provider planning handler path does not match any manifest command path.",
+  ],
+]);
 
-  return messages[code] ?? "Provider planning handler is invalid.";
+function getDiagnosticMessage(code: string): string {
+  return (
+    PLANNING_DIAGNOSTIC_MESSAGES.get(code) ??
+    "Provider planning handler is invalid."
+  );
 }
 
 function getCommandPath(value: unknown): readonly [string, ...string[]] | null {
