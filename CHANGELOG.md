@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.3
+
+### Patch Changes
+
+- 454df05: Relax repository-local ESLint size and complexity limits to the current codebase maxima and replace dynamic indexing patterns that triggered shared security lint warnings.
+
 ## 0.7.2
 
 ### Patch Changes
