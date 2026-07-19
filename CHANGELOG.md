@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.9
+
+### Patch Changes
+
+- e3eb3f8: update DEVTOOLS
+
 ## 0.7.8
 
 ### Patch Changes
