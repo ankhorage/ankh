@@ -2,4 +2,4 @@
 '@ankhorage/ankh': patch
 ---
 
-update DOCTOR
+update DEVTOOLS
