@@ -210,7 +210,7 @@ async function dispatchProviderPlan(input: {
   }
 
   const [category, ...commandTokens] = parsedPlanRequest.commandTokens;
-  if (category === undefined || commandTokens.length === 0) {
+  if (category === undefined) {
     input.context.writeStderr(renderPlanUsage());
     return { exitCode: 1 };
   }
@@ -433,7 +433,7 @@ function writeProviderUnavailable(input: {
 }
 
 function parsePlanRequest(tokens: readonly string[]): ParsedPlanRequest | null {
-  if (tokens.length < 2) {
+  if (tokens.length < 1) {
     return null;
   }
 
@@ -449,7 +449,7 @@ function parsePlanRequest(tokens: readonly string[]): ParsedPlanRequest | null {
     commandTokens.push(token);
   }
 
-  return commandTokens.length >= 2
+  return commandTokens.length >= 1
     ? {
         commandTokens,
         format,
@@ -459,7 +459,7 @@ function parsePlanRequest(tokens: readonly string[]): ParsedPlanRequest | null {
 
 function renderPlanUsage(): string {
   return [
-    'Usage: ankh plan <category> <command> [--json]',
+    'Usage: ankh plan <category> [command] [--json]',
     'Planning prints provider-declared command plans without executing them.',
     '',
   ].join('\n');
@@ -469,7 +469,7 @@ function renderRunDeferred(tokens: readonly string[]): string {
   const attempted = tokens.length === 0 ? '(missing)' : tokens.join(' ');
   return [
     `ankh run is deferred until command execution semantics are explicitly designed: ${attempted}`,
-    'Use `ankh plan <category> <command>` to inspect provider plans first.',
+    'Use `ankh plan <category> [command]` to inspect provider plans first.',
     '',
   ].join('\n');
 }
@@ -480,11 +480,16 @@ function renderPlanningFailure(
   error: unknown,
 ): string {
   return [
-    `Ankh command planning failed for "${category} ${commandPath.join(
-      ' ',
+    `Ankh command planning failed for "${renderCommandName(
+      category,
+      commandPath,
     )}": ${getErrorMessage(error)}`,
     '',
   ].join('\n');
+}
+
+function renderCommandName(category: string, path: readonly string[]): string {
+  return path.length === 0 ? category : `${category} ${path.join(' ')}`;
 }
 
 function getErrorMessage(error: unknown): string {

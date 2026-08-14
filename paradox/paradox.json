@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.7.8",
+      "value": "v0.7.10",
       "color": "cb3837"
     },
     {
@@ -117,8 +117,24 @@
     {
       "path": "src/commandContext.ts",
       "isEntrypoint": false,
-      "dependencies": ["package.json"],
+      "dependencies": [
+        "package.json",
+        "src/commandInteraction.ts",
+        "src/defaultCommandInteraction.ts"
+      ],
       "exports": ["AnkhCliRunResult", "AnkhCommandContext", "createDefaultCommandContext"]
+    },
+    {
+      "path": "src/commandInteraction.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/confirmationResult.ts"],
+      "exports": ["AnkhCommandInteraction"]
+    },
+    {
+      "path": "src/confirmationResult.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["AnkhConfirmationResult"]
     },
     {
       "path": "src/coreProviders.ts",
@@ -134,6 +150,18 @@
         "mergeCorePackages",
         "mergeCoreProviders"
       ]
+    },
+    {
+      "path": "src/createCommandInteraction.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/commandInteraction.ts"],
+      "exports": ["createCommandInteraction"]
+    },
+    {
+      "path": "src/defaultCommandInteraction.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/commandInteraction.ts", "src/createCommandInteraction.ts"],
+      "exports": ["createDefaultCommandInteraction"]
     },
     {
       "path": "src/discovery.ts",
@@ -207,10 +235,12 @@
         "AnkhCommandExecutionResult",
         "AnkhCommandHandler",
         "AnkhCommandHandlerBinding",
+        "AnkhCommandInteraction",
         "AnkhCommandListing",
         "AnkhCommandPlan",
         "AnkhCommandPlanDiagnostic",
         "AnkhCommandPlanStep",
+        "AnkhConfirmationResult",
         "AnkhDiscoveredPackage",
         "AnkhDiscoverySource",
         "AnkhLoadedProvider",
@@ -225,6 +255,7 @@
         "AnkhProviderRegistry",
         "AnkhResolvedProviderCommand",
         "AnkhRuntimeCommandProvider",
+        "createCommandInteraction",
         "createDefaultCommandContext",
         "createPackageRegistry",
         "createProviderRegistry",
@@ -332,6 +363,12 @@
       "exports": []
     },
     {
+      "path": "tests/commandInteraction.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/createCommandInteraction.ts"],
+      "exports": []
+    },
+    {
       "path": "tests/coreProviders.test.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -402,6 +439,30 @@
       "exports": []
     },
     {
+      "path": "tests/rootCli.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/cli/index.ts",
+        "src/commandContext.ts",
+        "src/execution.ts",
+        "src/packageRegistry.ts",
+        "src/providerRegistry.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "tests/rootCommands.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/execution.ts",
+        "src/help.ts",
+        "src/packageRegistry.ts",
+        "src/planning.ts",
+        "src/providerRegistry.ts"
+      ],
+      "exports": []
+    },
+    {
       "path": "tests/workspace.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/workspace.ts"],
@@ -418,7 +479,7 @@
       "modulePath": "src/commandContext.ts",
       "sourceLocation": {
         "filePath": "src/commandContext.ts",
-        "line": 11,
+        "line": 14,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -444,11 +505,11 @@
       "modulePath": "src/commandContext.ts",
       "sourceLocation": {
         "filePath": "src/commandContext.ts",
-        "line": 3,
+        "line": 5,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": [],
+      "relatedSymbols": ["AnkhCommandInteraction"],
       "signatures": [],
       "members": [
         {
@@ -463,6 +524,13 @@
           "kind": "property",
           "type": "Readonly<Record<string, string | undefined>>",
           "required": true,
+          "description": null
+        },
+        {
+          "name": "interaction",
+          "kind": "property",
+          "type": "AnkhCommandInteraction | undefined",
+          "required": false,
           "description": null
         },
         {
@@ -502,7 +570,7 @@
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": ["AnkhPackageRegistry", "AnkhProviderRegistry"],
+      "relatedSymbols": ["AnkhCommandInteraction", "AnkhPackageRegistry", "AnkhProviderRegistry"],
       "signatures": [],
       "members": [
         {
@@ -517,6 +585,13 @@
           "kind": "property",
           "type": "Readonly<Record<string, string | undefined>>",
           "required": true,
+          "description": null
+        },
+        {
+          "name": "interaction",
+          "kind": "property",
+          "type": "AnkhCommandInteraction | undefined",
+          "required": false,
           "description": null
         },
         {
@@ -674,7 +749,40 @@
         {
           "name": "path",
           "kind": "property",
-          "type": "readonly [string, ...string[]]",
+          "type": "readonly string[]",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "AnkhCommandInteraction",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/commandInteraction.ts",
+      "sourceLocation": {
+        "filePath": "src/commandInteraction.ts",
+        "line": 3,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["AnkhConfirmationResult"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "confirm",
+          "kind": "method",
+          "type": "(message: string) => Promise<AnkhConfirmationResult>",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "interactive",
+          "kind": "property",
+          "type": "boolean",
           "required": true,
           "description": null
         }
@@ -735,7 +843,7 @@
         {
           "name": "path",
           "kind": "property",
-          "type": "readonly [string, ...string[]]",
+          "type": "readonly string[]",
           "required": true,
           "description": null
         },
@@ -937,6 +1045,24 @@
           "description": null
         }
       ],
+      "structuredRows": []
+    },
+    {
+      "name": "AnkhConfirmationResult",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/confirmationResult.ts",
+      "sourceLocation": {
+        "filePath": "src/confirmationResult.ts",
+        "line": 1,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
       "structuredRows": []
     },
     {
@@ -1212,7 +1338,7 @@
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": ["AnkhPackageRegistry", "AnkhProviderRegistry"],
+      "relatedSymbols": ["AnkhCommandInteraction", "AnkhPackageRegistry", "AnkhProviderRegistry"],
       "signatures": [],
       "members": [
         {
@@ -1227,6 +1353,13 @@
           "kind": "property",
           "type": "Readonly<Record<string, string | undefined>>",
           "required": true,
+          "description": null
+        },
+        {
+          "name": "interaction",
+          "kind": "property",
+          "type": "AnkhCommandInteraction | undefined",
+          "required": false,
           "description": null
         },
         {
@@ -1311,7 +1444,7 @@
         {
           "name": "path",
           "kind": "property",
-          "type": "readonly [string, ...string[]]",
+          "type": "readonly string[]",
           "required": true,
           "description": null
         }
@@ -1603,6 +1736,38 @@
       "structuredRows": []
     },
     {
+      "name": "createCommandInteraction",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/createCommandInteraction.ts",
+      "sourceLocation": {
+        "filePath": "src/createCommandInteraction.ts",
+        "line": 3,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["AnkhCommandInteraction"],
+      "signatures": [
+        {
+          "label": "(options: { readonly interactive: boolean; readonly ask?: (prompt: string) => Promise<string>; }) => AnkhCommandInteraction",
+          "parameters": [
+            {
+              "name": "options",
+              "type": "{ readonly interactive: boolean; readonly ask?: (prompt: string) => Promise<string>; }",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "AnkhCommandInteraction",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
       "name": "createDefaultCommandContext",
       "description": null,
       "isReadme": false,
@@ -1611,7 +1776,7 @@
       "modulePath": "src/commandContext.ts",
       "sourceLocation": {
         "filePath": "src/commandContext.ts",
-        "line": 18,
+        "line": 21,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -1979,11 +2144,20 @@
       }
     },
     {
+      "name": "renderCommandName",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/index.ts",
+        "line": 491,
+        "column": 1
+      }
+    },
+    {
       "name": "getErrorMessage",
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 490,
+        "line": 495,
         "column": 1
       }
     },
@@ -1992,7 +2166,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/commandContext.ts",
-        "line": 18,
+        "line": 21,
         "column": 1
       }
     },
@@ -2029,6 +2203,33 @@
       "sourceLocation": {
         "filePath": "src/coreProviders.ts",
         "line": 82,
+        "column": 1
+      }
+    },
+    {
+      "name": "createCommandInteraction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/createCommandInteraction.ts",
+        "line": 3,
+        "column": 1
+      }
+    },
+    {
+      "name": "createDefaultCommandInteraction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/defaultCommandInteraction.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "askProcess",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/defaultCommandInteraction.ts",
+        "line": 14,
         "column": 1
       }
     },
@@ -2109,7 +2310,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 302,
+        "line": 292,
         "column": 1
       }
     },
@@ -2118,7 +2319,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 306,
+        "line": 296,
         "column": 1
       }
     },
@@ -2127,7 +2328,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/execution.ts",
-        "line": 310,
+        "line": 300,
         "column": 1
       }
     },
@@ -2253,7 +2454,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 206,
+        "line": 207,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderRelativeCommandPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/help.ts",
+        "line": 238,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderFullCommandPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/help.ts",
+        "line": 242,
         "column": 1
       }
     },
@@ -2262,7 +2481,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/help.ts",
-        "line": 237,
+        "line": 246,
         "column": 1
       }
     },
@@ -2460,7 +2679,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/planning.ts",
-        "line": 375,
+        "line": 369,
         "column": 1
       }
     },
@@ -2469,7 +2688,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/planning.ts",
-        "line": 379,
+        "line": 373,
         "column": 1
       }
     },
@@ -2478,7 +2697,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/planning.ts",
-        "line": 383,
+        "line": 377,
         "column": 1
       }
     },
@@ -2487,7 +2706,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/planning.ts",
-        "line": 387,
+        "line": 381,
         "column": 1
       }
     },
@@ -2496,7 +2715,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/planning.ts",
-        "line": 391,
+        "line": 385,
         "column": 1
       }
     },
@@ -2505,7 +2724,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/planning.ts",
-        "line": 401,
+        "line": 395,
         "column": 1
       }
     },
@@ -2573,7 +2792,7 @@
       }
     },
     {
-      "name": "getCommandPath",
+      "name": "renderCommandPath",
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
@@ -2582,11 +2801,20 @@
       }
     },
     {
+      "name": "getCommandPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/providerManifestLoader.ts",
+        "line": 614,
+        "column": 1
+      }
+    },
+    {
       "name": "getCapabilityId",
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 632,
+        "line": 626,
         "column": 1
       }
     },
@@ -2595,7 +2823,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 636,
+        "line": 630,
         "column": 1
       }
     },
@@ -2604,7 +2832,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 657,
+        "line": 651,
         "column": 1
       }
     },
@@ -2613,7 +2841,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 666,
+        "line": 660,
         "column": 1
       }
     },
@@ -2622,7 +2850,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 671,
+        "line": 665,
         "column": 1
       }
     },
@@ -2631,7 +2859,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 675,
+        "line": 669,
         "column": 1
       }
     },
@@ -2640,7 +2868,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 686,
+        "line": 680,
         "column": 1
       }
     },
@@ -2649,7 +2877,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 702,
+        "line": 696,
         "column": 1
       }
     },
@@ -2667,7 +2895,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerRegistry.ts",
-        "line": 107,
+        "line": 114,
         "column": 1
       }
     },
@@ -2676,7 +2904,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerRegistry.ts",
-        "line": 123,
+        "line": 130,
         "column": 1
       }
     },
@@ -2783,6 +3011,14 @@
   "sequenceScenarios": [
     {
       "kind": "export",
+      "name": "createCommandInteraction",
+      "sourcePath": "src/createCommandInteraction.ts",
+      "symbolName": "createCommandInteraction",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
       "name": "createDefaultCommandContext",
       "sourcePath": "src/commandContext.ts",
       "symbolName": "createDefaultCommandContext",
@@ -2851,6 +3087,21 @@
         "sourcePath": "src/commandContext.ts"
       },
       {
+        "fromPath": "src/commandContext.ts",
+        "toPath": "src/commandInteraction.ts",
+        "sourcePath": "src/commandContext.ts"
+      },
+      {
+        "fromPath": "src/commandContext.ts",
+        "toPath": "src/defaultCommandInteraction.ts",
+        "sourcePath": "src/commandContext.ts"
+      },
+      {
+        "fromPath": "src/commandInteraction.ts",
+        "toPath": "src/confirmationResult.ts",
+        "sourcePath": "src/commandInteraction.ts"
+      },
+      {
         "fromPath": "src/coreProviders.ts",
         "toPath": "src/discovery.ts",
         "sourcePath": "src/coreProviders.ts"
@@ -2864,6 +3115,21 @@
         "fromPath": "src/coreProviders.ts",
         "toPath": "src/providerManifestLoader.ts",
         "sourcePath": "src/coreProviders.ts"
+      },
+      {
+        "fromPath": "src/createCommandInteraction.ts",
+        "toPath": "src/commandInteraction.ts",
+        "sourcePath": "src/createCommandInteraction.ts"
+      },
+      {
+        "fromPath": "src/defaultCommandInteraction.ts",
+        "toPath": "src/commandInteraction.ts",
+        "sourcePath": "src/defaultCommandInteraction.ts"
+      },
+      {
+        "fromPath": "src/defaultCommandInteraction.ts",
+        "toPath": "src/createCommandInteraction.ts",
+        "sourcePath": "src/defaultCommandInteraction.ts"
       },
       {
         "fromPath": "src/discovery.ts",
@@ -2928,6 +3194,21 @@
       {
         "fromPath": "src/index.ts",
         "toPath": "src/commandContext.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
+        "toPath": "src/commandInteraction.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
+        "toPath": "src/confirmationResult.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
+        "toPath": "src/createCommandInteraction.ts",
         "sourcePath": "src/index.ts"
       },
       {
@@ -3041,6 +3322,11 @@
         "sourcePath": "tests/cli.test.ts"
       },
       {
+        "fromPath": "tests/commandInteraction.test.ts",
+        "toPath": "src/createCommandInteraction.ts",
+        "sourcePath": "tests/commandInteraction.test.ts"
+      },
+      {
         "fromPath": "tests/coreProviders.test.ts",
         "toPath": "src/cli/index.ts",
         "sourcePath": "tests/coreProviders.test.ts"
@@ -3136,6 +3422,56 @@
         "sourcePath": "tests/providerRegistry.test.ts"
       },
       {
+        "fromPath": "tests/rootCli.test.ts",
+        "toPath": "src/cli/index.ts",
+        "sourcePath": "tests/rootCli.test.ts"
+      },
+      {
+        "fromPath": "tests/rootCli.test.ts",
+        "toPath": "src/commandContext.ts",
+        "sourcePath": "tests/rootCli.test.ts"
+      },
+      {
+        "fromPath": "tests/rootCli.test.ts",
+        "toPath": "src/execution.ts",
+        "sourcePath": "tests/rootCli.test.ts"
+      },
+      {
+        "fromPath": "tests/rootCli.test.ts",
+        "toPath": "src/packageRegistry.ts",
+        "sourcePath": "tests/rootCli.test.ts"
+      },
+      {
+        "fromPath": "tests/rootCli.test.ts",
+        "toPath": "src/providerRegistry.ts",
+        "sourcePath": "tests/rootCli.test.ts"
+      },
+      {
+        "fromPath": "tests/rootCommands.test.ts",
+        "toPath": "src/execution.ts",
+        "sourcePath": "tests/rootCommands.test.ts"
+      },
+      {
+        "fromPath": "tests/rootCommands.test.ts",
+        "toPath": "src/help.ts",
+        "sourcePath": "tests/rootCommands.test.ts"
+      },
+      {
+        "fromPath": "tests/rootCommands.test.ts",
+        "toPath": "src/packageRegistry.ts",
+        "sourcePath": "tests/rootCommands.test.ts"
+      },
+      {
+        "fromPath": "tests/rootCommands.test.ts",
+        "toPath": "src/planning.ts",
+        "sourcePath": "tests/rootCommands.test.ts"
+      },
+      {
+        "fromPath": "tests/rootCommands.test.ts",
+        "toPath": "src/providerRegistry.ts",
+        "sourcePath": "tests/rootCommands.test.ts"
+      },
+      {
         "fromPath": "tests/workspace.test.ts",
         "toPath": "src/workspace.ts",
         "sourcePath": "tests/workspace.test.ts"
@@ -3205,6 +3541,12 @@
         "sourcePath": "src/bin.ts"
       },
       {
+        "fromSymbol": "createDefaultCommandContext",
+        "toSymbol": "createDefaultCommandInteraction",
+        "callExpression": "createDefaultCommandInteraction",
+        "sourcePath": "src/commandContext.ts"
+      },
+      {
         "fromSymbol": "src/coreProviders.ts",
         "toSymbol": "createRequire",
         "callExpression": "createRequire",
@@ -3245,6 +3587,24 @@
         "toSymbol": "getPackageName",
         "callExpression": "getPackageName",
         "sourcePath": "src/coreProviders.ts"
+      },
+      {
+        "fromSymbol": "confirm",
+        "toSymbol": "ask",
+        "callExpression": "options.ask",
+        "sourcePath": "src/createCommandInteraction.ts"
+      },
+      {
+        "fromSymbol": "createDefaultCommandInteraction",
+        "toSymbol": "createCommandInteraction",
+        "callExpression": "createCommandInteraction",
+        "sourcePath": "src/defaultCommandInteraction.ts"
+      },
+      {
+        "fromSymbol": "askProcess",
+        "toSymbol": "createInterface",
+        "callExpression": "createInterface",
+        "sourcePath": "src/defaultCommandInteraction.ts"
       },
       {
         "fromSymbol": "discoverAnkhPackages",
@@ -3361,9 +3721,21 @@
         "sourcePath": "src/help.ts"
       },
       {
+        "fromSymbol": "renderCommands",
+        "toSymbol": "renderRelativeCommandPath",
+        "callExpression": "renderRelativeCommandPath",
+        "sourcePath": "src/help.ts"
+      },
+      {
         "fromSymbol": "renderCategoryHelp",
         "toSymbol": "findByCategory",
         "callExpression": "providerRegistry.findByCategory",
+        "sourcePath": "src/help.ts"
+      },
+      {
+        "fromSymbol": "renderCategoryHelp",
+        "toSymbol": "renderFullCommandPath",
+        "callExpression": "renderFullCommandPath",
         "sourcePath": "src/help.ts"
       },
       {
@@ -3394,6 +3766,12 @@
         "fromSymbol": "renderProviderLoadFailure",
         "toSymbol": "getErrorMessage",
         "callExpression": "getErrorMessage",
+        "sourcePath": "src/help.ts"
+      },
+      {
+        "fromSymbol": "renderCommandExecutionFailure",
+        "toSymbol": "renderFullCommandPath",
+        "callExpression": "renderFullCommandPath",
         "sourcePath": "src/help.ts"
       },
       {
@@ -3728,6 +4106,12 @@
       },
       {
         "fromSymbol": "validateCommandSelectors",
+        "toSymbol": "renderCommandPath",
+        "callExpression": "renderCommandPath",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "validateCommandSelectors",
         "toSymbol": "getCommandPathKey",
         "callExpression": "getCommandPathKey",
         "sourcePath": "src/providerManifestLoader.ts"
@@ -3947,6 +4331,48 @@
         "toSymbol": "createRuntimeProvider",
         "callExpression": "createRuntimeProvider",
         "sourcePath": "tests/cli.test.ts"
+      },
+      {
+        "fromSymbol": "tests/commandInteraction.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "tests/commandInteraction.test.ts"
+      },
+      {
+        "fromSymbol": "tests/commandInteraction.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "tests/commandInteraction.test.ts"
+      },
+      {
+        "fromSymbol": "tests/commandInteraction.test.ts",
+        "toSymbol": "createCommandInteraction",
+        "callExpression": "createCommandInteraction",
+        "sourcePath": "tests/commandInteraction.test.ts"
+      },
+      {
+        "fromSymbol": "tests/commandInteraction.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "tests/commandInteraction.test.ts"
+      },
+      {
+        "fromSymbol": "tests/commandInteraction.test.ts",
+        "toSymbol": "confirm",
+        "callExpression": "interaction.confirm",
+        "sourcePath": "tests/commandInteraction.test.ts"
+      },
+      {
+        "fromSymbol": "tests/commandInteraction.test.ts",
+        "toSymbol": "confirm",
+        "callExpression": "yes.confirm",
+        "sourcePath": "tests/commandInteraction.test.ts"
+      },
+      {
+        "fromSymbol": "tests/commandInteraction.test.ts",
+        "toSymbol": "confirm",
+        "callExpression": "no.confirm",
+        "sourcePath": "tests/commandInteraction.test.ts"
       },
       {
         "fromSymbol": "tests/coreProviders.test.ts",
@@ -4429,6 +4855,120 @@
         "sourcePath": "tests/providerRegistry.test.ts"
       },
       {
+        "fromSymbol": "createState",
+        "toSymbol": "createPackageRegistry",
+        "callExpression": "createPackageRegistry",
+        "sourcePath": "tests/rootCli.test.ts"
+      },
+      {
+        "fromSymbol": "createState",
+        "toSymbol": "createProviderRegistry",
+        "callExpression": "createProviderRegistry",
+        "sourcePath": "tests/rootCli.test.ts"
+      },
+      {
+        "fromSymbol": "tests/rootCli.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "tests/rootCli.test.ts"
+      },
+      {
+        "fromSymbol": "tests/rootCli.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "tests/rootCli.test.ts"
+      },
+      {
+        "fromSymbol": "tests/rootCli.test.ts",
+        "toSymbol": "createState",
+        "callExpression": "createState",
+        "sourcePath": "tests/rootCli.test.ts"
+      },
+      {
+        "fromSymbol": "tests/rootCli.test.ts",
+        "toSymbol": "createContext",
+        "callExpression": "createContext",
+        "sourcePath": "tests/rootCli.test.ts"
+      },
+      {
+        "fromSymbol": "tests/rootCli.test.ts",
+        "toSymbol": "runCli",
+        "callExpression": "runCli",
+        "sourcePath": "tests/rootCli.test.ts"
+      },
+      {
+        "fromSymbol": "tests/rootCli.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "tests/rootCli.test.ts"
+      },
+      {
+        "fromSymbol": "tests/rootCommands.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "tests/rootCommands.test.ts"
+      },
+      {
+        "fromSymbol": "tests/rootCommands.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "tests/rootCommands.test.ts"
+      },
+      {
+        "fromSymbol": "tests/rootCommands.test.ts",
+        "toSymbol": "createProviderRegistry",
+        "callExpression": "createProviderRegistry",
+        "sourcePath": "tests/rootCommands.test.ts"
+      },
+      {
+        "fromSymbol": "tests/rootCommands.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "tests/rootCommands.test.ts"
+      },
+      {
+        "fromSymbol": "tests/rootCommands.test.ts",
+        "toSymbol": "resolveCommand",
+        "callExpression": "registry.resolveCommand",
+        "sourcePath": "tests/rootCommands.test.ts"
+      },
+      {
+        "fromSymbol": "tests/rootCommands.test.ts",
+        "toSymbol": "resolveExecutableCommand",
+        "callExpression": "resolveExecutableCommand",
+        "sourcePath": "tests/rootCommands.test.ts"
+      },
+      {
+        "fromSymbol": "tests/rootCommands.test.ts",
+        "toSymbol": "resolvePlannableCommand",
+        "callExpression": "resolvePlannableCommand",
+        "sourcePath": "tests/rootCommands.test.ts"
+      },
+      {
+        "fromSymbol": "tests/rootCommands.test.ts",
+        "toSymbol": "createPackageRegistry",
+        "callExpression": "createPackageRegistry",
+        "sourcePath": "tests/rootCommands.test.ts"
+      },
+      {
+        "fromSymbol": "tests/rootCommands.test.ts",
+        "toSymbol": "renderCommands",
+        "callExpression": "renderCommands",
+        "sourcePath": "tests/rootCommands.test.ts"
+      },
+      {
+        "fromSymbol": "tests/rootCommands.test.ts",
+        "toSymbol": "listPackages",
+        "callExpression": "packageRegistry.listPackages",
+        "sourcePath": "tests/rootCommands.test.ts"
+      },
+      {
+        "fromSymbol": "tests/rootCommands.test.ts",
+        "toSymbol": "renderCategoryHelp",
+        "callExpression": "renderCategoryHelp",
+        "sourcePath": "tests/rootCommands.test.ts"
+      },
+      {
         "fromSymbol": "tests/workspace.test.ts",
         "toSymbol": "afterEach",
         "callExpression": "afterEach",
@@ -4892,6 +5432,12 @@
       },
       {
         "fromSymbol": "renderPlanningFailure",
+        "toSymbol": "renderCommandName",
+        "callExpression": "renderCommandName",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "renderPlanningFailure",
         "toSymbol": "getErrorMessage",
         "callExpression": "getErrorMessage",
         "sourcePath": "src/cli/index.ts"
@@ -4910,6 +5456,11 @@
       },
       {
         "fromSymbol": "AnkhCommandContext",
+        "toType": "AnkhCommandInteraction",
+        "sourcePath": "src/commandContext.ts"
+      },
+      {
+        "fromSymbol": "AnkhCommandContext",
         "toType": "Readonly",
         "sourcePath": "src/commandContext.ts"
       },
@@ -4917,6 +5468,16 @@
         "fromSymbol": "createDefaultCommandContext",
         "toType": "AnkhCommandContext",
         "sourcePath": "src/commandContext.ts"
+      },
+      {
+        "fromSymbol": "AnkhCommandInteraction",
+        "toType": "AnkhConfirmationResult",
+        "sourcePath": "src/commandInteraction.ts"
+      },
+      {
+        "fromSymbol": "createCommandInteraction",
+        "toType": "AnkhCommandInteraction",
+        "sourcePath": "src/createCommandInteraction.ts"
       },
       {
         "fromSymbol": "AnkhDiscoveredPackage",
@@ -4952,6 +5513,11 @@
         "fromSymbol": "discoverAnkhPackages",
         "toType": "DiscoverAnkhPackagesOptions",
         "sourcePath": "src/discovery.ts"
+      },
+      {
+        "fromSymbol": "AnkhCommandExecutionContext",
+        "toType": "AnkhCommandInteraction",
+        "sourcePath": "src/execution.ts"
       },
       {
         "fromSymbol": "AnkhCommandExecutionContext",
@@ -5031,6 +5597,11 @@
       {
         "fromSymbol": "AnkhCommandPlan",
         "toType": "AnkhCommandPlanStep",
+        "sourcePath": "src/planning.ts"
+      },
+      {
+        "fromSymbol": "AnkhPlanningContext",
+        "toType": "AnkhCommandInteraction",
         "sourcePath": "src/planning.ts"
       },
       {

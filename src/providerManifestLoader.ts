@@ -413,7 +413,7 @@ function validateCommand(options: ValidateCommandOptions): ValidateCommandResult
         category: options.category ?? undefined,
         code: 'invalid-provider-command-path',
         message:
-          'Each provider manifest command "path" must be a non-empty array of non-empty strings.',
+          'Each provider manifest command "path" must be an array of non-empty strings; [] declares the category root.',
         providerModulePath: options.providerModulePath,
         severity: 'error',
       }),
@@ -528,7 +528,7 @@ function validateCommandSelectors(options: {
   const aliasMap = new Map<string, string>();
 
   for (const command of options.commands) {
-    const commandPathLabel = command.path.join(' ');
+    const commandPathLabel = renderCommandPath(command.path);
     const commandPathKey = getCommandPathKey(command.path);
 
     if (commandPathMap.has(commandPathKey)) {
@@ -545,7 +545,7 @@ function validateCommandSelectors(options: {
       commandPathMap.set(commandPathKey, commandPathLabel);
     }
 
-    const singleTokenPath = command.path.length === 1 ? command.path[0] : null;
+    const singleTokenPath = command.path.length === 1 ? (command.path.at(0) ?? null) : null;
     if (singleTokenPath !== null && aliasMap.has(singleTokenPath)) {
       diagnostics.push(
         createDiagnostic(options.discoveredPackage, {
@@ -607,26 +607,20 @@ function getCommandPathKey(path: readonly string[]): string {
   return path.join('\0');
 }
 
-function getCommandPath(value: unknown): readonly [string, ...string[]] | null {
-  if (!Array.isArray(value) || value.length === 0) {
-    return null;
-  }
+function renderCommandPath(path: readonly string[]): string {
+  return path.length === 0 ? '(root)' : path.join(' ');
+}
+
+function getCommandPath(value: unknown): readonly string[] | null {
+  if (!Array.isArray(value)) return null;
 
   const parts: string[] = [];
   for (const segment of value) {
     const parsedSegment = getNonEmptyString(segment);
-    if (parsedSegment === null) {
-      return null;
-    }
+    if (parsedSegment === null) return null;
     parts.push(parsedSegment);
   }
-
-  const [head, ...rest] = parts;
-  if (head === undefined) {
-    return null;
-  }
-
-  return [head, ...rest];
+  return parts;
 }
 
 function getCapabilityId(value: unknown): AnkhCapabilityId | null {

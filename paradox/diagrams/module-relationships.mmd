@@ -4,7 +4,11 @@ graph LR
   module_src_bin_ts["src/bin.ts"]
   module_src_cli_index_ts["src/cli/index.ts"]
   module_src_commandContext_ts["src/commandContext.ts"]
+  module_src_commandInteraction_ts["src/commandInteraction.ts"]
+  module_src_confirmationResult_ts["src/confirmationResult.ts"]
   module_src_coreProviders_ts["src/coreProviders.ts"]
+  module_src_createCommandInteraction_ts["src/createCommandInteraction.ts"]
+  module_src_defaultCommandInteraction_ts["src/defaultCommandInteraction.ts"]
   module_src_discovery_ts["src/discovery.ts"]
   module_src_execution_ts["src/execution.ts"]
   module_src_help_ts["src/help.ts"]
@@ -17,6 +21,7 @@ graph LR
   module_src_providerRegistry_ts["src/providerRegistry.ts"]
   module_src_workspace_ts["src/workspace.ts"]
   module_tests_cli_test_ts["tests/cli.test.ts"]
+  module_tests_commandInteraction_test_ts["tests/commandInteraction.test.ts"]
   module_tests_coreProviders_test_ts["tests/coreProviders.test.ts"]
   module_tests_discovery_test_ts["tests/discovery.test.ts"]
   module_tests_execution_test_ts["tests/execution.test.ts"]
@@ -26,6 +31,8 @@ graph LR
   module_tests_planning_test_ts["tests/planning.test.ts"]
   module_tests_providerManifestLoader_test_ts["tests/providerManifestLoader.test.ts"]
   module_tests_providerRegistry_test_ts["tests/providerRegistry.test.ts"]
+  module_tests_rootCli_test_ts["tests/rootCli.test.ts"]
+  module_tests_rootCommands_test_ts["tests/rootCommands.test.ts"]
   module_tests_workspace_test_ts["tests/workspace.test.ts"]
   module_src_bin_ts --> module_src_cli_index_ts
   module_src_cli_index_ts --> module_src_commandContext_ts
@@ -39,9 +46,15 @@ graph LR
   module_src_cli_index_ts --> module_src_providerManifestLoader_ts
   module_src_cli_index_ts --> module_src_providerRegistry_ts
   module_src_commandContext_ts --> module_package_json
+  module_src_commandContext_ts --> module_src_commandInteraction_ts
+  module_src_commandContext_ts --> module_src_defaultCommandInteraction_ts
+  module_src_commandInteraction_ts --> module_src_confirmationResult_ts
   module_src_coreProviders_ts --> module_src_discovery_ts
   module_src_coreProviders_ts --> module_src_packageMetadata_ts
   module_src_coreProviders_ts --> module_src_providerManifestLoader_ts
+  module_src_createCommandInteraction_ts --> module_src_commandInteraction_ts
+  module_src_defaultCommandInteraction_ts --> module_src_commandInteraction_ts
+  module_src_defaultCommandInteraction_ts --> module_src_createCommandInteraction_ts
   module_src_discovery_ts --> module_src_packageMetadata_ts
   module_src_discovery_ts --> module_src_workspace_ts
   module_src_execution_ts --> module_src_commandContext_ts
@@ -67,6 +80,7 @@ graph LR
   module_tests_cli_test_ts --> module_src_discovery_ts
   module_tests_cli_test_ts --> module_src_execution_ts
   module_tests_cli_test_ts --> module_src_providerManifestLoader_ts
+  module_tests_commandInteraction_test_ts --> module_src_createCommandInteraction_ts
   module_tests_coreProviders_test_ts --> module_src_cli_index_ts
   module_tests_coreProviders_test_ts --> module_src_commandContext_ts
   module_tests_coreProviders_test_ts --> module_src_coreProviders_ts
@@ -86,4 +100,14 @@ graph LR
   module_tests_planning_test_ts --> module_src_providerManifestLoader_ts
   module_tests_providerManifestLoader_test_ts --> module_src_providerManifestLoader_ts
   module_tests_providerRegistry_test_ts --> module_src_providerRegistry_ts
+  module_tests_rootCli_test_ts --> module_src_cli_index_ts
+  module_tests_rootCli_test_ts --> module_src_commandContext_ts
+  module_tests_rootCli_test_ts --> module_src_execution_ts
+  module_tests_rootCli_test_ts --> module_src_packageRegistry_ts
+  module_tests_rootCli_test_ts --> module_src_providerRegistry_ts
+  module_tests_rootCommands_test_ts --> module_src_execution_ts
+  module_tests_rootCommands_test_ts --> module_src_help_ts
+  module_tests_rootCommands_test_ts --> module_src_packageRegistry_ts
+  module_tests_rootCommands_test_ts --> module_src_planning_ts
+  module_tests_rootCommands_test_ts --> module_src_providerRegistry_ts
   module_tests_workspace_test_ts --> module_src_workspace_ts

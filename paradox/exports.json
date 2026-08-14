@@ -8,7 +8,7 @@
     "modulePath": "src/commandContext.ts",
     "sourceLocation": {
       "filePath": "src/commandContext.ts",
-      "line": 11,
+      "line": 14,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -34,11 +34,11 @@
     "modulePath": "src/commandContext.ts",
     "sourceLocation": {
       "filePath": "src/commandContext.ts",
-      "line": 3,
+      "line": 5,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
-    "relatedSymbols": [],
+    "relatedSymbols": ["AnkhCommandInteraction"],
     "signatures": [],
     "members": [
       {
@@ -53,6 +53,13 @@
         "kind": "property",
         "type": "Readonly<Record<string, string | undefined>>",
         "required": true,
+        "description": null
+      },
+      {
+        "name": "interaction",
+        "kind": "property",
+        "type": "AnkhCommandInteraction | undefined",
+        "required": false,
         "description": null
       },
       {
@@ -92,7 +99,7 @@
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhPackageRegistry", "AnkhProviderRegistry"],
+    "relatedSymbols": ["AnkhCommandInteraction", "AnkhPackageRegistry", "AnkhProviderRegistry"],
     "signatures": [],
     "members": [
       {
@@ -107,6 +114,13 @@
         "kind": "property",
         "type": "Readonly<Record<string, string | undefined>>",
         "required": true,
+        "description": null
+      },
+      {
+        "name": "interaction",
+        "kind": "property",
+        "type": "AnkhCommandInteraction | undefined",
+        "required": false,
         "description": null
       },
       {
@@ -264,7 +278,40 @@
       {
         "name": "path",
         "kind": "property",
-        "type": "readonly [string, ...string[]]",
+        "type": "readonly string[]",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhCommandInteraction",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/commandInteraction.ts",
+    "sourceLocation": {
+      "filePath": "src/commandInteraction.ts",
+      "line": 3,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhConfirmationResult"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "confirm",
+        "kind": "method",
+        "type": "(message: string) => Promise<AnkhConfirmationResult>",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "interactive",
+        "kind": "property",
+        "type": "boolean",
         "required": true,
         "description": null
       }
@@ -325,7 +372,7 @@
       {
         "name": "path",
         "kind": "property",
-        "type": "readonly [string, ...string[]]",
+        "type": "readonly string[]",
         "required": true,
         "description": null
       },
@@ -527,6 +574,24 @@
         "description": null
       }
     ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhConfirmationResult",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "unknown",
+    "modulePath": "src/confirmationResult.ts",
+    "sourceLocation": {
+      "filePath": "src/confirmationResult.ts",
+      "line": 1,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
     "structuredRows": []
   },
   {
@@ -802,7 +867,7 @@
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhPackageRegistry", "AnkhProviderRegistry"],
+    "relatedSymbols": ["AnkhCommandInteraction", "AnkhPackageRegistry", "AnkhProviderRegistry"],
     "signatures": [],
     "members": [
       {
@@ -817,6 +882,13 @@
         "kind": "property",
         "type": "Readonly<Record<string, string | undefined>>",
         "required": true,
+        "description": null
+      },
+      {
+        "name": "interaction",
+        "kind": "property",
+        "type": "AnkhCommandInteraction | undefined",
+        "required": false,
         "description": null
       },
       {
@@ -901,7 +973,7 @@
       {
         "name": "path",
         "kind": "property",
-        "type": "readonly [string, ...string[]]",
+        "type": "readonly string[]",
         "required": true,
         "description": null
       }
@@ -1193,6 +1265,38 @@
     "structuredRows": []
   },
   {
+    "name": "createCommandInteraction",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/createCommandInteraction.ts",
+    "sourceLocation": {
+      "filePath": "src/createCommandInteraction.ts",
+      "line": 3,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["AnkhCommandInteraction"],
+    "signatures": [
+      {
+        "label": "(options: { readonly interactive: boolean; readonly ask?: (prompt: string) => Promise<string>; }) => AnkhCommandInteraction",
+        "parameters": [
+          {
+            "name": "options",
+            "type": "{ readonly interactive: boolean; readonly ask?: (prompt: string) => Promise<string>; }",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "AnkhCommandInteraction",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
     "name": "createDefaultCommandContext",
     "description": null,
     "isReadme": false,
@@ -1201,7 +1305,7 @@
     "modulePath": "src/commandContext.ts",
     "sourceLocation": {
       "filePath": "src/commandContext.ts",
-      "line": 18,
+      "line": 21,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],

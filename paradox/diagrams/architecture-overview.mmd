@@ -24,11 +24,25 @@ graph TD
   module_src_commandContext_ts["src/commandContext.ts"]
   package__ankhorage_ankh -.-> module_src_commandContext_ts
   module_src_commandContext_ts --> module_package_json
+  module_src_commandContext_ts --> module_src_commandInteraction_ts
+  module_src_commandContext_ts --> module_src_defaultCommandInteraction_ts
+  module_src_commandInteraction_ts["src/commandInteraction.ts"]
+  package__ankhorage_ankh -.-> module_src_commandInteraction_ts
+  module_src_commandInteraction_ts --> module_src_confirmationResult_ts
+  module_src_confirmationResult_ts["src/confirmationResult.ts"]
+  package__ankhorage_ankh -.-> module_src_confirmationResult_ts
   module_src_coreProviders_ts["src/coreProviders.ts"]
   package__ankhorage_ankh -.-> module_src_coreProviders_ts
   module_src_coreProviders_ts --> module_src_discovery_ts
   module_src_coreProviders_ts --> module_src_packageMetadata_ts
   module_src_coreProviders_ts --> module_src_providerManifestLoader_ts
+  module_src_createCommandInteraction_ts["src/createCommandInteraction.ts"]
+  package__ankhorage_ankh -.-> module_src_createCommandInteraction_ts
+  module_src_createCommandInteraction_ts --> module_src_commandInteraction_ts
+  module_src_defaultCommandInteraction_ts["src/defaultCommandInteraction.ts"]
+  package__ankhorage_ankh -.-> module_src_defaultCommandInteraction_ts
+  module_src_defaultCommandInteraction_ts --> module_src_commandInteraction_ts
+  module_src_defaultCommandInteraction_ts --> module_src_createCommandInteraction_ts
   module_src_discovery_ts["src/discovery.ts"]
   package__ankhorage_ankh -.-> module_src_discovery_ts
   module_src_discovery_ts --> module_src_packageMetadata_ts
@@ -77,6 +91,9 @@ graph TD
   module_tests_cli_test_ts --> module_src_discovery_ts
   module_tests_cli_test_ts --> module_src_execution_ts
   module_tests_cli_test_ts --> module_src_providerManifestLoader_ts
+  module_tests_commandInteraction_test_ts["tests/commandInteraction.test.ts"]
+  package__ankhorage_ankh -.-> module_tests_commandInteraction_test_ts
+  module_tests_commandInteraction_test_ts --> module_src_createCommandInteraction_ts
   module_tests_coreProviders_test_ts["tests/coreProviders.test.ts"]
   package__ankhorage_ankh -.-> module_tests_coreProviders_test_ts
   module_tests_coreProviders_test_ts --> module_src_cli_index_ts
@@ -114,6 +131,20 @@ graph TD
   module_tests_providerRegistry_test_ts["tests/providerRegistry.test.ts"]
   package__ankhorage_ankh -.-> module_tests_providerRegistry_test_ts
   module_tests_providerRegistry_test_ts --> module_src_providerRegistry_ts
+  module_tests_rootCli_test_ts["tests/rootCli.test.ts"]
+  package__ankhorage_ankh -.-> module_tests_rootCli_test_ts
+  module_tests_rootCli_test_ts --> module_src_cli_index_ts
+  module_tests_rootCli_test_ts --> module_src_commandContext_ts
+  module_tests_rootCli_test_ts --> module_src_execution_ts
+  module_tests_rootCli_test_ts --> module_src_packageRegistry_ts
+  module_tests_rootCli_test_ts --> module_src_providerRegistry_ts
+  module_tests_rootCommands_test_ts["tests/rootCommands.test.ts"]
+  package__ankhorage_ankh -.-> module_tests_rootCommands_test_ts
+  module_tests_rootCommands_test_ts --> module_src_execution_ts
+  module_tests_rootCommands_test_ts --> module_src_help_ts
+  module_tests_rootCommands_test_ts --> module_src_packageRegistry_ts
+  module_tests_rootCommands_test_ts --> module_src_planning_ts
+  module_tests_rootCommands_test_ts --> module_src_providerRegistry_ts
   module_tests_workspace_test_ts["tests/workspace.test.ts"]
   package__ankhorage_ankh -.-> module_tests_workspace_test_ts
   module_tests_workspace_test_ts --> module_src_workspace_ts

@@ -8,7 +8,7 @@ export interface AnkhCommandListing {
   readonly examples?: readonly string[];
   readonly packageName: string;
   readonly category: string;
-  readonly path: readonly [string, ...string[]];
+  readonly path: readonly string[];
   readonly capability: AnkhCapabilityId;
   readonly summary: string;
 }
@@ -74,7 +74,7 @@ export function createProviderRegistry(
         createCommandListing(provider, command),
       );
       const [pathMatch] = commands
-        .filter((command) => matchesCommandPath(command.path, tokens))
+        .filter((command) => command.path.length > 0 && matchesCommandPath(command.path, tokens))
         .sort((left, right) => right.path.length - left.path.length);
 
       if (pathMatch !== undefined) {
@@ -86,18 +86,25 @@ export function createProviderRegistry(
       }
 
       const [aliasToken] = tokens;
-      if (aliasToken === undefined) {
-        return null;
+      const aliasMatch =
+        aliasToken === undefined
+          ? undefined
+          : commands.find(
+              (command) => command.path.length > 0 && command.aliases?.includes(aliasToken),
+            );
+      if (aliasMatch !== undefined) {
+        return {
+          argv: tokens.slice(1),
+          command: aliasMatch,
+          provider,
+        };
       }
 
-      const aliasMatch = commands.find((command) => command.aliases?.includes(aliasToken));
-      if (aliasMatch === undefined) {
-        return null;
-      }
-
+      const rootMatch = commands.find((command) => command.path.length === 0);
+      if (rootMatch === undefined) return null;
       return {
-        argv: tokens.slice(1),
-        command: aliasMatch,
+        argv: tokens,
+        command: rootMatch,
         provider,
       };
     },

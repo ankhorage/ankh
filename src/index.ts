@@ -1,6 +1,9 @@
 export { runCli } from './cli/index.js';
 export type { AnkhCliRunResult, AnkhCommandContext } from './commandContext.js';
 export { createDefaultCommandContext } from './commandContext.js';
+export type { AnkhCommandInteraction } from './commandInteraction.js';
+export type { AnkhConfirmationResult } from './confirmationResult.js';
+export { createCommandInteraction } from './createCommandInteraction.js';
 export type {
   AnkhDiscoveredPackage,
   AnkhDiscoverySource,
