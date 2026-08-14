@@ -52,7 +52,7 @@ export type AnkhPlanningHandler = (
 
 export interface AnkhPlanningHandlerBinding {
   readonly handler: AnkhPlanningHandler;
-  readonly path: readonly [string, ...string[]];
+  readonly path: readonly string[];
 }
 
 export interface AnkhCommandPlanningDiagnostic {
@@ -325,7 +325,7 @@ const PLANNING_DIAGNOSTIC_MESSAGES = new Map<string, string>([
   ],
   [
     'invalid-provider-planning-handler-path',
-    'Each provider planning handler "path" must be a non-empty array of non-empty strings.',
+    'Each provider planning handler "path" must be an array of non-empty strings; [] binds the category root.',
   ],
   [
     'invalid-provider-planning-handlers',
@@ -355,21 +355,15 @@ function getDiagnosticMessage(code: string): string {
   return PLANNING_DIAGNOSTIC_MESSAGES.get(code) ?? 'Provider planning handler is invalid.';
 }
 
-function getCommandPath(value: unknown): readonly [string, ...string[]] | null {
-  if (!Array.isArray(value) || value.length === 0) {
-    return null;
-  }
+function getCommandPath(value: unknown): readonly string[] | null {
+  if (!Array.isArray(value)) return null;
 
   const parts: string[] = [];
   for (const segment of value) {
-    if (typeof segment !== 'string' || segment.trim().length === 0) {
-      return null;
-    }
+    if (typeof segment !== 'string' || segment.trim().length === 0) return null;
     parts.push(segment);
   }
-
-  const [head, ...rest] = parts;
-  return head === undefined ? null : [head, ...rest];
+  return parts;
 }
 
 function getCommandPathKey(path: readonly string[]): string {

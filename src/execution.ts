@@ -31,7 +31,7 @@ export type AnkhCommandHandler = (
 ) => void | AnkhCommandExecutionResult | Promise<void | AnkhCommandExecutionResult>;
 
 export interface AnkhCommandHandlerBinding {
-  readonly path: readonly [string, ...string[]];
+  readonly path: readonly string[];
   readonly handler: AnkhCommandHandler;
 }
 
@@ -193,7 +193,7 @@ function validateProviderHandlers(provider: AnkhLoadedProvider): ValidateProvide
         createExecutionDiagnostic(provider, {
           code: 'invalid-provider-command-handler-path',
           message:
-            'Each provider command handler "path" must be a non-empty array of non-empty strings.',
+            'Each provider command handler "path" must be an array of non-empty strings; [] binds the category root.',
         }),
       );
       continue;
@@ -278,25 +278,15 @@ function createExecutionDiagnostic(
   };
 }
 
-function getCommandPath(value: unknown): readonly [string, ...string[]] | null {
-  if (!Array.isArray(value) || value.length === 0) {
-    return null;
-  }
+function getCommandPath(value: unknown): readonly string[] | null {
+  if (!Array.isArray(value)) return null;
 
   const parts: string[] = [];
   for (const segment of value) {
-    if (typeof segment !== 'string' || segment.trim().length === 0) {
-      return null;
-    }
+    if (typeof segment !== 'string' || segment.trim().length === 0) return null;
     parts.push(segment);
   }
-
-  const [head, ...rest] = parts;
-  if (head === undefined) {
-    return null;
-  }
-
-  return [head, ...rest];
+  return parts;
 }
 
 function getCommandPathKey(path: readonly string[]): string {

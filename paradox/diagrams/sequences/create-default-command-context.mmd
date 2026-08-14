@@ -1,0 +1,8 @@
+sequenceDiagram
+  participant participant_createCommandInteraction as createCommandInteraction
+  participant participant_createDefaultCommandContext as createDefaultCommandContext
+  participant participant_createDefaultCommandInteraction as createDefaultCommandInteraction
+  participant_createDefaultCommandContext->>participant_createDefaultCommandInteraction: createDefaultCommandInteraction()
+  participant_createDefaultCommandInteraction->>participant_createCommandInteraction: createCommandInteraction()
+  participant_createCommandInteraction-->>participant_createDefaultCommandInteraction: return
+  participant_createDefaultCommandInteraction-->>participant_createDefaultCommandContext: return

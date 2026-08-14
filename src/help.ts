@@ -58,7 +58,7 @@ export function renderCommands(
         lines.push('      - none');
       } else {
         for (const command of loadedProvider.manifest.commands) {
-          lines.push(`      - ${command.path.join(' ')}`);
+          lines.push(`      - ${renderRelativeCommandPath(command.path)}`);
           lines.push(`        capability: ${command.capability}`);
           lines.push(`        summary: ${command.summary}`);
 
@@ -107,7 +107,7 @@ export function renderCategoryHelp(
   }
 
   for (const command of provider.manifest.commands) {
-    lines.push(`  ${provider.manifest.category} ${command.path.join(' ')}`);
+    lines.push(`  ${renderFullCommandPath(provider.manifest.category, command.path)}`);
     lines.push(`    capability: ${command.capability}`);
     lines.push(`    summary: ${command.summary}`);
 
@@ -196,8 +196,9 @@ export function renderCommandExecutionFailure(
   error: unknown,
 ): string {
   return [
-    `Ankh command execution failed for "${category} ${commandPath.join(
-      ' ',
+    `Ankh command execution failed for "${renderFullCommandPath(
+      category,
+      commandPath,
     )}": ${getErrorMessage(error)}`,
     '',
   ].join('\n');
@@ -232,6 +233,14 @@ function renderDiagnostics(
 
   lines.push('');
   return lines.join('\n');
+}
+
+function renderRelativeCommandPath(path: readonly string[]): string {
+  return path.length === 0 ? '(root)' : path.join(' ');
+}
+
+function renderFullCommandPath(category: string, path: readonly string[]): string {
+  return path.length === 0 ? category : `${category} ${path.join(' ')}`;
 }
 
 function getErrorMessage(error: unknown): string {

@@ -61,6 +61,58 @@ describe('loadProviderManifests', () => {
     expect(result.providers[0]?.providerModuleUrl.startsWith('file://')).toBe(true);
   });
 
+  it('accepts a category-root command path', async () => {
+    const packageRoot = await createPackageRoot('infra-root');
+    const rootManifest = {
+      ...validManifest,
+      commands: [
+        {
+          path: [],
+          capability: 'infra.up',
+          summary: 'Bring project infrastructure up from the category root',
+        },
+      ],
+    } as const satisfies AnkhCommandProviderManifest;
+    await writeProviderModule(
+      packageRoot,
+      `export default ${JSON.stringify(rootManifest, null, 2)};\n`,
+    );
+
+    const result = await loadProviderManifests([
+      createDiscoveredPackage(packageRoot, '@ankhorage/infra', infraMetadata),
+    ]);
+
+    expect(result.diagnostics).toEqual([]);
+    expect(result.providers[0]?.manifest.commands[0]?.path).toEqual([]);
+  });
+
+  it('rejects duplicate category-root command paths', async () => {
+    const packageRoot = await createPackageRoot('infra-root-duplicate');
+    const duplicateRootManifest = {
+      ...validManifest,
+      commands: [
+        { path: [], capability: 'infra.up', summary: 'First root command' },
+        { path: [], capability: 'infra.status', summary: 'Second root command' },
+      ],
+    } as const satisfies AnkhCommandProviderManifest;
+    await writeProviderModule(
+      packageRoot,
+      `export default ${JSON.stringify(duplicateRootManifest, null, 2)};\n`,
+    );
+
+    const result = await loadProviderManifests([
+      createDiscoveredPackage(packageRoot, '@ankhorage/infra', infraMetadata),
+    ]);
+
+    expect(result.providers).toEqual([]);
+    expect(result.diagnostics.map((diagnostic) => diagnostic.code)).toContain(
+      'provider-duplicate-command-path',
+    );
+    expect(result.diagnostics.map((diagnostic) => diagnostic.message).join('\n')).toContain(
+      '(root)',
+    );
+  });
+
   it('reports missing provider modules as diagnostics', async () => {
     const packageRoot = await createPackageRoot('infra');
 

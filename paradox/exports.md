@@ -4,7 +4,7 @@
 
 Kind: `type`
 Module: `src/commandContext.ts`
-Source: `src/commandContext.ts:11:1`
+Source: `src/commandContext.ts:14:1`
 
 ### Members
 
@@ -16,7 +16,7 @@ Source: `src/commandContext.ts:11:1`
 
 Kind: `type`
 Module: `src/commandContext.ts`
-Source: `src/commandContext.ts:3:1`
+Source: `src/commandContext.ts:5:1`
 
 ### Members
 
@@ -24,6 +24,7 @@ Source: `src/commandContext.ts:3:1`
 | ----------- | -------- | ----------------------------------------------- | -------- | ----------- |
 | cwd         | property | `string`                                        | yes      |             |
 | env         | property | `Readonly<Record<string, string \| undefined>>` | yes      |             |
+| interaction | property | `AnkhCommandInteraction \| undefined`           | no       |             |
 | version     | property | `string`                                        | yes      |             |
 | writeStderr | method   | `(text: string) => void`                        | yes      |             |
 | writeStdout | method   | `(text: string) => void`                        | yes      |             |
@@ -40,6 +41,7 @@ Source: `src/execution.ts:13:1`
 | ---------------- | -------- | ----------------------------------------------- | -------- | ----------- |
 | cwd              | property | `string`                                        | yes      |             |
 | env              | property | `Readonly<Record<string, string \| undefined>>` | yes      |             |
+| interaction      | property | `AnkhCommandInteraction \| undefined`           | no       |             |
 | packageRegistry  | property | `AnkhPackageRegistry`                           | yes      |             |
 | providerRegistry | property | `AnkhProviderRegistry`                          | yes      |             |
 | version          | property | `string`                                        | yes      |             |
@@ -87,10 +89,23 @@ Source: `src/execution.ts:33:1`
 
 ### Members
 
-| Name    | Kind     | Type                             | Required | Description |
-| ------- | -------- | -------------------------------- | -------- | ----------- |
-| handler | property | `AnkhCommandHandler`             | yes      |             |
-| path    | property | `readonly [string, ...string[]]` | yes      |             |
+| Name    | Kind     | Type                 | Required | Description |
+| ------- | -------- | -------------------- | -------- | ----------- |
+| handler | property | `AnkhCommandHandler` | yes      |             |
+| path    | property | `readonly string[]`  | yes      |             |
+
+## AnkhCommandInteraction
+
+Kind: `type`
+Module: `src/commandInteraction.ts`
+Source: `src/commandInteraction.ts:3:1`
+
+### Members
+
+| Name        | Kind     | Type                                                   | Required | Description |
+| ----------- | -------- | ------------------------------------------------------ | -------- | ----------- |
+| confirm     | method   | `(message: string) => Promise<AnkhConfirmationResult>` | yes      |             |
+| interactive | property | `boolean`                                              | yes      |             |
 
 ## AnkhCommandListing
 
@@ -107,7 +122,7 @@ Source: `src/providerRegistry.ts:5:1`
 | category    | property | `string`                         | yes      |             |
 | examples    | property | `readonly string[] \| undefined` | no       |             |
 | packageName | property | `string`                         | yes      |             |
-| path        | property | `readonly [string, ...string[]]` | yes      |             |
+| path        | property | `readonly string[]`              | yes      |             |
 | providerId  | property | `string`                         | yes      |             |
 | summary     | property | `string`                         | yes      |             |
 
@@ -161,6 +176,12 @@ Source: `src/planning.ts:17:1`
 | outputs     | property | `unknown`                | no       |             |
 | providerId  | property | `string`                 | yes      |             |
 | status      | property | `"planned" \| "blocked"` | yes      |             |
+
+## AnkhConfirmationResult
+
+Kind: `unknown`
+Module: `src/confirmationResult.ts`
+Source: `src/confirmationResult.ts:1:1`
 
 ## AnkhDiscoveredPackage
 
@@ -256,6 +277,7 @@ Source: `src/planning.ts:37:1`
 | ---------------- | -------- | ----------------------------------------------- | -------- | ----------- |
 | cwd              | property | `string`                                        | yes      |             |
 | env              | property | `Readonly<Record<string, string \| undefined>>` | yes      |             |
+| interaction      | property | `AnkhCommandInteraction \| undefined`           | no       |             |
 | packageRegistry  | property | `AnkhPackageRegistry`                           | yes      |             |
 | providerRegistry | property | `AnkhProviderRegistry`                          | yes      |             |
 | version          | property | `string`                                        | yes      |             |
@@ -276,10 +298,10 @@ Source: `src/planning.ts:53:1`
 
 ### Members
 
-| Name    | Kind     | Type                             | Required | Description |
-| ------- | -------- | -------------------------------- | -------- | ----------- |
-| handler | property | `AnkhPlanningHandler`            | yes      |             |
-| path    | property | `readonly [string, ...string[]]` | yes      |             |
+| Name    | Kind     | Type                  | Required | Description |
+| ------- | -------- | --------------------- | -------- | ----------- |
+| handler | property | `AnkhPlanningHandler` | yes      |             |
+| path    | property | `readonly string[]`   | yes      |             |
 
 ## AnkhPlanningRequest
 
@@ -363,11 +385,23 @@ Source: `src/execution.ts:38:1`
 | planningHandlers | property | `readonly AnkhPlanningHandlerBinding[] \| undefined` | no       |             |
 | version          | property | `string`                                             | yes      |             |
 
+## createCommandInteraction
+
+Kind: `function`
+Module: `src/createCommandInteraction.ts`
+Source: `src/createCommandInteraction.ts:3:1`
+
+### Signatures
+
+- `(options: { readonly interactive: boolean; readonly ask?: (prompt: string) => Promise<string>; }) => AnkhCommandInteraction`
+  - options: `{ readonly interactive: boolean; readonly ask?: (prompt: string) => Promise<string>; }`
+  - returns: `AnkhCommandInteraction`
+
 ## createDefaultCommandContext
 
 Kind: `function`
 Module: `src/commandContext.ts`
-Source: `src/commandContext.ts:18:1`
+Source: `src/commandContext.ts:21:1`
 
 ### Signatures
 

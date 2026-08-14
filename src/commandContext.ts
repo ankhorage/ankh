@@ -1,9 +1,12 @@
 import packageJson from '../package.json';
+import type { AnkhCommandInteraction } from './commandInteraction.js';
+import { createDefaultCommandInteraction } from './defaultCommandInteraction.js';
 
 export interface AnkhCommandContext {
   readonly cwd: string;
   readonly env: Readonly<Record<string, string | undefined>>;
   readonly version: string;
+  readonly interaction?: AnkhCommandInteraction;
   writeStdout(text: string): void;
   writeStderr(text: string): void;
 }
@@ -20,6 +23,7 @@ export function createDefaultCommandContext(): AnkhCommandContext {
     cwd: process.cwd(),
     env: process.env,
     version: packageJson.version,
+    interaction: createDefaultCommandInteraction(),
     writeStdout(text: string) {
       process.stdout.write(text);
     },

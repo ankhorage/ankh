@@ -198,7 +198,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/cli/index.ts">
                 src/cli/index.ts
-                <small>12 functions</small>
+                <small>13 functions</small>
               </button>
             </li>
             <li>
@@ -211,6 +211,26 @@
               <button class="nav-button" type="button" data-target="src/coreProviders.ts">
                 src/coreProviders.ts
                 <small>4 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/createCommandInteraction.ts"
+              >
+                src/createCommandInteraction.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/defaultCommandInteraction.ts"
+              >
+                src/defaultCommandInteraction.ts
+                <small>2 functions</small>
               </button>
             </li>
             <li>
@@ -228,7 +248,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/help.ts">
                 src/help.ts
-                <small>15 functions</small>
+                <small>17 functions</small>
               </button>
             </li>
             <li>
@@ -258,7 +278,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/providerManifestLoader.ts">
                 src/providerManifestLoader.ts
-                <small>16 functions</small>
+                <small>17 functions</small>
               </button>
             </li>
             <li>
@@ -281,9 +301,9 @@
           <section class="panel">
             <h2>Package overview</h2>
             <div class="summary">
-              <div><strong>34</strong><span class="muted">public exports</span></div>
+              <div><strong>37</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>28</strong><span class="muted">modules</span></div>
+              <div><strong>35</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -334,15 +354,34 @@
             </article>
             <article
               class="item"
-              data-search="src/commandContext.ts package.json AnkhCliRunResult AnkhCommandContext createDefaultCommandContext"
+              data-search="src/commandContext.ts package.json src/commandInteraction.ts src/defaultCommandInteraction.ts AnkhCliRunResult AnkhCommandContext createDefaultCommandContext"
             >
               <h3>src/commandContext.ts</h3>
               <p class="muted">Referenced module</p>
-              <p><strong>Dependencies:</strong> <code>package.json</code></p>
+              <p>
+                <strong>Dependencies:</strong> <code>package.json</code>,
+                <code>src/commandInteraction.ts</code>,
+                <code>src/defaultCommandInteraction.ts</code>
+              </p>
               <p>
                 <strong>Exports:</strong> <code>AnkhCliRunResult</code>,
                 <code>AnkhCommandContext</code>, <code>createDefaultCommandContext</code>
               </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/commandInteraction.ts src/confirmationResult.ts AnkhCommandInteraction"
+            >
+              <h3>src/commandInteraction.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/confirmationResult.ts</code></p>
+              <p><strong>Exports:</strong> <code>AnkhCommandInteraction</code></p>
+            </article>
+            <article class="item" data-search="src/confirmationResult.ts AnkhConfirmationResult">
+              <h3>src/confirmationResult.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Exports:</strong> <code>AnkhConfirmationResult</code></p>
             </article>
             <article
               class="item"
@@ -359,6 +398,27 @@
                 <code>loadCoreProviderState</code>, <code>mergeCorePackages</code>,
                 <code>mergeCoreProviders</code>
               </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/createCommandInteraction.ts src/commandInteraction.ts createCommandInteraction"
+            >
+              <h3>src/createCommandInteraction.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/commandInteraction.ts</code></p>
+              <p><strong>Exports:</strong> <code>createCommandInteraction</code></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/defaultCommandInteraction.ts src/commandInteraction.ts src/createCommandInteraction.ts createDefaultCommandInteraction"
+            >
+              <h3>src/defaultCommandInteraction.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/commandInteraction.ts</code>,
+                <code>src/createCommandInteraction.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <code>createDefaultCommandInteraction</code></p>
             </article>
             <article
               class="item"
@@ -422,7 +482,7 @@
             </article>
             <article
               class="item"
-              data-search="src/index.ts AnkhCliRunResult AnkhCommandContext AnkhCommandExecutionContext AnkhCommandExecutionRequest AnkhCommandExecutionResult AnkhCommandHandler AnkhCommandHandlerBinding AnkhCommandListing AnkhCommandPlan AnkhCommandPlanDiagnostic AnkhCommandPlanStep AnkhDiscoveredPackage AnkhDiscoverySource AnkhLoadedProvider AnkhMetadataDiscoveryDiagnostic AnkhMetadataDiscoveryResult AnkhPackageRegistry AnkhPlanningContext AnkhPlanningHandler AnkhPlanningHandlerBinding AnkhPlanningRequest AnkhProviderManifestDiagnostic AnkhProviderRegistry AnkhResolvedProviderCommand AnkhRuntimeCommandProvider createDefaultCommandContext createPackageRegistry createProviderRegistry discoverAnkhPackages loadProviderManifests LoadProviderManifestsResult parseArgv ParsedCliRequest runCli"
+              data-search="src/index.ts AnkhCliRunResult AnkhCommandContext AnkhCommandExecutionContext AnkhCommandExecutionRequest AnkhCommandExecutionResult AnkhCommandHandler AnkhCommandHandlerBinding AnkhCommandInteraction AnkhCommandListing AnkhCommandPlan AnkhCommandPlanDiagnostic AnkhCommandPlanStep AnkhConfirmationResult AnkhDiscoveredPackage AnkhDiscoverySource AnkhLoadedProvider AnkhMetadataDiscoveryDiagnostic AnkhMetadataDiscoveryResult AnkhPackageRegistry AnkhPlanningContext AnkhPlanningHandler AnkhPlanningHandlerBinding AnkhPlanningRequest AnkhProviderManifestDiagnostic AnkhProviderRegistry AnkhResolvedProviderCommand AnkhRuntimeCommandProvider createCommandInteraction createDefaultCommandContext createPackageRegistry createProviderRegistry discoverAnkhPackages loadProviderManifests LoadProviderManifestsResult parseArgv ParsedCliRequest runCli"
             >
               <h3>src/index.ts</h3>
               <p class="muted">Configured entrypoint</p>
@@ -432,8 +492,9 @@
                 <code>AnkhCommandContext</code>, <code>AnkhCommandExecutionContext</code>,
                 <code>AnkhCommandExecutionRequest</code>, <code>AnkhCommandExecutionResult</code>,
                 <code>AnkhCommandHandler</code>, <code>AnkhCommandHandlerBinding</code>,
-                <code>AnkhCommandListing</code>, <code>AnkhCommandPlan</code>,
-                <code>AnkhCommandPlanDiagnostic</code>, <code>AnkhCommandPlanStep</code>,
+                <code>AnkhCommandInteraction</code>, <code>AnkhCommandListing</code>,
+                <code>AnkhCommandPlan</code>, <code>AnkhCommandPlanDiagnostic</code>,
+                <code>AnkhCommandPlanStep</code>, <code>AnkhConfirmationResult</code>,
                 <code>AnkhDiscoveredPackage</code>, <code>AnkhDiscoverySource</code>,
                 <code>AnkhLoadedProvider</code>, <code>AnkhMetadataDiscoveryDiagnostic</code>,
                 <code>AnkhMetadataDiscoveryResult</code>, <code>AnkhPackageRegistry</code>,
@@ -441,10 +502,11 @@
                 <code>AnkhPlanningHandlerBinding</code>, <code>AnkhPlanningRequest</code>,
                 <code>AnkhProviderManifestDiagnostic</code>, <code>AnkhProviderRegistry</code>,
                 <code>AnkhResolvedProviderCommand</code>, <code>AnkhRuntimeCommandProvider</code>,
-                <code>createDefaultCommandContext</code>, <code>createPackageRegistry</code>,
-                <code>createProviderRegistry</code>, <code>discoverAnkhPackages</code>,
-                <code>loadProviderManifests</code>, <code>LoadProviderManifestsResult</code>,
-                <code>parseArgv</code>, <code>ParsedCliRequest</code>, <code>runCli</code>
+                <code>createCommandInteraction</code>, <code>createDefaultCommandContext</code>,
+                <code>createPackageRegistry</code>, <code>createProviderRegistry</code>,
+                <code>discoverAnkhPackages</code>, <code>loadProviderManifests</code>,
+                <code>LoadProviderManifestsResult</code>, <code>parseArgv</code>,
+                <code>ParsedCliRequest</code>, <code>runCli</code>
               </p>
             </article>
             <article
@@ -555,6 +617,15 @@
             </article>
             <article
               class="item"
+              data-search="tests/commandInteraction.test.ts src/createCommandInteraction.ts"
+            >
+              <h3>tests/commandInteraction.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/createCommandInteraction.ts</code></p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
               data-search="tests/coreProviders.test.ts src/cli/index.ts src/commandContext.ts src/coreProviders.ts src/discovery.ts"
             >
               <h3>tests/coreProviders.test.ts</h3>
@@ -637,6 +708,32 @@
               <p><strong>Dependencies:</strong> <code>src/providerRegistry.ts</code></p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
+            <article
+              class="item"
+              data-search="tests/rootCli.test.ts src/cli/index.ts src/commandContext.ts src/execution.ts src/packageRegistry.ts src/providerRegistry.ts"
+            >
+              <h3>tests/rootCli.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/cli/index.ts</code>,
+                <code>src/commandContext.ts</code>, <code>src/execution.ts</code>,
+                <code>src/packageRegistry.ts</code>, <code>src/providerRegistry.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="tests/rootCommands.test.ts src/execution.ts src/help.ts src/packageRegistry.ts src/planning.ts src/providerRegistry.ts"
+            >
+              <h3>tests/rootCommands.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/execution.ts</code>,
+                <code>src/help.ts</code>, <code>src/packageRegistry.ts</code>,
+                <code>src/planning.ts</code>, <code>src/providerRegistry.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
             <article class="item" data-search="tests/workspace.test.ts src/workspace.ts">
               <h3>tests/workspace.test.ts</h3>
               <p class="muted">Referenced module</p>
@@ -704,7 +801,7 @@
                 data-search="AnkhCliRunResult type src/commandContext.ts "
               >
                 <h4>AnkhCliRunResult</h4>
-                <p class="muted">type • <code>src/commandContext.ts:11:1</code></p>
+                <p class="muted">type • <code>src/commandContext.ts:14:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -733,13 +830,18 @@
               <article
                 class="item"
                 id="symbol-ankhcommandcontext"
-                data-search="AnkhCommandContext type src/commandContext.ts "
+                data-search="AnkhCommandContext type src/commandContext.ts  AnkhCommandInteraction"
               >
                 <h4>AnkhCommandContext</h4>
-                <p class="muted">type • <code>src/commandContext.ts:3:1</code></p>
+                <p class="muted">type • <code>src/commandContext.ts:5:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
-                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">AnkhCommandInteraction</li>
+                  </ul>
+                </div>
 
                 <table>
                   <thead>
@@ -764,6 +866,13 @@
                       <td>property</td>
                       <td><code>Readonly&lt;Record&lt;string, string | undefined&gt;&gt;</code></td>
                       <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>interaction</code></td>
+                      <td>property</td>
+                      <td><code>AnkhCommandInteraction | undefined</code></td>
+                      <td>no</td>
                       <td></td>
                     </tr>
                     <tr>
@@ -796,7 +905,7 @@
                 data-search="createDefaultCommandContext function src/commandContext.ts  AnkhCommandContext () =&gt; AnkhCommandContext"
               >
                 <h4>createDefaultCommandContext</h4>
-                <p class="muted">function • <code>src/commandContext.ts:18:1</code></p>
+                <p class="muted">function • <code>src/commandContext.ts:21:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -810,6 +919,117 @@
                   <pre>() =&gt; AnkhCommandContext</pre>
 
                   <p><strong>Returns:</strong> <code>AnkhCommandContext</code></p>
+                </div>
+              </article>
+            </section>
+            <section>
+              <h3>src/commandInteraction.ts</h3>
+              <article
+                class="item"
+                id="symbol-ankhcommandinteraction"
+                data-search="AnkhCommandInteraction type src/commandInteraction.ts  AnkhConfirmationResult"
+              >
+                <h4>AnkhCommandInteraction</h4>
+                <p class="muted">type • <code>src/commandInteraction.ts:3:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">AnkhConfirmationResult</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>confirm</code></td>
+                      <td>method</td>
+                      <td>
+                        <code>(message: string) =&gt; Promise&lt;AnkhConfirmationResult&gt;</code>
+                      </td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>interactive</code></td>
+                      <td>property</td>
+                      <td><code>boolean</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+            </section>
+            <section>
+              <h3>src/confirmationResult.ts</h3>
+              <article
+                class="item"
+                id="symbol-ankhconfirmationresult"
+                data-search="AnkhConfirmationResult unknown src/confirmationResult.ts "
+              >
+                <h4>AnkhConfirmationResult</h4>
+                <p class="muted">unknown • <code>src/confirmationResult.ts:1:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+            </section>
+            <section>
+              <h3>src/createCommandInteraction.ts</h3>
+              <article
+                class="item"
+                id="symbol-createcommandinteraction"
+                data-search="createCommandInteraction function src/createCommandInteraction.ts  AnkhCommandInteraction (options: { readonly interactive: boolean; readonly ask?: (prompt: string) =&gt; Promise&lt;string&gt;; }) =&gt; AnkhCommandInteraction"
+              >
+                <h4>createCommandInteraction</h4>
+                <p class="muted">function • <code>src/createCommandInteraction.ts:3:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">AnkhCommandInteraction</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>
+(options: { readonly interactive: boolean; readonly ask?: (prompt: string) =&gt; Promise&lt;string&gt;; }) =&gt; AnkhCommandInteraction</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>options</code></td>
+                        <td>
+                          <code
+                            >{ readonly interactive: boolean; readonly ask?: (prompt: string) =&gt;
+                            Promise&lt;string&gt;; }</code
+                          >
+                        </td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>AnkhCommandInteraction</code></p>
                 </div>
               </article>
             </section>
@@ -1057,7 +1277,7 @@
               <article
                 class="item"
                 id="symbol-ankhcommandexecutioncontext"
-                data-search="AnkhCommandExecutionContext type src/execution.ts  AnkhPackageRegistry AnkhProviderRegistry"
+                data-search="AnkhCommandExecutionContext type src/execution.ts  AnkhCommandInteraction AnkhPackageRegistry AnkhProviderRegistry"
               >
                 <h4>AnkhCommandExecutionContext</h4>
                 <p class="muted">type • <code>src/execution.ts:13:1</code></p>
@@ -1066,6 +1286,7 @@
                 <div>
                   <strong>Related symbols:</strong>
                   <ul class="chips">
+                    <li class="chip">AnkhCommandInteraction</li>
                     <li class="chip">AnkhPackageRegistry</li>
                     <li class="chip">AnkhProviderRegistry</li>
                   </ul>
@@ -1094,6 +1315,13 @@
                       <td>property</td>
                       <td><code>Readonly&lt;Record&lt;string, string | undefined&gt;&gt;</code></td>
                       <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>interaction</code></td>
+                      <td>property</td>
+                      <td><code>AnkhCommandInteraction | undefined</code></td>
+                      <td>no</td>
                       <td></td>
                     </tr>
                     <tr>
@@ -1274,7 +1502,7 @@
                     <tr>
                       <td><code>path</code></td>
                       <td>property</td>
-                      <td><code>readonly [string, ...string[]]</code></td>
+                      <td><code>readonly string[]</code></td>
                       <td>yes</td>
                       <td></td>
                     </tr>
@@ -1723,7 +1951,7 @@
               <article
                 class="item"
                 id="symbol-ankhplanningcontext"
-                data-search="AnkhPlanningContext type src/planning.ts  AnkhPackageRegistry AnkhProviderRegistry"
+                data-search="AnkhPlanningContext type src/planning.ts  AnkhCommandInteraction AnkhPackageRegistry AnkhProviderRegistry"
               >
                 <h4>AnkhPlanningContext</h4>
                 <p class="muted">type • <code>src/planning.ts:37:1</code></p>
@@ -1732,6 +1960,7 @@
                 <div>
                   <strong>Related symbols:</strong>
                   <ul class="chips">
+                    <li class="chip">AnkhCommandInteraction</li>
                     <li class="chip">AnkhPackageRegistry</li>
                     <li class="chip">AnkhProviderRegistry</li>
                   </ul>
@@ -1760,6 +1989,13 @@
                       <td>property</td>
                       <td><code>Readonly&lt;Record&lt;string, string | undefined&gt;&gt;</code></td>
                       <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>interaction</code></td>
+                      <td>property</td>
+                      <td><code>AnkhCommandInteraction | undefined</code></td>
+                      <td>no</td>
                       <td></td>
                     </tr>
                     <tr>
@@ -1848,7 +2084,7 @@
                     <tr>
                       <td><code>path</code></td>
                       <td>property</td>
-                      <td><code>readonly [string, ...string[]]</code></td>
+                      <td><code>readonly string[]</code></td>
                       <td>yes</td>
                       <td></td>
                     </tr>
@@ -2209,7 +2445,7 @@
                     <tr>
                       <td><code>path</code></td>
                       <td>property</td>
-                      <td><code>readonly [string, ...string[]]</code></td>
+                      <td><code>readonly string[]</code></td>
                       <td>yes</td>
                       <td></td>
                     </tr>
@@ -2435,12 +2671,27 @@
                 module_src_providerRegistry_ts
                 module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_src_commandContext_ts
-                module_src_commandContext_ts --&gt; module_package_json
+                module_src_commandContext_ts --&gt; module_package_json module_src_commandContext_ts
+                --&gt; module_src_commandInteraction_ts module_src_commandContext_ts --&gt;
+                module_src_defaultCommandInteraction_ts
+                module_src_commandInteraction_ts[&quot;src/commandInteraction.ts&quot;]
+                package__ankhorage_ankh -.-&gt; module_src_commandInteraction_ts
+                module_src_commandInteraction_ts --&gt; module_src_confirmationResult_ts
+                module_src_confirmationResult_ts[&quot;src/confirmationResult.ts&quot;]
+                package__ankhorage_ankh -.-&gt; module_src_confirmationResult_ts
                 module_src_coreProviders_ts[&quot;src/coreProviders.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_src_coreProviders_ts
                 module_src_coreProviders_ts --&gt; module_src_discovery_ts
                 module_src_coreProviders_ts --&gt; module_src_packageMetadata_ts
                 module_src_coreProviders_ts --&gt; module_src_providerManifestLoader_ts
+                module_src_createCommandInteraction_ts[&quot;src/createCommandInteraction.ts&quot;]
+                package__ankhorage_ankh -.-&gt; module_src_createCommandInteraction_ts
+                module_src_createCommandInteraction_ts --&gt; module_src_commandInteraction_ts
+                module_src_defaultCommandInteraction_ts[&quot;src/defaultCommandInteraction.ts&quot;]
+                package__ankhorage_ankh -.-&gt; module_src_defaultCommandInteraction_ts
+                module_src_defaultCommandInteraction_ts --&gt; module_src_commandInteraction_ts
+                module_src_defaultCommandInteraction_ts --&gt;
+                module_src_createCommandInteraction_ts
                 module_src_discovery_ts[&quot;src/discovery.ts&quot;] package__ankhorage_ankh
                 -.-&gt; module_src_discovery_ts module_src_discovery_ts --&gt;
                 module_src_packageMetadata_ts module_src_discovery_ts --&gt; module_src_workspace_ts
@@ -2482,6 +2733,10 @@
                 --&gt; module_src_commandContext_ts module_tests_cli_test_ts --&gt;
                 module_src_discovery_ts module_tests_cli_test_ts --&gt; module_src_execution_ts
                 module_tests_cli_test_ts --&gt; module_src_providerManifestLoader_ts
+                module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
+                package__ankhorage_ankh -.-&gt; module_tests_commandInteraction_test_ts
+                module_tests_commandInteraction_test_ts --&gt;
+                module_src_createCommandInteraction_ts
                 module_tests_coreProviders_test_ts[&quot;tests/coreProviders.test.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_tests_coreProviders_test_ts
                 module_tests_coreProviders_test_ts --&gt; module_src_cli_index_ts
@@ -2520,6 +2775,20 @@
                 module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_tests_providerRegistry_test_ts
                 module_tests_providerRegistry_test_ts --&gt; module_src_providerRegistry_ts
+                module_tests_rootCli_test_ts[&quot;tests/rootCli.test.ts&quot;]
+                package__ankhorage_ankh -.-&gt; module_tests_rootCli_test_ts
+                module_tests_rootCli_test_ts --&gt; module_src_cli_index_ts
+                module_tests_rootCli_test_ts --&gt; module_src_commandContext_ts
+                module_tests_rootCli_test_ts --&gt; module_src_execution_ts
+                module_tests_rootCli_test_ts --&gt; module_src_packageRegistry_ts
+                module_tests_rootCli_test_ts --&gt; module_src_providerRegistry_ts
+                module_tests_rootCommands_test_ts[&quot;tests/rootCommands.test.ts&quot;]
+                package__ankhorage_ankh -.-&gt; module_tests_rootCommands_test_ts
+                module_tests_rootCommands_test_ts --&gt; module_src_execution_ts
+                module_tests_rootCommands_test_ts --&gt; module_src_help_ts
+                module_tests_rootCommands_test_ts --&gt; module_src_packageRegistry_ts
+                module_tests_rootCommands_test_ts --&gt; module_src_planning_ts
+                module_tests_rootCommands_test_ts --&gt; module_src_providerRegistry_ts
                 module_tests_workspace_test_ts[&quot;tests/workspace.test.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_tests_workspace_test_ts
                 module_tests_workspace_test_ts --&gt; module_src_workspace_ts
@@ -2553,11 +2822,25 @@ graph TD
   module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_commandContext_ts
   module_src_commandContext_ts --&gt; module_package_json
+  module_src_commandContext_ts --&gt; module_src_commandInteraction_ts
+  module_src_commandContext_ts --&gt; module_src_defaultCommandInteraction_ts
+  module_src_commandInteraction_ts[&quot;src/commandInteraction.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_commandInteraction_ts
+  module_src_commandInteraction_ts --&gt; module_src_confirmationResult_ts
+  module_src_confirmationResult_ts[&quot;src/confirmationResult.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_confirmationResult_ts
   module_src_coreProviders_ts[&quot;src/coreProviders.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_coreProviders_ts
   module_src_coreProviders_ts --&gt; module_src_discovery_ts
   module_src_coreProviders_ts --&gt; module_src_packageMetadata_ts
   module_src_coreProviders_ts --&gt; module_src_providerManifestLoader_ts
+  module_src_createCommandInteraction_ts[&quot;src/createCommandInteraction.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_createCommandInteraction_ts
+  module_src_createCommandInteraction_ts --&gt; module_src_commandInteraction_ts
+  module_src_defaultCommandInteraction_ts[&quot;src/defaultCommandInteraction.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_defaultCommandInteraction_ts
+  module_src_defaultCommandInteraction_ts --&gt; module_src_commandInteraction_ts
+  module_src_defaultCommandInteraction_ts --&gt; module_src_createCommandInteraction_ts
   module_src_discovery_ts[&quot;src/discovery.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_discovery_ts
   module_src_discovery_ts --&gt; module_src_packageMetadata_ts
@@ -2606,6 +2889,9 @@ graph TD
   module_tests_cli_test_ts --&gt; module_src_discovery_ts
   module_tests_cli_test_ts --&gt; module_src_execution_ts
   module_tests_cli_test_ts --&gt; module_src_providerManifestLoader_ts
+  module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_commandInteraction_test_ts
+  module_tests_commandInteraction_test_ts --&gt; module_src_createCommandInteraction_ts
   module_tests_coreProviders_test_ts[&quot;tests/coreProviders.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_coreProviders_test_ts
   module_tests_coreProviders_test_ts --&gt; module_src_cli_index_ts
@@ -2643,6 +2929,20 @@ graph TD
   module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_providerRegistry_test_ts
   module_tests_providerRegistry_test_ts --&gt; module_src_providerRegistry_ts
+  module_tests_rootCli_test_ts[&quot;tests/rootCli.test.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_rootCli_test_ts
+  module_tests_rootCli_test_ts --&gt; module_src_cli_index_ts
+  module_tests_rootCli_test_ts --&gt; module_src_commandContext_ts
+  module_tests_rootCli_test_ts --&gt; module_src_execution_ts
+  module_tests_rootCli_test_ts --&gt; module_src_packageRegistry_ts
+  module_tests_rootCli_test_ts --&gt; module_src_providerRegistry_ts
+  module_tests_rootCommands_test_ts[&quot;tests/rootCommands.test.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_rootCommands_test_ts
+  module_tests_rootCommands_test_ts --&gt; module_src_execution_ts
+  module_tests_rootCommands_test_ts --&gt; module_src_help_ts
+  module_tests_rootCommands_test_ts --&gt; module_src_packageRegistry_ts
+  module_tests_rootCommands_test_ts --&gt; module_src_planning_ts
+  module_tests_rootCommands_test_ts --&gt; module_src_providerRegistry_ts
   module_tests_workspace_test_ts[&quot;tests/workspace.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_workspace_test_ts
   module_tests_workspace_test_ts --&gt; module_src_workspace_ts
@@ -2661,7 +2961,11 @@ graph TD
                 module_src_bin_ts[&quot;src/bin.ts&quot;]
                 module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
                 module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
+                module_src_commandInteraction_ts[&quot;src/commandInteraction.ts&quot;]
+                module_src_confirmationResult_ts[&quot;src/confirmationResult.ts&quot;]
                 module_src_coreProviders_ts[&quot;src/coreProviders.ts&quot;]
+                module_src_createCommandInteraction_ts[&quot;src/createCommandInteraction.ts&quot;]
+                module_src_defaultCommandInteraction_ts[&quot;src/defaultCommandInteraction.ts&quot;]
                 module_src_discovery_ts[&quot;src/discovery.ts&quot;]
                 module_src_execution_ts[&quot;src/execution.ts&quot;]
                 module_src_help_ts[&quot;src/help.ts&quot;]
@@ -2674,6 +2978,7 @@ graph TD
                 module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
                 module_src_workspace_ts[&quot;src/workspace.ts&quot;]
                 module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
+                module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
                 module_tests_coreProviders_test_ts[&quot;tests/coreProviders.test.ts&quot;]
                 module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
                 module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
@@ -2683,6 +2988,8 @@ graph TD
                 module_tests_planning_test_ts[&quot;tests/planning.test.ts&quot;]
                 module_tests_providerManifestLoader_test_ts[&quot;tests/providerManifestLoader.test.ts&quot;]
                 module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
+                module_tests_rootCli_test_ts[&quot;tests/rootCli.test.ts&quot;]
+                module_tests_rootCommands_test_ts[&quot;tests/rootCommands.test.ts&quot;]
                 module_tests_workspace_test_ts[&quot;tests/workspace.test.ts&quot;]
                 module_src_bin_ts --&gt; module_src_cli_index_ts module_src_cli_index_ts --&gt;
                 module_src_commandContext_ts module_src_cli_index_ts --&gt;
@@ -2693,18 +3000,25 @@ graph TD
                 module_src_cli_index_ts --&gt; module_src_planning_ts module_src_cli_index_ts --&gt;
                 module_src_providerManifestLoader_ts module_src_cli_index_ts --&gt;
                 module_src_providerRegistry_ts module_src_commandContext_ts --&gt;
-                module_package_json module_src_coreProviders_ts --&gt; module_src_discovery_ts
-                module_src_coreProviders_ts --&gt; module_src_packageMetadata_ts
-                module_src_coreProviders_ts --&gt; module_src_providerManifestLoader_ts
-                module_src_discovery_ts --&gt; module_src_packageMetadata_ts module_src_discovery_ts
-                --&gt; module_src_workspace_ts module_src_execution_ts --&gt;
-                module_src_commandContext_ts module_src_execution_ts --&gt;
-                module_src_packageRegistry_ts module_src_execution_ts --&gt; module_src_planning_ts
-                module_src_execution_ts --&gt; module_src_providerManifestLoader_ts
-                module_src_execution_ts --&gt; module_src_providerRegistry_ts module_src_help_ts
-                --&gt; module_src_discovery_ts module_src_help_ts --&gt; module_src_execution_ts
-                module_src_help_ts --&gt; module_src_providerManifestLoader_ts module_src_help_ts
-                --&gt; module_src_providerRegistry_ts module_src_packageMetadata_ts --&gt;
+                module_package_json module_src_commandContext_ts --&gt;
+                module_src_commandInteraction_ts module_src_commandContext_ts --&gt;
+                module_src_defaultCommandInteraction_ts module_src_commandInteraction_ts --&gt;
+                module_src_confirmationResult_ts module_src_coreProviders_ts --&gt;
+                module_src_discovery_ts module_src_coreProviders_ts --&gt;
+                module_src_packageMetadata_ts module_src_coreProviders_ts --&gt;
+                module_src_providerManifestLoader_ts module_src_createCommandInteraction_ts --&gt;
+                module_src_commandInteraction_ts module_src_defaultCommandInteraction_ts --&gt;
+                module_src_commandInteraction_ts module_src_defaultCommandInteraction_ts --&gt;
+                module_src_createCommandInteraction_ts module_src_discovery_ts --&gt;
+                module_src_packageMetadata_ts module_src_discovery_ts --&gt; module_src_workspace_ts
+                module_src_execution_ts --&gt; module_src_commandContext_ts module_src_execution_ts
+                --&gt; module_src_packageRegistry_ts module_src_execution_ts --&gt;
+                module_src_planning_ts module_src_execution_ts --&gt;
+                module_src_providerManifestLoader_ts module_src_execution_ts --&gt;
+                module_src_providerRegistry_ts module_src_help_ts --&gt; module_src_discovery_ts
+                module_src_help_ts --&gt; module_src_execution_ts module_src_help_ts --&gt;
+                module_src_providerManifestLoader_ts module_src_help_ts --&gt;
+                module_src_providerRegistry_ts module_src_packageMetadata_ts --&gt;
                 module_src_discovery_ts module_src_packageRegistry_ts --&gt; module_src_discovery_ts
                 module_src_planning_ts --&gt; module_src_commandContext_ts module_src_planning_ts
                 --&gt; module_src_packageRegistry_ts module_src_planning_ts --&gt;
@@ -2716,7 +3030,8 @@ graph TD
                 module_tests_cli_test_ts --&gt; module_src_commandContext_ts
                 module_tests_cli_test_ts --&gt; module_src_discovery_ts module_tests_cli_test_ts
                 --&gt; module_src_execution_ts module_tests_cli_test_ts --&gt;
-                module_src_providerManifestLoader_ts module_tests_coreProviders_test_ts --&gt;
+                module_src_providerManifestLoader_ts module_tests_commandInteraction_test_ts --&gt;
+                module_src_createCommandInteraction_ts module_tests_coreProviders_test_ts --&gt;
                 module_src_cli_index_ts module_tests_coreProviders_test_ts --&gt;
                 module_src_commandContext_ts module_tests_coreProviders_test_ts --&gt;
                 module_src_coreProviders_ts module_tests_coreProviders_test_ts --&gt;
@@ -2735,8 +3050,17 @@ graph TD
                 module_tests_planning_test_ts --&gt; module_src_providerManifestLoader_ts
                 module_tests_providerManifestLoader_test_ts --&gt;
                 module_src_providerManifestLoader_ts module_tests_providerRegistry_test_ts --&gt;
-                module_src_providerRegistry_ts module_tests_workspace_test_ts --&gt;
-                module_src_workspace_ts
+                module_src_providerRegistry_ts module_tests_rootCli_test_ts --&gt;
+                module_src_cli_index_ts module_tests_rootCli_test_ts --&gt;
+                module_src_commandContext_ts module_tests_rootCli_test_ts --&gt;
+                module_src_execution_ts module_tests_rootCli_test_ts --&gt;
+                module_src_packageRegistry_ts module_tests_rootCli_test_ts --&gt;
+                module_src_providerRegistry_ts module_tests_rootCommands_test_ts --&gt;
+                module_src_execution_ts module_tests_rootCommands_test_ts --&gt; module_src_help_ts
+                module_tests_rootCommands_test_ts --&gt; module_src_packageRegistry_ts
+                module_tests_rootCommands_test_ts --&gt; module_src_planning_ts
+                module_tests_rootCommands_test_ts --&gt; module_src_providerRegistry_ts
+                module_tests_workspace_test_ts --&gt; module_src_workspace_ts
               </div>
               <details>
                 <summary>View Mermaid source</summary>
@@ -2747,7 +3071,11 @@ graph LR
   module_src_bin_ts[&quot;src/bin.ts&quot;]
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
+  module_src_commandInteraction_ts[&quot;src/commandInteraction.ts&quot;]
+  module_src_confirmationResult_ts[&quot;src/confirmationResult.ts&quot;]
   module_src_coreProviders_ts[&quot;src/coreProviders.ts&quot;]
+  module_src_createCommandInteraction_ts[&quot;src/createCommandInteraction.ts&quot;]
+  module_src_defaultCommandInteraction_ts[&quot;src/defaultCommandInteraction.ts&quot;]
   module_src_discovery_ts[&quot;src/discovery.ts&quot;]
   module_src_execution_ts[&quot;src/execution.ts&quot;]
   module_src_help_ts[&quot;src/help.ts&quot;]
@@ -2760,6 +3088,7 @@ graph LR
   module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
   module_src_workspace_ts[&quot;src/workspace.ts&quot;]
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
+  module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
   module_tests_coreProviders_test_ts[&quot;tests/coreProviders.test.ts&quot;]
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
@@ -2769,6 +3098,8 @@ graph LR
   module_tests_planning_test_ts[&quot;tests/planning.test.ts&quot;]
   module_tests_providerManifestLoader_test_ts[&quot;tests/providerManifestLoader.test.ts&quot;]
   module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
+  module_tests_rootCli_test_ts[&quot;tests/rootCli.test.ts&quot;]
+  module_tests_rootCommands_test_ts[&quot;tests/rootCommands.test.ts&quot;]
   module_tests_workspace_test_ts[&quot;tests/workspace.test.ts&quot;]
   module_src_bin_ts --&gt; module_src_cli_index_ts
   module_src_cli_index_ts --&gt; module_src_commandContext_ts
@@ -2782,9 +3113,15 @@ graph LR
   module_src_cli_index_ts --&gt; module_src_providerManifestLoader_ts
   module_src_cli_index_ts --&gt; module_src_providerRegistry_ts
   module_src_commandContext_ts --&gt; module_package_json
+  module_src_commandContext_ts --&gt; module_src_commandInteraction_ts
+  module_src_commandContext_ts --&gt; module_src_defaultCommandInteraction_ts
+  module_src_commandInteraction_ts --&gt; module_src_confirmationResult_ts
   module_src_coreProviders_ts --&gt; module_src_discovery_ts
   module_src_coreProviders_ts --&gt; module_src_packageMetadata_ts
   module_src_coreProviders_ts --&gt; module_src_providerManifestLoader_ts
+  module_src_createCommandInteraction_ts --&gt; module_src_commandInteraction_ts
+  module_src_defaultCommandInteraction_ts --&gt; module_src_commandInteraction_ts
+  module_src_defaultCommandInteraction_ts --&gt; module_src_createCommandInteraction_ts
   module_src_discovery_ts --&gt; module_src_packageMetadata_ts
   module_src_discovery_ts --&gt; module_src_workspace_ts
   module_src_execution_ts --&gt; module_src_commandContext_ts
@@ -2810,6 +3147,7 @@ graph LR
   module_tests_cli_test_ts --&gt; module_src_discovery_ts
   module_tests_cli_test_ts --&gt; module_src_execution_ts
   module_tests_cli_test_ts --&gt; module_src_providerManifestLoader_ts
+  module_tests_commandInteraction_test_ts --&gt; module_src_createCommandInteraction_ts
   module_tests_coreProviders_test_ts --&gt; module_src_cli_index_ts
   module_tests_coreProviders_test_ts --&gt; module_src_commandContext_ts
   module_tests_coreProviders_test_ts --&gt; module_src_coreProviders_ts
@@ -2829,6 +3167,16 @@ graph LR
   module_tests_planning_test_ts --&gt; module_src_providerManifestLoader_ts
   module_tests_providerManifestLoader_test_ts --&gt; module_src_providerManifestLoader_ts
   module_tests_providerRegistry_test_ts --&gt; module_src_providerRegistry_ts
+  module_tests_rootCli_test_ts --&gt; module_src_cli_index_ts
+  module_tests_rootCli_test_ts --&gt; module_src_commandContext_ts
+  module_tests_rootCli_test_ts --&gt; module_src_execution_ts
+  module_tests_rootCli_test_ts --&gt; module_src_packageRegistry_ts
+  module_tests_rootCli_test_ts --&gt; module_src_providerRegistry_ts
+  module_tests_rootCommands_test_ts --&gt; module_src_execution_ts
+  module_tests_rootCommands_test_ts --&gt; module_src_help_ts
+  module_tests_rootCommands_test_ts --&gt; module_src_packageRegistry_ts
+  module_tests_rootCommands_test_ts --&gt; module_src_planning_ts
+  module_tests_rootCommands_test_ts --&gt; module_src_providerRegistry_ts
   module_tests_workspace_test_ts --&gt; module_src_workspace_ts
 </pre>
               </details>
@@ -2842,7 +3190,11 @@ graph LR
                 module_src_bin_ts[&quot;src/bin.ts&quot;]
                 module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
                 module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
+                module_src_commandInteraction_ts[&quot;src/commandInteraction.ts&quot;]
+                module_src_confirmationResult_ts[&quot;src/confirmationResult.ts&quot;]
                 module_src_coreProviders_ts[&quot;src/coreProviders.ts&quot;]
+                module_src_createCommandInteraction_ts[&quot;src/createCommandInteraction.ts&quot;]
+                module_src_defaultCommandInteraction_ts[&quot;src/defaultCommandInteraction.ts&quot;]
                 module_src_discovery_ts[&quot;src/discovery.ts&quot;]
                 module_src_execution_ts[&quot;src/execution.ts&quot;]
                 module_src_help_ts[&quot;src/help.ts&quot;]
@@ -2855,6 +3207,7 @@ graph LR
                 module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
                 module_src_workspace_ts[&quot;src/workspace.ts&quot;]
                 module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
+                module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
                 module_tests_coreProviders_test_ts[&quot;tests/coreProviders.test.ts&quot;]
                 module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
                 module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
@@ -2864,13 +3217,17 @@ graph LR
                 module_tests_planning_test_ts[&quot;tests/planning.test.ts&quot;]
                 module_tests_providerManifestLoader_test_ts[&quot;tests/providerManifestLoader.test.ts&quot;]
                 module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
+                module_tests_rootCli_test_ts[&quot;tests/rootCli.test.ts&quot;]
+                module_tests_rootCommands_test_ts[&quot;tests/rootCommands.test.ts&quot;]
                 module_tests_workspace_test_ts[&quot;tests/workspace.test.ts&quot;]
                 export_AnkhCliRunResult[&quot;AnkhCliRunResult&quot;] module_src_commandContext_ts
                 --&gt; export_AnkhCliRunResult
                 export_AnkhCommandContext[&quot;AnkhCommandContext&quot;]
                 module_src_commandContext_ts --&gt; export_AnkhCommandContext
+                export_AnkhCommandContext -.-&gt; export_AnkhCommandInteraction
                 export_AnkhCommandExecutionContext[&quot;AnkhCommandExecutionContext&quot;]
                 module_src_execution_ts --&gt; export_AnkhCommandExecutionContext
+                export_AnkhCommandExecutionContext -.-&gt; export_AnkhCommandInteraction
                 export_AnkhCommandExecutionContext -.-&gt; export_AnkhPackageRegistry
                 export_AnkhCommandExecutionContext -.-&gt; export_AnkhProviderRegistry
                 export_AnkhCommandExecutionRequest[&quot;AnkhCommandExecutionRequest&quot;]
@@ -2885,6 +3242,9 @@ graph LR
                 export_AnkhCommandHandlerBinding[&quot;AnkhCommandHandlerBinding&quot;]
                 module_src_execution_ts --&gt; export_AnkhCommandHandlerBinding
                 export_AnkhCommandHandlerBinding -.-&gt; export_AnkhCommandHandler
+                export_AnkhCommandInteraction[&quot;AnkhCommandInteraction&quot;]
+                module_src_commandInteraction_ts --&gt; export_AnkhCommandInteraction
+                export_AnkhCommandInteraction -.-&gt; export_AnkhConfirmationResult
                 export_AnkhCommandListing[&quot;AnkhCommandListing&quot;]
                 module_src_providerRegistry_ts --&gt; export_AnkhCommandListing
                 export_AnkhCommandPlan[&quot;AnkhCommandPlan&quot;] module_src_planning_ts --&gt;
@@ -2895,6 +3255,8 @@ graph LR
                 module_src_planning_ts --&gt; export_AnkhCommandPlanDiagnostic
                 export_AnkhCommandPlanStep[&quot;AnkhCommandPlanStep&quot;] module_src_planning_ts
                 --&gt; export_AnkhCommandPlanStep
+                export_AnkhConfirmationResult[&quot;AnkhConfirmationResult&quot;]
+                module_src_confirmationResult_ts --&gt; export_AnkhConfirmationResult
                 export_AnkhDiscoveredPackage[&quot;AnkhDiscoveredPackage&quot;]
                 module_src_discovery_ts --&gt; export_AnkhDiscoveredPackage
                 export_AnkhDiscoveredPackage -.-&gt; export_AnkhDiscoverySource
@@ -2915,6 +3277,7 @@ graph LR
                 export_AnkhPackageRegistry -.-&gt; export_AnkhDiscoveredPackage
                 export_AnkhPlanningContext[&quot;AnkhPlanningContext&quot;] module_src_planning_ts
                 --&gt; export_AnkhPlanningContext export_AnkhPlanningContext -.-&gt;
+                export_AnkhCommandInteraction export_AnkhPlanningContext -.-&gt;
                 export_AnkhPackageRegistry export_AnkhPlanningContext -.-&gt;
                 export_AnkhProviderRegistry
                 export_AnkhPlanningHandler[&quot;AnkhPlanningHandler&quot;] module_src_planning_ts
@@ -2942,6 +3305,9 @@ graph LR
                 module_src_execution_ts --&gt; export_AnkhRuntimeCommandProvider
                 export_AnkhRuntimeCommandProvider -.-&gt; export_AnkhCommandHandlerBinding
                 export_AnkhRuntimeCommandProvider -.-&gt; export_AnkhPlanningHandlerBinding
+                export_createCommandInteraction[&quot;createCommandInteraction&quot;]
+                module_src_createCommandInteraction_ts --&gt; export_createCommandInteraction
+                export_createCommandInteraction -.-&gt; export_AnkhCommandInteraction
                 export_createDefaultCommandContext[&quot;createDefaultCommandContext&quot;]
                 module_src_commandContext_ts --&gt; export_createDefaultCommandContext
                 export_createDefaultCommandContext -.-&gt; export_AnkhCommandContext
@@ -2979,7 +3345,11 @@ graph LR
   module_src_bin_ts[&quot;src/bin.ts&quot;]
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_commandContext_ts[&quot;src/commandContext.ts&quot;]
+  module_src_commandInteraction_ts[&quot;src/commandInteraction.ts&quot;]
+  module_src_confirmationResult_ts[&quot;src/confirmationResult.ts&quot;]
   module_src_coreProviders_ts[&quot;src/coreProviders.ts&quot;]
+  module_src_createCommandInteraction_ts[&quot;src/createCommandInteraction.ts&quot;]
+  module_src_defaultCommandInteraction_ts[&quot;src/defaultCommandInteraction.ts&quot;]
   module_src_discovery_ts[&quot;src/discovery.ts&quot;]
   module_src_execution_ts[&quot;src/execution.ts&quot;]
   module_src_help_ts[&quot;src/help.ts&quot;]
@@ -2992,6 +3362,7 @@ graph LR
   module_src_providerRegistry_ts[&quot;src/providerRegistry.ts&quot;]
   module_src_workspace_ts[&quot;src/workspace.ts&quot;]
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
+  module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
   module_tests_coreProviders_test_ts[&quot;tests/coreProviders.test.ts&quot;]
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
@@ -3001,13 +3372,17 @@ graph LR
   module_tests_planning_test_ts[&quot;tests/planning.test.ts&quot;]
   module_tests_providerManifestLoader_test_ts[&quot;tests/providerManifestLoader.test.ts&quot;]
   module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
+  module_tests_rootCli_test_ts[&quot;tests/rootCli.test.ts&quot;]
+  module_tests_rootCommands_test_ts[&quot;tests/rootCommands.test.ts&quot;]
   module_tests_workspace_test_ts[&quot;tests/workspace.test.ts&quot;]
   export_AnkhCliRunResult[&quot;AnkhCliRunResult&quot;]
   module_src_commandContext_ts --&gt; export_AnkhCliRunResult
   export_AnkhCommandContext[&quot;AnkhCommandContext&quot;]
   module_src_commandContext_ts --&gt; export_AnkhCommandContext
+  export_AnkhCommandContext -.-&gt; export_AnkhCommandInteraction
   export_AnkhCommandExecutionContext[&quot;AnkhCommandExecutionContext&quot;]
   module_src_execution_ts --&gt; export_AnkhCommandExecutionContext
+  export_AnkhCommandExecutionContext -.-&gt; export_AnkhCommandInteraction
   export_AnkhCommandExecutionContext -.-&gt; export_AnkhPackageRegistry
   export_AnkhCommandExecutionContext -.-&gt; export_AnkhProviderRegistry
   export_AnkhCommandExecutionRequest[&quot;AnkhCommandExecutionRequest&quot;]
@@ -3022,6 +3397,9 @@ graph LR
   export_AnkhCommandHandlerBinding[&quot;AnkhCommandHandlerBinding&quot;]
   module_src_execution_ts --&gt; export_AnkhCommandHandlerBinding
   export_AnkhCommandHandlerBinding -.-&gt; export_AnkhCommandHandler
+  export_AnkhCommandInteraction[&quot;AnkhCommandInteraction&quot;]
+  module_src_commandInteraction_ts --&gt; export_AnkhCommandInteraction
+  export_AnkhCommandInteraction -.-&gt; export_AnkhConfirmationResult
   export_AnkhCommandListing[&quot;AnkhCommandListing&quot;]
   module_src_providerRegistry_ts --&gt; export_AnkhCommandListing
   export_AnkhCommandPlan[&quot;AnkhCommandPlan&quot;]
@@ -3032,6 +3410,8 @@ graph LR
   module_src_planning_ts --&gt; export_AnkhCommandPlanDiagnostic
   export_AnkhCommandPlanStep[&quot;AnkhCommandPlanStep&quot;]
   module_src_planning_ts --&gt; export_AnkhCommandPlanStep
+  export_AnkhConfirmationResult[&quot;AnkhConfirmationResult&quot;]
+  module_src_confirmationResult_ts --&gt; export_AnkhConfirmationResult
   export_AnkhDiscoveredPackage[&quot;AnkhDiscoveredPackage&quot;]
   module_src_discovery_ts --&gt; export_AnkhDiscoveredPackage
   export_AnkhDiscoveredPackage -.-&gt; export_AnkhDiscoverySource
@@ -3052,6 +3432,7 @@ graph LR
   export_AnkhPackageRegistry -.-&gt; export_AnkhDiscoveredPackage
   export_AnkhPlanningContext[&quot;AnkhPlanningContext&quot;]
   module_src_planning_ts --&gt; export_AnkhPlanningContext
+  export_AnkhPlanningContext -.-&gt; export_AnkhCommandInteraction
   export_AnkhPlanningContext -.-&gt; export_AnkhPackageRegistry
   export_AnkhPlanningContext -.-&gt; export_AnkhProviderRegistry
   export_AnkhPlanningHandler[&quot;AnkhPlanningHandler&quot;]
@@ -3079,6 +3460,9 @@ graph LR
   module_src_execution_ts --&gt; export_AnkhRuntimeCommandProvider
   export_AnkhRuntimeCommandProvider -.-&gt; export_AnkhCommandHandlerBinding
   export_AnkhRuntimeCommandProvider -.-&gt; export_AnkhPlanningHandlerBinding
+  export_createCommandInteraction[&quot;createCommandInteraction&quot;]
+  module_src_createCommandInteraction_ts --&gt; export_createCommandInteraction
+  export_createCommandInteraction -.-&gt; export_AnkhCommandInteraction
   export_createDefaultCommandContext[&quot;createDefaultCommandContext&quot;]
   module_src_commandContext_ts --&gt; export_createDefaultCommandContext
   export_createDefaultCommandContext -.-&gt; export_AnkhCommandContext
@@ -3109,6 +3493,42 @@ graph LR
   export_runCli[&quot;runCli&quot;]
   module_src_cli_index_ts --&gt; export_runCli
   export_runCli -.-&gt; export_AnkhCliRunResult
+</pre>
+              </details>
+            </article>
+            <article
+              class="item"
+              data-search="createDefaultCommandContext sequence diagrams/sequences/create-default-command-context.mmd"
+            >
+              <h3>createDefaultCommandContext sequence</h3>
+              <p class="muted">
+                <code>diagrams/sequences/create-default-command-context.mmd</code>
+              </p>
+              <div class="mermaid">
+                sequenceDiagram participant participant_createCommandInteraction as
+                createCommandInteraction participant participant_createDefaultCommandContext as
+                createDefaultCommandContext participant participant_createDefaultCommandInteraction
+                as createDefaultCommandInteraction
+                participant_createDefaultCommandContext-&gt;&gt;participant_createDefaultCommandInteraction:
+                createDefaultCommandInteraction()
+                participant_createDefaultCommandInteraction-&gt;&gt;participant_createCommandInteraction:
+                createCommandInteraction()
+                participant_createCommandInteraction--&gt;&gt;participant_createDefaultCommandInteraction:
+                return
+                participant_createDefaultCommandInteraction--&gt;&gt;participant_createDefaultCommandContext:
+                return
+              </div>
+              <details>
+                <summary>View Mermaid source</summary>
+                <pre>
+sequenceDiagram
+  participant participant_createCommandInteraction as createCommandInteraction
+  participant participant_createDefaultCommandContext as createDefaultCommandContext
+  participant participant_createDefaultCommandInteraction as createDefaultCommandInteraction
+  participant_createDefaultCommandContext-&gt;&gt;participant_createDefaultCommandInteraction: createDefaultCommandInteraction()
+  participant_createDefaultCommandInteraction-&gt;&gt;participant_createCommandInteraction: createCommandInteraction()
+  participant_createCommandInteraction--&gt;&gt;participant_createDefaultCommandInteraction: return
+  participant_createDefaultCommandInteraction--&gt;&gt;participant_createDefaultCommandContext: return
 </pre>
               </details>
             </article>
@@ -3172,9 +3592,14 @@ graph LR
               <p class="muted"><code>src/cli/index.ts:477:1</code></p>
               <p class="empty">No description available.</p>
             </article>
+            <article class="item" data-search="renderCommandName src/cli/index.ts ">
+              <h3>renderCommandName</h3>
+              <p class="muted"><code>src/cli/index.ts:491:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
             <article class="item" data-search="getErrorMessage src/cli/index.ts ">
               <h3>getErrorMessage</h3>
-              <p class="muted"><code>src/cli/index.ts:490:1</code></p>
+              <p class="muted"><code>src/cli/index.ts:495:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -3189,7 +3614,7 @@ graph LR
             <h2>src/commandContext.ts</h2>
             <article class="item" data-search="createDefaultCommandContext src/commandContext.ts ">
               <h3>createDefaultCommandContext</h3>
-              <p class="muted"><code>src/commandContext.ts:18:1</code></p>
+              <p class="muted"><code>src/commandContext.ts:21:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -3220,6 +3645,47 @@ graph LR
             <article class="item" data-search="mergeByPackageName src/coreProviders.ts ">
               <h3>mergeByPackageName</h3>
               <p class="muted"><code>src/coreProviders.ts:82:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-createcommandinteraction-ts"
+          class="view"
+          data-view="src/createCommandInteraction.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/createCommandInteraction.ts</h2>
+            <article
+              class="item"
+              data-search="createCommandInteraction src/createCommandInteraction.ts "
+            >
+              <h3>createCommandInteraction</h3>
+              <p class="muted"><code>src/createCommandInteraction.ts:3:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-defaultcommandinteraction-ts"
+          class="view"
+          data-view="src/defaultCommandInteraction.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/defaultCommandInteraction.ts</h2>
+            <article
+              class="item"
+              data-search="createDefaultCommandInteraction src/defaultCommandInteraction.ts "
+            >
+              <h3>createDefaultCommandInteraction</h3>
+              <p class="muted"><code>src/defaultCommandInteraction.ts:6:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="askProcess src/defaultCommandInteraction.ts ">
+              <h3>askProcess</h3>
+              <p class="muted"><code>src/defaultCommandInteraction.ts:14:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -3277,17 +3743,17 @@ graph LR
             </article>
             <article class="item" data-search="getCommandPathKey src/execution.ts ">
               <h3>getCommandPathKey</h3>
-              <p class="muted"><code>src/execution.ts:302:1</code></p>
+              <p class="muted"><code>src/execution.ts:292:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isRecord src/execution.ts ">
               <h3>isRecord</h3>
-              <p class="muted"><code>src/execution.ts:306:1</code></p>
+              <p class="muted"><code>src/execution.ts:296:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isCommandHandler src/execution.ts ">
               <h3>isCommandHandler</h3>
-              <p class="muted"><code>src/execution.ts:310:1</code></p>
+              <p class="muted"><code>src/execution.ts:300:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -3362,12 +3828,22 @@ graph LR
             </article>
             <article class="item" data-search="renderDiagnostics src/help.ts ">
               <h3>renderDiagnostics</h3>
-              <p class="muted"><code>src/help.ts:206:1</code></p>
+              <p class="muted"><code>src/help.ts:207:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="renderRelativeCommandPath src/help.ts ">
+              <h3>renderRelativeCommandPath</h3>
+              <p class="muted"><code>src/help.ts:238:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="renderFullCommandPath src/help.ts ">
+              <h3>renderFullCommandPath</h3>
+              <p class="muted"><code>src/help.ts:242:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getErrorMessage src/help.ts ">
               <h3>getErrorMessage</h3>
-              <p class="muted"><code>src/help.ts:237:1</code></p>
+              <p class="muted"><code>src/help.ts:246:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -3510,32 +3986,32 @@ graph LR
             </article>
             <article class="item" data-search="getCommandPathKey src/planning.ts ">
               <h3>getCommandPathKey</h3>
-              <p class="muted"><code>src/planning.ts:375:1</code></p>
+              <p class="muted"><code>src/planning.ts:369:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isPlanningHandler src/planning.ts ">
               <h3>isPlanningHandler</h3>
-              <p class="muted"><code>src/planning.ts:379:1</code></p>
+              <p class="muted"><code>src/planning.ts:373:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isRecord src/planning.ts ">
               <h3>isRecord</h3>
-              <p class="muted"><code>src/planning.ts:383:1</code></p>
+              <p class="muted"><code>src/planning.ts:377:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="renderDependencyList src/planning.ts ">
               <h3>renderDependencyList</h3>
-              <p class="muted"><code>src/planning.ts:387:1</code></p>
+              <p class="muted"><code>src/planning.ts:381:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="renderDiagnosticScope src/planning.ts ">
               <h3>renderDiagnosticScope</h3>
-              <p class="muted"><code>src/planning.ts:391:1</code></p>
+              <p class="muted"><code>src/planning.ts:385:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="renderPlanDiagnostic src/planning.ts ">
               <h3>renderPlanDiagnostic</h3>
-              <p class="muted"><code>src/planning.ts:401:1</code></p>
+              <p class="muted"><code>src/planning.ts:395:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -3592,14 +4068,19 @@ graph LR
               <p class="muted"><code>src/providerManifestLoader.ts:606:1</code></p>
               <p class="empty">No description available.</p>
             </article>
+            <article class="item" data-search="renderCommandPath src/providerManifestLoader.ts ">
+              <h3>renderCommandPath</h3>
+              <p class="muted"><code>src/providerManifestLoader.ts:610:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
             <article class="item" data-search="getCommandPath src/providerManifestLoader.ts ">
               <h3>getCommandPath</h3>
-              <p class="muted"><code>src/providerManifestLoader.ts:610:1</code></p>
+              <p class="muted"><code>src/providerManifestLoader.ts:614:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getCapabilityId src/providerManifestLoader.ts ">
               <h3>getCapabilityId</h3>
-              <p class="muted"><code>src/providerManifestLoader.ts:632:1</code></p>
+              <p class="muted"><code>src/providerManifestLoader.ts:626:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -3607,22 +4088,22 @@ graph LR
               data-search="getOptionalStringArray src/providerManifestLoader.ts "
             >
               <h3>getOptionalStringArray</h3>
-              <p class="muted"><code>src/providerManifestLoader.ts:636:1</code></p>
+              <p class="muted"><code>src/providerManifestLoader.ts:630:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getNonEmptyString src/providerManifestLoader.ts ">
               <h3>getNonEmptyString</h3>
-              <p class="muted"><code>src/providerManifestLoader.ts:657:1</code></p>
+              <p class="muted"><code>src/providerManifestLoader.ts:651:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isCapabilityId src/providerManifestLoader.ts ">
               <h3>isCapabilityId</h3>
-              <p class="muted"><code>src/providerManifestLoader.ts:666:1</code></p>
+              <p class="muted"><code>src/providerManifestLoader.ts:660:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isRecord src/providerManifestLoader.ts ">
               <h3>isRecord</h3>
-              <p class="muted"><code>src/providerManifestLoader.ts:671:1</code></p>
+              <p class="muted"><code>src/providerManifestLoader.ts:665:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -3630,17 +4111,17 @@ graph LR
               data-search="isPathInsidePackageRoot src/providerManifestLoader.ts "
             >
               <h3>isPathInsidePackageRoot</h3>
-              <p class="muted"><code>src/providerManifestLoader.ts:675:1</code></p>
+              <p class="muted"><code>src/providerManifestLoader.ts:669:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getErrorMessage src/providerManifestLoader.ts ">
               <h3>getErrorMessage</h3>
-              <p class="muted"><code>src/providerManifestLoader.ts:686:1</code></p>
+              <p class="muted"><code>src/providerManifestLoader.ts:680:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createDiagnostic src/providerManifestLoader.ts ">
               <h3>createDiagnostic</h3>
-              <p class="muted"><code>src/providerManifestLoader.ts:702:1</code></p>
+              <p class="muted"><code>src/providerManifestLoader.ts:696:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -3660,12 +4141,12 @@ graph LR
             </article>
             <article class="item" data-search="createCommandListing src/providerRegistry.ts ">
               <h3>createCommandListing</h3>
-              <p class="muted"><code>src/providerRegistry.ts:107:1</code></p>
+              <p class="muted"><code>src/providerRegistry.ts:114:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="matchesCommandPath src/providerRegistry.ts ">
               <h3>matchesCommandPath</h3>
-              <p class="muted"><code>src/providerRegistry.ts:123:1</code></p>
+              <p class="muted"><code>src/providerRegistry.ts:130:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

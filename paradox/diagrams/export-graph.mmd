@@ -4,7 +4,11 @@ graph LR
   module_src_bin_ts["src/bin.ts"]
   module_src_cli_index_ts["src/cli/index.ts"]
   module_src_commandContext_ts["src/commandContext.ts"]
+  module_src_commandInteraction_ts["src/commandInteraction.ts"]
+  module_src_confirmationResult_ts["src/confirmationResult.ts"]
   module_src_coreProviders_ts["src/coreProviders.ts"]
+  module_src_createCommandInteraction_ts["src/createCommandInteraction.ts"]
+  module_src_defaultCommandInteraction_ts["src/defaultCommandInteraction.ts"]
   module_src_discovery_ts["src/discovery.ts"]
   module_src_execution_ts["src/execution.ts"]
   module_src_help_ts["src/help.ts"]
@@ -17,6 +21,7 @@ graph LR
   module_src_providerRegistry_ts["src/providerRegistry.ts"]
   module_src_workspace_ts["src/workspace.ts"]
   module_tests_cli_test_ts["tests/cli.test.ts"]
+  module_tests_commandInteraction_test_ts["tests/commandInteraction.test.ts"]
   module_tests_coreProviders_test_ts["tests/coreProviders.test.ts"]
   module_tests_discovery_test_ts["tests/discovery.test.ts"]
   module_tests_execution_test_ts["tests/execution.test.ts"]
@@ -26,13 +31,17 @@ graph LR
   module_tests_planning_test_ts["tests/planning.test.ts"]
   module_tests_providerManifestLoader_test_ts["tests/providerManifestLoader.test.ts"]
   module_tests_providerRegistry_test_ts["tests/providerRegistry.test.ts"]
+  module_tests_rootCli_test_ts["tests/rootCli.test.ts"]
+  module_tests_rootCommands_test_ts["tests/rootCommands.test.ts"]
   module_tests_workspace_test_ts["tests/workspace.test.ts"]
   export_AnkhCliRunResult["AnkhCliRunResult"]
   module_src_commandContext_ts --> export_AnkhCliRunResult
   export_AnkhCommandContext["AnkhCommandContext"]
   module_src_commandContext_ts --> export_AnkhCommandContext
+  export_AnkhCommandContext -.-> export_AnkhCommandInteraction
   export_AnkhCommandExecutionContext["AnkhCommandExecutionContext"]
   module_src_execution_ts --> export_AnkhCommandExecutionContext
+  export_AnkhCommandExecutionContext -.-> export_AnkhCommandInteraction
   export_AnkhCommandExecutionContext -.-> export_AnkhPackageRegistry
   export_AnkhCommandExecutionContext -.-> export_AnkhProviderRegistry
   export_AnkhCommandExecutionRequest["AnkhCommandExecutionRequest"]
@@ -47,6 +56,9 @@ graph LR
   export_AnkhCommandHandlerBinding["AnkhCommandHandlerBinding"]
   module_src_execution_ts --> export_AnkhCommandHandlerBinding
   export_AnkhCommandHandlerBinding -.-> export_AnkhCommandHandler
+  export_AnkhCommandInteraction["AnkhCommandInteraction"]
+  module_src_commandInteraction_ts --> export_AnkhCommandInteraction
+  export_AnkhCommandInteraction -.-> export_AnkhConfirmationResult
   export_AnkhCommandListing["AnkhCommandListing"]
   module_src_providerRegistry_ts --> export_AnkhCommandListing
   export_AnkhCommandPlan["AnkhCommandPlan"]
@@ -57,6 +69,8 @@ graph LR
   module_src_planning_ts --> export_AnkhCommandPlanDiagnostic
   export_AnkhCommandPlanStep["AnkhCommandPlanStep"]
   module_src_planning_ts --> export_AnkhCommandPlanStep
+  export_AnkhConfirmationResult["AnkhConfirmationResult"]
+  module_src_confirmationResult_ts --> export_AnkhConfirmationResult
   export_AnkhDiscoveredPackage["AnkhDiscoveredPackage"]
   module_src_discovery_ts --> export_AnkhDiscoveredPackage
   export_AnkhDiscoveredPackage -.-> export_AnkhDiscoverySource
@@ -77,6 +91,7 @@ graph LR
   export_AnkhPackageRegistry -.-> export_AnkhDiscoveredPackage
   export_AnkhPlanningContext["AnkhPlanningContext"]
   module_src_planning_ts --> export_AnkhPlanningContext
+  export_AnkhPlanningContext -.-> export_AnkhCommandInteraction
   export_AnkhPlanningContext -.-> export_AnkhPackageRegistry
   export_AnkhPlanningContext -.-> export_AnkhProviderRegistry
   export_AnkhPlanningHandler["AnkhPlanningHandler"]
@@ -104,6 +119,9 @@ graph LR
   module_src_execution_ts --> export_AnkhRuntimeCommandProvider
   export_AnkhRuntimeCommandProvider -.-> export_AnkhCommandHandlerBinding
   export_AnkhRuntimeCommandProvider -.-> export_AnkhPlanningHandlerBinding
+  export_createCommandInteraction["createCommandInteraction"]
+  module_src_createCommandInteraction_ts --> export_createCommandInteraction
+  export_createCommandInteraction -.-> export_AnkhCommandInteraction
   export_createDefaultCommandContext["createDefaultCommandContext"]
   module_src_commandContext_ts --> export_createDefaultCommandContext
   export_createDefaultCommandContext -.-> export_AnkhCommandContext
