@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.1
+
+### Patch Changes
+
+- b0691cf: Update the bundled Doctor core provider so native OAuth callback schemes and development-build readiness are available through the root CLI.
+
 ## 0.8.0
 
 ### Minor Changes
