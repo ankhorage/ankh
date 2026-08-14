@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.10
+
+### Patch Changes
+
+- bc79c25: Update the bundled Doctor core provider to expose target- and environment-aware OAuth readiness through the root CLI.
+
 ## 0.7.9
 
 ### Patch Changes
