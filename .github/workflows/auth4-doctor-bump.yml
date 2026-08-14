@@ -26,7 +26,7 @@ jobs:
 
       - name: Resolve Doctor dependency
         run: |
-          bun install --lockfile-only
+          bun update @ankhorage/doctor --lockfile-only
           bun install --frozen-lockfile
 
       - name: Validate consumer
