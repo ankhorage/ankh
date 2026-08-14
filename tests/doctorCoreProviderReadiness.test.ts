@@ -63,9 +63,7 @@ function createManifest() {
         oauth: {
           enabled: true,
           callbackRoute: '/auth/callback',
-          providers: [
-            { id: 'google', enabled: true, credentialsRef: 'auth/oauth/google' },
-          ],
+          providers: [{ id: 'google', enabled: true, credentialsRef: 'auth/oauth/google' }],
         },
       },
     },
