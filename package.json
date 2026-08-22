@@ -60,18 +60,18 @@
     "version-packages": "changeset version"
   },
   "dependencies": {
-    "@ankhorage/contracts": "^7.9.0",
-    "@ankhorage/devtools": "^1.3.4",
+    "@ankhorage/contracts": "^8.0.0",
+    "@ankhorage/devtools": "^1.6.0",
     "@ankhorage/doctor": "^0.10.0",
     "yaml": "^2.8.1"
   },
   "devDependencies": {
-    "@ankhorage/paradox": "^0.1.10",
+    "@ankhorage/paradox": "^0.1.21",
     "@changesets/cli": "^2.31.0",
-    "@types/bun": "^1.3.13",
-    "@types/node": "^25.2.3",
+    "@types/bun": "^1.3.14",
+    "@types/node": "^24.13.3",
     "typescript": "^5.9.3"
   },
   "sideEffects": false,
-  "packageManager": "bun@1.3.13"
+  "packageManager": "bun@1.3.14"
 }
