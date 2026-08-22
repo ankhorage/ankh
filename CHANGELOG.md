@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.2
+
+### Patch Changes
+
+- 3a8b498: Update Ankhorage dependencies and synchronize the Bun 1.3.14 / Node 24 Devtools tooling baseline.
+
 ## 0.8.1
 
 ### Patch Changes
