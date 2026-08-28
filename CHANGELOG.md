@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.3
+
+### Patch Changes
+
+- 3a4444d: Update Ankhorage dependencies: `@ankhorage/doctor`, `@ankhorage/paradox`.
+
 ## 0.8.2
 
 ### Patch Changes
