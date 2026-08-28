@@ -53,7 +53,7 @@
     "format": "ankhorage-prettier --write .",
     "format:check": "ankhorage-prettier --check .",
     "test": "bun test",
-    "knip": "ankhorage-knip",
+    "knip:check": "ankhorage-knip",
     "docs": "bunx @ankhorage/paradox && ankhorage-prettier --write README.md paradox",
     "changeset": "changeset",
     "changeset:status": "changeset status --since=origin/main",
@@ -62,11 +62,11 @@
   "dependencies": {
     "@ankhorage/contracts": "^8.0.0",
     "@ankhorage/devtools": "^1.6.0",
-    "@ankhorage/doctor": "^0.10.0",
+    "@ankhorage/doctor": "^0.10.1",
     "yaml": "^2.8.1"
   },
   "devDependencies": {
-    "@ankhorage/paradox": "^0.1.21",
+    "@ankhorage/paradox": "^0.1.24",
     "@changesets/cli": "^2.31.0",
     "@types/bun": "^1.3.14",
     "@types/node": "^24.13.3",
