@@ -53,7 +53,7 @@
     "format": "ankhorage-prettier --write .",
     "format:check": "ankhorage-prettier --check .",
     "test": "bun test",
-    "knip": "ankhorage-knip",
+    "knip:check": "ankhorage-knip",
     "docs": "bunx @ankhorage/paradox && ankhorage-prettier --write README.md paradox",
     "changeset": "changeset",
     "changeset:status": "changeset status --since=origin/main",

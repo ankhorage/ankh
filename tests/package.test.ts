@@ -24,7 +24,7 @@ describe('package.json', () => {
     expect(typeof packageJson.scripts.format).toBe('string');
     expect(typeof packageJson.scripts['format:check']).toBe('string');
     expect(typeof packageJson.scripts.test).toBe('string');
-    expect(typeof packageJson.scripts.knip).toBe('string');
+    expect(typeof packageJson.scripts['knip:check']).toBe('string');
     expect(typeof packageJson.scripts.docs).toBe('string');
     expect(typeof packageJson.scripts.changeset).toBe('string');
     expect(typeof packageJson.scripts['changeset:status']).toBe('string');
