@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "@ankhorage/contracts": "^8.0.0",
-    "@ankhorage/devtools": "^1.6.0",
+    "@ankhorage/devtools": "^1.7.1",
     "@ankhorage/doctor": "^0.10.1",
     "yaml": "^2.8.1"
   },
