@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.5
+
+### Patch Changes
+
+- 78e2f08: Update the Devtools toolchain and align Doctor with the current managed repository policy.
+
 ## 0.8.4
 
 ### Patch Changes
