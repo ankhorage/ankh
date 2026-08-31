@@ -3,7 +3,7 @@
 
 # @ankhorage/ankh
 
-![license: MIT](./paradox/badges/license.svg) ![npm: v0.7.10](./paradox/badges/npm.svg) ![runtime: bun](./paradox/badges/runtime.svg) ![typescript: strict](./paradox/badges/typescript.svg) ![eslint: checked](./paradox/badges/eslint.svg) ![prettier: checked](./paradox/badges/prettier.svg) ![build: checked](./paradox/badges/build.svg) ![tests: checked](./paradox/badges/tests.svg) ![docs: paradox](./paradox/badges/docs.svg)
+![license: MIT](./paradox/badges/license.svg) ![npm: v0.8.4](./paradox/badges/npm.svg) ![runtime: bun](./paradox/badges/runtime.svg) ![typescript: strict](./paradox/badges/typescript.svg) ![eslint: checked](./paradox/badges/eslint.svg) ![prettier: checked](./paradox/badges/prettier.svg) ![build: checked](./paradox/badges/build.svg) ![tests: checked](./paradox/badges/tests.svg) ![docs: paradox](./paradox/badges/docs.svg)
 
 Bun-first Ankh CLI front door and command bus bootstrap package.
 
@@ -52,12 +52,6 @@ Source: `src/readme-usage.ts`
 import { runCli } from './cli/index.js';
 
 await runCli(['--help']);
-```
-
-## Installation
-
-```bash
-bunx @ankhorage/ankh
 ```
 
 ## Generated documentation

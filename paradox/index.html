@@ -303,7 +303,7 @@
             <div class="summary">
               <div><strong>37</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>35</strong><span class="muted">modules</span></div>
+              <div><strong>36</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -641,6 +641,18 @@
               <h3>tests/discovery.test.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <code>src/discovery.ts</code></p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="tests/doctorCoreProviderReadiness.test.ts src/cli/index.ts src/commandContext.ts"
+            >
+              <h3>tests/doctorCoreProviderReadiness.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/cli/index.ts</code>,
+                <code>src/commandContext.ts</code>
+              </p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
             <article
@@ -2746,6 +2758,10 @@
                 module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_tests_discovery_test_ts
                 module_tests_discovery_test_ts --&gt; module_src_discovery_ts
+                module_tests_doctorCoreProviderReadiness_test_ts[&quot;tests/doctorCoreProviderReadiness.test.ts&quot;]
+                package__ankhorage_ankh -.-&gt; module_tests_doctorCoreProviderReadiness_test_ts
+                module_tests_doctorCoreProviderReadiness_test_ts --&gt; module_src_cli_index_ts
+                module_tests_doctorCoreProviderReadiness_test_ts --&gt; module_src_commandContext_ts
                 module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
                 package__ankhorage_ankh -.-&gt; module_tests_execution_test_ts
                 module_tests_execution_test_ts --&gt; module_src_execution_ts
@@ -2901,6 +2917,10 @@ graph TD
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_discovery_test_ts
   module_tests_discovery_test_ts --&gt; module_src_discovery_ts
+  module_tests_doctorCoreProviderReadiness_test_ts[&quot;tests/doctorCoreProviderReadiness.test.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_doctorCoreProviderReadiness_test_ts
+  module_tests_doctorCoreProviderReadiness_test_ts --&gt; module_src_cli_index_ts
+  module_tests_doctorCoreProviderReadiness_test_ts --&gt; module_src_commandContext_ts
   module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_execution_test_ts
   module_tests_execution_test_ts --&gt; module_src_execution_ts
@@ -2981,6 +3001,7 @@ graph TD
                 module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
                 module_tests_coreProviders_test_ts[&quot;tests/coreProviders.test.ts&quot;]
                 module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
+                module_tests_doctorCoreProviderReadiness_test_ts[&quot;tests/doctorCoreProviderReadiness.test.ts&quot;]
                 module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
                 module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
                 module_tests_packageRegistry_test_ts[&quot;tests/packageRegistry.test.ts&quot;]
@@ -3036,7 +3057,9 @@ graph TD
                 module_src_commandContext_ts module_tests_coreProviders_test_ts --&gt;
                 module_src_coreProviders_ts module_tests_coreProviders_test_ts --&gt;
                 module_src_discovery_ts module_tests_discovery_test_ts --&gt;
-                module_src_discovery_ts module_tests_execution_test_ts --&gt;
+                module_src_discovery_ts module_tests_doctorCoreProviderReadiness_test_ts --&gt;
+                module_src_cli_index_ts module_tests_doctorCoreProviderReadiness_test_ts --&gt;
+                module_src_commandContext_ts module_tests_execution_test_ts --&gt;
                 module_src_execution_ts module_tests_execution_test_ts --&gt;
                 module_src_providerManifestLoader_ts module_tests_execution_test_ts --&gt;
                 module_src_providerRegistry_ts module_tests_package_test_ts --&gt;
@@ -3091,6 +3114,7 @@ graph LR
   module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
   module_tests_coreProviders_test_ts[&quot;tests/coreProviders.test.ts&quot;]
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
+  module_tests_doctorCoreProviderReadiness_test_ts[&quot;tests/doctorCoreProviderReadiness.test.ts&quot;]
   module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
   module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
   module_tests_packageRegistry_test_ts[&quot;tests/packageRegistry.test.ts&quot;]
@@ -3153,6 +3177,8 @@ graph LR
   module_tests_coreProviders_test_ts --&gt; module_src_coreProviders_ts
   module_tests_coreProviders_test_ts --&gt; module_src_discovery_ts
   module_tests_discovery_test_ts --&gt; module_src_discovery_ts
+  module_tests_doctorCoreProviderReadiness_test_ts --&gt; module_src_cli_index_ts
+  module_tests_doctorCoreProviderReadiness_test_ts --&gt; module_src_commandContext_ts
   module_tests_execution_test_ts --&gt; module_src_execution_ts
   module_tests_execution_test_ts --&gt; module_src_providerManifestLoader_ts
   module_tests_execution_test_ts --&gt; module_src_providerRegistry_ts
@@ -3210,6 +3236,7 @@ graph LR
                 module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
                 module_tests_coreProviders_test_ts[&quot;tests/coreProviders.test.ts&quot;]
                 module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
+                module_tests_doctorCoreProviderReadiness_test_ts[&quot;tests/doctorCoreProviderReadiness.test.ts&quot;]
                 module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
                 module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
                 module_tests_packageRegistry_test_ts[&quot;tests/packageRegistry.test.ts&quot;]
@@ -3365,6 +3392,7 @@ graph LR
   module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
   module_tests_coreProviders_test_ts[&quot;tests/coreProviders.test.ts&quot;]
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
+  module_tests_doctorCoreProviderReadiness_test_ts[&quot;tests/doctorCoreProviderReadiness.test.ts&quot;]
   module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
   module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
   module_tests_packageRegistry_test_ts[&quot;tests/packageRegistry.test.ts&quot;]

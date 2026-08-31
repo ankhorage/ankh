@@ -2,4 +2,4 @@
 '@ankhorage/ankh': patch
 ---
 
-Update Ankhorage dependencies: `@ankhorage/devtools`.
+Update the Devtools toolchain and align Doctor with the current managed repository policy.
