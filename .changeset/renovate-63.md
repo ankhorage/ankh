@@ -2,4 +2,4 @@
 '@ankhorage/ankh': patch
 ---
 
-Update Ankhorage dependencies: `@ankhorage/contracts`, `@ankhorage/doctor`.
+Update `@ankhorage/contracts` to the current compatible release.
