@@ -2,6 +2,8 @@
   "packageName": "@ankhorage/ankh",
   "packageId": "@ankhorage/ankh",
   "description": "Bun-first Ankh CLI front door and command bus bootstrap package.",
+  "collaborators": null,
+  "donation": null,
   "badges": [
     {
       "id": "license",
@@ -12,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.7.10",
+      "value": "v0.8.4",
       "color": "cb3837"
     },
     {
@@ -67,6 +69,7 @@
       }
     ]
   },
+  "readmeUsageDescription": null,
   "readmeUsage": [
     {
       "title": "Bootstrap status",
@@ -76,6 +79,8 @@
       "sourcePath": "src/readme-usage.ts"
     }
   ],
+  "readmeCli": null,
+  "readmeConfig": null,
   "config": null,
   "entrypoints": ["src/index.ts"],
   "modules": [
@@ -383,6 +388,12 @@
       "path": "tests/discovery.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/discovery.ts"],
+      "exports": []
+    },
+    {
+      "path": "tests/doctorCoreProviderReadiness.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/cli/index.ts", "src/commandContext.ts"],
       "exports": []
     },
     {
@@ -3352,6 +3363,16 @@
         "sourcePath": "tests/discovery.test.ts"
       },
       {
+        "fromPath": "tests/doctorCoreProviderReadiness.test.ts",
+        "toPath": "src/cli/index.ts",
+        "sourcePath": "tests/doctorCoreProviderReadiness.test.ts"
+      },
+      {
+        "fromPath": "tests/doctorCoreProviderReadiness.test.ts",
+        "toPath": "src/commandContext.ts",
+        "sourcePath": "tests/doctorCoreProviderReadiness.test.ts"
+      },
+      {
         "fromPath": "tests/execution.test.ts",
         "toPath": "src/execution.ts",
         "sourcePath": "tests/execution.test.ts"
@@ -4517,6 +4538,36 @@
         "toSymbol": "writeFile",
         "callExpression": "writeFile",
         "sourcePath": "tests/discovery.test.ts"
+      },
+      {
+        "fromSymbol": "tests/doctorCoreProviderReadiness.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "tests/doctorCoreProviderReadiness.test.ts"
+      },
+      {
+        "fromSymbol": "tests/doctorCoreProviderReadiness.test.ts",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "tests/doctorCoreProviderReadiness.test.ts"
+      },
+      {
+        "fromSymbol": "tests/doctorCoreProviderReadiness.test.ts",
+        "toSymbol": "createCapturedContext",
+        "callExpression": "createCapturedContext",
+        "sourcePath": "tests/doctorCoreProviderReadiness.test.ts"
+      },
+      {
+        "fromSymbol": "tests/doctorCoreProviderReadiness.test.ts",
+        "toSymbol": "runCli",
+        "callExpression": "runCli",
+        "sourcePath": "tests/doctorCoreProviderReadiness.test.ts"
+      },
+      {
+        "fromSymbol": "tests/doctorCoreProviderReadiness.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "tests/doctorCoreProviderReadiness.test.ts"
       },
       {
         "fromSymbol": "tests/execution.test.ts",
