@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.6
+
+### Patch Changes
+
+- 121bf4f: Update `@ankhorage/contracts` to the current compatible release.
+- 1a9cf9c: Update Ankhorage dependencies: `@ankhorage/devtools`.
+
 ## 0.8.5
 
 ### Patch Changes
