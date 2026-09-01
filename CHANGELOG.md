@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.7
+
+### Patch Changes
+
+- 4666855: Update Ankhorage dependencies: `@ankhorage/doctor`.
+
 ## 0.8.6
 
 ### Patch Changes
