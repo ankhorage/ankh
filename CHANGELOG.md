@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.10
+
+### Patch Changes
+
+- 84a52a8: Update Ankhorage dependencies: `@ankhorage/devtools`.
+
 ## 0.8.9
 
 ### Patch Changes
