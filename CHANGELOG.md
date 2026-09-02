@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.8.8
+
+### Patch Changes
+
+- d1c41f5: Update Ankhorage dependencies: `@ankhorage/devtools`.
+- edfdf4d: Update Ankhorage dependencies: `@ankhorage/doctor`.
+
+## 0.8.7
+
+### Patch Changes
+
+- 4666855: Update Ankhorage dependencies: `@ankhorage/doctor`.
+
+## 0.8.6
+
+### Patch Changes
+
+- 121bf4f: Update `@ankhorage/contracts` to the current compatible release.
+- 1a9cf9c: Update Ankhorage dependencies: `@ankhorage/devtools`.
+
 ## 0.8.5
 
 ### Patch Changes
