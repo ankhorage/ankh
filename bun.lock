@@ -5,7 +5,7 @@
     "": {
       "name": "@ankhorage/ankh",
       "dependencies": {
-        "@ankhorage/contracts": "^8.0.1",
+        "@ankhorage/contracts": "^8.0.2",
         "@ankhorage/devtools": "^1.10.4",
         "@ankhorage/doctor": "^0.10.6",
         "yaml": "^2.8.1",
