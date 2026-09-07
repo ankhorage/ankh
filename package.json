@@ -60,7 +60,7 @@
     "version-packages": "ankhorage-changeset version"
   },
   "dependencies": {
-    "@ankhorage/devtools": "^1.11.6",
+    "@ankhorage/devtools": "^1.11.7",
     "@ankhorage/contracts": "^11.0.0",
     "@ankhorage/doctor": "^0.10.7",
     "yaml": "^2.8.1"
@@ -72,5 +72,5 @@
     "typescript": "^5.9.3"
   },
   "sideEffects": false,
-  "packageManager": "bun@1.4.1"
+  "packageManager": "bun@1.4.2"
 }
