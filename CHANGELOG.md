@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.8.12
+
+### Patch Changes
+
+- fefc5ba: Update Ankhorage dependencies: `@ankhorage/devtools`.
+- 105feb5: Update Ankhorage dependencies: `@ankhorage/devtools`.
+- 6f067f1: Update Ankhorage dependencies: `@ankhorage/contracts`.
+- b1a2271: Update Ankhorage dependencies: `@ankhorage/devtools`.
+- 1720cfb: Update Ankhorage dependencies: `@ankhorage/doctor`.
+- d14bea2: Update Ankhorage dependencies: `@ankhorage/devtools`.
+- f285278: Update Ankhorage dependencies: `@ankhorage/devtools`.
+
 ## 0.8.11
 
 ### Patch Changes
