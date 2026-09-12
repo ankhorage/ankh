@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.13
+
+### Patch Changes
+
+- 912192e: Use package metadata as the default Paradox documentation title and description.
+
 ## 0.8.12
 
 ### Patch Changes
