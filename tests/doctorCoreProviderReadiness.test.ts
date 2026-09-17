@@ -7,7 +7,7 @@ import { expect, test } from 'bun:test';
 import { runCli } from '../src/cli/index.js';
 import type { AnkhCommandContext } from '../src/commandContext.js';
 
-test('root CLI surfaces Doctor 0.10 native OAuth readiness', async () => {
+test('root CLI discovers installed Doctor for native OAuth readiness', async () => {
   const fixture = await fs.mkdtemp(path.join(os.tmpdir(), 'ankh-doctor-auth5-'));
   try {
     const manifestPath = path.join(fixture, 'ankh.config.json');
@@ -16,8 +16,6 @@ test('root CLI surfaces Doctor 0.10 native OAuth readiness', async () => {
 
     const result = await runCli(['doctor', 'validate', manifestPath], {
       context: captured.context,
-      discoverPackages: () => Promise.resolve({ diagnostics: [], packages: [] }),
-      loadProviders: () => Promise.resolve({ diagnostics: [], providers: [] }),
     });
 
     expect(result).toEqual({ exitCode: 0 });
