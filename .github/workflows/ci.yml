@@ -42,7 +42,7 @@ jobs:
           fi
 
       - name: Validate Ankhorage repository
-        run: bunx @ankhorage/ankh doctor validate .
+        run: bunx @ankhorage/doctor validate .
 
       - name: Run lint
         run: |
