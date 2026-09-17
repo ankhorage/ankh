@@ -10,10 +10,7 @@ import type { ProviderCatalogSource } from '../../application/ports/outbound/pro
 const DEFAULT_GITHUB_ORGANIZATION = 'ankhorage';
 const GITHUB_PAGE_SIZE = 100;
 
-type FetchFunction = (
-  input: string | URL | Request,
-  init?: RequestInit,
-) => Promise<Response>;
+type FetchFunction = (input: string | URL | Request, init?: RequestInit) => Promise<Response>;
 
 /*** Create the GitHub-backed source for the official Ankhorage provider catalog. */
 export function createGitHubProviderCatalogSource(
