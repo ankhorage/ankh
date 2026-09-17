@@ -15,9 +15,7 @@ export interface RenderProviderHelpOptions {
   readonly manifest: AnkhCommandProviderManifest;
 }
 
-/***
- * Render root CLI help from the providers resolved for the current invocation.
- */
+/*** Render root CLI help from the official provider catalog. */
 export function renderRootHelp(commands: readonly AnkhRootHelpCommand[]): string {
   const commandRows = commands
     .map((command) => ({
@@ -35,21 +33,18 @@ export function renderRootHelp(commands: readonly AnkhRootHelpCommand[]): string
     '',
     ...renderCommandRows(commandRows),
     '',
+    '',
   ].join('\n');
 }
 
-/***
- * Render package-level help with its package description and complete command list.
- */
+/*** Render package-level help with its package description and complete command list. */
 export function renderCategoryHelp(
   category: string,
   providerRegistry: AnkhProviderRegistry,
   description: string,
 ): string {
   const provider = providerRegistry.findByCategory(category);
-  if (provider === null) {
-    return '';
-  }
+  if (provider === null) return '';
 
   return renderProviderHelp({
     commandPrefix: ['ankh', category],
@@ -93,30 +88,25 @@ export function renderProviderHelp(options: RenderProviderHelpOptions): string {
     '',
     `Run \`${prefix} <command> --help\` for command help.`,
     '',
+    '',
   ].join('\n');
 }
 
-/***
- * Render provider manifest diagnostics.
- */
+/*** Render provider manifest diagnostics. */
 export function renderProviderManifestDiagnostics(
   diagnostics: readonly AnkhProviderManifestDiagnostic[],
 ): string {
   return renderDiagnostics('Ankh provider manifest diagnostics:', diagnostics);
 }
 
-/***
- * Render command execution diagnostics.
- */
+/*** Render command execution diagnostics. */
 export function renderExecutionDiagnostics(
   diagnostics: readonly AnkhCommandExecutionDiagnostic[],
 ): string {
   return renderDiagnostics('Ankh command execution diagnostics:', diagnostics);
 }
 
-/***
- * Render an unavailable provider message.
- */
+/*** Render an unavailable provider message. */
 export function renderCategoryProviderUnavailable(category: string, packageName: string): string {
   return [
     `Ankh category "${category}" in ${packageName} does not have a valid provider manifest.`,
@@ -124,9 +114,24 @@ export function renderCategoryProviderUnavailable(category: string, packageName:
   ].join('\n');
 }
 
-/***
- * Render an unexpected package discovery failure.
- */
+/*** Render an unexpected remote provider catalog failure. */
+export function renderProviderCatalogFailure(error: unknown): string {
+  return [`Ankh provider catalog resolution failed: ${getErrorMessage(error)}`, ''].join('\n');
+}
+
+/*** Render an unexpected provider package cache/install failure. */
+export function renderProviderPackageResolutionFailure(
+  category: string,
+  packageName: string,
+  error: unknown,
+): string {
+  return [
+    `Ankh provider package resolution failed for "${category}" (${packageName}): ${getErrorMessage(error)}`,
+    '',
+  ].join('\n');
+}
+
+/*** Render an unexpected package discovery failure for explicitly injected discovery callers. */
 export function renderDiscoveryFailure(error: unknown): string {
   return [
     `Ankh package metadata discovery failed unexpectedly: ${getErrorMessage(error)}`,
@@ -134,32 +139,24 @@ export function renderDiscoveryFailure(error: unknown): string {
   ].join('\n');
 }
 
-/***
- * Render an unexpected provider loading failure.
- */
+/*** Render an unexpected provider loading failure. */
 export function renderProviderLoadFailure(error: unknown): string {
   return [`Ankh provider manifest loading failed unexpectedly: ${getErrorMessage(error)}`, ''].join(
     '\n',
   );
 }
 
-/***
- * Render an unknown category message.
- */
+/*** Render an unknown category message. */
 export function renderUnknownCategory(category: string): string {
   return [`Unknown Ankh category: ${category}`, 'Try:', '  ankh --help', ''].join('\n');
 }
 
-/***
- * Render an unknown root command message.
- */
+/*** Render an unknown root command message. */
 export function renderUnknownCommand(tokens: readonly string[]): string {
   return [`Unknown Ankh command: ${tokens.join(' ')}`, 'Try:', '  ankh --help', ''].join('\n');
 }
 
-/***
- * Render an unknown provider command message.
- */
+/*** Render an unknown provider command message. */
 export function renderUnknownProviderCommand(category: string, tokens: readonly string[]): string {
   const attemptedCommand = tokens.length > 0 ? tokens.join(' ') : '(missing)';
 
@@ -171,9 +168,7 @@ export function renderUnknownProviderCommand(category: string, tokens: readonly 
   ].join('\n');
 }
 
-/***
- * Render a provider command execution failure.
- */
+/*** Render a provider command execution failure. */
 export function renderCommandExecutionFailure(
   category: string,
   commandPath: readonly string[],
@@ -188,19 +183,14 @@ export function renderCommandExecutionFailure(
   ].join('\n');
 }
 
-/***
- * Render a diagnostic collection with a shared heading.
- */
+/*** Render a diagnostic collection with a shared heading. */
 function renderDiagnostics(
   header: string,
   diagnostics: readonly (AnkhCommandExecutionDiagnostic | AnkhProviderManifestDiagnostic)[],
 ): string {
-  if (diagnostics.length === 0) {
-    return '';
-  }
+  if (diagnostics.length === 0) return '';
 
   const lines = [header, ''];
-
   for (const diagnostic of diagnostics) {
     const scopeParts = [
       'category' in diagnostic ? diagnostic.category : undefined,
@@ -209,7 +199,6 @@ function renderDiagnostics(
       'providerModulePath' in diagnostic ? diagnostic.providerModulePath : undefined,
     ].filter((part): part is string => part !== undefined);
     const scope = scopeParts.length === 0 ? '' : ` (${scopeParts.join(' | ')})`;
-
     lines.push(`  [${diagnostic.severity}] ${diagnostic.code}: ${diagnostic.message}${scope}`);
   }
 
@@ -217,34 +206,22 @@ function renderDiagnostics(
   return lines.join('\n');
 }
 
-/***
- * Render aligned CLI command rows.
- */
+/*** Render aligned CLI command rows. */
 function renderCommandRows(
   rows: readonly { readonly command: string; readonly description: string }[],
 ): readonly string[] {
-  if (rows.length === 0) {
-    return ['  none'];
-  }
-
+  if (rows.length === 0) return ['  none'];
   const commandWidth = Math.max(...rows.map((row) => row.command.length));
   return rows.map((row) => `  ${row.command.padEnd(commandWidth + 2)}${row.description}`);
 }
 
-/***
- * Render a fully qualified provider command path.
- */
+/*** Render a fully qualified provider command path. */
 function renderFullCommandPath(category: string, path: readonly string[]): string {
   return path.length === 0 ? category : `${category} ${path.join(' ')}`;
 }
 
-/***
- * Convert an unknown error to its CLI message.
- */
+/*** Convert an unknown error to its CLI message. */
 function getErrorMessage(error: unknown): string {
-  if (error instanceof Error) {
-    return error.message;
-  }
-
+  if (error instanceof Error) return error.message;
   return 'unknown error';
 }
