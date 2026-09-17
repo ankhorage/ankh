@@ -223,11 +223,7 @@ async function renderCatalogCategoryHelp(input: {
   }
 
   input.context.writeStdout(
-    renderCategoryHelp(
-      input.category,
-      resolvedState.providerRegistry,
-      resolvedState.description,
-    ),
+    renderCategoryHelp(input.category, resolvedState.providerRegistry, resolvedState.description),
   );
   return { exitCode: 0 };
 }

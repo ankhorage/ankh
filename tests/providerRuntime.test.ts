@@ -160,9 +160,9 @@ describe('official provider runtime', () => {
     const first = memoryContext('/one/project');
     const second = memoryContext('/completely/different/project');
 
-    expect(
-      (await runCli(['--help'], { context: first.context, providerRuntime })).exitCode,
-    ).toBe(0);
+    expect((await runCli(['--help'], { context: first.context, providerRuntime })).exitCode).toBe(
+      0,
+    );
     expect((await runCli(['-h'], { context: second.context, providerRuntime })).exitCode).toBe(0);
     expect(first.stdout.value).toBe(second.stdout.value);
     expect(first.stdout.value).toContain('infra');
