@@ -42,14 +42,14 @@ async function createDoctorProviderRuntime(): Promise<AnkhProviderRuntime> {
     packageJsonPath,
     source: 'installed-dependency',
   });
-  if (
-    readResult.metadata === null ||
-    readResult.metadata.provider === null ||
-    readResult.packageName === null
-  ) {
+  const metadata = readResult.metadata;
+  if (metadata === null || readResult.packageName === null) {
     throw new Error('The installed Doctor package must expose valid Ankh provider metadata.');
   }
-  const providerMetadata = { ...readResult.metadata, provider: readResult.metadata.provider };
+  if (metadata.provider === null) {
+    throw new Error('The installed Doctor package must expose valid Ankh provider metadata.');
+  }
+  const providerMetadata = { ...metadata, provider: metadata.provider };
 
   const discoveredPackage: AnkhDiscoveredPackage = {
     metadata: providerMetadata,
