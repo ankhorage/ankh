@@ -18,6 +18,11 @@ jobs:
           node-version: '24'
           registry-url: https://registry.npmjs.org
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+
       - name: Verify Ankh 0.10.0 registry artifact
         run: |
           set -euxo pipefail
@@ -25,5 +30,8 @@ jobs:
           tarball="$(npm view @ankhorage/ankh@0.10.0 dist.tarball)"
           test -n "$tarball"
           curl --fail --location --retry 2 --output /tmp/ankh-0.10.0.tgz "$tarball"
-          tar -tzf /tmp/ankh-0.10.0.tgz | head -n 20
+          tar -tzf /tmp/ankh-0.10.0.tgz > /tmp/ankh-contents.txt
+          head -n 20 /tmp/ankh-contents.txt
           npm pack @ankhorage/ankh@0.10.0 --pack-destination /tmp
+          bun add --global @ankhorage/ankh@0.10.0
+          ankh --version
