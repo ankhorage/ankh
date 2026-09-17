@@ -37,7 +37,7 @@ describe('readPackagePresentation', () => {
       'utf8',
     );
 
-    await expect(readPackagePresentation(packageJsonPath)).resolves.toEqual({
+    expect(await readPackagePresentation(packageJsonPath)).toEqual({
       description: 'Headless project update analysis and execution.',
       repositoryUrl: 'https://github.com/ankhorage/apm',
     });
