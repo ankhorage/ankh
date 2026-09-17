@@ -23,12 +23,12 @@ jobs:
         with:
           bun-version: '1.4.2'
 
-      - name: Verify Ankh 0.10.0 npm artifact
+      - name: Verify Ankh 0.10.1 npm artifact
         run: |
           set -euo pipefail
-          package_spec="@ankhorage/ankh@0.10.0"
+          package_spec="@ankhorage/ankh@0.10.1"
           registry_evidence="${RUNNER_TEMP}/ankh-registry.json"
-          artifact="${RUNNER_TEMP}/ankh-0.10.0.tgz"
+          artifact="${RUNNER_TEMP}/ankh-0.10.1.tgz"
           pack_dir="${RUNNER_TEMP}/ankh-pack"
           mkdir -p "$pack_dir"
           npm view "$package_spec" version dist.tarball dist.integrity --json > "$registry_evidence"
@@ -46,5 +46,5 @@ jobs:
           bun add --global @ankhorage/ankh@0.9.1
           test "$(ankh --version)" = "0.9.1"
           bun update --global @ankhorage/ankh@latest
-          test "$(ankh --version)" = "0.10.0"
+          test "$(ankh --version)" = "0.10.1"
           ankh --help
