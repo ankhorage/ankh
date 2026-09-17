@@ -123,6 +123,13 @@ describe('official provider runtime', () => {
                 archived: false,
                 default_branch: 'main',
                 fork: false,
+                html_url: 'https://github.com/ankhorage/runtime',
+                name: 'runtime',
+              },
+              {
+                archived: false,
+                default_branch: 'main',
+                fork: false,
                 html_url: 'https://github.com/ankhorage/utility',
                 name: 'utility',
               },
@@ -139,13 +146,64 @@ describe('official provider runtime', () => {
             }),
           );
         }
+        if (url.includes('/runtime/main/package.json')) {
+          return Promise.resolve(
+            jsonResponse({
+              ankh: {
+                capabilities: [],
+                category: 'runtime',
+                provider: null,
+              },
+              description: 'Platform-neutral runtime',
+              name: '@ankhorage/runtime',
+              version: '2.3.1',
+            }),
+          );
+        }
         return Promise.resolve(jsonResponse({ name: '@ankhorage/utility', version: '1.2.0' }));
       },
     });
 
     expect(await source.readAsync()).toEqual([infraEntry]);
     expect(requestedUrls.some((url) => url.includes('/infra/main/package.json'))).toBeTrue();
+    expect(requestedUrls.some((url) => url.includes('/runtime/main/package.json'))).toBeTrue();
     expect(requestedUrls.some((url) => url.includes('/utility/main/package.json'))).toBeTrue();
+  });
+
+  test('rejects malformed non-null provider declarations', async () => {
+    const source = createGitHubProviderCatalogSource({
+      fetchImpl(input) {
+        const url = readRequestUrl(input);
+        if (url.includes('/orgs/ankhorage/repos')) {
+          return Promise.resolve(
+            jsonResponse([
+              {
+                archived: false,
+                default_branch: 'main',
+                fork: false,
+                html_url: 'https://github.com/ankhorage/broken',
+                name: 'broken',
+              },
+            ]),
+          );
+        }
+        return Promise.resolve(
+          jsonResponse({
+            ankh: {
+              capabilities: ['broken.run'],
+              category: 'broken',
+              provider: 'dist/cli/index.js',
+            },
+            name: '@ankhorage/broken',
+            version: '1.0.0',
+          }),
+        );
+      },
+    });
+
+    expect(source.readAsync()).rejects.toThrow(
+      '@ankhorage/broken package.json.ankh.provider must be null or a package-relative path.',
+    );
   });
 
   test('renders cwd-independent root help without installing provider packages', async () => {
