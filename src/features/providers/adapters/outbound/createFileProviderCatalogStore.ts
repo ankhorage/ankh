@@ -8,6 +8,7 @@ import type {
   AnkhProviderCatalogSnapshot,
 } from '../../../../types/providers.js';
 import type { ProviderCatalogStore } from '../../application/ports/outbound/providerCatalogStore.js';
+import { PROVIDER_CATALOG_CACHE_SCHEMA_VERSION } from '../../domain/providerCachePolicy.js';
 
 /*** Create a JSON-file cache for the remotely discovered provider catalog. */
 export function createFileProviderCatalogStore(cacheFilePath: string): ProviderCatalogStore {
@@ -33,7 +34,12 @@ export function createFileProviderCatalogStore(cacheFilePath: string): ProviderC
 
 /*** Validate a cached provider catalog snapshot before it can drive the CLI. */
 function parseSnapshot(value: unknown): AnkhProviderCatalogSnapshot | null {
-  if (!isRecord(value) || typeof value.cachedAtMs !== 'number' || !Array.isArray(value.entries)) {
+  if (
+    !isRecord(value) ||
+    value.schemaVersion !== PROVIDER_CATALOG_CACHE_SCHEMA_VERSION ||
+    typeof value.cachedAtMs !== 'number' ||
+    !Array.isArray(value.entries)
+  ) {
     return null;
   }
 
@@ -42,7 +48,11 @@ function parseSnapshot(value: unknown): AnkhProviderCatalogSnapshot | null {
     .filter((entry): entry is AnkhProviderCatalogEntry => entry !== null);
   if (entries.length !== value.entries.length) return null;
 
-  return { cachedAtMs: value.cachedAtMs, entries };
+  return {
+    cachedAtMs: value.cachedAtMs,
+    entries,
+    schemaVersion: PROVIDER_CATALOG_CACHE_SCHEMA_VERSION,
+  };
 }
 
 /*** Validate one cached catalog entry without trusting arbitrary JSON. */
