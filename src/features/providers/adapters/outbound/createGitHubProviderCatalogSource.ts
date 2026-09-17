@@ -128,7 +128,7 @@ async function readProviderEntryAsync(
   return parseProviderEntry(rawPackage, repository);
 }
 
-/*** Parse and validate the provider declaration exported by one public package manifest. */
+/*** Parse one package manifest and return its validated CLI-provider entry when present. */
 function parseProviderEntry(
   rawPackage: Record<string, unknown>,
   repository: GitHubRepository,
