@@ -1,11 +1,12 @@
 import { spawn } from 'node:child_process';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import type { AnkhDiscoveredPackage } from '../../../../discovery.js';
 import { readAnkhPackageMetadata } from '../../../../packageMetadata.js';
 import type { AnkhProviderCatalogEntry } from '../../../../types/providers.js';
 import type { ProviderPackageStore } from '../../application/ports/outbound/providerPackageStore.js';
+import { PROVIDER_PACKAGE_CACHE_SCHEMA_VERSION } from '../../domain/providerCachePolicy.js';
 
 interface ProcessResult {
   readonly exitCode: number;
@@ -30,10 +31,10 @@ export function createBunProviderPackageStore(
 
   return {
     async resolveAsync(entry) {
+      await ensureCacheProjectAsync(options.cacheRoot);
       const cached = await readCachedProviderAsync(options.cacheRoot, entry);
       if (cached !== null) return cached;
 
-      await ensureCacheProjectAsync(options.cacheRoot);
       const packageSpec = `${entry.packageName}@${entry.version}`;
       const result = await runProcessAsync(bunExecutable, [
         'add',
@@ -108,16 +109,38 @@ async function ensureCacheProjectAsync(cacheRoot: string): Promise<void> {
   const packageJsonPath = path.join(cacheRoot, 'package.json');
   await mkdir(cacheRoot, { recursive: true });
 
+  let current: unknown;
   try {
-    await readFile(packageJsonPath, 'utf8');
+    current = JSON.parse(await readFile(packageJsonPath, 'utf8'));
   } catch (error) {
-    if (!isNodeError(error) || error.code !== 'ENOENT') throw error;
-    await writeFile(
-      packageJsonPath,
-      `${JSON.stringify({ name: 'ankh-provider-cache', private: true }, null, 2)}\n`,
-      'utf8',
-    );
+    if (!(isNodeError(error) && error.code === 'ENOENT') && !(error instanceof SyntaxError)) {
+      throw error;
+    }
+    current = null;
   }
+
+  if (
+    isRecord(current) &&
+    current.ankhProviderCacheSchemaVersion === PROVIDER_PACKAGE_CACHE_SCHEMA_VERSION
+  ) {
+    return;
+  }
+
+  await rm(cacheRoot, { force: true, recursive: true });
+  await mkdir(cacheRoot, { recursive: true });
+  await writeFile(
+    packageJsonPath,
+    `${JSON.stringify(
+      {
+        ankhProviderCacheSchemaVersion: PROVIDER_PACKAGE_CACHE_SCHEMA_VERSION,
+        name: 'ankh-provider-cache',
+        private: true,
+      },
+      null,
+      2,
+    )}\n`,
+    'utf8',
+  );
 }
 
 /*** Run Bun and capture installation errors without forwarding package-manager noise to the CLI. */
