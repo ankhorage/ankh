@@ -2,7 +2,7 @@ import type { AnkhCommandProviderManifest, AnkhPackageMetadata } from '@ankhorag
 import { describe, expect, it } from 'bun:test';
 
 import { type AnkhRuntimeCommandProvider, resolveExecutableCommand } from '../src/execution.js';
-import { renderCategoryHelp, renderRootHelp } from '../src/help.js';
+import { renderCategoryHelp, renderProviderHelp, renderRootHelp } from '../src/help.js';
 import { resolvePlannableCommand } from '../src/planning.js';
 import { createProviderRegistry } from '../src/providerRegistry.js';
 
@@ -100,7 +100,7 @@ describe('category-root commands', () => {
     );
   });
 
-  it('renders canonical root help and package help without capability metadata', () => {
+  it('renders only dynamically supplied root providers and package help without capability metadata', () => {
     const providerRegistry = createProviderRegistry([loadedProvider]);
     const rootHelp = renderRootHelp([
       {
@@ -123,30 +123,11 @@ describe('category-root commands', () => {
       .filter((line) => line.startsWith('  ') && line.includes('https://github.com/ankhorage/'))
       .map((line) => line.trim().split(/\s+/)[0]);
 
-    expect(renderedRootCommands).toEqual([
-      'apm',
-      'board',
-      'data-sources',
-      'deploy',
-      'devtools',
-      'docs',
-      'doctor',
-      'infra',
-      'navigator',
-      'orchestrator',
-      'permissions',
-      'project-detector',
-      'repository',
-      'studio',
-      'templates',
-    ]);
-    expect(rootHelp).toContain('deploy');
+    expect(renderedRootCommands).toEqual(['deploy', 'runtime']);
     expect(rootHelp).toContain('https://github.com/ankhorage/deploy');
-    expect(rootHelp).toContain('docs');
-    expect(rootHelp).toContain('https://github.com/ankhorage/paradox');
+    expect(rootHelp).toContain('https://github.com/ankhorage/runtime');
+    expect(rootHelp).not.toContain('infra');
     expect(rootHelp).not.toContain('plan');
-    expect(rootHelp).not.toContain('https://github.com/ankhorage/ankh');
-    expect(rootHelp).not.toContain('runtime');
     expect(rootHelp).not.toContain('capability');
     expect(categoryHelp.startsWith('Deploy Ankhorage projects.\n')).toBe(true);
     expect(categoryHelp).toContain('  ankh deploy\n');
@@ -157,5 +138,19 @@ describe('category-root commands', () => {
     expect(categoryHelp).not.toContain('capability');
     expect(categoryHelp).not.toContain('Provider:');
     expect(categoryHelp).not.toContain('Version:');
+  });
+
+  it('renders the same manifest dynamically for a standalone provider prefix', () => {
+    const standaloneHelp = renderProviderHelp({
+      commandPrefix: ['deploy'],
+      description: 'Deploy Ankhorage projects.',
+      manifest,
+    });
+
+    expect(standaloneHelp).toContain('  deploy\n');
+    expect(standaloneHelp).toContain('  deploy <command>\n');
+    expect(standaloneHelp).toContain('status  Show deployment status');
+    expect(standaloneHelp).toContain('deploy <command> --help');
+    expect(standaloneHelp).not.toContain('ankh deploy');
   });
 });

@@ -9,8 +9,7 @@ import {
   findWorkspaceRoots,
 } from './workspace.js';
 
-export type AnkhDiscoverySource =
-  'core-provider' | 'current-package' | 'workspace' | 'installed-dependency';
+export type AnkhDiscoverySource = 'current-package' | 'workspace' | 'installed-dependency';
 
 export interface AnkhDiscoveredPackage {
   readonly metadata: AnkhPackageMetadata;
@@ -35,6 +34,7 @@ export interface AnkhMetadataDiscoveryResult {
 }
 
 export interface DiscoverAnkhPackagesOptions {
+  readonly additionalPackageRoots?: readonly string[];
   readonly cwd: string;
 }
 
@@ -43,11 +43,14 @@ interface DiscoveryCandidate {
   readonly source: AnkhDiscoverySource;
 }
 
+/***
+ * Discover Ankh package metadata from the current project and any additional package roots.
+ */
 export async function discoverAnkhPackages(
   options: DiscoverAnkhPackagesOptions,
 ): Promise<AnkhMetadataDiscoveryResult> {
   const roots = await findWorkspaceRoots(options.cwd);
-  const candidates = await collectDiscoveryCandidates(roots);
+  const candidates = await collectDiscoveryCandidates(roots, options.additionalPackageRoots ?? []);
   const diagnostics: AnkhMetadataDiscoveryDiagnostic[] = [];
   const packages: AnkhDiscoveredPackage[] = [];
   const seenPackageNames = new Set<string>();
@@ -94,10 +97,17 @@ export async function discoverAnkhPackages(
   };
 }
 
-async function collectDiscoveryCandidates(roots: {
-  readonly currentPackageRoot: string | null;
-  readonly workspaceRoot: string | null;
-}): Promise<readonly DiscoveryCandidate[]> {
+/***
+ * Collect project-local candidates before installation-level candidates so local packages override
+ * installed packages with the same package name.
+ */
+async function collectDiscoveryCandidates(
+  roots: {
+    readonly currentPackageRoot: string | null;
+    readonly workspaceRoot: string | null;
+  },
+  additionalPackageRoots: readonly string[],
+): Promise<readonly DiscoveryCandidate[]> {
   const seenPaths = new Set<string>();
   const candidates: DiscoveryCandidate[] = [];
 
@@ -131,9 +141,24 @@ async function collectDiscoveryCandidates(roots: {
     }
   }
 
+  for (const additionalPackageRoot of additionalPackageRoots) {
+    const installedPackageJsonFiles =
+      await findInstalledAnkhoragePackageJsonFiles(additionalPackageRoot);
+
+    for (const packageJsonPath of installedPackageJsonFiles) {
+      addCandidate(candidates, seenPaths, {
+        packageJsonPath,
+        source: 'installed-dependency',
+      });
+    }
+  }
+
   return candidates;
 }
 
+/***
+ * Add one normalized discovery candidate unless the same package.json path was already collected.
+ */
 function addCandidate(
   candidates: DiscoveryCandidate[],
   seenPaths: Set<string>,
@@ -151,6 +176,9 @@ function addCandidate(
   });
 }
 
+/***
+ * Report category and capability collisions across the final discovered package set.
+ */
 function collectDuplicateMetadataDiagnostics(
   packages: readonly AnkhDiscoveredPackage[],
 ): readonly AnkhMetadataDiscoveryDiagnostic[] {

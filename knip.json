@@ -1,4 +1,5 @@
 {
+  "ignoreDependencies": ["@ankhorage/doctor"],
   "rules": {
     "files": "off",
     "exports": "off",

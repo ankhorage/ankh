@@ -12,6 +12,13 @@ export type ParsedCliRequest =
 const HELP_TOKENS = new Set(['--help', '-h', 'help']);
 const VERSION_TOKENS = new Set(['--version', '-v']);
 
+/***
+ * Return whether a token requests conventional CLI help.
+ */
+export function isHelpToken(value: string): boolean {
+  return HELP_TOKENS.has(value);
+}
+
 /**
  * Parse only top-level Ankh bootstrap commands.
  */
@@ -22,7 +29,7 @@ export function parseArgv(argv: readonly string[]): ParsedCliRequest {
     return { kind: 'help' };
   }
 
-  if (HELP_TOKENS.has(firstToken)) {
+  if (isHelpToken(firstToken)) {
     return { kind: 'help' };
   }
 
@@ -38,7 +45,7 @@ export function parseArgv(argv: readonly string[]): ParsedCliRequest {
     return { kind: 'run', tokens: restTokens };
   }
 
-  if (restTokens.length === 1 && HELP_TOKENS.has(restTokens[0] ?? '')) {
+  if (restTokens.length === 1 && isHelpToken(restTokens[0] ?? '')) {
     return {
       kind: 'category-help',
       category: firstToken,

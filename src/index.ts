@@ -19,10 +19,12 @@ export type {
   AnkhCommandHandlerBinding,
   AnkhRuntimeCommandProvider,
 } from './execution.js';
+export type { RenderProviderHelpOptions } from './help.js';
+export { renderProviderHelp } from './help.js';
 export type { AnkhPackageRegistry } from './packageRegistry.js';
 export { createPackageRegistry } from './packageRegistry.js';
 export type { ParsedCliRequest } from './parser.js';
-export { parseArgv } from './parser.js';
+export { isHelpToken, parseArgv } from './parser.js';
 export type {
   AnkhCommandPlan,
   AnkhCommandPlanDiagnostic,

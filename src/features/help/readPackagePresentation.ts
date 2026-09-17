@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 
 /***
  * Read the human-facing package description and repository URL used by CLI help.
@@ -6,23 +7,25 @@ import { readFile } from 'node:fs/promises';
 export async function readPackagePresentation(
   packageJsonPath: string,
 ): Promise<PackagePresentation> {
+  const fallbackRepositoryUrl = getAnkhorageRepositoryUrlFromPath(packageJsonPath);
+
   try {
     const parsedJson = JSON.parse(await readFile(packageJsonPath, 'utf8')) as unknown;
     if (!isRecord(parsedJson)) {
       return {
         description: null,
-        repositoryUrl: null,
+        repositoryUrl: fallbackRepositoryUrl,
       };
     }
 
     return {
       description: getNonEmptyString(parsedJson.description),
-      repositoryUrl: getRepositoryUrl(parsedJson.repository),
+      repositoryUrl: getRepositoryUrl(parsedJson.repository) ?? fallbackRepositoryUrl,
     };
   } catch {
     return {
       description: null,
-      repositoryUrl: null,
+      repositoryUrl: fallbackRepositoryUrl,
     };
   }
 }
@@ -56,6 +59,21 @@ function getRepositoryUrl(value: unknown): string | null {
         : null;
 
   return rawRepositoryUrl === null ? null : normalizeRepositoryUrl(rawRepositoryUrl);
+}
+
+/***
+ * Derive the conventional Ankhorage repository URL from an installed scoped package path.
+ */
+function getAnkhorageRepositoryUrlFromPath(packageJsonPath: string): string | null {
+  const packageRoot = path.dirname(packageJsonPath);
+  const scopeRoot = path.dirname(packageRoot);
+
+  if (path.basename(scopeRoot) !== '@ankhorage') {
+    return null;
+  }
+
+  const packageName = path.basename(packageRoot);
+  return packageName === '' ? null : `https://github.com/ankhorage/${packageName}`;
 }
 
 /***

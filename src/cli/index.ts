@@ -1,14 +1,11 @@
 import type { AnkhCliRunResult, AnkhCommandContext } from '../commandContext.js';
 import { createDefaultCommandContext } from '../commandContext.js';
-import { loadCoreProviderState, mergeCorePackages, mergeCoreProviders } from '../coreProviders.js';
 import type {
   AnkhDiscoveredPackage,
   AnkhMetadataDiscoveryResult,
   DiscoverAnkhPackagesOptions,
 } from '../discovery.js';
-import { discoverAnkhPackages } from '../discovery.js';
 import { type AnkhCommandExecutionContext, resolveExecutableCommand } from '../execution.js';
-import { discoverHelpPackages } from '../features/help/discoverHelpPackages.js';
 import { readPackagePresentation } from '../features/help/readPackagePresentation.js';
 import {
   renderCategoryHelp,
@@ -41,6 +38,7 @@ import type {
 import { loadProviderManifests } from '../providerManifestLoader.js';
 import type { AnkhProviderRegistry } from '../providerRegistry.js';
 import { createProviderRegistry } from '../providerRegistry.js';
+import { discoverCliPackages } from './discoverCliPackages.js';
 
 export type DiscoverAnkhPackagesFn = (
   options: DiscoverAnkhPackagesOptions,
@@ -74,7 +72,7 @@ export async function runCli(
   options: RunCliOptions = {},
 ): Promise<AnkhCliRunResult> {
   const context = options.context ?? createDefaultCommandContext();
-  const discoverPackages = options.discoverPackages ?? discoverAnkhPackages;
+  const discoverPackages = options.discoverPackages ?? discoverCliPackages;
   const loadProviders = options.loadProviders ?? loadProviderManifests;
   const request = await Promise.resolve(parseArgv(argv));
 
@@ -82,6 +80,7 @@ export async function runCli(
     case 'help':
       return renderDiscoveredRootHelp({
         context,
+        discoverPackages,
         loadProviders,
         options,
       });
@@ -92,6 +91,7 @@ export async function runCli(
       return renderDiscoveredCategoryHelp({
         category: request.category,
         context,
+        discoverPackages,
         loadProviders,
         options,
       });
@@ -119,10 +119,11 @@ export async function runCli(
 
 async function renderDiscoveredRootHelp(input: {
   readonly context: AnkhCommandContext;
+  readonly discoverPackages: DiscoverAnkhPackagesFn;
   readonly loadProviders: LoadProviderManifestsFn;
   readonly options: RunCliOptions;
 }): Promise<AnkhCliRunResult> {
-  const resolvedState = await resolveHelpCliState(input);
+  const resolvedState = await resolveCliState(input);
 
   if ('exitCode' in resolvedState) {
     return resolvedState;
@@ -141,7 +142,6 @@ async function renderDiscoveredRootHelp(input: {
       );
       return {
         command: provider.manifest.category,
-        packageName: provider.discoveredPackage.packageName,
         repositoryUrl: presentation.repositoryUrl,
       };
     }),
@@ -154,10 +154,11 @@ async function renderDiscoveredRootHelp(input: {
 async function renderDiscoveredCategoryHelp(input: {
   readonly category: string;
   readonly context: AnkhCommandContext;
+  readonly discoverPackages: DiscoverAnkhPackagesFn;
   readonly loadProviders: LoadProviderManifestsFn;
   readonly options: RunCliOptions;
 }): Promise<AnkhCliRunResult> {
-  const resolvedState = await resolveHelpCliState(input);
+  const resolvedState = await resolveCliState(input);
 
   if ('exitCode' in resolvedState) {
     return resolvedState;
@@ -363,38 +364,12 @@ async function resolveCliState(input: {
     const discoveryResult = await input.discoverPackages({
       cwd: input.context.cwd,
     });
-    const resolvedState = await resolveDiscoveredCliState({
+    return resolveDiscoveredCliState({
       context: input.context,
       discoveryResult,
       loadProviders: input.loadProviders,
       options: input.options,
     });
-    return resolvedState;
-  } catch (error) {
-    input.context.writeStderr(renderDiscoveryFailure(error));
-    return { exitCode: 1 };
-  }
-}
-
-async function resolveHelpCliState(input: {
-  readonly context: AnkhCommandContext;
-  readonly loadProviders: LoadProviderManifestsFn;
-  readonly options: RunCliOptions;
-}): Promise<ResolvedCliState | AnkhCliRunResult> {
-  const injectedState = resolveInjectedCliState(input.options);
-  if (injectedState !== null) {
-    return injectedState;
-  }
-
-  try {
-    const discoveryResult = await discoverHelpPackages();
-    const resolvedState = await resolveDiscoveredCliState({
-      context: input.context,
-      discoveryResult,
-      loadProviders: input.loadProviders,
-      options: input.options,
-    });
-    return resolvedState;
   } catch (error) {
     input.context.writeStderr(renderDiscoveryFailure(error));
     return { exitCode: 1 };
@@ -407,12 +382,8 @@ async function resolveDiscoveredCliState(input: {
   readonly loadProviders: LoadProviderManifestsFn;
   readonly options: RunCliOptions;
 }): Promise<ResolvedCliState | AnkhCliRunResult> {
-  const coreProviderState = await loadCoreProviderState();
-  const discoveredPackages = mergeCorePackages(
-    coreProviderState.packages,
-    input.discoveryResult.packages,
-  );
-  const packageRegistry = input.options.registry ?? createPackageRegistry(discoveredPackages);
+  const packageRegistry =
+    input.options.registry ?? createPackageRegistry(input.discoveryResult.packages);
 
   try {
     const providerLoadResult =
@@ -424,18 +395,12 @@ async function resolveDiscoveredCliState(input: {
         : await input.loadProviders(input.discoveryResult.packages);
 
     const providerRegistry =
-      input.options.providerRegistry ??
-      createProviderRegistry(
-        mergeCoreProviders(coreProviderState.providers, providerLoadResult.providers),
-      );
+      input.options.providerRegistry ?? createProviderRegistry(providerLoadResult.providers);
 
     return {
       packageRegistry,
       providerRegistry,
-      providerDiagnostics: [
-        ...coreProviderState.providerDiagnostics,
-        ...providerLoadResult.diagnostics,
-      ],
+      providerDiagnostics: providerLoadResult.diagnostics,
     };
   } catch (error) {
     input.context.writeStderr(renderProviderLoadFailure(error));
