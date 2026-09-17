@@ -38,21 +38,13 @@ afterEach(async () => {
 it('discovers installation providers and lets the current workspace override the same package', async () => {
   const installationRoot = await createFixtureRoot('ankh-installation-');
   const workspaceRoot = await createFixtureRoot('ankh-workspace-');
-  const ankhPackageRoot = path.join(
-    installationRoot,
-    'node_modules',
-    '@ankhorage',
-    'ankh',
-  );
+  const ankhPackageRoot = path.join(installationRoot, 'node_modules', '@ankhorage', 'ankh');
 
   await writePackageJson(ankhPackageRoot, { name: '@ankhorage/ankh' });
-  await writePackageJson(
-    path.join(installationRoot, 'node_modules', '@ankhorage', 'infra'),
-    {
-      name: '@ankhorage/infra',
-      ankh: installedInfraMetadata,
-    },
-  );
+  await writePackageJson(path.join(installationRoot, 'node_modules', '@ankhorage', 'infra'), {
+    name: '@ankhorage/infra',
+    ankh: installedInfraMetadata,
+  });
   await writePackageJson(path.join(installationRoot, 'node_modules', '@ankhorage', 'apm'), {
     name: '@ankhorage/apm',
     ankh: apmMetadata,
@@ -82,12 +74,7 @@ it('discovers installation providers and lets the current workspace override the
 it('discovers installation providers even when cwd has no package root', async () => {
   const installationRoot = await createFixtureRoot('ankh-installation-');
   const unrelatedRoot = await createFixtureRoot('ankh-no-package-');
-  const ankhPackageRoot = path.join(
-    installationRoot,
-    'node_modules',
-    '@ankhorage',
-    'ankh',
-  );
+  const ankhPackageRoot = path.join(installationRoot, 'node_modules', '@ankhorage', 'ankh');
 
   await writePackageJson(ankhPackageRoot, { name: '@ankhorage/ankh' });
   await writePackageJson(path.join(installationRoot, 'node_modules', '@ankhorage', 'apm'), {
