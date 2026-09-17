@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.15
+
+### Patch Changes
+
+- d91ed25: Render root help from the canonical executable Ankh provider catalog instead of the locally installed package set.
+
 ## 0.8.14
 
 ### Patch Changes
