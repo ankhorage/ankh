@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.14
+
+### Patch Changes
+
+- c91b6db: Replace the `ankh commands` listing with conventional root and package help, using installation-scoped provider discovery so help no longer depends on the current working directory.
+
 ## 0.8.13
 
 ### Patch Changes
