@@ -3,7 +3,9 @@ import { readFile } from 'node:fs/promises';
 /***
  * Read the human-facing package description and repository URL used by CLI help.
  */
-export async function readPackagePresentation(packageJsonPath: string): Promise<PackagePresentation> {
+export async function readPackagePresentation(
+  packageJsonPath: string,
+): Promise<PackagePresentation> {
   try {
     const parsedJson = JSON.parse(await readFile(packageJsonPath, 'utf8')) as unknown;
     if (!isRecord(parsedJson)) {
