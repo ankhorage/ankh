@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.1
+
+### Patch Changes
+
+- 829f142: Keep concrete Ankh providers out of the published runtime dependency graph so dynamically discovered providers can depend on the shared CLI runtime without cycles.
+
 ## 0.9.0
 
 ### Minor Changes
