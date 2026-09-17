@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.1
+
+### Patch Changes
+
+- 7b24b2c: Skip valid Ankh package metadata that does not expose a CLI provider when building the official remote provider catalog.
+
 ## 0.10.0
 
 ### Minor Changes
