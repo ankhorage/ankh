@@ -115,7 +115,7 @@ function createMemoryContext(version = packageJson.version): {
 }
 
 describe('runCli', () => {
-  it('prints discovered command links for root help', async () => {
+  it('prints canonical command links for root help', async () => {
     const { context, stdout, stderr } = createMemoryContext();
     const infraPackage = createDiscoveredPackage('@ankhorage/infra', infraMetadata);
     const state = createInjectedState([infraPackage], [createLoadedProvider(infraPackage)]);
@@ -126,8 +126,10 @@ describe('runCli', () => {
     expect(stdout.value).toContain('Usage:');
     expect(stdout.value).toContain('ankh <command>');
     expect(stdout.value).toContain('Commands:');
-    expect(stdout.value).toContain('infra  https://github.com/ankhorage/infra');
-    expect(stdout.value).toContain('plan   https://github.com/ankhorage/ankh');
+    expect(stdout.value).toContain('infra');
+    expect(stdout.value).toContain('https://github.com/ankhorage/infra');
+    expect(stdout.value).not.toContain('plan');
+    expect(stdout.value).not.toContain('https://github.com/ankhorage/ankh');
     expect(stdout.value).not.toContain('ankh commands');
     expect(stdout.value).not.toContain('capability');
     expect(stderr.value).toBe('');
@@ -450,7 +452,7 @@ describe('runCli', () => {
     const providerDiagnostic = {
       category: 'infra',
       code: 'provider-command-alias-collides-with-path',
-      message: 'Provider manifest alias "start" collides with canonical command path "start".',
+      message: 'Provider manifest command alias "status" collides with a canonical command path.',
       packageJsonPath: '/repo/@ankhorage/infra/package.json',
       packageName: '@ankhorage/infra',
       providerModulePath: '/repo/@ankhorage/infra/dist/ankh.provider.js',
