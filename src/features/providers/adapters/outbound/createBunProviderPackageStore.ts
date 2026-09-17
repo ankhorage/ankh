@@ -15,7 +15,10 @@ interface ProcessResult {
 interface CreateBunProviderPackageStoreOptions {
   readonly bunExecutable?: string;
   readonly cacheRoot: string;
-  readonly runProcessAsync?: (executable: string, args: readonly string[]) => Promise<ProcessResult>;
+  readonly runProcessAsync?: (
+    executable: string,
+    args: readonly string[],
+  ) => Promise<ProcessResult>;
 }
 
 /*** Create the provider package cache backed by Bun package installation. */
