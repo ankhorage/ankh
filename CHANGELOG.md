@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.0
+
+### Minor Changes
+
+- e3089d9: Use one dynamic provider discovery path for root help, provider help, planning, and dispatch, and expose shared provider help rendering for standalone CLIs.
+
 ## 0.8.15
 
 ### Patch Changes
