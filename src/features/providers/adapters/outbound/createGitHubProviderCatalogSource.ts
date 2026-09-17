@@ -10,10 +10,15 @@ import type { ProviderCatalogSource } from '../../application/ports/outbound/pro
 const DEFAULT_GITHUB_ORGANIZATION = 'ankhorage';
 const GITHUB_PAGE_SIZE = 100;
 
+type FetchFunction = (
+  input: string | URL | Request,
+  init?: RequestInit,
+) => Promise<Response>;
+
 /*** Create the GitHub-backed source for the official Ankhorage provider catalog. */
 export function createGitHubProviderCatalogSource(
   options: {
-    readonly fetchImpl?: typeof fetch;
+    readonly fetchImpl?: FetchFunction;
     readonly organization?: string;
   } = {},
 ): ProviderCatalogSource {
@@ -49,7 +54,7 @@ interface GitHubRepository {
 
 /*** Read all public repositories in the provider organization. */
 async function readRepositoriesAsync(
-  fetchImpl: typeof fetch,
+  fetchImpl: FetchFunction,
   organization: string,
 ): Promise<readonly GitHubRepository[]> {
   const repositories: GitHubRepository[] = [];
@@ -106,7 +111,7 @@ function parseRepository(value: unknown): GitHubRepository | null {
 
 /*** Read one repository package manifest and convert valid Ankh metadata into a catalog entry. */
 async function readProviderEntryAsync(
-  fetchImpl: typeof fetch,
+  fetchImpl: FetchFunction,
   organization: string,
   repository: GitHubRepository,
 ): Promise<AnkhProviderCatalogEntry | null> {
