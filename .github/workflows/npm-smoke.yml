@@ -23,22 +23,44 @@ jobs:
         with:
           bun-version: '1.4.2'
 
-      - name: Verify Ankh 0.10.1 npm artifact
+      - name: Wait for Ankh 0.10.1 npm artifact
         run: |
           set -euo pipefail
           package_spec="@ankhorage/ankh@0.10.1"
           registry_evidence="${RUNNER_TEMP}/ankh-registry.json"
           artifact="${RUNNER_TEMP}/ankh-0.10.1.tgz"
-          pack_dir="${RUNNER_TEMP}/ankh-pack"
-          mkdir -p "$pack_dir"
-          npm view "$package_spec" version dist.tarball dist.integrity --json > "$registry_evidence"
-          tarball="$(node -e "const p=require(process.argv[1]); process.stdout.write(p['dist.tarball'] ?? '')" "$registry_evidence")"
-          integrity="$(node -e "const p=require(process.argv[1]); process.stdout.write(p['dist.integrity'] ?? '')" "$registry_evidence")"
-          test -n "$tarball"
-          test -n "$integrity"
-          curl --fail --location --silent --show-error --output "$artifact" "$tarball"
-          EXPECTED_INTEGRITY="$integrity" ARTIFACT="$artifact" node -e "const { createHash }=require('node:crypto'); const { readFileSync }=require('node:fs'); const actual='sha512-'+createHash('sha512').update(readFileSync(process.env.ARTIFACT)).digest('base64'); if(actual!==process.env.EXPECTED_INTEGRITY) process.exit(1)"
-          npm pack "$package_spec" --pack-destination "$pack_dir" >/dev/null
+          max_attempts=40
+          retry_seconds=30
+
+          for attempt in $(seq 1 "$max_attempts"); do
+            echo "Verifying ${package_spec} on npm (attempt ${attempt}/${max_attempts})..."
+            if npm view "$package_spec" version dist.tarball dist.integrity --json > "$registry_evidence"; then
+              resolved_version="$(node -e "const p=require(process.argv[1]); process.stdout.write(p.version ?? '')" "$registry_evidence")"
+              tarball="$(node -e "const p=require(process.argv[1]); process.stdout.write(p['dist.tarball'] ?? '')" "$registry_evidence")"
+              integrity="$(node -e "const p=require(process.argv[1]); process.stdout.write(p['dist.integrity'] ?? '')" "$registry_evidence")"
+
+              if [ "$resolved_version" = "0.10.1" ] && [ -n "$tarball" ] && [ -n "$integrity" ]; then
+                if curl --fail --location --silent --show-error --output "$artifact" "$tarball"; then
+                  if EXPECTED_INTEGRITY="$integrity" ARTIFACT="$artifact" node -e "const { createHash }=require('node:crypto'); const { readFileSync }=require('node:fs'); const actual='sha512-'+createHash('sha512').update(readFileSync(process.env.ARTIFACT)).digest('base64'); if(actual!==process.env.EXPECTED_INTEGRITY) process.exit(1)"; then
+                    pack_dir="${RUNNER_TEMP}/ankh-pack-${attempt}"
+                    mkdir -p "$pack_dir"
+                    if npm pack "$package_spec" --pack-destination "$pack_dir" >/dev/null; then
+                      echo "Verified ${package_spec}."
+                      exit 0
+                    fi
+                  fi
+                fi
+              fi
+            fi
+
+            if [ "$attempt" -lt "$max_attempts" ]; then
+              sleep "$retry_seconds"
+            fi
+          done
+
+          echo "Ankh npm artifact did not become retrievable."
+          cat "$registry_evidence" 2>/dev/null || true
+          exit 1
 
       - name: Reproduce user global update path
         run: |
