@@ -18,10 +18,24 @@ jobs:
           node-version: '24'
           registry-url: https://registry.npmjs.org
 
-      - name: Probe Devtools 1.15.4
+      - name: Exercise exact Devtools gate logic
+        env:
+          PUBLISHED_PACKAGE_NAME: '@ankhorage/devtools'
+          PUBLISHED_PACKAGE_VERSION: '1.15.4'
         run: |
           set -euo pipefail
-          npm view @ankhorage/devtools@1.15.4 version dist.tarball dist.integrity --json
-          tarball="$(npm view @ankhorage/devtools@1.15.4 dist.tarball)"
-          curl --fail --location --silent --show-error --output /tmp/devtools.tgz "$tarball"
-          npm pack @ankhorage/devtools@1.15.4 --pack-destination /tmp
+          package_spec="${PUBLISHED_PACKAGE_NAME}@${PUBLISHED_PACKAGE_VERSION}"
+          registry_evidence="${RUNNER_TEMP}/npm-publish-verification.json"
+          artifact="${RUNNER_TEMP}/npm-publish-verification.tgz"
+          pack_dir="${RUNNER_TEMP}/npm-pack-verification"
+          mkdir -p "$pack_dir"
+          npm view "$package_spec" version dist.tarball dist.integrity --json > "$registry_evidence"
+          resolved_version="$(node -e "const p=require(process.argv[1]); process.stdout.write(p.version ?? '')" "$registry_evidence")"
+          tarball="$(node -e "const p=require(process.argv[1]); process.stdout.write(p['dist.tarball'] ?? '')" "$registry_evidence")"
+          integrity="$(node -e "const p=require(process.argv[1]); process.stdout.write(p['dist.integrity'] ?? '')" "$registry_evidence")"
+          test "$resolved_version" = "$PUBLISHED_PACKAGE_VERSION"
+          test -n "$tarball"
+          test -n "$integrity"
+          curl --fail --location --silent --show-error --output "$artifact" "$tarball"
+          EXPECTED_INTEGRITY="$integrity" ARTIFACT="$artifact" node -e "const { createHash }=require('node:crypto'); const { readFileSync }=require('node:fs'); const actual='sha512-'+createHash('sha512').update(readFileSync(process.env.ARTIFACT)).digest('base64'); if(actual!==process.env.EXPECTED_INTEGRITY){console.error('Downloaded npm tarball integrity mismatch.'); process.exit(1)}"
+          npm pack "$package_spec" --pack-destination "$pack_dir" >/dev/null
