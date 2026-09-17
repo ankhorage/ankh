@@ -50,10 +50,7 @@ export async function discoverAnkhPackages(
   options: DiscoverAnkhPackagesOptions,
 ): Promise<AnkhMetadataDiscoveryResult> {
   const roots = await findWorkspaceRoots(options.cwd);
-  const candidates = await collectDiscoveryCandidates(
-    roots,
-    options.additionalPackageRoots ?? [],
-  );
+  const candidates = await collectDiscoveryCandidates(roots, options.additionalPackageRoots ?? []);
   const diagnostics: AnkhMetadataDiscoveryDiagnostic[] = [];
   const packages: AnkhDiscoveredPackage[] = [];
   const seenPackageNames = new Set<string>();
@@ -145,9 +142,8 @@ async function collectDiscoveryCandidates(
   }
 
   for (const additionalPackageRoot of additionalPackageRoots) {
-    const installedPackageJsonFiles = await findInstalledAnkhoragePackageJsonFiles(
-      additionalPackageRoot,
-    );
+    const installedPackageJsonFiles =
+      await findInstalledAnkhoragePackageJsonFiles(additionalPackageRoot);
 
     for (const packageJsonPath of installedPackageJsonFiles) {
       addCandidate(candidates, seenPaths, {
