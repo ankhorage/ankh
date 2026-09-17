@@ -271,10 +271,10 @@ describe('runCli', () => {
     );
 
     const aliasResult = await runCli(['infra', 'start', '--watch'], { context, ...state });
-    const longestPathResult = await runCli(
-      ['infra', 'port', 'forward', 'db', '--local', '5432'],
-      { context, ...state },
-    );
+    const longestPathResult = await runCli(['infra', 'port', 'forward', 'db', '--local', '5432'], {
+      context,
+      ...state,
+    });
 
     expect(aliasResult).toEqual({ exitCode: 0 });
     expect(longestPathResult).toEqual({ exitCode: 0 });
