@@ -18,24 +18,33 @@ jobs:
           node-version: '24'
           registry-url: https://registry.npmjs.org
 
-      - name: Exercise exact Devtools gate logic
-        env:
-          PUBLISHED_PACKAGE_NAME: '@ankhorage/devtools'
-          PUBLISHED_PACKAGE_VERSION: '1.15.4'
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+
+      - name: Verify Ankh 0.10.0 npm artifact
         run: |
           set -euo pipefail
-          package_spec="${PUBLISHED_PACKAGE_NAME}@${PUBLISHED_PACKAGE_VERSION}"
-          registry_evidence="${RUNNER_TEMP}/npm-publish-verification.json"
-          artifact="${RUNNER_TEMP}/npm-publish-verification.tgz"
-          pack_dir="${RUNNER_TEMP}/npm-pack-verification"
+          package_spec="@ankhorage/ankh@0.10.0"
+          registry_evidence="${RUNNER_TEMP}/ankh-registry.json"
+          artifact="${RUNNER_TEMP}/ankh-0.10.0.tgz"
+          pack_dir="${RUNNER_TEMP}/ankh-pack"
           mkdir -p "$pack_dir"
           npm view "$package_spec" version dist.tarball dist.integrity --json > "$registry_evidence"
-          resolved_version="$(node -e "const p=require(process.argv[1]); process.stdout.write(p.version ?? '')" "$registry_evidence")"
           tarball="$(node -e "const p=require(process.argv[1]); process.stdout.write(p['dist.tarball'] ?? '')" "$registry_evidence")"
           integrity="$(node -e "const p=require(process.argv[1]); process.stdout.write(p['dist.integrity'] ?? '')" "$registry_evidence")"
-          test "$resolved_version" = "$PUBLISHED_PACKAGE_VERSION"
           test -n "$tarball"
           test -n "$integrity"
           curl --fail --location --silent --show-error --output "$artifact" "$tarball"
-          EXPECTED_INTEGRITY="$integrity" ARTIFACT="$artifact" node -e "const { createHash }=require('node:crypto'); const { readFileSync }=require('node:fs'); const actual='sha512-'+createHash('sha512').update(readFileSync(process.env.ARTIFACT)).digest('base64'); if(actual!==process.env.EXPECTED_INTEGRITY){console.error('Downloaded npm tarball integrity mismatch.'); process.exit(1)}"
+          EXPECTED_INTEGRITY="$integrity" ARTIFACT="$artifact" node -e "const { createHash }=require('node:crypto'); const { readFileSync }=require('node:fs'); const actual='sha512-'+createHash('sha512').update(readFileSync(process.env.ARTIFACT)).digest('base64'); if(actual!==process.env.EXPECTED_INTEGRITY) process.exit(1)"
           npm pack "$package_spec" --pack-destination "$pack_dir" >/dev/null
+
+      - name: Reproduce user global update path
+        run: |
+          set -euo pipefail
+          bun add --global @ankhorage/ankh@0.9.1
+          test "$(ankh --version)" = "0.9.1"
+          bun update --global @ankhorage/ankh@latest
+          test "$(ankh --version)" = "0.10.0"
+          ankh --help
