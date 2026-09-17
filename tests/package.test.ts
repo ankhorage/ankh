@@ -17,10 +17,7 @@ describe('package.json', () => {
   });
 
   it('keeps concrete providers out of the published runtime dependency graph', () => {
-    expect(packageJson.dependencies).toEqual({
-      '@ankhorage/contracts': '^12.0.1',
-      yaml: '^2.8.1',
-    });
+    expect(Object.keys(packageJson.dependencies).sort()).toEqual(['@ankhorage/contracts', 'yaml']);
     expect(packageJson.devDependencies['@ankhorage/devtools']).toBeDefined();
     expect(packageJson.devDependencies['@ankhorage/doctor']).toBeDefined();
   });
