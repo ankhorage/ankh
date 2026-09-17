@@ -16,6 +16,7 @@ export interface AnkhProviderCatalog {
 
 export interface AnkhProviderCatalogSnapshot extends AnkhProviderCatalog {
   readonly cachedAtMs: number;
+  readonly schemaVersion: number;
 }
 
 export interface AnkhProviderRuntime {
