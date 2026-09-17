@@ -219,7 +219,7 @@ describe('official provider runtime', () => {
     ]);
   });
 
-  test('rejects malformed non-null provider declarations', async () => {
+  test('rejects malformed non-null provider declarations', () => {
     const source = createGitHubProviderCatalogSource({
       fetchImpl(input) {
         const url = readRequestUrl(input);
@@ -250,7 +250,7 @@ describe('official provider runtime', () => {
       },
     });
 
-    await expect(source.readAsync()).rejects.toThrow(
+    expect(source.readAsync()).rejects.toThrow(
       '@ankhorage/broken package.json.ankh.provider must be null or a package-relative path.',
     );
   });
