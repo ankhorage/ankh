@@ -2,11 +2,6 @@ export type ParsedCliRequest =
   | { readonly kind: 'help' }
   | { readonly kind: 'version' }
   | { readonly kind: 'category-help'; readonly category: string }
-  | {
-      readonly kind: 'command-help';
-      readonly category: string;
-      readonly tokens: readonly string[];
-    }
   | { readonly kind: 'plan'; readonly tokens: readonly string[] }
   | { readonly kind: 'run'; readonly tokens: readonly string[] }
   | {
@@ -47,15 +42,6 @@ export function parseArgv(argv: readonly string[]): ParsedCliRequest {
     return {
       kind: 'category-help',
       category: firstToken,
-    };
-  }
-
-  const lastToken = restTokens.at(-1);
-  if (restTokens.length > 1 && lastToken !== undefined && HELP_TOKENS.has(lastToken)) {
-    return {
-      kind: 'command-help',
-      category: firstToken,
-      tokens: restTokens.slice(0, -1),
     };
   }
 
