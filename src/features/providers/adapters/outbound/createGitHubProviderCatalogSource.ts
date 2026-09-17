@@ -147,7 +147,7 @@ function parseProviderEntry(
     throw new Error(`${packageName} package.json.ankh must be an object.`);
   }
 
-  const metadata = parseAnkhMetadata(rawPackage.ankh, rawPackage.exports, packageName);
+  const metadata = parseAnkhMetadata(rawPackage.ankh, packageName);
   if (metadata.provider === null) return null;
   const providerMetadata = { ...metadata, provider: metadata.provider };
   const description = readNonEmptyString(rawPackage.description) ?? packageName;
@@ -164,7 +164,6 @@ function parseProviderEntry(
 /*** Parse package-owned Ankh category, provider, and capability metadata. */
 function parseAnkhMetadata(
   rawMetadata: Record<string, unknown>,
-  packageExports: unknown,
   packageName: string,
 ): AnkhPackageMetadata {
   const category = readNonEmptyString(rawMetadata.category);
@@ -181,7 +180,8 @@ function parseAnkhMetadata(
       `${packageName} package.json.ankh.provider must be null or a package-relative path.`,
     );
   }
-  const provider = readProviderReference(rawMetadata.provider, packageExports);
+  const provider =
+    typeof rawMetadata.provider === 'string' ? rawMetadata.provider : null;
 
   if (!Array.isArray(rawMetadata.capabilities)) {
     throw new Error(`${packageName} package.json.ankh.capabilities must be an array.`);
@@ -195,25 +195,6 @@ function parseAnkhMetadata(
   }
 
   return { capabilities, category, provider };
-}
-
-/*** Resolve an explicit provider path or the package ./cli export. */
-function readProviderReference(
-  rawProvider: unknown,
-  packageExports: unknown,
-): AnkhProviderReference | null {
-  if (typeof rawProvider === 'string' && isProviderReference(rawProvider)) return rawProvider;
-  if (rawProvider !== null) return null;
-  if (!isRecord(packageExports)) return null;
-
-  const cliExport = packageExports['./cli'];
-  if (typeof cliExport === 'string' && isProviderReference(cliExport)) return cliExport;
-  if (!isRecord(cliExport)) return null;
-
-  for (const candidate of [cliExport.import, cliExport.default]) {
-    if (typeof candidate === 'string' && isProviderReference(candidate)) return candidate;
-  }
-  return null;
 }
 
 /*** Reject ambiguous categories or capabilities in the official remote catalog. */
