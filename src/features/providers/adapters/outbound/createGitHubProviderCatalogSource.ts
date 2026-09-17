@@ -132,7 +132,7 @@ async function readProviderEntryAsync(
 function parseProviderEntry(
   rawPackage: Record<string, unknown>,
   repository: GitHubRepository,
-): AnkhProviderCatalogEntry {
+): AnkhProviderCatalogEntry | null {
   const packageName = readNonEmptyString(rawPackage.name);
   const version = readNonEmptyString(rawPackage.version);
   if (!packageName?.startsWith('@ankhorage/')) {
@@ -148,11 +148,13 @@ function parseProviderEntry(
   }
 
   const metadata = parseAnkhMetadata(rawPackage.ankh, rawPackage.exports, packageName);
+  if (metadata.provider === null) return null;
+  const providerMetadata = { ...metadata, provider: metadata.provider };
   const description = readNonEmptyString(rawPackage.description) ?? packageName;
 
   return {
     description,
-    metadata,
+    metadata: providerMetadata,
     packageName,
     repositoryUrl: repository.repositoryUrl,
     version,
@@ -170,12 +172,16 @@ function parseAnkhMetadata(
     throw new Error(`${packageName} package.json.ankh.category must be a non-empty string.`);
   }
 
-  const provider = readProviderReference(rawMetadata.provider, packageExports);
-  if (provider === null) {
+  if (
+    !('provider' in rawMetadata) ||
+    (rawMetadata.provider !== null &&
+      (typeof rawMetadata.provider !== 'string' || !isProviderReference(rawMetadata.provider)))
+  ) {
     throw new Error(
-      `${packageName} package.json.ankh.provider must resolve to a package-relative path.`,
+      `${packageName} package.json.ankh.provider must be null or a package-relative path.`,
     );
   }
+  const provider = readProviderReference(rawMetadata.provider, packageExports);
 
   if (!Array.isArray(rawMetadata.capabilities)) {
     throw new Error(`${packageName} package.json.ankh.capabilities must be an array.`);
