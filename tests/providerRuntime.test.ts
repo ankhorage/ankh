@@ -170,6 +170,55 @@ describe('official provider runtime', () => {
     expect(requestedUrls.some((url) => url.includes('/utility/main/package.json'))).toBeTrue();
   });
 
+  test('infers a CLI provider from ./cli when provider metadata is null', async () => {
+    const source = createGitHubProviderCatalogSource({
+      fetchImpl(input) {
+        const url = readRequestUrl(input);
+        if (url.includes('/orgs/ankhorage/repos')) {
+          return Promise.resolve(
+            jsonResponse([
+              {
+                archived: false,
+                default_branch: 'main',
+                fork: false,
+                html_url: 'https://github.com/ankhorage/inferred',
+                name: 'inferred',
+              },
+            ]),
+          );
+        }
+        return Promise.resolve(
+          jsonResponse({
+            ankh: {
+              capabilities: ['inferred.run'],
+              category: 'inferred',
+              provider: null,
+            },
+            exports: {
+              './cli': './dist/cli/index.js',
+            },
+            name: '@ankhorage/inferred',
+            version: '1.0.0',
+          }),
+        );
+      },
+    });
+
+    expect(await source.readAsync()).toEqual([
+      {
+        description: '@ankhorage/inferred',
+        metadata: {
+          capabilities: ['inferred.run'],
+          category: 'inferred',
+          provider: './dist/cli/index.js',
+        },
+        packageName: '@ankhorage/inferred',
+        repositoryUrl: 'https://github.com/ankhorage/inferred',
+        version: '1.0.0',
+      },
+    ]);
+  });
+
   test('rejects malformed non-null provider declarations', async () => {
     const source = createGitHubProviderCatalogSource({
       fetchImpl(input) {
