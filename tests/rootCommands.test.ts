@@ -2,8 +2,7 @@ import type { AnkhCommandProviderManifest, AnkhPackageMetadata } from '@ankhorag
 import { describe, expect, it } from 'bun:test';
 
 import { type AnkhRuntimeCommandProvider, resolveExecutableCommand } from '../src/execution.js';
-import { renderCategoryHelp, renderCommands } from '../src/help.js';
-import { createPackageRegistry } from '../src/packageRegistry.js';
+import { renderCategoryHelp, renderRootHelp } from '../src/help.js';
 import { resolvePlannableCommand } from '../src/planning.js';
 import { createProviderRegistry } from '../src/providerRegistry.js';
 
@@ -101,12 +100,32 @@ describe('category-root commands', () => {
     );
   });
 
-  it('renders root commands explicitly in command and category help', () => {
+  it('renders conventional root and package help without capability metadata', () => {
     const providerRegistry = createProviderRegistry([loadedProvider]);
-    const packageRegistry = createPackageRegistry([discoveredPackage]);
+    const rootHelp = renderRootHelp([
+      {
+        command: 'deploy',
+        packageName: '@ankhorage/deploy',
+        repositoryUrl: 'https://github.com/ankhorage/deploy',
+      },
+    ]);
+    const categoryHelp = renderCategoryHelp(
+      'deploy',
+      providerRegistry,
+      'Deploy Ankhorage projects.',
+    );
 
-    expect(renderCommands(packageRegistry.listPackages(), providerRegistry)).toContain('- (root)');
-    expect(renderCategoryHelp('deploy', providerRegistry)).toContain('  deploy\n');
-    expect(renderCategoryHelp('deploy', providerRegistry)).toContain('  deploy status\n');
+    expect(rootHelp).toContain('deploy  https://github.com/ankhorage/deploy');
+    expect(rootHelp).toContain('plan    https://github.com/ankhorage/ankh');
+    expect(rootHelp).not.toContain('capability');
+    expect(categoryHelp.startsWith('Deploy Ankhorage projects.\n')).toBe(true);
+    expect(categoryHelp).toContain('  ankh deploy\n');
+    expect(categoryHelp).toContain('  ankh deploy <command>\n');
+    expect(categoryHelp).toContain('  deploy  Deploy the authored release\n');
+    expect(categoryHelp).toContain('  status  Show deployment status\n');
+    expect(categoryHelp).toContain('ankh deploy <command> --help');
+    expect(categoryHelp).not.toContain('capability');
+    expect(categoryHelp).not.toContain('Provider:');
+    expect(categoryHelp).not.toContain('Version:');
   });
 });

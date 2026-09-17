@@ -18,8 +18,11 @@ describe('parseArgv', () => {
     expect(parseArgv(['-v'])).toEqual({ kind: 'version' });
   });
 
-  it('recognizes commands as a built-in', () => {
-    expect(parseArgv(['commands'])).toEqual({ kind: 'commands' });
+  it('does not reserve commands as a built-in', () => {
+    expect(parseArgv(['commands'])).toEqual({
+      kind: 'dispatch',
+      tokens: ['commands'],
+    });
   });
 
   it('recognizes plan and run as root built-ins', () => {
@@ -35,6 +38,10 @@ describe('parseArgv', () => {
 
   it('recognizes category help requests', () => {
     expect(parseArgv(['infra', '--help'])).toEqual({
+      kind: 'category-help',
+      category: 'infra',
+    });
+    expect(parseArgv(['infra', '-h'])).toEqual({
       kind: 'category-help',
       category: 'infra',
     });
