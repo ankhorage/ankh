@@ -1,0 +1,27 @@
+name: npm smoke
+
+on:
+  push:
+    branches:
+      - fix/120-npm-tarball-verification
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+
+      - name: Probe Devtools 1.15.4
+        run: |
+          set -euo pipefail
+          npm view @ankhorage/devtools@1.15.4 version dist.tarball dist.integrity --json
+          tarball="$(npm view @ankhorage/devtools@1.15.4 dist.tarball)"
+          curl --fail --location --silent --show-error --output /tmp/devtools.tgz "$tarball"
+          npm pack @ankhorage/devtools@1.15.4 --pack-destination /tmp
