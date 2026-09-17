@@ -64,8 +64,8 @@ const ANKH_PACKAGE_ROOT = path.dirname(
 function getInstallationRoot(packageRoot: string): string {
   const scopeRoot = path.dirname(packageRoot);
   const nodeModulesRoot = path.dirname(scopeRoot);
+  const isInstalledPackage =
+    path.basename(scopeRoot) === '@ankhorage' && path.basename(nodeModulesRoot) === 'node_modules';
 
-  return path.basename(scopeRoot) === '@ankhorage' && path.basename(nodeModulesRoot) === 'node_modules'
-    ? path.dirname(nodeModulesRoot)
-    : packageRoot;
+  return isInstalledPackage ? path.dirname(nodeModulesRoot) : packageRoot;
 }
