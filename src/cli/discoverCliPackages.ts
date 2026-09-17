@@ -1,10 +1,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type {
-  AnkhMetadataDiscoveryResult,
-  DiscoverAnkhPackagesOptions,
-} from '../discovery.js';
+import type { AnkhMetadataDiscoveryResult, DiscoverAnkhPackagesOptions } from '../discovery.js';
 import { discoverAnkhPackages } from '../discovery.js';
 
 const ANKH_PACKAGE_ROOT = path.dirname(
