@@ -1,6 +1,6 @@
 import type { AnkhCommandExecutionDiagnostic } from './execution.js';
 import type { AnkhProviderManifestDiagnostic } from './providerManifestLoader.js';
-import type { AnkhCommandListing, AnkhProviderRegistry } from './providerRegistry.js';
+import type { AnkhProviderRegistry } from './providerRegistry.js';
 
 const ANKH_REPOSITORY_URL = 'https://github.com/ankhorage/ankh';
 
@@ -75,27 +75,6 @@ export function renderCategoryHelp(
     ...(commandRows.length === 0 ? ['  none'] : renderCommandRows(commandRows)),
     '',
     `Run \`ankh ${category} <command> --help\` for command help.`,
-    '',
-  ].join('\n');
-}
-
-/***
- * Render help for one provider command without exposing capability metadata.
- */
-export function renderCommandHelp(category: string, command: AnkhCommandListing): string {
-  const fullCommand = renderFullCommandPath(category, command.path);
-  const aliases =
-    command.aliases?.map((alias) => `  ankh ${category} ${alias} [args...]`) ?? [];
-  const examples = command.examples?.map((example) => `  ${example}`) ?? [];
-
-  return [
-    command.summary,
-    '',
-    'Usage:',
-    '',
-    `  ankh ${fullCommand} [args...]`,
-    ...(aliases.length > 0 ? ['', 'Aliases:', '', ...aliases] : []),
-    ...(examples.length > 0 ? ['', 'Examples:', '', ...examples] : []),
     '',
   ].join('\n');
 }
