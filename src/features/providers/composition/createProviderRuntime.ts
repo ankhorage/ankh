@@ -17,7 +17,7 @@ export function createProviderRuntime(
       ? path.join(homedir(), '.ankh')
       : path.resolve(configuredCacheRoot);
   const source = createGitHubProviderCatalogSource();
-  const store = createFileProviderCatalogStore(path.join(cacheRoot, 'provider-catalog.json'));
+  const store = createFileProviderCatalogStore(path.join(cacheRoot, 'provider-catalog-v2.json'));
   const packages = createBunProviderPackageStore({ cacheRoot: path.join(cacheRoot, 'providers') });
 
   return {
