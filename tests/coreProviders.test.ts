@@ -20,7 +20,7 @@ it('loads Doctor and Devtools as bundled core providers', async () => {
   ]);
 });
 
-it('renders Doctor category help without discovered providers', async () => {
+it('renders conventional Doctor category help without discovered providers', async () => {
   const stdout = { value: '' };
   const stderr = { value: '' };
   const context: AnkhCommandContext = {
@@ -42,9 +42,15 @@ it('renders Doctor category help without discovered providers', async () => {
   });
 
   expect(result).toEqual({ exitCode: 0 });
-  expect(stdout.value).toContain('Ankh category: doctor');
-  expect(stdout.value).toContain('Package: @ankhorage/doctor');
-  expect(stdout.value).toContain('doctor validate');
+  expect(stdout.value).toContain(
+    'Executable Ankh provider and standalone CLI for lightweight repo and package compliance diagnostics.',
+  );
+  expect(stdout.value).toContain('ankh doctor <command>');
+  expect(stdout.value).toContain('validate  Validate a repo, package, or app-manifest JSON path');
+  expect(stdout.value).toContain('ankh doctor <command> --help');
+  expect(stdout.value).not.toContain('capability');
+  expect(stdout.value).not.toContain('Provider:');
+  expect(stdout.value).not.toContain('Version:');
   expect(stderr.value).toBe('');
 });
 
