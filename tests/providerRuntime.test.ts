@@ -9,8 +9,13 @@ import { runCli } from '../src/cli/index.js';
 import type { AnkhCommandContext } from '../src/commandContext.js';
 import type { AnkhDiscoveredPackage } from '../src/discovery.js';
 import { createBunProviderPackageStore } from '../src/features/providers/adapters/outbound/createBunProviderPackageStore.js';
+import { createFileProviderCatalogStore } from '../src/features/providers/adapters/outbound/createFileProviderCatalogStore.js';
 import { createGitHubProviderCatalogSource } from '../src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.js';
 import { resolveProviderCatalogAsync } from '../src/features/providers/application/use-cases/resolveProviderCatalogAsync.js';
+import {
+  PROVIDER_CATALOG_CACHE_SCHEMA_VERSION,
+  PROVIDER_PACKAGE_CACHE_SCHEMA_VERSION,
+} from '../src/features/providers/domain/providerCachePolicy.js';
 import type {
   AnkhProviderCatalogEntry,
   AnkhProviderCatalogSnapshot,
@@ -58,6 +63,7 @@ describe('official provider runtime', () => {
     const snapshot: AnkhProviderCatalogSnapshot = {
       cachedAtMs: 10_000,
       entries: [infraEntry],
+      schemaVersion: PROVIDER_CATALOG_CACHE_SCHEMA_VERSION,
     };
     let sourceReads = 0;
 
@@ -84,6 +90,7 @@ describe('official provider runtime', () => {
     const snapshot: AnkhProviderCatalogSnapshot = {
       cachedAtMs: 1_000,
       entries: [infraEntry],
+      schemaVersion: PROVIDER_CATALOG_CACHE_SCHEMA_VERSION,
     };
 
     const catalog = await resolveProviderCatalogAsync({
@@ -101,6 +108,19 @@ describe('official provider runtime', () => {
     });
 
     expect(catalog).toEqual({ entries: [infraEntry] });
+  });
+
+  test('rejects provider catalog snapshots from the previous unversioned cache format', async () => {
+    const cacheRoot = await createTemporaryDirectory();
+    const cacheFilePath = path.join(cacheRoot, 'provider-catalog.json');
+    await writeFile(
+      cacheFilePath,
+      `${JSON.stringify({ cachedAtMs: 10_000, entries: [infraEntry] }, null, 2)}\n`,
+      'utf8',
+    );
+
+    const store = createFileProviderCatalogStore(cacheFilePath);
+    expect(await store.readAsync()).toBeNull();
   });
 
   test('discovers provider metadata dynamically from GitHub repository package manifests', async () => {
@@ -296,6 +316,37 @@ describe('official provider runtime', () => {
     expect(run.stdout.value).toContain('ankh infra <command>');
     expect(run.stdout.value.endsWith('\n\n')).toBeTrue();
     expect(run.stderr.value).toBe('');
+  });
+
+  test('reinitializes an unversioned provider package cache before reuse', async () => {
+    const cacheRoot = await createTemporaryDirectory();
+    await writeFile(
+      path.join(cacheRoot, 'package.json'),
+      `${JSON.stringify({ name: 'ankh-provider-cache', private: true }, null, 2)}\n`,
+      'utf8',
+    );
+    await writeCachedProviderPackage(cacheRoot);
+    let installs = 0;
+
+    const store = createBunProviderPackageStore({
+      bunExecutable: '/fake/bun',
+      cacheRoot,
+      async runProcessAsync(_executable, _args) {
+        installs += 1;
+        await writeCachedProviderPackage(cacheRoot);
+        return { exitCode: 0, stderr: '' };
+      },
+    });
+
+    await store.resolveAsync(infraEntry);
+
+    const cachePackageJson = JSON.parse(
+      await Bun.file(path.join(cacheRoot, 'package.json')).text(),
+    ) as Record<string, unknown>;
+    expect(cachePackageJson.ankhProviderCacheSchemaVersion).toBe(
+      PROVIDER_PACKAGE_CACHE_SCHEMA_VERSION,
+    );
+    expect(installs).toBe(1);
   });
 
   test('installs a missing exact provider version into the private Bun cache once', async () => {
