@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.2
+
+### Patch Changes
+
+- ce3f092: Treat `package.json.ankh.provider: null` as authoritative non-provider metadata and invalidate provider catalogs created with the previous `./cli` inference rule.
+
 ## 0.10.1
 
 ### Patch Changes
