@@ -250,7 +250,7 @@ describe('official provider runtime', () => {
       },
     });
 
-    expect(source.readAsync()).rejects.toThrow(
+    await expect(source.readAsync()).rejects.toThrow(
       '@ankhorage/broken package.json.ankh.provider must be null or a package-relative path.',
     );
   });
