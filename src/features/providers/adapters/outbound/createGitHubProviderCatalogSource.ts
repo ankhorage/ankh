@@ -180,8 +180,7 @@ function parseAnkhMetadata(
       `${packageName} package.json.ankh.provider must be null or a package-relative path.`,
     );
   }
-  const provider =
-    typeof rawMetadata.provider === 'string' ? rawMetadata.provider : null;
+  const provider = typeof rawMetadata.provider === 'string' ? rawMetadata.provider : null;
 
   if (!Array.isArray(rawMetadata.capabilities)) {
     throw new Error(`${packageName} package.json.ankh.capabilities must be an array.`);
