@@ -16,6 +16,15 @@ describe('package.json', () => {
     expect(packageJson.exports['./package.json']).toBe('./package.json');
   });
 
+  it('keeps concrete providers out of the published runtime dependency graph', () => {
+    expect(packageJson.dependencies).toEqual({
+      '@ankhorage/contracts': '^12.0.1',
+      yaml: '^2.8.1',
+    });
+    expect(packageJson.devDependencies['@ankhorage/devtools']).toBeDefined();
+    expect(packageJson.devDependencies['@ankhorage/doctor']).toBeDefined();
+  });
+
   it('publishes the required package scripts and no top-level ankh metadata yet', () => {
     expect(typeof packageJson.scripts.build).toBe('string');
     expect(typeof packageJson.scripts.typecheck).toBe('string');
