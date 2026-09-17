@@ -42,12 +42,17 @@ async function createDoctorProviderRuntime(): Promise<AnkhProviderRuntime> {
     packageJsonPath,
     source: 'installed-dependency',
   });
-  if (readResult.metadata === null || readResult.packageName === null) {
-    throw new Error('The installed Doctor package must expose valid Ankh metadata.');
+  if (
+    readResult.metadata === null ||
+    readResult.metadata.provider === null ||
+    readResult.packageName === null
+  ) {
+    throw new Error('The installed Doctor package must expose valid Ankh provider metadata.');
   }
+  const providerMetadata = { ...readResult.metadata, provider: readResult.metadata.provider };
 
   const discoveredPackage: AnkhDiscoveredPackage = {
-    metadata: readResult.metadata,
+    metadata: providerMetadata,
     packageJsonPath,
     packageName: readResult.packageName,
     packageRoot: path.dirname(packageJsonPath),
@@ -55,7 +60,7 @@ async function createDoctorProviderRuntime(): Promise<AnkhProviderRuntime> {
   };
   const entry = {
     description: doctorPackageJson.description,
-    metadata: readResult.metadata,
+    metadata: providerMetadata,
     packageName: readResult.packageName,
     repositoryUrl: 'https://github.com/ankhorage/doctor',
     version: doctorPackageJson.version,
