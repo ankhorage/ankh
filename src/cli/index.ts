@@ -8,14 +8,14 @@ import type {
 } from '../discovery.js';
 import { discoverAnkhPackages } from '../discovery.js';
 import { type AnkhCommandExecutionContext, resolveExecutableCommand } from '../execution.js';
+import { discoverHelpPackages } from '../features/help/discoverHelpPackages.js';
+import { readPackagePresentation } from '../features/help/readPackagePresentation.js';
 import {
   renderCategoryHelp,
   renderCategoryProviderUnavailable,
   renderCommandExecutionFailure,
-  renderCommands,
   renderDiscoveryFailure,
   renderExecutionDiagnostics,
-  renderMetadataDiscoveryDiagnostics,
   renderProviderLoadFailure,
   renderProviderManifestDiagnostics,
   renderRootHelp,
@@ -61,7 +61,6 @@ export interface RunCliOptions {
 interface ResolvedCliState {
   readonly packageRegistry: AnkhPackageRegistry;
   readonly providerRegistry: AnkhProviderRegistry;
-  readonly metadataDiagnostics: AnkhMetadataDiscoveryResult['diagnostics'];
   readonly providerDiagnostics: readonly AnkhProviderManifestDiagnostic[];
 }
 
@@ -81,23 +80,18 @@ export async function runCli(
 
   switch (request.kind) {
     case 'help':
-      context.writeStdout(renderRootHelp());
-      return { exitCode: 0 };
-    case 'version':
-      context.writeStdout(`${context.version}\n`);
-      return { exitCode: 0 };
-    case 'commands':
-      return renderDiscoveredCommands({
+      return renderDiscoveredRootHelp({
         context,
-        discoverPackages,
         loadProviders,
         options,
       });
+    case 'version':
+      context.writeStdout(`${context.version}\n`);
+      return { exitCode: 0 };
     case 'category-help':
       return renderDiscoveredCategoryHelp({
         category: request.category,
         context,
-        discoverPackages,
         loadProviders,
         options,
       });
@@ -123,47 +117,47 @@ export async function runCli(
   }
 }
 
-async function renderDiscoveredCommands(input: {
+async function renderDiscoveredRootHelp(input: {
   readonly context: AnkhCommandContext;
-  readonly discoverPackages: DiscoverAnkhPackagesFn;
   readonly loadProviders: LoadProviderManifestsFn;
   readonly options: RunCliOptions;
 }): Promise<AnkhCliRunResult> {
-  const resolvedState = await resolveCliState(input);
+  const resolvedState = await resolveHelpCliState(input);
 
   if ('exitCode' in resolvedState) {
     return resolvedState;
   }
 
-  input.context.writeStdout(
-    renderCommands(resolvedState.packageRegistry.listPackages(), resolvedState.providerRegistry),
+  const providers = resolvedState.providerRegistry
+    .listProviders()
+    .filter(
+      (provider) =>
+        resolvedState.providerRegistry.findAllByCategory(provider.manifest.category).length === 1,
+    );
+  const commands = await Promise.all(
+    providers.map(async (provider) => {
+      const presentation = await readPackagePresentation(
+        provider.discoveredPackage.packageJsonPath,
+      );
+      return {
+        command: provider.manifest.category,
+        packageName: provider.discoveredPackage.packageName,
+        repositoryUrl: presentation.repositoryUrl,
+      };
+    }),
   );
 
-  const metadataDiagnosticsOutput = renderMetadataDiscoveryDiagnostics(
-    resolvedState.metadataDiagnostics,
-  );
-  if (metadataDiagnosticsOutput !== '') {
-    input.context.writeStderr(metadataDiagnosticsOutput);
-  }
-
-  const providerDiagnosticsOutput = renderProviderManifestDiagnostics(
-    resolvedState.providerDiagnostics,
-  );
-  if (providerDiagnosticsOutput !== '') {
-    input.context.writeStderr(providerDiagnosticsOutput);
-  }
-
+  input.context.writeStdout(renderRootHelp(commands));
   return { exitCode: 0 };
 }
 
 async function renderDiscoveredCategoryHelp(input: {
   readonly category: string;
   readonly context: AnkhCommandContext;
-  readonly discoverPackages: DiscoverAnkhPackagesFn;
   readonly loadProviders: LoadProviderManifestsFn;
   readonly options: RunCliOptions;
 }): Promise<AnkhCliRunResult> {
-  const resolvedState = await resolveCliState(input);
+  const resolvedState = await resolveHelpCliState(input);
 
   if ('exitCode' in resolvedState) {
     return resolvedState;
@@ -186,7 +180,14 @@ async function renderDiscoveredCategoryHelp(input: {
     return { exitCode: 1 };
   }
 
-  input.context.writeStdout(renderCategoryHelp(input.category, resolvedState.providerRegistry));
+  const presentation = await readPackagePresentation(discoveredPackage.packageJsonPath);
+  input.context.writeStdout(
+    renderCategoryHelp(
+      input.category,
+      resolvedState.providerRegistry,
+      presentation.description ?? discoveredPackage.packageName,
+    ),
+  );
   return { exitCode: 0 };
 }
 
@@ -353,61 +354,105 @@ async function resolveCliState(input: {
   readonly loadProviders: LoadProviderManifestsFn;
   readonly options: RunCliOptions;
 }): Promise<ResolvedCliState | AnkhCliRunResult> {
-  if (input.options.registry !== undefined && input.options.providerRegistry !== undefined) {
-    return {
-      packageRegistry: input.options.registry,
-      providerRegistry: input.options.providerRegistry,
-      metadataDiagnostics: [],
-      providerDiagnostics: [],
-    };
+  const injectedState = resolveInjectedCliState(input.options);
+  if (injectedState !== null) {
+    return injectedState;
   }
 
   try {
     const discoveryResult = await input.discoverPackages({
       cwd: input.context.cwd,
     });
-    const coreProviderState = await loadCoreProviderState();
-    const discoveredPackages = mergeCorePackages(
-      coreProviderState.packages,
-      discoveryResult.packages,
-    );
-    const packageRegistry = input.options.registry ?? createPackageRegistry(discoveredPackages);
-
-    try {
-      const providerLoadResult =
-        input.options.providerRegistry !== undefined
-          ? {
-              diagnostics: [] as const,
-              providers: input.options.providerRegistry.listProviders(),
-            }
-          : await input.loadProviders(discoveryResult.packages);
-
-      const providerRegistry =
-        input.options.providerRegistry ??
-        createProviderRegistry(
-          mergeCoreProviders(coreProviderState.providers, providerLoadResult.providers),
-        );
-
-      return {
-        packageRegistry,
-        providerRegistry,
-        metadataDiagnostics: [
-          ...coreProviderState.metadataDiagnostics,
-          ...discoveryResult.diagnostics,
-        ],
-        providerDiagnostics: [
-          ...coreProviderState.providerDiagnostics,
-          ...providerLoadResult.diagnostics,
-        ],
-      };
-    } catch (error) {
-      input.context.writeStderr(renderProviderLoadFailure(error));
-      return { exitCode: 1 };
-    }
+    const resolvedState = await resolveDiscoveredCliState({
+      context: input.context,
+      discoveryResult,
+      loadProviders: input.loadProviders,
+      options: input.options,
+    });
+    return resolvedState;
   } catch (error) {
     input.context.writeStderr(renderDiscoveryFailure(error));
     return { exitCode: 1 };
   }
+}
+
+async function resolveHelpCliState(input: {
+  readonly context: AnkhCommandContext;
+  readonly loadProviders: LoadProviderManifestsFn;
+  readonly options: RunCliOptions;
+}): Promise<ResolvedCliState | AnkhCliRunResult> {
+  const injectedState = resolveInjectedCliState(input.options);
+  if (injectedState !== null) {
+    return injectedState;
+  }
+
+  try {
+    const discoveryResult = await discoverHelpPackages();
+    const resolvedState = await resolveDiscoveredCliState({
+      context: input.context,
+      discoveryResult,
+      loadProviders: input.loadProviders,
+      options: input.options,
+    });
+    return resolvedState;
+  } catch (error) {
+    input.context.writeStderr(renderDiscoveryFailure(error));
+    return { exitCode: 1 };
+  }
+}
+
+async function resolveDiscoveredCliState(input: {
+  readonly context: AnkhCommandContext;
+  readonly discoveryResult: AnkhMetadataDiscoveryResult;
+  readonly loadProviders: LoadProviderManifestsFn;
+  readonly options: RunCliOptions;
+}): Promise<ResolvedCliState | AnkhCliRunResult> {
+  const coreProviderState = await loadCoreProviderState();
+  const discoveredPackages = mergeCorePackages(
+    coreProviderState.packages,
+    input.discoveryResult.packages,
+  );
+  const packageRegistry = input.options.registry ?? createPackageRegistry(discoveredPackages);
+
+  try {
+    const providerLoadResult =
+      input.options.providerRegistry !== undefined
+        ? {
+            diagnostics: [] as const,
+            providers: input.options.providerRegistry.listProviders(),
+          }
+        : await input.loadProviders(input.discoveryResult.packages);
+
+    const providerRegistry =
+      input.options.providerRegistry ??
+      createProviderRegistry(
+        mergeCoreProviders(coreProviderState.providers, providerLoadResult.providers),
+      );
+
+    return {
+      packageRegistry,
+      providerRegistry,
+      providerDiagnostics: [
+        ...coreProviderState.providerDiagnostics,
+        ...providerLoadResult.diagnostics,
+      ],
+    };
+  } catch (error) {
+    input.context.writeStderr(renderProviderLoadFailure(error));
+    return { exitCode: 1 };
+  }
+}
+
+function resolveInjectedCliState(options: RunCliOptions): ResolvedCliState | null {
+  if (options.registry === undefined || options.providerRegistry === undefined) {
+    return null;
+  }
+
+  return {
+    packageRegistry: options.registry,
+    providerRegistry: options.providerRegistry,
+    providerDiagnostics: [],
+  };
 }
 
 function writeProviderUnavailable(input: {

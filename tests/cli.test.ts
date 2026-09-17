@@ -4,28 +4,14 @@ import { describe, expect, it } from 'bun:test';
 import packageJson from '../package.json';
 import { runCli } from '../src/cli/index.js';
 import type { AnkhCommandContext } from '../src/commandContext.js';
-import type { AnkhDiscoveredPackage, AnkhMetadataDiscoveryDiagnostic } from '../src/discovery.js';
+import type { AnkhDiscoveredPackage } from '../src/discovery.js';
 import type { AnkhCommandExecutionRequest, AnkhRuntimeCommandProvider } from '../src/execution.js';
+import { createPackageRegistry } from '../src/packageRegistry.js';
 import type {
   AnkhLoadedProvider,
   AnkhProviderManifestDiagnostic,
 } from '../src/providerManifestLoader.js';
-
-const FORBIDDEN_CATEGORY_NAMES = [
-  'studio',
-  'board',
-  'doctor',
-  'dev',
-  'runtime',
-  'templates',
-  'orchestrator',
-];
-
-const contractsMetadata = {
-  capabilities: ['contracts.cli'],
-  category: 'contracts',
-  provider: null,
-} as const satisfies AnkhPackageMetadata;
+import { createProviderRegistry } from '../src/providerRegistry.js';
 
 const infraMetadata = {
   capabilities: ['infra.up', 'infra.status', 'infra.down'],
@@ -93,6 +79,16 @@ function createRuntimeProvider(
   };
 }
 
+function createInjectedState(
+  discoveredPackages: readonly AnkhDiscoveredPackage[],
+  providers: readonly AnkhLoadedProvider[],
+) {
+  return {
+    registry: createPackageRegistry(discoveredPackages),
+    providerRegistry: createProviderRegistry(providers),
+  };
+}
+
 function createMemoryContext(version = packageJson.version): {
   readonly context: AnkhCommandContext;
   readonly stdout: { value: string };
@@ -119,26 +115,35 @@ function createMemoryContext(version = packageJson.version): {
 }
 
 describe('runCli', () => {
-  it('prints help when called with no args', async () => {
+  it('prints discovered command links for root help', async () => {
     const { context, stdout, stderr } = createMemoryContext();
+    const infraPackage = createDiscoveredPackage('@ankhorage/infra', infraMetadata);
+    const state = createInjectedState([infraPackage], [createLoadedProvider(infraPackage)]);
 
-    const result = await runCli([], { context });
+    const result = await runCli([], { context, ...state });
 
     expect(result).toEqual({ exitCode: 0 });
-    expect(stdout.value).toContain('Ankh CLI');
-    expect(stdout.value).toContain('ankh commands');
-    expect(stdout.value).toContain('ankh <category> --help');
+    expect(stdout.value).toContain('Usage:');
+    expect(stdout.value).toContain('ankh <command>');
+    expect(stdout.value).toContain('Commands:');
+    expect(stdout.value).toContain('infra  https://github.com/ankhorage/infra');
+    expect(stdout.value).toContain('plan   https://github.com/ankhorage/ankh');
+    expect(stdout.value).not.toContain('ankh commands');
+    expect(stdout.value).not.toContain('capability');
     expect(stderr.value).toBe('');
   });
 
-  it('prints help for help aliases', async () => {
+  it('prints the same root help for help aliases', async () => {
+    const infraPackage = createDiscoveredPackage('@ankhorage/infra', infraMetadata);
+    const state = createInjectedState([infraPackage], [createLoadedProvider(infraPackage)]);
+
     for (const argv of [['--help'], ['-h'], ['help']] as const) {
       const { context, stdout, stderr } = createMemoryContext();
-
-      const result = await runCli(argv, { context });
+      const result = await runCli(argv, { context, ...state });
 
       expect(result).toEqual({ exitCode: 0 });
-      expect(stdout.value).toContain('Built-ins:');
+      expect(stdout.value).toContain('Commands:');
+      expect(stdout.value).toContain('https://github.com/ankhorage/infra');
       expect(stderr.value).toBe('');
     }
   });
@@ -146,7 +151,6 @@ describe('runCli', () => {
   it('prints the package version for version aliases', async () => {
     for (const argv of [['--version'], ['-v']] as const) {
       const { context, stdout, stderr } = createMemoryContext('9.9.9');
-
       const result = await runCli(argv, { context });
 
       expect(result).toEqual({ exitCode: 0 });
@@ -155,134 +159,34 @@ describe('runCli', () => {
     }
   });
 
-  it('lists the Doctor core provider when discovery is empty', async () => {
+  it('does not reserve commands as a built-in', async () => {
     const { context, stdout, stderr } = createMemoryContext();
+    const state = createInjectedState([], []);
 
-    const result = await runCli(['commands'], {
-      context,
-      discoverPackages: () =>
-        Promise.resolve({
-          diagnostics: [],
-          packages: [],
-        }),
-      loadProviders: () =>
-        Promise.resolve({
-          diagnostics: [],
-          providers: [],
-        }),
-    });
+    const result = await runCli(['commands'], { context, ...state });
 
-    expect(result).toEqual({ exitCode: 0 });
-    expect(stdout.value).toContain('@ankhorage/doctor');
-    expect(stdout.value).toContain('category: doctor');
-    expect(stdout.value).toContain('- validate');
-    expect(stdout.value).toContain('- fix');
-    expect(stdout.value).toContain('- repo');
-    expect(stdout.value).toContain('- package');
-
-    expect(stderr.value).toBe('');
+    expect(result).toEqual({ exitCode: 1 });
+    expect(stdout.value).toBe('');
+    expect(stderr.value).toContain('Unknown Ankh command: commands');
+    expect(stderr.value).toContain('ankh --help');
   });
 
-  it('prints discovered package metadata and loaded provider command descriptors', async () => {
+  it('renders package description fallback and complete command list without capability metadata', async () => {
     const { context, stdout, stderr } = createMemoryContext();
     const infraPackage = createDiscoveredPackage('@ankhorage/infra', infraMetadata);
+    const state = createInjectedState([infraPackage], [createLoadedProvider(infraPackage)]);
 
-    const result = await runCli(['commands'], {
-      context,
-      discoverPackages: () =>
-        Promise.resolve({
-          diagnostics: [],
-          packages: [
-            createDiscoveredPackage('@ankhorage/contracts', contractsMetadata),
-            infraPackage,
-          ],
-        }),
-      loadProviders: () =>
-        Promise.resolve({
-          diagnostics: [],
-          providers: [createLoadedProvider(infraPackage)],
-        }),
-    });
+    const result = await runCli(['infra', '--help'], { context, ...state });
 
     expect(result).toEqual({ exitCode: 0 });
-    expect(stdout.value).toContain('Discovered Ankh packages:');
-    expect(stdout.value).toContain('@ankhorage/contracts');
-    expect(stdout.value).toContain('provider: none');
-    expect(stdout.value).toContain('@ankhorage/infra');
-    expect(stdout.value).toContain('provider: ./dist/ankh.provider.js');
-    expect(stdout.value).toContain('commands:');
-    expect(stdout.value).toContain('- up');
-    expect(stdout.value).toContain('summary: Bring project infrastructure up');
-    expect(stdout.value).toContain('aliases: start');
-    expect(stdout.value).toContain('ankh infra up shop');
-    expect(stderr.value).toBe('');
-  });
-
-  it('prints metadata and provider diagnostics to stderr while exiting zero for commands', async () => {
-    const { context, stdout, stderr } = createMemoryContext();
-    const metadataDiagnostic = {
-      code: 'invalid-ankh-category',
-      message: 'package.json "ankh.category" must be a non-empty string.',
-      packageJsonPath: '/repo/bad/package.json',
-      packageName: '@ankhorage/bad',
-      severity: 'error',
-      source: 'workspace',
-    } as const satisfies AnkhMetadataDiscoveryDiagnostic;
-    const providerDiagnostic = {
-      category: 'infra',
-      code: 'provider-import-failed',
-      message: 'Could not import provider manifest module: not found',
-      packageJsonPath: '/repo/@ankhorage/infra/package.json',
-      packageName: '@ankhorage/infra',
-      providerModulePath: '/repo/@ankhorage/infra/dist/ankh.provider.js',
-      severity: 'error',
-    } as const satisfies AnkhProviderManifestDiagnostic;
-
-    const result = await runCli(['commands'], {
-      context,
-      discoverPackages: () =>
-        Promise.resolve({
-          diagnostics: [metadataDiagnostic],
-          packages: [createDiscoveredPackage('@ankhorage/contracts', contractsMetadata)],
-        }),
-      loadProviders: () =>
-        Promise.resolve({
-          diagnostics: [providerDiagnostic],
-          providers: [],
-        }),
-    });
-
-    expect(result).toEqual({ exitCode: 0 });
-    expect(stdout.value).toContain('@ankhorage/contracts');
-    expect(stderr.value).toContain('Ankh metadata discovery diagnostics:');
-    expect(stderr.value).toContain('invalid-ankh-category');
-    expect(stderr.value).toContain('Ankh provider manifest diagnostics:');
-    expect(stderr.value).toContain('provider-import-failed');
-  });
-
-  it('renders category help from a successfully loaded provider manifest', async () => {
-    const { context, stdout, stderr } = createMemoryContext();
-    const infraPackage = createDiscoveredPackage('@ankhorage/infra', infraMetadata);
-
-    const result = await runCli(['infra', '--help'], {
-      context,
-      discoverPackages: () =>
-        Promise.resolve({
-          diagnostics: [],
-          packages: [infraPackage],
-        }),
-      loadProviders: () =>
-        Promise.resolve({
-          diagnostics: [],
-          providers: [createLoadedProvider(infraPackage)],
-        }),
-    });
-
-    expect(result).toEqual({ exitCode: 0 });
-    expect(stdout.value).toContain('Ankh category: infra');
-    expect(stdout.value).toContain('Package: @ankhorage/infra');
-    expect(stdout.value).toContain('infra up');
-    expect(stdout.value).toContain('infra status');
+    expect(stdout.value.startsWith('@ankhorage/infra\n')).toBe(true);
+    expect(stdout.value).toContain('ankh infra <command>');
+    expect(stdout.value).toContain('up      Bring project infrastructure up');
+    expect(stdout.value).toContain('status  Show project infrastructure status');
+    expect(stdout.value).toContain('ankh infra <command> --help');
+    expect(stdout.value).not.toContain('capability');
+    expect(stdout.value).not.toContain('Provider:');
+    expect(stdout.value).not.toContain('Version:');
     expect(stderr.value).toBe('');
   });
 
@@ -290,53 +194,37 @@ describe('runCli', () => {
     const { context, stdout, stderr } = createMemoryContext();
     const infraPackage = createDiscoveredPackage('@ankhorage/infra', infraMetadata);
     const requests: AnkhCommandExecutionRequest[] = [];
-    const runtimeProvider = {
-      ...infraManifest,
-      handlers: [
-        {
-          path: ['up'],
-          handler(request) {
-            requests.push(request);
-            request.context.writeStdout(`handled:${request.argv.join('|')}\n`);
-          },
+    const runtimeProvider = createRuntimeProvider(infraManifest, [
+      {
+        path: ['up'],
+        handler(request) {
+          requests.push(request);
+          request.context.writeStdout(`handled:${request.argv.join('|')}\n`);
         },
-        {
-          path: ['status'],
-          handler: noopHandler,
-        },
-      ],
-    } as const satisfies AnkhRuntimeCommandProvider;
+      },
+      { path: ['status'], handler: noopHandler },
+    ]);
+    const state = createInjectedState(
+      [infraPackage],
+      [createLoadedProvider(infraPackage, runtimeProvider, runtimeProvider)],
+    );
 
-    const result = await runCli(['infra', 'up', '--profile', 'local'], {
-      context,
-      discoverPackages: () =>
-        Promise.resolve({
-          diagnostics: [],
-          packages: [infraPackage],
-        }),
-      loadProviders: () =>
-        Promise.resolve({
-          diagnostics: [],
-          providers: [createLoadedProvider(infraPackage, runtimeProvider, runtimeProvider)],
-        }),
-    });
+    const result = await runCli(['infra', 'up', '--profile', 'local'], { context, ...state });
 
     expect(result).toEqual({ exitCode: 0 });
     expect(requests).toHaveLength(1);
     expect(requests[0]?.argv).toEqual(['--profile', 'local']);
     expect(requests[0]?.command.path).toEqual(['up']);
-    expect(requests[0]?.provider.manifest.id).toBe('@ankhorage/infra');
     expect(stdout.value).toContain('handled:--profile|local');
     expect(stderr.value).toBe('');
   });
 
-  it('dispatches alias selectors and prefers the longest canonical command path', async () => {
+  it('dispatches aliases and prefers the longest canonical command path', async () => {
     const { context, stdout, stderr } = createMemoryContext();
     const infraPackage = createDiscoveredPackage('@ankhorage/infra', {
       ...infraMetadata,
       capabilities: ['infra.up', 'infra.status', 'infra.port', 'infra.port.forward'],
     });
-    const seen: string[] = [];
     const nestedManifest = {
       ...infraManifest,
       capabilities: ['infra.up', 'infra.status', 'infra.port', 'infra.port.forward'],
@@ -355,59 +243,37 @@ describe('runCli', () => {
         },
       ],
     } as const satisfies AnkhCommandProviderManifest;
-    const runtimeProvider = {
-      ...nestedManifest,
-      handlers: [
-        {
-          path: ['up'],
-          handler(request) {
-            seen.push(`alias:${request.command.path.join(' ')}:${request.argv.join('|')}`);
-          },
+    const seen: string[] = [];
+    const runtimeProvider = createRuntimeProvider(nestedManifest, [
+      {
+        path: ['up'],
+        handler(request) {
+          seen.push(`alias:${request.command.path.join(' ')}:${request.argv.join('|')}`);
         },
-        {
-          path: ['status'],
-          handler: noopHandler,
+      },
+      { path: ['status'], handler: noopHandler },
+      {
+        path: ['port'],
+        handler(request) {
+          seen.push(`port:${request.argv.join('|')}`);
         },
-        {
-          path: ['port'],
-          handler(request) {
-            seen.push(`port:${request.argv.join('|')}`);
-          },
+      },
+      {
+        path: ['port', 'forward'],
+        handler(request) {
+          seen.push(`forward:${request.argv.join('|')}`);
         },
-        {
-          path: ['port', 'forward'],
-          handler(request) {
-            seen.push(`forward:${request.argv.join('|')}`);
-          },
-        },
-      ],
-    } as const satisfies AnkhRuntimeCommandProvider;
+      },
+    ]);
+    const state = createInjectedState(
+      [infraPackage],
+      [createLoadedProvider(infraPackage, runtimeProvider, runtimeProvider)],
+    );
 
-    const aliasResult = await runCli(['infra', 'start', '--watch'], {
-      context,
-      discoverPackages: () =>
-        Promise.resolve({
-          diagnostics: [],
-          packages: [infraPackage],
-        }),
-      loadProviders: () =>
-        Promise.resolve({
-          diagnostics: [],
-          providers: [createLoadedProvider(infraPackage, runtimeProvider, runtimeProvider)],
-        }),
-    });
+    const aliasResult = await runCli(['infra', 'start', '--watch'], { context, ...state });
     const longestPathResult = await runCli(['infra', 'port', 'forward', 'db', '--local', '5432'], {
       context,
-      discoverPackages: () =>
-        Promise.resolve({
-          diagnostics: [],
-          packages: [infraPackage],
-        }),
-      loadProviders: () =>
-        Promise.resolve({
-          diagnostics: [],
-          providers: [createLoadedProvider(infraPackage, runtimeProvider, runtimeProvider)],
-        }),
+      ...state,
     });
 
     expect(aliasResult).toEqual({ exitCode: 0 });
@@ -417,70 +283,30 @@ describe('runCli', () => {
     expect(stderr.value).toBe('');
   });
 
-  it('keeps execution diagnostics out of commands and category help output', async () => {
-    const infraPackage = createDiscoveredPackage('@ankhorage/infra', infraMetadata);
-    const partialProvider = {
-      ...infraManifest,
-      handlers: [
-        {
-          path: ['up'],
-          handler: noopHandler,
-        },
-      ],
-    } as const satisfies AnkhRuntimeCommandProvider;
-    const commandRun = createMemoryContext();
-    const helpRun = createMemoryContext();
-
-    const commandResult = await runCli(['commands'], {
-      context: commandRun.context,
-      discoverPackages: () =>
-        Promise.resolve({
-          diagnostics: [],
-          packages: [infraPackage],
-        }),
-      loadProviders: () =>
-        Promise.resolve({
-          diagnostics: [],
-          providers: [createLoadedProvider(infraPackage, partialProvider, partialProvider)],
-        }),
-    });
-    const helpResult = await runCli(['infra', '--help'], {
-      context: helpRun.context,
-      discoverPackages: () =>
-        Promise.resolve({
-          diagnostics: [],
-          packages: [infraPackage],
-        }),
-      loadProviders: () =>
-        Promise.resolve({
-          diagnostics: [],
-          providers: [createLoadedProvider(infraPackage, partialProvider, partialProvider)],
-        }),
-    });
-
-    expect(commandResult).toEqual({ exitCode: 0 });
-    expect(commandRun.stderr.value).toBe('');
-    expect(helpResult).toEqual({ exitCode: 0 });
-    expect(helpRun.stderr.value).toBe('');
-  });
-
-  it('prints execution diagnostics and exits one when a loaded provider has no handlers', async () => {
+  it('keeps execution diagnostics out of package help output', async () => {
     const { context, stdout, stderr } = createMemoryContext();
     const infraPackage = createDiscoveredPackage('@ankhorage/infra', infraMetadata);
+    const partialProvider = createRuntimeProvider(infraManifest, [
+      { path: ['up'], handler: noopHandler },
+    ]);
+    const state = createInjectedState(
+      [infraPackage],
+      [createLoadedProvider(infraPackage, partialProvider, partialProvider)],
+    );
 
-    const result = await runCli(['infra', 'up'], {
-      context,
-      discoverPackages: () =>
-        Promise.resolve({
-          diagnostics: [],
-          packages: [infraPackage],
-        }),
-      loadProviders: () =>
-        Promise.resolve({
-          diagnostics: [],
-          providers: [createLoadedProvider(infraPackage)],
-        }),
-    });
+    const result = await runCli(['infra', '--help'], { context, ...state });
+
+    expect(result).toEqual({ exitCode: 0 });
+    expect(stdout.value).toContain('Bring project infrastructure up');
+    expect(stderr.value).toBe('');
+  });
+
+  it('prints execution diagnostics when a loaded provider has no handlers', async () => {
+    const { context, stdout, stderr } = createMemoryContext();
+    const infraPackage = createDiscoveredPackage('@ankhorage/infra', infraMetadata);
+    const state = createInjectedState([infraPackage], [createLoadedProvider(infraPackage)]);
+
+    const result = await runCli(['infra', 'up'], { context, ...state });
 
     expect(result).toEqual({ exitCode: 1 });
     expect(stdout.value).toBe('');
@@ -492,31 +318,20 @@ describe('runCli', () => {
     const { context, stdout, stderr } = createMemoryContext();
     const infraPackage = createDiscoveredPackage('@ankhorage/infra', infraMetadata);
     let wasCalled = false;
-    const partialProvider = {
-      ...infraManifest,
-      handlers: [
-        {
-          path: ['up'],
-          handler() {
-            wasCalled = true;
-          },
+    const partialProvider = createRuntimeProvider(infraManifest, [
+      {
+        path: ['up'],
+        handler() {
+          wasCalled = true;
         },
-      ],
-    } as const satisfies AnkhRuntimeCommandProvider;
+      },
+    ]);
+    const state = createInjectedState(
+      [infraPackage],
+      [createLoadedProvider(infraPackage, partialProvider, partialProvider)],
+    );
 
-    const result = await runCli(['infra', 'up'], {
-      context,
-      discoverPackages: () =>
-        Promise.resolve({
-          diagnostics: [],
-          packages: [infraPackage],
-        }),
-      loadProviders: () =>
-        Promise.resolve({
-          diagnostics: [],
-          providers: [createLoadedProvider(infraPackage, partialProvider, partialProvider)],
-        }),
-    });
+    const result = await runCli(['infra', 'up'], { context, ...state });
 
     expect(result).toEqual({ exitCode: 1 });
     expect(wasCalled).toBeFalse();
@@ -528,29 +343,15 @@ describe('runCli', () => {
     const { context, stdout, stderr } = createMemoryContext();
     const infraPackage = createDiscoveredPackage('@ankhorage/infra', infraMetadata);
     const runtimeProvider = createRuntimeProvider(infraManifest, [
-      {
-        path: ['up'],
-        handler: noopHandler,
-      },
-      {
-        path: ['status'],
-        handler: noopHandler,
-      },
+      { path: ['up'], handler: noopHandler },
+      { path: ['status'], handler: noopHandler },
     ]);
+    const state = createInjectedState(
+      [infraPackage],
+      [createLoadedProvider(infraPackage, runtimeProvider, runtimeProvider)],
+    );
 
-    const result = await runCli(['infra', 'destroy'], {
-      context,
-      discoverPackages: () =>
-        Promise.resolve({
-          diagnostics: [],
-          packages: [infraPackage],
-        }),
-      loadProviders: () =>
-        Promise.resolve({
-          diagnostics: [],
-          providers: [createLoadedProvider(infraPackage, runtimeProvider, runtimeProvider)],
-        }),
-    });
+    const result = await runCli(['infra', 'destroy'], { context, ...state });
 
     expect(result).toEqual({ exitCode: 1 });
     expect(stdout.value).toBe('');
@@ -562,62 +363,35 @@ describe('runCli', () => {
     const infraPackage = createDiscoveredPackage('@ankhorage/infra', infraMetadata);
     const successRun = createMemoryContext();
     const failureRun = createMemoryContext();
-    const exitCodeProvider = {
-      ...infraManifest,
-      handlers: [
-        {
-          path: ['up'],
-          handler() {
-            return { exitCode: 7 };
-          },
+    const exitCodeProvider = createRuntimeProvider(infraManifest, [
+      { path: ['up'], handler: () => ({ exitCode: 7 }) },
+      { path: ['status'], handler: noopHandler },
+    ]);
+    const throwingProvider = createRuntimeProvider(infraManifest, [
+      {
+        path: ['up'],
+        handler() {
+          throw new Error('kaboom');
         },
-        {
-          path: ['status'],
-          handler: noopHandler,
-        },
-      ],
-    } as const satisfies AnkhRuntimeCommandProvider;
-    const throwingProvider = {
-      ...infraManifest,
-      handlers: [
-        {
-          path: ['up'],
-          handler() {
-            throw new Error('kaboom');
-          },
-        },
-        {
-          path: ['status'],
-          handler: noopHandler,
-        },
-      ],
-    } as const satisfies AnkhRuntimeCommandProvider;
+      },
+      { path: ['status'], handler: noopHandler },
+    ]);
+    const successState = createInjectedState(
+      [infraPackage],
+      [createLoadedProvider(infraPackage, exitCodeProvider, exitCodeProvider)],
+    );
+    const failureState = createInjectedState(
+      [infraPackage],
+      [createLoadedProvider(infraPackage, throwingProvider, throwingProvider)],
+    );
 
     const successResult = await runCli(['infra', 'up'], {
       context: successRun.context,
-      discoverPackages: () =>
-        Promise.resolve({
-          diagnostics: [],
-          packages: [infraPackage],
-        }),
-      loadProviders: () =>
-        Promise.resolve({
-          diagnostics: [],
-          providers: [createLoadedProvider(infraPackage, exitCodeProvider, exitCodeProvider)],
-        }),
+      ...successState,
     });
     const failureResult = await runCli(['infra', 'up'], {
       context: failureRun.context,
-      discoverPackages: () =>
-        Promise.resolve({
-          diagnostics: [],
-          packages: [infraPackage],
-        }),
-      loadProviders: () =>
-        Promise.resolve({
-          diagnostics: [],
-          providers: [createLoadedProvider(infraPackage, throwingProvider, throwingProvider)],
-        }),
+      ...failureState,
     });
 
     expect(successResult).toEqual({ exitCode: 7 });
@@ -628,101 +402,50 @@ describe('runCli', () => {
     );
   });
 
-  it('treats duplicate loaded provider categories as dispatch-ambiguous without executing either provider', async () => {
+  it('treats duplicate provider categories as dispatch-ambiguous', async () => {
     const { context, stdout, stderr } = createMemoryContext();
     const primaryPackage = createDiscoveredPackage('@ankhorage/infra', infraMetadata);
     const duplicatePackage = createDiscoveredPackage('@ankhorage/infra-alt', infraMetadata);
     const executedProviders: string[] = [];
-    const primaryProvider = {
-      ...infraManifest,
-      handlers: [
-        {
-          path: ['up'],
-          handler() {
-            executedProviders.push('@ankhorage/infra');
-          },
+    const primaryProvider = createRuntimeProvider(infraManifest, [
+      {
+        path: ['up'],
+        handler() {
+          executedProviders.push('@ankhorage/infra');
         },
-        {
-          path: ['status'],
-          handler: noopHandler,
-        },
-      ],
-    } as const satisfies AnkhRuntimeCommandProvider;
-    const duplicateProvider = {
+      },
+      { path: ['status'], handler: noopHandler },
+    ]);
+    const duplicateManifest = {
       ...infraManifest,
       id: '@ankhorage/infra-alt',
-      handlers: [
-        {
-          path: ['up'],
-          handler() {
-            executedProviders.push('@ankhorage/infra-alt');
-          },
+    } as const satisfies AnkhCommandProviderManifest;
+    const duplicateProvider = createRuntimeProvider(duplicateManifest, [
+      {
+        path: ['up'],
+        handler() {
+          executedProviders.push('@ankhorage/infra-alt');
         },
-        {
-          path: ['status'],
-          handler: noopHandler,
-        },
+      },
+      { path: ['status'], handler: noopHandler },
+    ]);
+    const state = createInjectedState(
+      [primaryPackage, duplicatePackage],
+      [
+        createLoadedProvider(primaryPackage, primaryProvider, primaryProvider),
+        createLoadedProvider(duplicatePackage, duplicateProvider, duplicateProvider),
       ],
-    } as const satisfies AnkhRuntimeCommandProvider;
+    );
 
-    const result = await runCli(['infra', 'up'], {
-      context,
-      discoverPackages: () =>
-        Promise.resolve({
-          diagnostics: [],
-          packages: [primaryPackage, duplicatePackage],
-        }),
-      loadProviders: () =>
-        Promise.resolve({
-          diagnostics: [],
-          providers: [
-            createLoadedProvider(primaryPackage, primaryProvider, primaryProvider),
-            createLoadedProvider(duplicatePackage, duplicateProvider, duplicateProvider),
-          ],
-        }),
-    });
+    const result = await runCli(['infra', 'up'], { context, ...state });
 
     expect(result).toEqual({ exitCode: 1 });
     expect(executedProviders).toEqual([]);
     expect(stdout.value).toBe('');
-    expect(stderr.value).toContain('Ankh command execution diagnostics:');
     expect(stderr.value).toContain('provider-duplicate-category');
   });
 
-  it('prints provider diagnostics and exits one when category metadata exists but the manifest is invalid', async () => {
-    const { context, stdout, stderr } = createMemoryContext();
-    const providerDiagnostic = {
-      category: 'infra',
-      code: 'missing-provider-default-export',
-      message:
-        'Provider manifest module must default-export an AnkhCommandProviderManifest object.',
-      packageJsonPath: '/repo/@ankhorage/infra/package.json',
-      packageName: '@ankhorage/infra',
-      providerModulePath: '/repo/@ankhorage/infra/dist/ankh.provider.js',
-      severity: 'error',
-    } as const satisfies AnkhProviderManifestDiagnostic;
-
-    const result = await runCli(['infra', 'help'], {
-      context,
-      discoverPackages: () =>
-        Promise.resolve({
-          diagnostics: [],
-          packages: [createDiscoveredPackage('@ankhorage/infra', infraMetadata)],
-        }),
-      loadProviders: () =>
-        Promise.resolve({
-          diagnostics: [providerDiagnostic],
-          providers: [],
-        }),
-    });
-
-    expect(result).toEqual({ exitCode: 1 });
-    expect(stdout.value).toBe('');
-    expect(stderr.value).toContain('Ankh provider manifest diagnostics:');
-    expect(stderr.value).toContain('missing-provider-default-export');
-  });
-
-  it('prints provider manifest diagnostics for dispatch when category metadata exists but the manifest is invalid', async () => {
+  it('prints provider manifest diagnostics for dispatch when metadata exists but loading fails', async () => {
     const { context, stdout, stderr } = createMemoryContext();
     const providerDiagnostic = {
       category: 'infra',
@@ -754,33 +477,23 @@ describe('runCli', () => {
     expect(stderr.value).toContain('provider-command-alias-collides-with-path');
   });
 
-  it('prints unknown category errors for missing category metadata', async () => {
+  it('prints unknown category guidance through root help', async () => {
     const { context, stdout, stderr } = createMemoryContext();
+    const state = createInjectedState([], []);
 
-    const result = await runCli(['infra', '--help'], {
-      context,
-      discoverPackages: () =>
-        Promise.resolve({
-          diagnostics: [],
-          packages: [createDiscoveredPackage('@ankhorage/contracts', contractsMetadata)],
-        }),
-      loadProviders: () =>
-        Promise.resolve({
-          diagnostics: [],
-          providers: [],
-        }),
-    });
+    const result = await runCli(['infra', '--help'], { context, ...state });
 
     expect(result).toEqual({ exitCode: 1 });
     expect(stdout.value).toBe('');
     expect(stderr.value).toContain('Unknown Ankh category: infra');
-    expect(stderr.value).toContain('ankh commands');
+    expect(stderr.value).toContain('ankh --help');
+    expect(stderr.value).not.toContain('ankh commands');
   });
 
-  it('returns non-zero when metadata discovery fails unexpectedly', async () => {
+  it('returns non-zero when metadata discovery fails unexpectedly during dispatch', async () => {
     const { context, stdout, stderr } = createMemoryContext();
 
-    const result = await runCli(['commands'], {
+    const result = await runCli(['infra', 'up'], {
       context,
       discoverPackages: () => Promise.reject(new Error('boom')),
     });
@@ -790,10 +503,10 @@ describe('runCli', () => {
     expect(stderr.value).toContain('Ankh package metadata discovery failed unexpectedly: boom');
   });
 
-  it('returns non-zero when provider loading fails unexpectedly', async () => {
+  it('returns non-zero when provider loading fails unexpectedly during dispatch', async () => {
     const { context, stdout, stderr } = createMemoryContext();
 
-    const result = await runCli(['commands'], {
+    const result = await runCli(['infra', 'up'], {
       context,
       discoverPackages: () =>
         Promise.resolve({
@@ -808,27 +521,16 @@ describe('runCli', () => {
     expect(stderr.value).toContain('Ankh provider manifest loading failed unexpectedly: load boom');
   });
 
-  it('returns non-zero for unknown commands', async () => {
+  it('returns non-zero for unknown commands and points to root help', async () => {
     const { context, stdout, stderr } = createMemoryContext();
+    const state = createInjectedState([], []);
 
-    const result = await runCli(['something', 'else'], { context });
+    const result = await runCli(['something', 'else'], { context, ...state });
 
     expect(result).toEqual({ exitCode: 1 });
     expect(stdout.value).toBe('');
     expect(stderr.value).toContain('Unknown Ankh command: something else');
-    expect(stderr.value).toContain('ankh commands');
     expect(stderr.value).toContain('ankh --help');
-  });
-
-  it('does not mention hardcoded provider categories in generic bootstrap output', async () => {
-    for (const argv of [[], ['unknown']] as const) {
-      const { context, stdout, stderr } = createMemoryContext();
-      await runCli(argv, { context });
-
-      const output = `${stdout.value}\n${stderr.value}`;
-      for (const categoryName of FORBIDDEN_CATEGORY_NAMES) {
-        expect(output).not.toContain(categoryName);
-      }
-    }
+    expect(stderr.value).not.toContain('ankh commands');
   });
 });

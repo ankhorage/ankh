@@ -1,150 +1,105 @@
-import type { AnkhDiscoveredPackage, AnkhMetadataDiscoveryDiagnostic } from './discovery.js';
 import type { AnkhCommandExecutionDiagnostic } from './execution.js';
 import type { AnkhProviderManifestDiagnostic } from './providerManifestLoader.js';
 import type { AnkhProviderRegistry } from './providerRegistry.js';
 
-export function renderRootHelp(): string {
+const ANKH_REPOSITORY_URL = 'https://github.com/ankhorage/ankh';
+
+interface AnkhRootHelpCommand {
+  readonly command: string;
+  readonly packageName: string;
+  readonly repositoryUrl: string | null;
+}
+
+/***
+ * Render the root CLI help as the available top-level commands and their repository links.
+ */
+export function renderRootHelp(commands: readonly AnkhRootHelpCommand[]): string {
+  const commandRows = commands
+    .map((command) => ({
+      command: command.command,
+      description: command.repositoryUrl ?? getDefaultRepositoryUrl(command.packageName),
+    }))
+    .concat({
+      command: 'plan',
+      description: ANKH_REPOSITORY_URL,
+    })
+    .sort((left, right) => left.command.localeCompare(right.command));
+
   return [
-    'Ankh CLI',
-    '',
     'Usage:',
+    '',
     '  ankh <command>',
     '',
-    'Built-ins:',
-    '  help       Show this help',
-    '  version    Show the CLI version',
-    '  commands   List discovered Ankh packages and loaded provider commands',
+    'Commands:',
     '',
-    'Try:',
-    '  ankh commands',
-    '  ankh <category> --help',
-    '  ankh --help',
+    ...renderCommandRows(commandRows),
     '',
   ].join('\n');
 }
 
-export function renderCommands(
-  packages: readonly AnkhDiscoveredPackage[],
-  providerRegistry: AnkhProviderRegistry,
-): string {
-  if (packages.length === 0) {
-    return 'No Ankh command providers are registered yet.\n';
-  }
-
-  const lines = ['Discovered Ankh packages:', ''];
-
-  for (const discoveredPackage of packages) {
-    lines.push(`  ${discoveredPackage.packageName}`);
-    lines.push(`    category: ${discoveredPackage.metadata.category}`);
-    lines.push(`    provider: ${discoveredPackage.metadata.provider ?? 'none'}`);
-    lines.push('    capabilities:');
-
-    if (discoveredPackage.metadata.capabilities.length === 0) {
-      lines.push('      - none');
-    } else {
-      for (const capability of discoveredPackage.metadata.capabilities) {
-        lines.push(`      - ${capability}`);
-      }
-    }
-
-    const loadedProvider = providerRegistry
-      .listProviders()
-      .find((provider) => provider.discoveredPackage.packageName === discoveredPackage.packageName);
-
-    if (loadedProvider !== undefined) {
-      lines.push('    commands:');
-
-      if (loadedProvider.manifest.commands.length === 0) {
-        lines.push('      - none');
-      } else {
-        for (const command of loadedProvider.manifest.commands) {
-          lines.push(`      - ${renderRelativeCommandPath(command.path)}`);
-          lines.push(`        capability: ${command.capability}`);
-          lines.push(`        summary: ${command.summary}`);
-
-          if (command.aliases !== undefined && command.aliases.length > 0) {
-            lines.push(`        aliases: ${command.aliases.join(', ')}`);
-          }
-
-          if (command.examples !== undefined && command.examples.length > 0) {
-            lines.push('        examples:');
-            for (const example of command.examples) {
-              lines.push(`          - ${example}`);
-            }
-          }
-        }
-      }
-    }
-
-    lines.push('');
-  }
-
-  return lines.join('\n');
-}
-
+/***
+ * Render package-level help with its package description and complete command list.
+ */
 export function renderCategoryHelp(
   category: string,
   providerRegistry: AnkhProviderRegistry,
+  description: string,
 ): string {
   const provider = providerRegistry.findByCategory(category);
   if (provider === null) {
     return '';
   }
 
-  const lines = [
-    `Ankh category: ${provider.manifest.category}`,
+  const hasRootCommand = provider.manifest.commands.some((command) => command.path.length === 0);
+  const hasNestedCommand = provider.manifest.commands.some((command) => command.path.length > 0);
+  const usage = [
+    ...(hasRootCommand ? [`  ankh ${category}`] : []),
+    ...(hasNestedCommand ? [`  ankh ${category} <command>`] : []),
+  ];
+  const commandRows = provider.manifest.commands
+    .map((command) => ({
+      command: command.path.length === 0 ? category : command.path.join(' '),
+      description: command.summary,
+    }))
+    .sort((left, right) => left.command.localeCompare(right.command));
+
+  return [
+    description,
     '',
-    `Package: ${provider.discoveredPackage.packageName}`,
-    `Provider: ${provider.discoveredPackage.metadata.provider ?? 'none'}`,
-    `Version: ${provider.manifest.version}`,
+    'Usage:',
+    '',
+    ...usage,
     '',
     'Commands:',
-  ];
-
-  if (provider.manifest.commands.length === 0) {
-    lines.push('  none', '');
-    return lines.join('\n');
-  }
-
-  for (const command of provider.manifest.commands) {
-    lines.push(`  ${renderFullCommandPath(provider.manifest.category, command.path)}`);
-    lines.push(`    capability: ${command.capability}`);
-    lines.push(`    summary: ${command.summary}`);
-
-    if (command.aliases !== undefined && command.aliases.length > 0) {
-      lines.push(`    aliases: ${command.aliases.join(', ')}`);
-    }
-
-    if (command.examples !== undefined && command.examples.length > 0) {
-      lines.push('    examples:');
-      for (const example of command.examples) {
-        lines.push(`      - ${example}`);
-      }
-    }
-  }
-
-  lines.push('');
-  return lines.join('\n');
+    '',
+    ...(commandRows.length === 0 ? ['  none'] : renderCommandRows(commandRows)),
+    '',
+    `Run \`ankh ${category} <command> --help\` for command help.`,
+    '',
+  ].join('\n');
 }
 
-export function renderMetadataDiscoveryDiagnostics(
-  diagnostics: readonly AnkhMetadataDiscoveryDiagnostic[],
-): string {
-  return renderDiagnostics('Ankh metadata discovery diagnostics:', diagnostics);
-}
-
+/***
+ * Render provider manifest diagnostics.
+ */
 export function renderProviderManifestDiagnostics(
   diagnostics: readonly AnkhProviderManifestDiagnostic[],
 ): string {
   return renderDiagnostics('Ankh provider manifest diagnostics:', diagnostics);
 }
 
+/***
+ * Render command execution diagnostics.
+ */
 export function renderExecutionDiagnostics(
   diagnostics: readonly AnkhCommandExecutionDiagnostic[],
 ): string {
   return renderDiagnostics('Ankh command execution diagnostics:', diagnostics);
 }
 
+/***
+ * Render an unavailable provider message.
+ */
 export function renderCategoryProviderUnavailable(category: string, packageName: string): string {
   return [
     `Ankh category "${category}" in ${packageName} does not have a valid provider manifest.`,
@@ -152,6 +107,9 @@ export function renderCategoryProviderUnavailable(category: string, packageName:
   ].join('\n');
 }
 
+/***
+ * Render an unexpected package discovery failure.
+ */
 export function renderDiscoveryFailure(error: unknown): string {
   return [
     `Ankh package metadata discovery failed unexpectedly: ${getErrorMessage(error)}`,
@@ -159,26 +117,32 @@ export function renderDiscoveryFailure(error: unknown): string {
   ].join('\n');
 }
 
+/***
+ * Render an unexpected provider loading failure.
+ */
 export function renderProviderLoadFailure(error: unknown): string {
   return [`Ankh provider manifest loading failed unexpectedly: ${getErrorMessage(error)}`, ''].join(
     '\n',
   );
 }
 
+/***
+ * Render an unknown category message.
+ */
 export function renderUnknownCategory(category: string): string {
-  return [`Unknown Ankh category: ${category}`, 'Try:', '  ankh commands', ''].join('\n');
+  return [`Unknown Ankh category: ${category}`, 'Try:', '  ankh --help', ''].join('\n');
 }
 
+/***
+ * Render an unknown root command message.
+ */
 export function renderUnknownCommand(tokens: readonly string[]): string {
-  return [
-    `Unknown Ankh command: ${tokens.join(' ')}`,
-    'Try:',
-    '  ankh commands',
-    '  ankh --help',
-    '',
-  ].join('\n');
+  return [`Unknown Ankh command: ${tokens.join(' ')}`, 'Try:', '  ankh --help', ''].join('\n');
 }
 
+/***
+ * Render an unknown provider command message.
+ */
 export function renderUnknownProviderCommand(category: string, tokens: readonly string[]): string {
   const attemptedCommand = tokens.length > 0 ? tokens.join(' ') : '(missing)';
 
@@ -190,6 +154,9 @@ export function renderUnknownProviderCommand(category: string, tokens: readonly 
   ].join('\n');
 }
 
+/***
+ * Render a provider command execution failure.
+ */
 export function renderCommandExecutionFailure(
   category: string,
   commandPath: readonly string[],
@@ -204,13 +171,12 @@ export function renderCommandExecutionFailure(
   ].join('\n');
 }
 
+/***
+ * Render a diagnostic collection with a shared heading.
+ */
 function renderDiagnostics(
   header: string,
-  diagnostics: readonly (
-    | AnkhCommandExecutionDiagnostic
-    | AnkhMetadataDiscoveryDiagnostic
-    | AnkhProviderManifestDiagnostic
-  )[],
+  diagnostics: readonly (AnkhCommandExecutionDiagnostic | AnkhProviderManifestDiagnostic)[],
 ): string {
   if (diagnostics.length === 0) {
     return '';
@@ -223,7 +189,6 @@ function renderDiagnostics(
       'category' in diagnostic ? diagnostic.category : undefined,
       diagnostic.packageName,
       diagnostic.packageJsonPath,
-      'source' in diagnostic ? diagnostic.source : undefined,
       'providerModulePath' in diagnostic ? diagnostic.providerModulePath : undefined,
     ].filter((part): part is string => part !== undefined);
     const scope = scopeParts.length === 0 ? '' : ` (${scopeParts.join(' | ')})`;
@@ -235,14 +200,38 @@ function renderDiagnostics(
   return lines.join('\n');
 }
 
-function renderRelativeCommandPath(path: readonly string[]): string {
-  return path.length === 0 ? '(root)' : path.join(' ');
+/***
+ * Render aligned CLI command rows.
+ */
+function renderCommandRows(
+  rows: readonly { readonly command: string; readonly description: string }[],
+): readonly string[] {
+  if (rows.length === 0) {
+    return ['  none'];
+  }
+
+  const commandWidth = Math.max(...rows.map((row) => row.command.length));
+  return rows.map((row) => `  ${row.command.padEnd(commandWidth + 2)}${row.description}`);
 }
 
+/***
+ * Derive the canonical GitHub repository URL for an Ankhorage package.
+ */
+function getDefaultRepositoryUrl(packageName: string): string {
+  const repositoryName = packageName.replace(/^@ankhorage\//, '');
+  return `https://github.com/ankhorage/${repositoryName}`;
+}
+
+/***
+ * Render a fully qualified provider command path.
+ */
 function renderFullCommandPath(category: string, path: readonly string[]): string {
   return path.length === 0 ? category : `${category} ${path.join(' ')}`;
 }
 
+/***
+ * Convert an unknown error to its CLI message.
+ */
 function getErrorMessage(error: unknown): string {
   if (error instanceof Error) {
     return error.message;
