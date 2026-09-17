@@ -125,12 +125,17 @@ describe('category-root commands', () => {
 
     expect(renderedRootCommands).toEqual([
       'apm',
+      'board',
+      'data-sources',
       'deploy',
       'devtools',
       'docs',
       'doctor',
       'infra',
+      'navigator',
       'orchestrator',
+      'permissions',
+      'project-detector',
       'repository',
       'studio',
       'templates',
