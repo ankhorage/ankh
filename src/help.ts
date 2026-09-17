@@ -1,5 +1,6 @@
+import type { AnkhCommandProviderManifest } from '@ankhorage/contracts/cli';
+
 import type { AnkhCommandExecutionDiagnostic } from './execution.js';
-import { getCanonicalAnkhProviders } from './features/help/canonicalProviders.js';
 import type { AnkhProviderManifestDiagnostic } from './providerManifestLoader.js';
 import type { AnkhProviderRegistry } from './providerRegistry.js';
 
@@ -8,17 +9,20 @@ interface AnkhRootHelpCommand {
   readonly repositoryUrl: string | null;
 }
 
+export interface RenderProviderHelpOptions {
+  readonly commandPrefix: readonly string[];
+  readonly description: string;
+  readonly manifest: AnkhCommandProviderManifest;
+}
+
 /***
- * Render the root CLI help from the canonical executable provider catalog.
+ * Render root CLI help from the providers resolved for the current invocation.
  */
 export function renderRootHelp(commands: readonly AnkhRootHelpCommand[]): string {
-  const discoveredRepositoryUrls = new Map(
-    commands.map((command) => [command.command, command.repositoryUrl] as const),
-  );
-  const commandRows = getCanonicalAnkhProviders()
-    .map((provider) => ({
-      command: provider.command,
-      description: discoveredRepositoryUrls.get(provider.command) ?? provider.repositoryUrl,
+  const commandRows = commands
+    .map((command) => ({
+      command: command.command,
+      description: command.repositoryUrl ?? '',
     }))
     .sort((left, right) => left.command.localeCompare(right.command));
 
@@ -47,21 +51,37 @@ export function renderCategoryHelp(
     return '';
   }
 
-  const hasRootCommand = provider.manifest.commands.some((command) => command.path.length === 0);
-  const hasNestedCommand = provider.manifest.commands.some((command) => command.path.length > 0);
+  return renderProviderHelp({
+    commandPrefix: ['ankh', category],
+    description,
+    manifest: provider.manifest,
+  });
+}
+
+/***
+ * Render provider help from one manifest for both the Ankh router and standalone provider CLIs.
+ *
+ * Keep this shared help runtime in `@ankhorage/ankh` for now; TODO: extract it into a dedicated CLI
+ * package once the provider-facing API is stable.
+ */
+export function renderProviderHelp(options: RenderProviderHelpOptions): string {
+  const prefix = options.commandPrefix.join(' ');
+  const rootCommandLabel = options.commandPrefix.at(-1) ?? '';
+  const hasRootCommand = options.manifest.commands.some((command) => command.path.length === 0);
+  const hasNestedCommand = options.manifest.commands.some((command) => command.path.length > 0);
   const usage = [
-    ...(hasRootCommand ? [`  ankh ${category}`] : []),
-    ...(hasNestedCommand ? [`  ankh ${category} <command>`] : []),
+    ...(hasRootCommand ? [`  ${prefix}`] : []),
+    ...(hasNestedCommand ? [`  ${prefix} <command>`] : []),
   ];
-  const commandRows = provider.manifest.commands
+  const commandRows = options.manifest.commands
     .map((command) => ({
-      command: command.path.length === 0 ? category : command.path.join(' '),
+      command: command.path.length === 0 ? rootCommandLabel : command.path.join(' '),
       description: command.summary,
     }))
     .sort((left, right) => left.command.localeCompare(right.command));
 
   return [
-    description,
+    options.description,
     '',
     'Usage:',
     '',
@@ -71,7 +91,7 @@ export function renderCategoryHelp(
     '',
     ...(commandRows.length === 0 ? ['  none'] : renderCommandRows(commandRows)),
     '',
-    `Run \`ankh ${category} <command> --help\` for command help.`,
+    `Run \`${prefix} <command> --help\` for command help.`,
     '',
   ].join('\n');
 }
