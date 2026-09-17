@@ -1,28 +1,25 @@
 import type { AnkhCommandExecutionDiagnostic } from './execution.js';
+import { getCanonicalAnkhProviders } from './features/help/canonicalProviders.js';
 import type { AnkhProviderManifestDiagnostic } from './providerManifestLoader.js';
 import type { AnkhProviderRegistry } from './providerRegistry.js';
 
-const ANKH_REPOSITORY_URL = 'https://github.com/ankhorage/ankh';
-
 interface AnkhRootHelpCommand {
   readonly command: string;
-  readonly packageName: string;
   readonly repositoryUrl: string | null;
 }
 
 /***
- * Render the root CLI help as the available top-level commands and their repository links.
+ * Render the root CLI help from the canonical executable provider catalog.
  */
 export function renderRootHelp(commands: readonly AnkhRootHelpCommand[]): string {
-  const commandRows = commands
-    .map((command) => ({
-      command: command.command,
-      description: command.repositoryUrl ?? getDefaultRepositoryUrl(command.packageName),
+  const discoveredRepositoryUrls = new Map(
+    commands.map((command) => [command.command, command.repositoryUrl] as const),
+  );
+  const commandRows = getCanonicalAnkhProviders()
+    .map((provider) => ({
+      command: provider.command,
+      description: discoveredRepositoryUrls.get(provider.command) ?? provider.repositoryUrl,
     }))
-    .concat({
-      command: 'plan',
-      description: ANKH_REPOSITORY_URL,
-    })
     .sort((left, right) => left.command.localeCompare(right.command));
 
   return [
@@ -212,14 +209,6 @@ function renderCommandRows(
 
   const commandWidth = Math.max(...rows.map((row) => row.command.length));
   return rows.map((row) => `  ${row.command.padEnd(commandWidth + 2)}${row.description}`);
-}
-
-/***
- * Derive the canonical GitHub repository URL for an Ankhorage package.
- */
-function getDefaultRepositoryUrl(packageName: string): string {
-  const repositoryName = packageName.replace(/^@ankhorage\//, '');
-  return `https://github.com/ankhorage/${repositoryName}`;
 }
 
 /***
