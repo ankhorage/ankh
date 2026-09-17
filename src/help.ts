@@ -2,27 +2,20 @@ import type { AnkhCommandExecutionDiagnostic } from './execution.js';
 import type { AnkhProviderManifestDiagnostic } from './providerManifestLoader.js';
 import type { AnkhProviderRegistry } from './providerRegistry.js';
 
-const ANKH_REPOSITORY_URL = 'https://github.com/ankhorage/ankh';
-
 interface AnkhRootHelpCommand {
   readonly command: string;
-  readonly packageName: string;
-  readonly repositoryUrl: string | null;
+  readonly repositoryUrl: string;
 }
 
 /***
- * Render the root CLI help as the available top-level commands and their repository links.
+ * Render the root CLI help as the canonical top-level provider commands and repository links.
  */
 export function renderRootHelp(commands: readonly AnkhRootHelpCommand[]): string {
   const commandRows = commands
     .map((command) => ({
       command: command.command,
-      description: command.repositoryUrl ?? getDefaultRepositoryUrl(command.packageName),
+      description: command.repositoryUrl,
     }))
-    .concat({
-      command: 'plan',
-      description: ANKH_REPOSITORY_URL,
-    })
     .sort((left, right) => left.command.localeCompare(right.command));
 
   return [
@@ -212,14 +205,6 @@ function renderCommandRows(
 
   const commandWidth = Math.max(...rows.map((row) => row.command.length));
   return rows.map((row) => `  ${row.command.padEnd(commandWidth + 2)}${row.description}`);
-}
-
-/***
- * Derive the canonical GitHub repository URL for an Ankhorage package.
- */
-function getDefaultRepositoryUrl(packageName: string): string {
-  const repositoryName = packageName.replace(/^@ankhorage\//, '');
-  return `https://github.com/ankhorage/${repositoryName}`;
 }
 
 /***
