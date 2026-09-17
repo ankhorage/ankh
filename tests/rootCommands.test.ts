@@ -100,13 +100,16 @@ describe('category-root commands', () => {
     );
   });
 
-  it('renders conventional root and package help without capability metadata', () => {
+  it('renders canonical root help and package help without capability metadata', () => {
     const providerRegistry = createProviderRegistry([loadedProvider]);
     const rootHelp = renderRootHelp([
       {
         command: 'deploy',
-        packageName: '@ankhorage/deploy',
         repositoryUrl: 'https://github.com/ankhorage/deploy',
+      },
+      {
+        command: 'runtime',
+        repositoryUrl: 'https://github.com/ankhorage/runtime',
       },
     ]);
     const categoryHelp = renderCategoryHelp(
@@ -115,8 +118,30 @@ describe('category-root commands', () => {
       'Deploy Ankhorage projects.',
     );
 
-    expect(rootHelp).toContain('deploy  https://github.com/ankhorage/deploy');
-    expect(rootHelp).toContain('plan    https://github.com/ankhorage/ankh');
+    const renderedRootCommands = rootHelp
+      .split('\n')
+      .filter((line) => line.startsWith('  ') && line.includes('https://github.com/ankhorage/'))
+      .map((line) => line.trim().split(/\s+/)[0]);
+
+    expect(renderedRootCommands).toEqual([
+      'apm',
+      'deploy',
+      'devtools',
+      'docs',
+      'doctor',
+      'infra',
+      'orchestrator',
+      'repository',
+      'studio',
+      'templates',
+    ]);
+    expect(rootHelp).toContain('deploy');
+    expect(rootHelp).toContain('https://github.com/ankhorage/deploy');
+    expect(rootHelp).toContain('docs');
+    expect(rootHelp).toContain('https://github.com/ankhorage/paradox');
+    expect(rootHelp).not.toContain('plan');
+    expect(rootHelp).not.toContain('https://github.com/ankhorage/ankh');
+    expect(rootHelp).not.toContain('runtime');
     expect(rootHelp).not.toContain('capability');
     expect(categoryHelp.startsWith('Deploy Ankhorage projects.\n')).toBe(true);
     expect(categoryHelp).toContain('  ankh deploy\n');
