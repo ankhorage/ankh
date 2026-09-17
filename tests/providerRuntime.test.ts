@@ -1,4 +1,4 @@
-import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -47,9 +47,9 @@ const infraManifest = {
 
 afterEach(async () => {
   await Promise.all(
-    temporaryDirectories.splice(0).map((directory) =>
-      rm(directory, { force: true, recursive: true }),
-    ),
+    temporaryDirectories
+      .splice(0)
+      .map((directory) => rm(directory, { force: true, recursive: true })),
   );
 });
 
@@ -107,7 +107,7 @@ describe('official provider runtime', () => {
     const requestedUrls: string[] = [];
     const source = createGitHubProviderCatalogSource({
       fetchImpl(input) {
-        const url = String(input);
+        const url = readRequestUrl(input);
         requestedUrls.push(url);
         if (url.includes('/orgs/ankhorage/repos')) {
           return Promise.resolve(
@@ -160,7 +160,9 @@ describe('official provider runtime', () => {
     const first = memoryContext('/one/project');
     const second = memoryContext('/completely/different/project');
 
-    expect((await runCli(['--help'], { context: first.context, providerRuntime })).exitCode).toBe(0);
+    expect(
+      (await runCli(['--help'], { context: first.context, providerRuntime })).exitCode,
+    ).toBe(0);
     expect((await runCli(['-h'], { context: second.context, providerRuntime })).exitCode).toBe(0);
     expect(first.stdout.value).toBe(second.stdout.value);
     expect(first.stdout.value).toContain('infra');
@@ -225,6 +227,13 @@ describe('official provider runtime', () => {
     expect(installs).toBe(1);
   });
 });
+
+/*** Convert one Fetch request target to its URL without object default stringification. */
+function readRequestUrl(input: string | URL | Request): string {
+  if (typeof input === 'string') return input;
+  if (input instanceof URL) return input.href;
+  return input.url;
+}
 
 /*** Create a JSON HTTP response for catalog adapter tests. */
 function jsonResponse(value: unknown): Response {
