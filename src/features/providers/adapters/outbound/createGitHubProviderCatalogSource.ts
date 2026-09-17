@@ -133,8 +133,10 @@ function parseProviderEntry(
 ): AnkhProviderCatalogEntry {
   const packageName = readNonEmptyString(rawPackage.name);
   const version = readNonEmptyString(rawPackage.version);
-  if (packageName === null || !packageName.startsWith('@ankhorage/')) {
-    throw new Error(`${repository.name} declares Ankh metadata without an @ankhorage package name.`);
+  if (!packageName?.startsWith('@ankhorage/')) {
+    throw new Error(
+      `${repository.name} declares Ankh metadata without an @ankhorage package name.`,
+    );
   }
   if (version === null) {
     throw new Error(`${packageName} declares Ankh metadata without a valid package version.`);
