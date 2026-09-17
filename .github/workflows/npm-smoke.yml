@@ -63,19 +63,19 @@ jobs:
           exit 1
 
 
-      - name: Verify Devtools 1.15.6 from a fresh runner
+      - name: Verify Devtools 1.15.7 from a fresh runner
         run: |
           set -euo pipefail
-          package_spec="@ankhorage/devtools@1.15.6"
+          package_spec="@ankhorage/devtools@1.15.7"
           registry_evidence="${RUNNER_TEMP}/devtools-registry.json"
-          artifact="${RUNNER_TEMP}/devtools-1.15.6.tgz"
+          artifact="${RUNNER_TEMP}/devtools-1.15.7.tgz"
           pack_dir="${RUNNER_TEMP}/devtools-pack"
           mkdir -p "$pack_dir"
           npm view "$package_spec" version dist.tarball dist.integrity --json > "$registry_evidence"
           resolved_version="$(node -e "const p=require(process.argv[1]); process.stdout.write(p.version ?? '')" "$registry_evidence")"
           tarball="$(node -e "const p=require(process.argv[1]); process.stdout.write(p['dist.tarball'] ?? '')" "$registry_evidence")"
           integrity="$(node -e "const p=require(process.argv[1]); process.stdout.write(p['dist.integrity'] ?? '')" "$registry_evidence")"
-          test "$resolved_version" = "1.15.6"
+          test "$resolved_version" = "1.15.7"
           test -n "$tarball"
           test -n "$integrity"
           curl --fail --location --silent --show-error --output "$artifact" "$tarball"
