@@ -17,14 +17,16 @@ export function createGitHubProviderCatalogSource(
   options: {
     readonly fetchImpl?: FetchFunction;
     readonly organization?: string;
+    readonly token?: string;
   } = {},
 ): ProviderCatalogSource {
   const fetchImpl = options.fetchImpl ?? globalThis.fetch;
   const organization = options.organization ?? DEFAULT_GITHUB_ORGANIZATION;
+  const token = options.token?.trim();
 
   return {
     async readAsync() {
-      const repositories = await readRepositoriesAsync(fetchImpl, organization);
+      const repositories = await readRepositoriesAsync(fetchImpl, organization, token);
       const entries = (
         await Promise.all(
           repositories
@@ -53,6 +55,7 @@ interface GitHubRepository {
 async function readRepositoriesAsync(
   fetchImpl: FetchFunction,
   organization: string,
+  token: string | undefined,
 ): Promise<readonly GitHubRepository[]> {
   const repositories: GitHubRepository[] = [];
 
@@ -63,6 +66,7 @@ async function readRepositoriesAsync(
         headers: {
           Accept: 'application/vnd.github+json',
           'User-Agent': 'ankh-cli',
+          ...(token === undefined || token === '' ? {} : { Authorization: `Bearer ${token}` }),
         },
       },
     );
