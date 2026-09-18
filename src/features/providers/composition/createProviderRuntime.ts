@@ -16,7 +16,9 @@ export function createProviderRuntime(
     configuredCacheRoot === undefined || configuredCacheRoot === ''
       ? path.join(homedir(), '.ankh')
       : path.resolve(configuredCacheRoot);
-  const token = env.GH_TOKEN?.trim() || env.GITHUB_TOKEN?.trim() || undefined;
+  const ghToken = env.GH_TOKEN?.trim();
+  const githubToken = env.GITHUB_TOKEN?.trim();
+  const token = ghToken !== undefined && ghToken !== '' ? ghToken : githubToken;
   const source = createGitHubProviderCatalogSource({ token });
   const store = createFileProviderCatalogStore(path.join(cacheRoot, 'provider-catalog-v2.json'));
   const packages = createBunProviderPackageStore({ cacheRoot: path.join(cacheRoot, 'providers') });
