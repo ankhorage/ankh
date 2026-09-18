@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.4
+
+### Patch Changes
+
+- e4b7a75: Authenticate GitHub provider catalog discovery from CI tokens to avoid unauthenticated API rate-limit failures.
+
 ## 0.10.3
 
 ### Patch Changes
