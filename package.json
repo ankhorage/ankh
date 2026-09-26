@@ -69,7 +69,7 @@
     "@ankhorage/paradox": "^0.1.24",
     "@types/bun": "^1.4.1",
     "@types/node": "^24.13.3",
-    "typescript": "^5.9.3"
+    "typescript": "^7.0.2"
   },
   "sideEffects": false,
   "packageManager": "bun@1.4.2"
