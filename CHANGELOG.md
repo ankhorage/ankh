@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.7
+
+### Patch Changes
+
+- 9234c77: Update Renovate-managed workflows.
+
 ## 0.10.6
 
 ### Patch Changes
