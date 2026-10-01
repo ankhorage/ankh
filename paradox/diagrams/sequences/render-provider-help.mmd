@@ -1,0 +1,5 @@
+sequenceDiagram
+  participant participant_renderCommandRows as renderCommandRows
+  participant participant_renderProviderHelp as renderProviderHelp
+  participant_renderProviderHelp->>participant_renderCommandRows: renderCommandRows()
+  participant_renderCommandRows-->>participant_renderProviderHelp: return

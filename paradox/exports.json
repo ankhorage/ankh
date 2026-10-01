@@ -11,7 +11,9 @@
       "line": 14,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -37,8 +39,12 @@
       "line": 5,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhCommandInteraction"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhCommandInteraction"
+    ],
     "signatures": [],
     "members": [
       {
@@ -98,8 +104,14 @@
       "line": 13,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhCommandInteraction", "AnkhPackageRegistry", "AnkhProviderRegistry"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhCommandInteraction",
+      "AnkhPackageRegistry",
+      "AnkhProviderRegistry"
+    ],
     "signatures": [],
     "members": [
       {
@@ -173,8 +185,14 @@
       "line": 18,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhCommandExecutionContext", "AnkhCommandListing", "AnkhLoadedProvider"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhCommandExecutionContext",
+      "AnkhCommandListing",
+      "AnkhLoadedProvider"
+    ],
     "signatures": [],
     "members": [
       {
@@ -220,7 +238,9 @@
       "line": 25,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -246,7 +266,9 @@
       "line": 29,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -264,8 +286,12 @@
       "line": 33,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhCommandHandler"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhCommandHandler"
+    ],
     "signatures": [],
     "members": [
       {
@@ -297,8 +323,12 @@
       "line": 3,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhConfirmationResult"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhConfirmationResult"
+    ],
     "signatures": [],
     "members": [
       {
@@ -330,7 +360,9 @@
       "line": 5,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -405,8 +437,13 @@
       "line": 29,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhCommandPlanDiagnostic", "AnkhCommandPlanStep"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhCommandPlanDiagnostic",
+      "AnkhCommandPlanStep"
+    ],
     "signatures": [],
     "members": [
       {
@@ -459,7 +496,9 @@
       "line": 10,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -506,7 +545,9 @@
       "line": 17,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -588,7 +629,9 @@
       "line": 1,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -603,11 +646,15 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 15,
+      "line": 14,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhDiscoverySource"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhDiscoverySource"
+    ],
     "signatures": [],
     "members": [
       {
@@ -660,7 +707,9 @@
       "line": 12,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -678,8 +727,12 @@
       "line": 22,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhDiscoveredPackage"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhDiscoveredPackage"
+    ],
     "signatures": [],
     "members": [
       {
@@ -729,11 +782,15 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 23,
+      "line": 22,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhDiscoverySource"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhDiscoverySource"
+    ],
     "signatures": [],
     "members": [
       {
@@ -790,11 +847,16 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 32,
+      "line": 31,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhDiscoveredPackage", "AnkhMetadataDiscoveryDiagnostic"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhDiscoveredPackage",
+      "AnkhMetadataDiscoveryDiagnostic"
+    ],
     "signatures": [],
     "members": [
       {
@@ -826,8 +888,12 @@
       "line": 3,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhDiscoveredPackage"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhDiscoveredPackage"
+    ],
     "signatures": [],
     "members": [
       {
@@ -866,8 +932,14 @@
       "line": 37,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhCommandInteraction", "AnkhPackageRegistry", "AnkhProviderRegistry"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhCommandInteraction",
+      "AnkhPackageRegistry",
+      "AnkhProviderRegistry"
+    ],
     "signatures": [],
     "members": [
       {
@@ -941,7 +1013,9 @@
       "line": 49,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -959,8 +1033,12 @@
       "line": 53,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhPlanningHandler"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhPlanningHandler"
+    ],
     "signatures": [],
     "members": [
       {
@@ -992,8 +1070,14 @@
       "line": 42,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhCommandListing", "AnkhLoadedProvider", "AnkhPlanningContext"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhCommandListing",
+      "AnkhLoadedProvider",
+      "AnkhPlanningContext"
+    ],
     "signatures": [],
     "members": [
       {
@@ -1039,7 +1123,9 @@
       "line": 12,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -1107,8 +1193,14 @@
       "line": 22,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhCommandListing", "AnkhLoadedProvider", "AnkhResolvedProviderCommand"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhCommandListing",
+      "AnkhLoadedProvider",
+      "AnkhResolvedProviderCommand"
+    ],
     "signatures": [],
     "members": [
       {
@@ -1168,8 +1260,13 @@
       "line": 16,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhCommandListing", "AnkhLoadedProvider"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhCommandListing",
+      "AnkhLoadedProvider"
+    ],
     "signatures": [],
     "members": [
       {
@@ -1208,8 +1305,13 @@
       "line": 38,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhCommandHandlerBinding", "AnkhPlanningHandlerBinding"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhCommandHandlerBinding",
+      "AnkhPlanningHandlerBinding"
+    ],
     "signatures": [],
     "members": [
       {
@@ -1276,8 +1378,12 @@
       "line": 3,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhCommandInteraction"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhCommandInteraction"
+    ],
     "signatures": [
       {
         "label": "(options: { readonly interactive: boolean; readonly ask?: (prompt: string) => Promise<string>; }) => AnkhCommandInteraction",
@@ -1308,8 +1414,12 @@
       "line": 21,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhCommandContext"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhCommandContext"
+    ],
     "signatures": [
       {
         "label": "() => AnkhCommandContext",
@@ -1333,8 +1443,13 @@
       "line": 9,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhDiscoveredPackage", "AnkhPackageRegistry"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhDiscoveredPackage",
+      "AnkhPackageRegistry"
+    ],
     "signatures": [
       {
         "label": "(packages?: readonly AnkhDiscoveredPackage[]) => AnkhPackageRegistry",
@@ -1365,8 +1480,13 @@
       "line": 31,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhLoadedProvider", "AnkhProviderRegistry"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhLoadedProvider",
+      "AnkhProviderRegistry"
+    ],
     "signatures": [
       {
         "label": "(providers?: readonly AnkhLoadedProvider[]) => AnkhProviderRegistry",
@@ -1387,18 +1507,22 @@
   },
   {
     "name": "discoverAnkhPackages",
-    "description": null,
+    "description": "Discover Ankh package metadata from the current project and any additional package roots.",
     "isReadme": false,
     "examples": [],
     "kind": "function",
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 46,
+      "line": 49,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhMetadataDiscoveryResult"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhMetadataDiscoveryResult"
+    ],
     "signatures": [
       {
         "label": "(options: DiscoverAnkhPackagesOptions) => Promise<AnkhMetadataDiscoveryResult>",
@@ -1418,6 +1542,40 @@
     "structuredRows": []
   },
   {
+    "name": "isHelpToken",
+    "description": "Return whether a token requests conventional CLI help.",
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/parser.ts",
+    "sourceLocation": {
+      "filePath": "src/parser.ts",
+      "line": 18,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [],
+    "signatures": [
+      {
+        "label": "(value: string) => boolean",
+        "parameters": [
+          {
+            "name": "value",
+            "type": "string",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "boolean",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
     "name": "loadProviderManifests",
     "description": null,
     "isReadme": false,
@@ -1429,8 +1587,13 @@
       "line": 35,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhDiscoveredPackage", "LoadProviderManifestsResult"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhDiscoveredPackage",
+      "LoadProviderManifestsResult"
+    ],
     "signatures": [
       {
         "label": "(packages: readonly AnkhDiscoveredPackage[]) => Promise<LoadProviderManifestsResult>",
@@ -1461,8 +1624,13 @@
       "line": 30,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhLoadedProvider", "AnkhProviderManifestDiagnostic"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhLoadedProvider",
+      "AnkhProviderManifestDiagnostic"
+    ],
     "signatures": [],
     "members": [
       {
@@ -1491,11 +1659,15 @@
     "modulePath": "src/parser.ts",
     "sourceLocation": {
       "filePath": "src/parser.ts",
-      "line": 19,
+      "line": 25,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["ParsedCliRequest"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "ParsedCliRequest"
+    ],
     "signatures": [
       {
         "label": "(argv: readonly string[]) => ParsedCliRequest",
@@ -1526,26 +1698,110 @@
       "line": 1,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
     "structuredRows": []
   },
   {
-    "name": "runCli",
+    "name": "renderProviderHelp",
+    "description": "Render provider help from one manifest for both the Ankh router and standalone provider CLIs.\n\nKeep this shared help runtime in `@ankhorage/ankh` for now; TODO: extract it into a dedicated CLI\npackage once the provider-facing API is stable.",
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/help.ts",
+    "sourceLocation": {
+      "filePath": "src/help.ts",
+      "line": 62,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "RenderProviderHelpOptions"
+    ],
+    "signatures": [
+      {
+        "label": "(options: RenderProviderHelpOptions) => string",
+        "parameters": [
+          {
+            "name": "options",
+            "type": "RenderProviderHelpOptions",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "string",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "RenderProviderHelpOptions",
     "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/help.ts",
+    "sourceLocation": {
+      "filePath": "src/help.ts",
+      "line": 12,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "commandPrefix",
+        "kind": "property",
+        "type": "readonly string[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "description",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "manifest",
+        "kind": "property",
+        "type": "AnkhCommandProviderManifest",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "runCli",
+    "description": "Run the root Ankh CLI against the official remote provider catalog.",
     "isReadme": false,
     "examples": [],
     "kind": "function",
     "modulePath": "src/cli/index.ts",
     "sourceLocation": {
       "filePath": "src/cli/index.ts",
-      "line": 73,
+      "line": 80,
       "column": 1
     },
-    "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["AnkhCliRunResult"],
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhCliRunResult"
+    ],
     "signatures": [
       {
         "label": "(argv: readonly string[], options?: RunCliOptions) => Promise<AnkhCliRunResult>",

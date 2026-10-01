@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.5
+
+### Patch Changes
+
+- 458e408: Update Renovate-managed workflows.
+
 ## 0.10.4
 
 ### Patch Changes

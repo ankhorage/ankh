@@ -8,9 +8,9 @@ Source: `src/commandContext.ts:14:1`
 
 ### Members
 
-| Name     | Kind     | Type     | Required | Description |
-| -------- | -------- | -------- | -------- | ----------- |
-| exitCode | property | `number` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| exitCode | property | `number` | yes |  |
 
 ## AnkhCommandContext
 
@@ -20,14 +20,14 @@ Source: `src/commandContext.ts:5:1`
 
 ### Members
 
-| Name        | Kind     | Type                                            | Required | Description |
-| ----------- | -------- | ----------------------------------------------- | -------- | ----------- |
-| cwd         | property | `string`                                        | yes      |             |
-| env         | property | `Readonly<Record<string, string \| undefined>>` | yes      |             |
-| interaction | property | `AnkhCommandInteraction \| undefined`           | no       |             |
-| version     | property | `string`                                        | yes      |             |
-| writeStderr | method   | `(text: string) => void`                        | yes      |             |
-| writeStdout | method   | `(text: string) => void`                        | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| cwd | property | `string` | yes |  |
+| env | property | `Readonly<Record<string, string \| undefined>>` | yes |  |
+| interaction | property | `AnkhCommandInteraction \| undefined` | no |  |
+| version | property | `string` | yes |  |
+| writeStderr | method | `(text: string) => void` | yes |  |
+| writeStdout | method | `(text: string) => void` | yes |  |
 
 ## AnkhCommandExecutionContext
 
@@ -37,16 +37,16 @@ Source: `src/execution.ts:13:1`
 
 ### Members
 
-| Name             | Kind     | Type                                            | Required | Description |
-| ---------------- | -------- | ----------------------------------------------- | -------- | ----------- |
-| cwd              | property | `string`                                        | yes      |             |
-| env              | property | `Readonly<Record<string, string \| undefined>>` | yes      |             |
-| interaction      | property | `AnkhCommandInteraction \| undefined`           | no       |             |
-| packageRegistry  | property | `AnkhPackageRegistry`                           | yes      |             |
-| providerRegistry | property | `AnkhProviderRegistry`                          | yes      |             |
-| version          | property | `string`                                        | yes      |             |
-| writeStderr      | method   | `(text: string) => void`                        | yes      |             |
-| writeStdout      | method   | `(text: string) => void`                        | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| cwd | property | `string` | yes |  |
+| env | property | `Readonly<Record<string, string \| undefined>>` | yes |  |
+| interaction | property | `AnkhCommandInteraction \| undefined` | no |  |
+| packageRegistry | property | `AnkhPackageRegistry` | yes |  |
+| providerRegistry | property | `AnkhProviderRegistry` | yes |  |
+| version | property | `string` | yes |  |
+| writeStderr | method | `(text: string) => void` | yes |  |
+| writeStdout | method | `(text: string) => void` | yes |  |
 
 ## AnkhCommandExecutionRequest
 
@@ -56,12 +56,12 @@ Source: `src/execution.ts:18:1`
 
 ### Members
 
-| Name     | Kind     | Type                          | Required | Description |
-| -------- | -------- | ----------------------------- | -------- | ----------- |
-| argv     | property | `readonly string[]`           | yes      |             |
-| command  | property | `AnkhCommandListing`          | yes      |             |
-| context  | property | `AnkhCommandExecutionContext` | yes      |             |
-| provider | property | `AnkhLoadedProvider`          | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| argv | property | `readonly string[]` | yes |  |
+| command | property | `AnkhCommandListing` | yes |  |
+| context | property | `AnkhCommandExecutionContext` | yes |  |
+| provider | property | `AnkhLoadedProvider` | yes |  |
 
 ## AnkhCommandExecutionResult
 
@@ -71,9 +71,9 @@ Source: `src/execution.ts:25:1`
 
 ### Members
 
-| Name     | Kind     | Type     | Required | Description |
-| -------- | -------- | -------- | -------- | ----------- |
-| exitCode | property | `number` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| exitCode | property | `number` | yes |  |
 
 ## AnkhCommandHandler
 
@@ -89,10 +89,10 @@ Source: `src/execution.ts:33:1`
 
 ### Members
 
-| Name    | Kind     | Type                 | Required | Description |
-| ------- | -------- | -------------------- | -------- | ----------- |
-| handler | property | `AnkhCommandHandler` | yes      |             |
-| path    | property | `readonly string[]`  | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| handler | property | `AnkhCommandHandler` | yes |  |
+| path | property | `readonly string[]` | yes |  |
 
 ## AnkhCommandInteraction
 
@@ -102,10 +102,10 @@ Source: `src/commandInteraction.ts:3:1`
 
 ### Members
 
-| Name        | Kind     | Type                                                   | Required | Description |
-| ----------- | -------- | ------------------------------------------------------ | -------- | ----------- |
-| confirm     | method   | `(message: string) => Promise<AnkhConfirmationResult>` | yes      |             |
-| interactive | property | `boolean`                                              | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| confirm | method | `(message: string) => Promise<AnkhConfirmationResult>` | yes |  |
+| interactive | property | `boolean` | yes |  |
 
 ## AnkhCommandListing
 
@@ -115,16 +115,16 @@ Source: `src/providerRegistry.ts:5:1`
 
 ### Members
 
-| Name        | Kind     | Type                             | Required | Description |
-| ----------- | -------- | -------------------------------- | -------- | ----------- |
-| aliases     | property | `readonly string[] \| undefined` | no       |             |
-| capability  | property | `${string}.${string}`            | yes      |             |
-| category    | property | `string`                         | yes      |             |
-| examples    | property | `readonly string[] \| undefined` | no       |             |
-| packageName | property | `string`                         | yes      |             |
-| path        | property | `readonly string[]`              | yes      |             |
-| providerId  | property | `string`                         | yes      |             |
-| summary     | property | `string`                         | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| aliases | property | `readonly string[] \| undefined` | no |  |
+| capability | property | ``${string}.${string}`` | yes |  |
+| category | property | `string` | yes |  |
+| examples | property | `readonly string[] \| undefined` | no |  |
+| packageName | property | `string` | yes |  |
+| path | property | `readonly string[]` | yes |  |
+| providerId | property | `string` | yes |  |
+| summary | property | `string` | yes |  |
 
 ## AnkhCommandPlan
 
@@ -134,13 +134,13 @@ Source: `src/planning.ts:29:1`
 
 ### Members
 
-| Name        | Kind     | Type                                   | Required | Description |
-| ----------- | -------- | -------------------------------------- | -------- | ----------- |
-| diagnostics | property | `readonly AnkhCommandPlanDiagnostic[]` | yes      |             |
-| kind        | property | `"ankh-command-plan"`                  | yes      |             |
-| steps       | property | `readonly AnkhCommandPlanStep[]`       | yes      |             |
-| title       | property | `string`                               | yes      |             |
-| version     | property | `1`                                    | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| diagnostics | property | `readonly AnkhCommandPlanDiagnostic[]` | yes |  |
+| kind | property | `"ankh-command-plan"` | yes |  |
+| steps | property | `readonly AnkhCommandPlanStep[]` | yes |  |
+| title | property | `string` | yes |  |
+| version | property | `1` | yes |  |
 
 ## AnkhCommandPlanDiagnostic
 
@@ -150,12 +150,12 @@ Source: `src/planning.ts:10:1`
 
 ### Members
 
-| Name     | Kind     | Type                             | Required | Description |
-| -------- | -------- | -------------------------------- | -------- | ----------- |
-| code     | property | `string`                         | yes      |             |
-| message  | property | `string`                         | yes      |             |
-| severity | property | `"warning" \| "error" \| "info"` | yes      |             |
-| stepId   | property | `string \| undefined`            | no       |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| code | property | `string` | yes |  |
+| message | property | `string` | yes |  |
+| severity | property | `"warning" \| "error" \| "info"` | yes |  |
+| stepId | property | `string \| undefined` | no |  |
 
 ## AnkhCommandPlanStep
 
@@ -165,17 +165,17 @@ Source: `src/planning.ts:17:1`
 
 ### Members
 
-| Name        | Kind     | Type                     | Required | Description |
-| ----------- | -------- | ------------------------ | -------- | ----------- |
-| capability  | property | `string`                 | yes      |             |
-| dependsOn   | property | `readonly string[]`      | yes      |             |
-| destructive | property | `boolean`                | yes      |             |
-| id          | property | `string`                 | yes      |             |
-| inputs      | property | `unknown`                | no       |             |
-| label       | property | `string`                 | yes      |             |
-| outputs     | property | `unknown`                | no       |             |
-| providerId  | property | `string`                 | yes      |             |
-| status      | property | `"planned" \| "blocked"` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| capability | property | `string` | yes |  |
+| dependsOn | property | `readonly string[]` | yes |  |
+| destructive | property | `boolean` | yes |  |
+| id | property | `string` | yes |  |
+| inputs | property | `unknown` | no |  |
+| label | property | `string` | yes |  |
+| outputs | property | `unknown` | no |  |
+| providerId | property | `string` | yes |  |
+| status | property | `"planned" \| "blocked"` | yes |  |
 
 ## AnkhConfirmationResult
 
@@ -187,17 +187,17 @@ Source: `src/confirmationResult.ts:1:1`
 
 Kind: `type`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:15:1`
+Source: `src/discovery.ts:14:1`
 
 ### Members
 
-| Name            | Kind     | Type                  | Required | Description |
-| --------------- | -------- | --------------------- | -------- | ----------- |
-| metadata        | property | `AnkhPackageMetadata` | yes      |             |
-| packageJsonPath | property | `string`              | yes      |             |
-| packageName     | property | `string`              | yes      |             |
-| packageRoot     | property | `string`              | yes      |             |
-| source          | property | `AnkhDiscoverySource` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| metadata | property | `AnkhPackageMetadata` | yes |  |
+| packageJsonPath | property | `string` | yes |  |
+| packageName | property | `string` | yes |  |
+| packageRoot | property | `string` | yes |  |
+| source | property | `AnkhDiscoverySource` | yes |  |
 
 ## AnkhDiscoverySource
 
@@ -213,43 +213,43 @@ Source: `src/providerManifestLoader.ts:22:1`
 
 ### Members
 
-| Name                        | Kind     | Type                          | Required | Description |
-| --------------------------- | -------- | ----------------------------- | -------- | ----------- |
-| discoveredPackage           | property | `AnkhDiscoveredPackage`       | yes      |             |
-| manifest                    | property | `AnkhCommandProviderManifest` | yes      |             |
-| providerModuleDefaultExport | property | `unknown`                     | yes      |             |
-| providerModulePath          | property | `string`                      | yes      |             |
-| providerModuleUrl           | property | `string`                      | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| discoveredPackage | property | `AnkhDiscoveredPackage` | yes |  |
+| manifest | property | `AnkhCommandProviderManifest` | yes |  |
+| providerModuleDefaultExport | property | `unknown` | yes |  |
+| providerModulePath | property | `string` | yes |  |
+| providerModuleUrl | property | `string` | yes |  |
 
 ## AnkhMetadataDiscoveryDiagnostic
 
 Kind: `type`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:23:1`
+Source: `src/discovery.ts:22:1`
 
 ### Members
 
-| Name            | Kind     | Type                               | Required | Description |
-| --------------- | -------- | ---------------------------------- | -------- | ----------- |
-| code            | property | `string`                           | yes      |             |
-| message         | property | `string`                           | yes      |             |
-| packageJsonPath | property | `string \| undefined`              | no       |             |
-| packageName     | property | `string \| undefined`              | no       |             |
-| severity        | property | `"warning" \| "error"`             | yes      |             |
-| source          | property | `AnkhDiscoverySource \| undefined` | no       |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| code | property | `string` | yes |  |
+| message | property | `string` | yes |  |
+| packageJsonPath | property | `string \| undefined` | no |  |
+| packageName | property | `string \| undefined` | no |  |
+| severity | property | `"warning" \| "error"` | yes |  |
+| source | property | `AnkhDiscoverySource \| undefined` | no |  |
 
 ## AnkhMetadataDiscoveryResult
 
 Kind: `type`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:32:1`
+Source: `src/discovery.ts:31:1`
 
 ### Members
 
-| Name        | Kind     | Type                                         | Required | Description |
-| ----------- | -------- | -------------------------------------------- | -------- | ----------- |
-| diagnostics | property | `readonly AnkhMetadataDiscoveryDiagnostic[]` | yes      |             |
-| packages    | property | `readonly AnkhDiscoveredPackage[]`           | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| diagnostics | property | `readonly AnkhMetadataDiscoveryDiagnostic[]` | yes |  |
+| packages | property | `readonly AnkhDiscoveredPackage[]` | yes |  |
 
 ## AnkhPackageRegistry
 
@@ -259,11 +259,11 @@ Source: `src/packageRegistry.ts:3:1`
 
 ### Members
 
-| Name           | Kind   | Type                                                  | Required | Description |
-| -------------- | ------ | ----------------------------------------------------- | -------- | ----------- |
-| findByCategory | method | `(category: string) => AnkhDiscoveredPackage \| null` | yes      |             |
-| hasCategory    | method | `(category: string) => boolean`                       | yes      |             |
-| listPackages   | method | `() => readonly AnkhDiscoveredPackage[]`              | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| findByCategory | method | `(category: string) => AnkhDiscoveredPackage \| null` | yes |  |
+| hasCategory | method | `(category: string) => boolean` | yes |  |
+| listPackages | method | `() => readonly AnkhDiscoveredPackage[]` | yes |  |
 
 ## AnkhPlanningContext
 
@@ -273,16 +273,16 @@ Source: `src/planning.ts:37:1`
 
 ### Members
 
-| Name             | Kind     | Type                                            | Required | Description |
-| ---------------- | -------- | ----------------------------------------------- | -------- | ----------- |
-| cwd              | property | `string`                                        | yes      |             |
-| env              | property | `Readonly<Record<string, string \| undefined>>` | yes      |             |
-| interaction      | property | `AnkhCommandInteraction \| undefined`           | no       |             |
-| packageRegistry  | property | `AnkhPackageRegistry`                           | yes      |             |
-| providerRegistry | property | `AnkhProviderRegistry`                          | yes      |             |
-| version          | property | `string`                                        | yes      |             |
-| writeStderr      | method   | `(text: string) => void`                        | yes      |             |
-| writeStdout      | method   | `(text: string) => void`                        | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| cwd | property | `string` | yes |  |
+| env | property | `Readonly<Record<string, string \| undefined>>` | yes |  |
+| interaction | property | `AnkhCommandInteraction \| undefined` | no |  |
+| packageRegistry | property | `AnkhPackageRegistry` | yes |  |
+| providerRegistry | property | `AnkhProviderRegistry` | yes |  |
+| version | property | `string` | yes |  |
+| writeStderr | method | `(text: string) => void` | yes |  |
+| writeStdout | method | `(text: string) => void` | yes |  |
 
 ## AnkhPlanningHandler
 
@@ -298,10 +298,10 @@ Source: `src/planning.ts:53:1`
 
 ### Members
 
-| Name    | Kind     | Type                  | Required | Description |
-| ------- | -------- | --------------------- | -------- | ----------- |
-| handler | property | `AnkhPlanningHandler` | yes      |             |
-| path    | property | `readonly string[]`   | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| handler | property | `AnkhPlanningHandler` | yes |  |
+| path | property | `readonly string[]` | yes |  |
 
 ## AnkhPlanningRequest
 
@@ -311,12 +311,12 @@ Source: `src/planning.ts:42:1`
 
 ### Members
 
-| Name     | Kind     | Type                  | Required | Description |
-| -------- | -------- | --------------------- | -------- | ----------- |
-| argv     | property | `readonly string[]`   | yes      |             |
-| command  | property | `AnkhCommandListing`  | yes      |             |
-| context  | property | `AnkhPlanningContext` | yes      |             |
-| provider | property | `AnkhLoadedProvider`  | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| argv | property | `readonly string[]` | yes |  |
+| command | property | `AnkhCommandListing` | yes |  |
+| context | property | `AnkhPlanningContext` | yes |  |
+| provider | property | `AnkhLoadedProvider` | yes |  |
 
 ## AnkhProviderManifestDiagnostic
 
@@ -326,15 +326,15 @@ Source: `src/providerManifestLoader.ts:12:1`
 
 ### Members
 
-| Name               | Kind     | Type                   | Required | Description |
-| ------------------ | -------- | ---------------------- | -------- | ----------- |
-| category           | property | `string \| undefined`  | no       |             |
-| code               | property | `string`               | yes      |             |
-| message            | property | `string`               | yes      |             |
-| packageJsonPath    | property | `string`               | yes      |             |
-| packageName        | property | `string`               | yes      |             |
-| providerModulePath | property | `string \| undefined`  | no       |             |
-| severity           | property | `"warning" \| "error"` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| category | property | `string \| undefined` | no |  |
+| code | property | `string` | yes |  |
+| message | property | `string` | yes |  |
+| packageJsonPath | property | `string` | yes |  |
+| packageName | property | `string` | yes |  |
+| providerModulePath | property | `string \| undefined` | no |  |
+| severity | property | `"warning" \| "error"` | yes |  |
 
 ## AnkhProviderRegistry
 
@@ -344,14 +344,14 @@ Source: `src/providerRegistry.ts:22:1`
 
 ### Members
 
-| Name              | Kind   | Type                                                                                   | Required | Description |
-| ----------------- | ------ | -------------------------------------------------------------------------------------- | -------- | ----------- |
-| findAllByCategory | method | `(category: string) => readonly AnkhLoadedProvider[]`                                  | yes      |             |
-| findByCategory    | method | `(category: string) => AnkhLoadedProvider \| null`                                     | yes      |             |
-| hasCategory       | method | `(category: string) => boolean`                                                        | yes      |             |
-| listCommands      | method | `() => readonly AnkhCommandListing[]`                                                  | yes      |             |
-| listProviders     | method | `() => readonly AnkhLoadedProvider[]`                                                  | yes      |             |
-| resolveCommand    | method | `(category: string, tokens: readonly string[]) => AnkhResolvedProviderCommand \| null` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| findAllByCategory | method | `(category: string) => readonly AnkhLoadedProvider[]` | yes |  |
+| findByCategory | method | `(category: string) => AnkhLoadedProvider \| null` | yes |  |
+| hasCategory | method | `(category: string) => boolean` | yes |  |
+| listCommands | method | `() => readonly AnkhCommandListing[]` | yes |  |
+| listProviders | method | `() => readonly AnkhLoadedProvider[]` | yes |  |
+| resolveCommand | method | `(category: string, tokens: readonly string[]) => AnkhResolvedProviderCommand \| null` | yes |  |
 
 ## AnkhResolvedProviderCommand
 
@@ -361,11 +361,11 @@ Source: `src/providerRegistry.ts:16:1`
 
 ### Members
 
-| Name     | Kind     | Type                 | Required | Description |
-| -------- | -------- | -------------------- | -------- | ----------- |
-| argv     | property | `readonly string[]`  | yes      |             |
-| command  | property | `AnkhCommandListing` | yes      |             |
-| provider | property | `AnkhLoadedProvider` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| argv | property | `readonly string[]` | yes |  |
+| command | property | `AnkhCommandListing` | yes |  |
+| provider | property | `AnkhLoadedProvider` | yes |  |
 
 ## AnkhRuntimeCommandProvider
 
@@ -375,15 +375,15 @@ Source: `src/execution.ts:38:1`
 
 ### Members
 
-| Name             | Kind     | Type                                                 | Required | Description |
-| ---------------- | -------- | ---------------------------------------------------- | -------- | ----------- |
-| capabilities     | property | `readonly `${string}.${string}`[]`                   | yes      |             |
-| category         | property | `string`                                             | yes      |             |
-| commands         | property | `readonly AnkhCommandDescriptor[]`                   | yes      |             |
-| handlers         | property | `readonly AnkhCommandHandlerBinding[] \| undefined`  | no       |             |
-| id               | property | `string`                                             | yes      |             |
-| planningHandlers | property | `readonly AnkhPlanningHandlerBinding[] \| undefined` | no       |             |
-| version          | property | `string`                                             | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| capabilities | property | `readonly `${string}.${string}`[]` | yes |  |
+| category | property | `string` | yes |  |
+| commands | property | `readonly AnkhCommandDescriptor[]` | yes |  |
+| handlers | property | `readonly AnkhCommandHandlerBinding[] \| undefined` | no |  |
+| id | property | `string` | yes |  |
+| planningHandlers | property | `readonly AnkhPlanningHandlerBinding[] \| undefined` | no |  |
+| version | property | `string` | yes |  |
 
 ## createCommandInteraction
 
@@ -436,13 +436,29 @@ Source: `src/providerRegistry.ts:31:1`
 
 Kind: `function`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:46:1`
+Source: `src/discovery.ts:49:1`
+
+Discover Ankh package metadata from the current project and any additional package roots.
 
 ### Signatures
 
 - `(options: DiscoverAnkhPackagesOptions) => Promise<AnkhMetadataDiscoveryResult>`
   - options: `DiscoverAnkhPackagesOptions`
   - returns: `Promise<AnkhMetadataDiscoveryResult>`
+
+## isHelpToken
+
+Kind: `function`
+Module: `src/parser.ts`
+Source: `src/parser.ts:18:1`
+
+Return whether a token requests conventional CLI help.
+
+### Signatures
+
+- `(value: string) => boolean`
+  - value: `string`
+  - returns: `boolean`
 
 ## loadProviderManifests
 
@@ -464,16 +480,16 @@ Source: `src/providerManifestLoader.ts:30:1`
 
 ### Members
 
-| Name        | Kind     | Type                                        | Required | Description |
-| ----------- | -------- | ------------------------------------------- | -------- | ----------- |
-| diagnostics | property | `readonly AnkhProviderManifestDiagnostic[]` | yes      |             |
-| providers   | property | `readonly AnkhLoadedProvider[]`             | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| diagnostics | property | `readonly AnkhProviderManifestDiagnostic[]` | yes |  |
+| providers | property | `readonly AnkhLoadedProvider[]` | yes |  |
 
 ## parseArgv
 
 Kind: `function`
 Module: `src/parser.ts`
-Source: `src/parser.ts:19:1`
+Source: `src/parser.ts:25:1`
 
 ### Signatures
 
@@ -487,11 +503,44 @@ Kind: `unknown`
 Module: `src/parser.ts`
 Source: `src/parser.ts:1:1`
 
+## renderProviderHelp
+
+Kind: `function`
+Module: `src/help.ts`
+Source: `src/help.ts:62:1`
+
+Render provider help from one manifest for both the Ankh router and standalone provider CLIs.
+
+Keep this shared help runtime in `@ankhorage/ankh` for now; TODO: extract it into a dedicated CLI
+package once the provider-facing API is stable.
+
+### Signatures
+
+- `(options: RenderProviderHelpOptions) => string`
+  - options: `RenderProviderHelpOptions`
+  - returns: `string`
+
+## RenderProviderHelpOptions
+
+Kind: `type`
+Module: `src/help.ts`
+Source: `src/help.ts:12:1`
+
+### Members
+
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| commandPrefix | property | `readonly string[]` | yes |  |
+| description | property | `string` | yes |  |
+| manifest | property | `AnkhCommandProviderManifest` | yes |  |
+
 ## runCli
 
 Kind: `function`
 Module: `src/cli/index.ts`
-Source: `src/cli/index.ts:73:1`
+Source: `src/cli/index.ts:80:1`
+
+Run the root Ankh CLI against the official remote provider catalog.
 
 ### Signatures
 

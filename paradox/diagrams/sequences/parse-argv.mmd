@@ -1,0 +1,5 @@
+sequenceDiagram
+  participant participant_isHelpToken as isHelpToken
+  participant participant_parseArgv as parseArgv
+  participant_parseArgv->>participant_isHelpToken: isHelpToken()
+  participant_isHelpToken-->>participant_parseArgv: return
