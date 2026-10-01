@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.32
+
+### Patch Changes
+
+- d1319fa: Update dependencies: `@ankhorage/devtools`.
+
 ## 0.10.31
 
 ### Patch Changes
