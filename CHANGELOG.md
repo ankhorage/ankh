@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.13
+
+### Patch Changes
+
+- 0261dfd: Update dependencies: `@ankhorage/devtools`.
+
 ## 0.10.12
 
 ### Patch Changes
