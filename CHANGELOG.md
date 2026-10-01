@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.31
+
+### Patch Changes
+
+- 1e0020d: Update Renovate-managed workflows.
+
 ## 0.10.30
 
 ### Patch Changes
