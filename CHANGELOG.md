@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.30
+
+### Patch Changes
+
+- bdd9fa7: Update dependencies: `@ankhorage/devtools`.
+
 ## 0.10.29
 
 ### Patch Changes
