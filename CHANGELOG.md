@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.27
+
+### Patch Changes
+
+- fcade05: Update Renovate-managed workflows.
+
 ## 0.10.26
 
 ### Patch Changes
