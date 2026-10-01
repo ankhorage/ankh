@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.23
+
+### Patch Changes
+
+- 1f21001: Update dependencies: `@ankhorage/devtools`.
+
 ## 0.10.22
 
 ### Patch Changes
