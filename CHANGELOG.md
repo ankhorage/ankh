@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.19
+
+### Patch Changes
+
+- 011f3e0: Update Renovate-managed workflows.
+
 ## 0.10.18
 
 ### Patch Changes
