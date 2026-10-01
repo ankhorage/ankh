@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.6
+
+### Patch Changes
+
+- 27987bb: Update dependencies: `@ankhorage/devtools`.
+
 ## 0.10.5
 
 ### Patch Changes
