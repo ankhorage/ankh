@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.36
+
+### Patch Changes
+
+- bc57d43: Update dependencies: `@types/node`.
+
 ## 0.10.35
 
 ### Patch Changes
