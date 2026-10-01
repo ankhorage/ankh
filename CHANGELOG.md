@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.29
+
+### Patch Changes
+
+- fdb8c11: Update Renovate-managed workflows.
+
 ## 0.10.28
 
 ### Patch Changes
