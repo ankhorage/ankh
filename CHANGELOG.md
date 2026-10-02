@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.65
+
+### Patch Changes
+
+- 3c9d2ca: Update Renovate-managed workflows.
+
 ## 0.10.64
 
 ### Patch Changes
