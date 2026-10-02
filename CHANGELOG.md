@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.39
+
+### Patch Changes
+
+- c98f96a: Update dependencies: `@ankhorage/devtools`.
+
 ## 0.10.38
 
 ### Patch Changes
