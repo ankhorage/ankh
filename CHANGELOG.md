@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.83
+
+### Patch Changes
+
+- cf95303: Update dependencies: `@ankhorage/devtools`.
+
 ## 0.10.82
 
 ### Patch Changes
