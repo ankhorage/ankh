@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.47
+
+### Patch Changes
+
+- babe860: Update Renovate-managed workflows.
+
 ## 0.10.46
 
 ### Patch Changes
