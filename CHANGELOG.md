@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.82
+
+### Patch Changes
+
+- 412f39d: Update Renovate-managed workflows.
+
 ## 0.10.81
 
 ### Patch Changes
