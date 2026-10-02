@@ -1,6 +1,6 @@
 {
   "name": "@ankhorage/ankh",
-  "version": "0.10.40",
+  "version": "0.10.41",
   "description": "Bun-first root CLI front door for Ankhorage provider commands.",
   "license": "MIT",
   "publishConfig": {
