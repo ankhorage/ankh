@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.11.1
+
+### Patch Changes
+
+- fdf74e4: Resolve provider catalog metadata from the latest published npm package so unreleased repository
+  versions cannot break provider installation.
+
 ## 0.11.0
 
 ### Minor Changes

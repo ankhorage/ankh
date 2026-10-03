@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.11.0",
+      "value": "v0.11.1",
       "color": "cb3837"
     },
     {
@@ -3189,10 +3189,19 @@
     },
     {
       "name": "readProviderEntryAsync",
-      "description": "Read one repository package manifest and convert valid Ankh metadata into a catalog entry.",
+      "description": "Resolve one repository candidate to the latest published npm provider metadata.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
         "line": 114,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPublishedProviderEntryAsync",
+      "description": "Read the latest published npm manifest so catalog state is always installable.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "line": 138,
         "column": 1
       }
     },
@@ -3201,7 +3210,7 @@
       "description": "Parse one package manifest and return its validated CLI-provider entry when present.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 136,
+        "line": 164,
         "column": 1
       }
     },
@@ -3210,7 +3219,7 @@
       "description": "Parse package-owned Ankh category, provider, and capability metadata.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 169,
+        "line": 197,
         "column": 1
       }
     },
@@ -3219,7 +3228,7 @@
       "description": "Reject ambiguous categories or capabilities in the official remote catalog.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 204,
+        "line": 232,
         "column": 1
       }
     },
@@ -3228,7 +3237,7 @@
       "description": "Read a trimmed non-empty string.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 230,
+        "line": 258,
         "column": 1
       }
     },
@@ -3237,7 +3246,7 @@
       "description": "Validate package-relative provider references.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 237,
+        "line": 265,
         "column": 1
       }
     },
@@ -3246,7 +3255,7 @@
       "description": "Validate dot-separated Ankh capability identifiers.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 242,
+        "line": 270,
         "column": 1
       }
     },
@@ -3255,7 +3264,7 @@
       "description": "Narrow an unknown JSON value to a non-array object.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 248,
+        "line": 276,
         "column": 1
       }
     },
@@ -7267,6 +7276,36 @@
       },
       {
         "fromSymbol": "readProviderEntryAsync",
+        "toSymbol": "readNonEmptyString",
+        "callExpression": "readNonEmptyString",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "readProviderEntryAsync",
+        "toSymbol": "readPublishedProviderEntryAsync",
+        "callExpression": "readPublishedProviderEntryAsync",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "readPublishedProviderEntryAsync",
+        "toSymbol": "fetchImpl",
+        "callExpression": "fetchImpl",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "readPublishedProviderEntryAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "readPublishedProviderEntryAsync",
+        "toSymbol": "readNonEmptyString",
+        "callExpression": "readNonEmptyString",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "readPublishedProviderEntryAsync",
         "toSymbol": "parseProviderEntry",
         "callExpression": "parseProviderEntry",
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
