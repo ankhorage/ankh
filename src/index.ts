@@ -19,6 +19,7 @@ export type {
   AnkhCommandHandlerBinding,
   AnkhRuntimeCommandProvider,
 } from './execution.js';
+export { resolveAnkhInputValue } from './features/input-resolution/application/resolveAnkhInputValue.js';
 export type { RenderProviderHelpOptions } from './help.js';
 export { renderProviderHelp } from './help.js';
 export type { AnkhPackageRegistry } from './packageRegistry.js';
@@ -46,3 +47,8 @@ export type {
   AnkhResolvedProviderCommand,
 } from './providerRegistry.js';
 export { createProviderRegistry } from './providerRegistry.js';
+export type {
+  AnkhInputValueCandidates,
+  AnkhInputValueOrigin,
+  AnkhResolvedInputValue,
+} from './types/inputResolution.js';
