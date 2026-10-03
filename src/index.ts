@@ -22,11 +22,6 @@ export type {
 export { resolveAnkhInputValue } from './features/input-resolution/application/resolveAnkhInputValue.js';
 export type { RenderProviderHelpOptions } from './help.js';
 export { renderProviderHelp } from './help.js';
-export type {
-  AnkhInputValueCandidates,
-  AnkhInputValueOrigin,
-  AnkhResolvedInputValue,
-} from './types/inputResolution.js';
 export type { AnkhPackageRegistry } from './packageRegistry.js';
 export { createPackageRegistry } from './packageRegistry.js';
 export type { ParsedCliRequest } from './parser.js';
@@ -52,3 +47,8 @@ export type {
   AnkhResolvedProviderCommand,
 } from './providerRegistry.js';
 export { createProviderRegistry } from './providerRegistry.js';
+export type {
+  AnkhInputValueCandidates,
+  AnkhInputValueOrigin,
+  AnkhResolvedInputValue,
+} from './types/inputResolution.js';
