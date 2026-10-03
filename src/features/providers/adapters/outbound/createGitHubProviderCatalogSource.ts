@@ -129,7 +129,7 @@ async function readProviderEntryAsync(
   const rawCandidatePackage: unknown = await response.json();
   if (!isRecord(rawCandidatePackage)) return null;
   const packageName = readNonEmptyString(rawCandidatePackage.name);
-  if (packageName === null || !packageName.startsWith('@ankhorage/')) return null;
+  if (!packageName?.startsWith('@ankhorage/')) return null;
 
   return readPublishedProviderEntryAsync(fetchImpl, packageName, repository);
 }
