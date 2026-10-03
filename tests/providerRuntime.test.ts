@@ -103,7 +103,7 @@ describe('official provider runtime', () => {
     expect(catalog).toEqual({ entries: [infraEntry] });
   });
 
-  test('discovers provider metadata dynamically from GitHub repository package manifests', async () => {
+  test('discovers candidate packages from GitHub and provider metadata from npm', async () => {
     const requestedUrls: string[] = [];
     const source = createGitHubProviderCatalogSource({
       fetchImpl(input) {
@@ -137,6 +137,15 @@ describe('official provider runtime', () => {
           );
         }
         if (url.includes('/infra/main/package.json')) {
+          return Promise.resolve(jsonResponse({ name: infraEntry.packageName, version: '99.0.0' }));
+        }
+        if (url.includes('/runtime/main/package.json')) {
+          return Promise.resolve(jsonResponse({ name: '@ankhorage/runtime', version: '99.0.0' }));
+        }
+        if (url.includes('/utility/main/package.json')) {
+          return Promise.resolve(jsonResponse({ name: '@ankhorage/utility', version: '99.0.0' }));
+        }
+        if (url.includes('%40ankhorage%2Finfra/latest')) {
           return Promise.resolve(
             jsonResponse({
               ankh: infraEntry.metadata,
@@ -146,7 +155,7 @@ describe('official provider runtime', () => {
             }),
           );
         }
-        if (url.includes('/runtime/main/package.json')) {
+        if (url.includes('%40ankhorage%2Fruntime/latest')) {
           return Promise.resolve(
             jsonResponse({
               ankh: {
@@ -160,14 +169,74 @@ describe('official provider runtime', () => {
             }),
           );
         }
-        return Promise.resolve(jsonResponse({ name: '@ankhorage/utility', version: '1.2.0' }));
+        if (url.includes('%40ankhorage%2Futility/latest')) {
+          return Promise.resolve(jsonResponse({ name: '@ankhorage/utility', version: '1.2.0' }));
+        }
+        return Promise.resolve(new Response(null, { status: 404 }));
       },
     });
 
     expect(await source.readAsync()).toEqual([infraEntry]);
     expect(requestedUrls.some((url) => url.includes('/infra/main/package.json'))).toBeTrue();
-    expect(requestedUrls.some((url) => url.includes('/runtime/main/package.json'))).toBeTrue();
-    expect(requestedUrls.some((url) => url.includes('/utility/main/package.json'))).toBeTrue();
+    expect(requestedUrls.some((url) => url.includes('%40ankhorage%2Finfra/latest'))).toBeTrue();
+  });
+
+  test('keeps unreleased repository versions out of the provider catalog', async () => {
+    const publishedEntry = {
+      description: 'ZORA provider',
+      metadata: {
+        capabilities: ['zora.sync'],
+        category: 'zora',
+        provider: './dist/cli/index.js',
+      },
+      packageName: '@ankhorage/zora',
+      repositoryUrl: 'https://github.com/ankhorage/zora',
+      version: '23.1.0',
+    } as const satisfies AnkhProviderCatalogEntry;
+    const source = createGitHubProviderCatalogSource({
+      fetchImpl(input) {
+        const url = readRequestUrl(input);
+        if (url.includes('/orgs/ankhorage/repos')) {
+          return Promise.resolve(
+            jsonResponse([
+              {
+                archived: false,
+                default_branch: 'main',
+                fork: false,
+                html_url: publishedEntry.repositoryUrl,
+                name: 'zora',
+              },
+            ]),
+          );
+        }
+        if (url.includes('/zora/main/package.json')) {
+          return Promise.resolve(
+            jsonResponse({
+              ankh: {
+                capabilities: ['zora.sync', 'zora.create'],
+                category: 'zora',
+                provider: './dist/cli/index.js',
+              },
+              name: publishedEntry.packageName,
+              version: '23.2.0',
+            }),
+          );
+        }
+        if (url.includes('%40ankhorage%2Fzora/latest')) {
+          return Promise.resolve(
+            jsonResponse({
+              ankh: publishedEntry.metadata,
+              description: publishedEntry.description,
+              name: publishedEntry.packageName,
+              version: publishedEntry.version,
+            }),
+          );
+        }
+        return Promise.resolve(new Response(null, { status: 404 }));
+      },
+    });
+
+    expect(await source.readAsync()).toEqual([publishedEntry]);
   });
 
   test('keeps provider null authoritative even when the package exports ./cli', async () => {
