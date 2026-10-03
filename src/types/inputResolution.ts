@@ -1,8 +1,4 @@
-export type AnkhInputValueOrigin =
-  | 'explicit'
-  | 'cli'
-  | 'environment'
-  | 'default';
+export type AnkhInputValueOrigin = 'explicit' | 'cli' | 'environment' | 'default';
 
 export interface AnkhInputValueCandidates {
   readonly explicit?: string | null;
