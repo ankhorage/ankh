@@ -716,6 +716,75 @@
     "structuredRows": []
   },
   {
+    "name": "AnkhInputValueCandidates",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/types/inputResolution.ts",
+    "sourceLocation": {
+      "filePath": "src/types/inputResolution.ts",
+      "line": 3,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "cli",
+        "kind": "property",
+        "type": "string | null | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "defaultValue",
+        "kind": "property",
+        "type": "string | null | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "environment",
+        "kind": "property",
+        "type": "string | null | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "explicit",
+        "kind": "property",
+        "type": "string | null | undefined",
+        "required": false,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhInputValueOrigin",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "unknown",
+    "modulePath": "src/types/inputResolution.ts",
+    "sourceLocation": {
+      "filePath": "src/types/inputResolution.ts",
+      "line": 1,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
     "name": "AnkhLoadedProvider",
     "description": null,
     "isReadme": false,
@@ -1242,6 +1311,43 @@
         "name": "resolveCommand",
         "kind": "method",
         "type": "(category: string, tokens: readonly string[]) => AnkhResolvedProviderCommand | null",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "AnkhResolvedInputValue",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/types/inputResolution.ts",
+    "sourceLocation": {
+      "filePath": "src/types/inputResolution.ts",
+      "line": 10,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhInputValueOrigin"
+    ],
+    "signatures": [],
+    "members": [
+      {
+        "name": "origin",
+        "kind": "property",
+        "type": "AnkhInputValueOrigin",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "value",
+        "kind": "property",
+        "type": "string",
         "required": true,
         "description": null
       }
@@ -1782,6 +1888,43 @@
         "description": null
       }
     ],
+    "structuredRows": []
+  },
+  {
+    "name": "resolveAnkhInputValue",
+    "description": "Resolve one user-facing value with canonical Ankh precedence.\n\nThe precedence is explicit override, CLI, environment, then provider default.\nUndefined, null, empty, and whitespace-only strings are treated as absent.",
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/features/input-resolution/application/resolveAnkhInputValue.ts",
+    "sourceLocation": {
+      "filePath": "src/features/input-resolution/application/resolveAnkhInputValue.ts",
+      "line": 13,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "AnkhInputValueCandidates",
+      "AnkhResolvedInputValue"
+    ],
+    "signatures": [
+      {
+        "label": "(candidates: AnkhInputValueCandidates) => AnkhResolvedInputValue | null",
+        "parameters": [
+          {
+            "name": "candidates",
+            "type": "AnkhInputValueCandidates",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "AnkhResolvedInputValue | null",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
     "structuredRows": []
   },
   {

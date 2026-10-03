@@ -53,6 +53,12 @@ graph TD
   module_src_execution_ts --> module_src_providerRegistry_ts
   module_src_features_help_readPackagePresentation_ts["src/features/help/readPackagePresentation.ts"]
   package__ankhorage_ankh -.-> module_src_features_help_readPackagePresentation_ts
+  module_src_features_input_resolution_application_resolveAnkhInputValue_test_ts["src/features/input-resolution/application/resolveAnkhInputValue.test.ts"]
+  package__ankhorage_ankh -.-> module_src_features_input_resolution_application_resolveAnkhInputValue_test_ts
+  module_src_features_input_resolution_application_resolveAnkhInputValue_test_ts --> module_src_features_input_resolution_application_resolveAnkhInputValue_ts
+  module_src_features_input_resolution_application_resolveAnkhInputValue_ts["src/features/input-resolution/application/resolveAnkhInputValue.ts"]
+  package__ankhorage_ankh -.-> module_src_features_input_resolution_application_resolveAnkhInputValue_ts
+  module_src_features_input_resolution_application_resolveAnkhInputValue_ts --> module_src_types_inputResolution_ts
   module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts["src/features/providers/adapters/outbound/createBunProviderPackageStore.ts"]
   package__ankhorage_ankh -.-> module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts
   module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts --> module_src_discovery_ts
@@ -115,6 +121,8 @@ graph TD
   module_src_providerRegistry_ts["src/providerRegistry.ts"]
   package__ankhorage_ankh -.-> module_src_providerRegistry_ts
   module_src_providerRegistry_ts --> module_src_providerManifestLoader_ts
+  module_src_types_inputResolution_ts["src/types/inputResolution.ts"]
+  package__ankhorage_ankh -.-> module_src_types_inputResolution_ts
   module_src_types_providers_ts["src/types/providers.ts"]
   package__ankhorage_ankh -.-> module_src_types_providers_ts
   module_src_types_providers_ts --> module_src_discovery_ts

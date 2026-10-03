@@ -205,6 +205,27 @@ Kind: `unknown`
 Module: `src/discovery.ts`
 Source: `src/discovery.ts:12:1`
 
+## AnkhInputValueCandidates
+
+Kind: `type`
+Module: `src/types/inputResolution.ts`
+Source: `src/types/inputResolution.ts:3:1`
+
+### Members
+
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| cli | property | `string \| null \| undefined` | no |  |
+| defaultValue | property | `string \| null \| undefined` | no |  |
+| environment | property | `string \| null \| undefined` | no |  |
+| explicit | property | `string \| null \| undefined` | no |  |
+
+## AnkhInputValueOrigin
+
+Kind: `unknown`
+Module: `src/types/inputResolution.ts`
+Source: `src/types/inputResolution.ts:1:1`
+
 ## AnkhLoadedProvider
 
 Kind: `type`
@@ -352,6 +373,19 @@ Source: `src/providerRegistry.ts:22:1`
 | listCommands | method | `() => readonly AnkhCommandListing[]` | yes |  |
 | listProviders | method | `() => readonly AnkhLoadedProvider[]` | yes |  |
 | resolveCommand | method | `(category: string, tokens: readonly string[]) => AnkhResolvedProviderCommand \| null` | yes |  |
+
+## AnkhResolvedInputValue
+
+Kind: `type`
+Module: `src/types/inputResolution.ts`
+Source: `src/types/inputResolution.ts:10:1`
+
+### Members
+
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| origin | property | `AnkhInputValueOrigin` | yes |  |
+| value | property | `string` | yes |  |
 
 ## AnkhResolvedProviderCommand
 
@@ -533,6 +567,23 @@ Source: `src/help.ts:12:1`
 | commandPrefix | property | `readonly string[]` | yes |  |
 | description | property | `string` | yes |  |
 | manifest | property | `AnkhCommandProviderManifest` | yes |  |
+
+## resolveAnkhInputValue
+
+Kind: `function`
+Module: `src/features/input-resolution/application/resolveAnkhInputValue.ts`
+Source: `src/features/input-resolution/application/resolveAnkhInputValue.ts:13:1`
+
+Resolve one user-facing value with canonical Ankh precedence.
+
+The precedence is explicit override, CLI, environment, then provider default.
+Undefined, null, empty, and whitespace-only strings are treated as absent.
+
+### Signatures
+
+- `(candidates: AnkhInputValueCandidates) => AnkhResolvedInputValue | null`
+  - candidates: `AnkhInputValueCandidates`
+  - returns: `AnkhResolvedInputValue | null`
 
 ## runCli
 

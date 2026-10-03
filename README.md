@@ -3,7 +3,7 @@
 
 # @ankhorage/ankh
 
-![license: MIT](./paradox/badges/license.svg) ![npm: v0.10.84](./paradox/badges/npm.svg) ![runtime: bun](./paradox/badges/runtime.svg) ![typescript: strict](./paradox/badges/typescript.svg) ![eslint: checked](./paradox/badges/eslint.svg) ![prettier: checked](./paradox/badges/prettier.svg) ![build: checked](./paradox/badges/build.svg) ![tests: checked](./paradox/badges/tests.svg) ![docs: paradox](./paradox/badges/docs.svg)
+![license: MIT](./paradox/badges/license.svg) ![npm: v0.11.0](./paradox/badges/npm.svg) ![runtime: bun](./paradox/badges/runtime.svg) ![typescript: strict](./paradox/badges/typescript.svg) ![eslint: checked](./paradox/badges/eslint.svg) ![prettier: checked](./paradox/badges/prettier.svg) ![build: checked](./paradox/badges/build.svg) ![tests: checked](./paradox/badges/tests.svg) ![docs: paradox](./paradox/badges/docs.svg)
 
 Bun-first root CLI front door for Ankhorage provider commands.
 
@@ -66,3 +66,4 @@ await runCli(['--help']);
 - [createDefaultCommandContext sequence](./paradox/diagrams/sequences/create-default-command-context.mmd)
 - [parseArgv sequence](./paradox/diagrams/sequences/parse-argv.mmd)
 - [renderProviderHelp sequence](./paradox/diagrams/sequences/render-provider-help.mmd)
+- [resolveAnkhInputValue sequence](./paradox/diagrams/sequences/resolve-ankh-input-value.mmd)

@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.10.84",
+      "value": "v0.11.0",
       "color": "cb3837"
     },
     {
@@ -232,6 +232,24 @@
       ]
     },
     {
+      "path": "src/features/input-resolution/application/resolveAnkhInputValue.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/input-resolution/application/resolveAnkhInputValue.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/features/input-resolution/application/resolveAnkhInputValue.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/types/inputResolution.ts"
+      ],
+      "exports": [
+        "resolveAnkhInputValue"
+      ]
+    },
+    {
       "path": "src/features/providers/adapters/outbound/createBunProviderPackageStore.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -369,6 +387,8 @@
         "AnkhConfirmationResult",
         "AnkhDiscoveredPackage",
         "AnkhDiscoverySource",
+        "AnkhInputValueCandidates",
+        "AnkhInputValueOrigin",
         "AnkhLoadedProvider",
         "AnkhMetadataDiscoveryDiagnostic",
         "AnkhMetadataDiscoveryResult",
@@ -379,6 +399,7 @@
         "AnkhPlanningRequest",
         "AnkhProviderManifestDiagnostic",
         "AnkhProviderRegistry",
+        "AnkhResolvedInputValue",
         "AnkhResolvedProviderCommand",
         "AnkhRuntimeCommandProvider",
         "createCommandInteraction",
@@ -393,6 +414,7 @@
         "ParsedCliRequest",
         "renderProviderHelp",
         "RenderProviderHelpOptions",
+        "resolveAnkhInputValue",
         "runCli"
       ]
     },
@@ -480,6 +502,16 @@
         "AnkhProviderRegistry",
         "AnkhResolvedProviderCommand",
         "createProviderRegistry"
+      ]
+    },
+    {
+      "path": "src/types/inputResolution.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "AnkhInputValueCandidates",
+        "AnkhInputValueOrigin",
+        "AnkhResolvedInputValue"
       ]
     },
     {
@@ -1404,6 +1436,75 @@
       "structuredRows": []
     },
     {
+      "name": "AnkhInputValueCandidates",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/types/inputResolution.ts",
+      "sourceLocation": {
+        "filePath": "src/types/inputResolution.ts",
+        "line": 3,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "cli",
+          "kind": "property",
+          "type": "string | null | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "defaultValue",
+          "kind": "property",
+          "type": "string | null | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "environment",
+          "kind": "property",
+          "type": "string | null | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "explicit",
+          "kind": "property",
+          "type": "string | null | undefined",
+          "required": false,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "AnkhInputValueOrigin",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/types/inputResolution.ts",
+      "sourceLocation": {
+        "filePath": "src/types/inputResolution.ts",
+        "line": 1,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
       "name": "AnkhLoadedProvider",
       "description": null,
       "isReadme": false,
@@ -1930,6 +2031,43 @@
           "name": "resolveCommand",
           "kind": "method",
           "type": "(category: string, tokens: readonly string[]) => AnkhResolvedProviderCommand | null",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "AnkhResolvedInputValue",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/types/inputResolution.ts",
+      "sourceLocation": {
+        "filePath": "src/types/inputResolution.ts",
+        "line": 10,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [
+        "AnkhInputValueOrigin"
+      ],
+      "signatures": [],
+      "members": [
+        {
+          "name": "origin",
+          "kind": "property",
+          "type": "AnkhInputValueOrigin",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "value",
+          "kind": "property",
+          "type": "string",
           "required": true,
           "description": null
         }
@@ -2473,6 +2611,43 @@
       "structuredRows": []
     },
     {
+      "name": "resolveAnkhInputValue",
+      "description": "Resolve one user-facing value with canonical Ankh precedence.\n\nThe precedence is explicit override, CLI, environment, then provider default.\nUndefined, null, empty, and whitespace-only strings are treated as absent.",
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/features/input-resolution/application/resolveAnkhInputValue.ts",
+      "sourceLocation": {
+        "filePath": "src/features/input-resolution/application/resolveAnkhInputValue.ts",
+        "line": 13,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [
+        "AnkhInputValueCandidates",
+        "AnkhResolvedInputValue"
+      ],
+      "signatures": [
+        {
+          "label": "(candidates: AnkhInputValueCandidates) => AnkhResolvedInputValue | null",
+          "parameters": [
+            {
+              "name": "candidates",
+              "type": "AnkhInputValueCandidates",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "AnkhResolvedInputValue | null",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
       "name": "runCli",
       "description": "Run the root Ankh CLI against the official remote provider catalog.",
       "isReadme": false,
@@ -2838,6 +3013,24 @@
       "sourceLocation": {
         "filePath": "src/features/help/readPackagePresentation.ts",
         "line": 95,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveAnkhInputValue",
+      "description": "Resolve one user-facing value with canonical Ankh precedence.\n\nThe precedence is explicit override, CLI, environment, then provider default.\nUndefined, null, empty, and whitespace-only strings are treated as absent.",
+      "sourceLocation": {
+        "filePath": "src/features/input-resolution/application/resolveAnkhInputValue.ts",
+        "line": 13,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizeCandidate",
+      "description": "Normalize one precedence candidate without letting blank values mask lower-priority sources.",
+      "sourceLocation": {
+        "filePath": "src/features/input-resolution/application/resolveAnkhInputValue.ts",
+        "line": 32,
         "column": 1
       }
     },
@@ -3853,6 +4046,14 @@
     },
     {
       "kind": "export",
+      "name": "resolveAnkhInputValue",
+      "sourcePath": "src/features/input-resolution/application/resolveAnkhInputValue.ts",
+      "symbolName": "resolveAnkhInputValue",
+      "description": "Resolve one user-facing value with canonical Ankh precedence.\n\nThe precedence is explicit override, CLI, environment, then provider default.\nUndefined, null, empty, and whitespace-only strings are treated as absent.",
+      "isReadme": false
+    },
+    {
+      "kind": "export",
       "name": "runCli",
       "sourcePath": "src/cli/index.ts",
       "symbolName": "runCli",
@@ -3989,6 +4190,11 @@
       },
       {
         "fromPath": "src/index.ts",
+        "toPath": "src/features/input-resolution/application/resolveAnkhInputValue.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
         "toPath": "src/help.ts",
         "sourcePath": "src/index.ts"
       },
@@ -4015,6 +4221,11 @@
       {
         "fromPath": "src/index.ts",
         "toPath": "src/providerRegistry.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
+        "toPath": "src/types/inputResolution.ts",
         "sourcePath": "src/index.ts"
       },
       {
@@ -4391,6 +4602,16 @@
         "fromPath": "src/types/providers.ts",
         "toPath": "src/discovery.ts",
         "sourcePath": "src/types/providers.ts"
+      },
+      {
+        "fromPath": "src/features/input-resolution/application/resolveAnkhInputValue.test.ts",
+        "toPath": "src/features/input-resolution/application/resolveAnkhInputValue.ts",
+        "sourcePath": "src/features/input-resolution/application/resolveAnkhInputValue.test.ts"
+      },
+      {
+        "fromPath": "src/features/input-resolution/application/resolveAnkhInputValue.ts",
+        "toPath": "src/types/inputResolution.ts",
+        "sourcePath": "src/features/input-resolution/application/resolveAnkhInputValue.ts"
       },
       {
         "fromPath": "src/features/providers/composition/createProviderRuntime.ts",
@@ -6799,6 +7020,36 @@
         "sourcePath": "src/features/help/readPackagePresentation.ts"
       },
       {
+        "fromSymbol": "src/features/input-resolution/application/resolveAnkhInputValue.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/features/input-resolution/application/resolveAnkhInputValue.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/input-resolution/application/resolveAnkhInputValue.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/input-resolution/application/resolveAnkhInputValue.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/input-resolution/application/resolveAnkhInputValue.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/input-resolution/application/resolveAnkhInputValue.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/input-resolution/application/resolveAnkhInputValue.test.ts",
+        "toSymbol": "resolveAnkhInputValue",
+        "callExpression": "resolveAnkhInputValue",
+        "sourcePath": "src/features/input-resolution/application/resolveAnkhInputValue.test.ts"
+      },
+      {
+        "fromSymbol": "resolveAnkhInputValue",
+        "toSymbol": "normalizeCandidate",
+        "callExpression": "normalizeCandidate",
+        "sourcePath": "src/features/input-resolution/application/resolveAnkhInputValue.ts"
+      },
+      {
         "fromSymbol": "createProviderRuntime",
         "toSymbol": "homedir",
         "callExpression": "homedir",
@@ -7202,6 +7453,16 @@
         "sourcePath": "src/execution.ts"
       },
       {
+        "fromSymbol": "resolveAnkhInputValue",
+        "toType": "AnkhInputValueCandidates",
+        "sourcePath": "src/features/input-resolution/application/resolveAnkhInputValue.ts"
+      },
+      {
+        "fromSymbol": "resolveAnkhInputValue",
+        "toType": "AnkhResolvedInputValue",
+        "sourcePath": "src/features/input-resolution/application/resolveAnkhInputValue.ts"
+      },
+      {
         "fromSymbol": "RenderProviderHelpOptions",
         "toType": "AnkhCommandProviderManifest",
         "sourcePath": "src/help.ts"
@@ -7345,6 +7606,11 @@
         "fromSymbol": "createProviderRegistry",
         "toType": "AnkhProviderRegistry",
         "sourcePath": "src/providerRegistry.ts"
+      },
+      {
+        "fromSymbol": "AnkhResolvedInputValue",
+        "toType": "AnkhInputValueOrigin",
+        "sourcePath": "src/types/inputResolution.ts"
       }
     ],
     "componentComposition": []

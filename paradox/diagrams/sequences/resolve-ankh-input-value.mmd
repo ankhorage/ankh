@@ -1,0 +1,5 @@
+sequenceDiagram
+  participant participant_normalizeCandidate as normalizeCandidate
+  participant participant_resolveAnkhInputValue as resolveAnkhInputValue
+  participant_resolveAnkhInputValue->>participant_normalizeCandidate: normalizeCandidate()
+  participant_normalizeCandidate-->>participant_resolveAnkhInputValue: return

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.0
+
+### Minor Changes
+
+- 2010c3f: Expose canonical input precedence for explicit overrides, CLI values, environment values, and provider defaults.
+
 ## 0.10.84
 
 ### Patch Changes
