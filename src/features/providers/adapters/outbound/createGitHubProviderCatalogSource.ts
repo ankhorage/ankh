@@ -110,7 +110,7 @@ function parseRepository(value: unknown): GitHubRepository | null {
   };
 }
 
-/*** Read one repository package manifest and convert valid Ankh metadata into a catalog entry. */
+/*** Resolve one repository candidate to the latest published npm provider metadata. */
 async function readProviderEntryAsync(
   fetchImpl: FetchFunction,
   organization: string,
@@ -126,10 +126,38 @@ async function readProviderEntryAsync(
     );
   }
 
-  const rawPackage: unknown = await response.json();
-  if (!isRecord(rawPackage) || rawPackage.ankh === undefined) return null;
+  const rawCandidatePackage: unknown = await response.json();
+  if (!isRecord(rawCandidatePackage)) return null;
+  const packageName = readNonEmptyString(rawCandidatePackage.name);
+  if (!packageName?.startsWith('@ankhorage/')) return null;
 
-  return parseProviderEntry(rawPackage, repository);
+  return readPublishedProviderEntryAsync(fetchImpl, packageName, repository);
+}
+
+/*** Read the latest published npm manifest so catalog state is always installable. */
+async function readPublishedProviderEntryAsync(
+  fetchImpl: FetchFunction,
+  packageName: string,
+  repository: GitHubRepository,
+): Promise<AnkhProviderCatalogEntry | null> {
+  const response = await fetchImpl(
+    `https://registry.npmjs.org/${encodeURIComponent(packageName)}/latest`,
+    { headers: { Accept: 'application/json' } },
+  );
+  if (response.status === 404) return null;
+  if (!response.ok) {
+    throw new Error(
+      `Could not read latest published metadata for ${packageName} from npm (HTTP ${response.status}).`,
+    );
+  }
+
+  const rawPublishedPackage: unknown = await response.json();
+  if (!isRecord(rawPublishedPackage) || rawPublishedPackage.ankh === undefined) return null;
+  if (readNonEmptyString(rawPublishedPackage.name) !== packageName) {
+    throw new Error(`npm returned mismatched package metadata while resolving ${packageName}.`);
+  }
+
+  return parseProviderEntry(rawPublishedPackage, repository);
 }
 
 /*** Parse one package manifest and return its validated CLI-provider entry when present. */
