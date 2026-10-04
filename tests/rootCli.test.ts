@@ -1,6 +1,8 @@
 import type { AnkhCommandProviderManifest, AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 import { describe, expect, it } from 'bun:test';
 
+import { createCapabilities } from './capabilityFixture.js';
+
 import { runCli } from '../src/cli/index.js';
 import type { AnkhCommandContext } from '../src/commandContext.js';
 import type { AnkhRuntimeCommandProvider } from '../src/execution.js';
@@ -8,7 +10,7 @@ import { createPackageRegistry } from '../src/packageRegistry.js';
 import { createProviderRegistry } from '../src/providerRegistry.js';
 
 const metadata = {
-  capabilities: ['deploy.release'],
+  capabilities: createCapabilities(['deploy.release']),
   category: 'deploy',
   provider: './dist/cli/index.js',
 } as const satisfies AnkhPackageMetadata;
@@ -17,7 +19,7 @@ const manifest = {
   id: '@ankhorage/deploy',
   category: 'deploy',
   version: '1.0.0',
-  capabilities: ['deploy.release'],
+  capabilities: createCapabilities(['deploy.release']),
   commands: [
     {
       path: [],
