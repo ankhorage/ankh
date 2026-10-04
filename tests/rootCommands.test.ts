@@ -1,11 +1,12 @@
 import type { AnkhCommandProviderManifest, AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 import { describe, expect, it } from 'bun:test';
 
+import { createCapabilities } from './capabilityFixture.js';
+
 import { type AnkhRuntimeCommandProvider, resolveExecutableCommand } from '../src/execution.js';
 import { renderCategoryHelp, renderProviderHelp, renderRootHelp } from '../src/help.js';
 import { resolvePlannableCommand } from '../src/planning.js';
 import { createProviderRegistry } from '../src/providerRegistry.js';
-import { createCapabilities } from './capabilityFixture.js';
 
 const metadata = {
   capabilities: createCapabilities(['fixture.release', 'fixture.status']),
