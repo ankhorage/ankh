@@ -2,6 +2,8 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+import { createCapabilities } from './capabilityFixture.js';
+
 import type { AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 import { afterEach, describe, expect, it } from 'bun:test';
 
@@ -10,13 +12,13 @@ import { discoverAnkhPackages } from '../src/discovery.js';
 const temporaryDirectories: string[] = [];
 
 const contractsMetadata = {
-  capabilities: ['contracts.cli'],
+  capabilities: createCapabilities(['contracts.cli']),
   category: 'contracts',
   provider: null,
 } as const satisfies AnkhPackageMetadata;
 
 const infraMetadata = {
-  capabilities: ['infra.up', 'infra.status'],
+  capabilities: createCapabilities(['infra.up', 'infra.status']),
   category: 'infra',
   provider: './dist/ankh.provider.js',
 } as const satisfies AnkhPackageMetadata;
@@ -134,7 +136,7 @@ describe('discoverAnkhPackages', () => {
     });
     await writePackageJson(path.join(root, 'packages', 'bad'), {
       ankh: {
-        capabilities: ['broken.capability'],
+        capabilities: createCapabilities(['broken.capability']),
         category: 42,
         provider: null,
       },
@@ -213,7 +215,7 @@ describe('discoverAnkhPackages', () => {
     });
     await writePackageJson(path.join(root, 'node_modules', '@ankhorage', 'infra'), {
       ankh: {
-        capabilities: ['infra.up'],
+        capabilities: createCapabilities(['infra.up']),
         category: 'installed-infra',
         provider: './dist/installed.provider.js',
       },
@@ -235,7 +237,7 @@ describe('discoverAnkhPackages', () => {
     });
     await writePackageJson(path.join(root, 'packages', 'infra-a'), {
       ankh: {
-        capabilities: ['infra.up'],
+        capabilities: createCapabilities(['infra.up']),
         category: 'infra',
         provider: './dist/a.provider.js',
       },
@@ -243,7 +245,7 @@ describe('discoverAnkhPackages', () => {
     });
     await writePackageJson(path.join(root, 'packages', 'infra-b'), {
       ankh: {
-        capabilities: ['infra.up'],
+        capabilities: createCapabilities(['infra.up']),
         category: 'infra',
         provider: './dist/b.provider.js',
       },
