@@ -2,6 +2,8 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+import { createCapabilities } from './capabilityFixture.js';
+
 import type { AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 import { afterEach, describe, expect, it } from 'bun:test';
 
