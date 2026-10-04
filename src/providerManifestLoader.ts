@@ -1,13 +1,8 @@
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-import {
-  areCapabilitiesEqual,
-  type Capability,
-  isCapability,
-  isCapabilityId,
-  normalizeCapability,
-} from '@ankhorage/contracts/capabilities';
+import { areCapabilitiesEqual, isCapabilityId, parseCapability } from '@ankhorage/capability';
+import type { Capability } from '@ankhorage/contracts/capability';
 import type { AnkhCommandDescriptor, AnkhCommandProviderManifest } from '@ankhorage/contracts/cli';
 
 import type { AnkhDiscoveredPackage } from './discovery.js';
@@ -284,14 +279,12 @@ function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCap
   const diagnostics: AnkhProviderManifestDiagnostic[] = [];
   const capabilities: Capability[] = [];
   const metadataCapabilities = new Map(
-    options.discoveredPackage.metadata.capabilities.map((capability) => [
-      capability.id,
-      capability,
-    ]),
+    options.discoveredPackage.metadata.capabilities.map((capability) => [capability.id, capability]),
   );
 
   for (const rawCapability of options.rawCapabilities) {
-    if (!isCapability(rawCapability)) {
+    const capability = parseCapability(rawCapability);
+    if (capability === null) {
       diagnostics.push(
         createDiagnostic(options.discoveredPackage, {
           category: options.category ?? undefined,
@@ -308,7 +301,6 @@ function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCap
       };
     }
 
-    const capability = normalizeCapability(rawCapability);
     const metadataCapability = metadataCapabilities.get(capability.id);
     if (metadataCapability === undefined || !areCapabilitiesEqual(metadataCapability, capability)) {
       diagnostics.push(
