@@ -1,6 +1,8 @@
 import type { AnkhCommandProviderManifest, AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 import { describe, expect, it } from 'bun:test';
 
+import { createCapabilities } from './capabilityFixture.js';
+
 import packageJson from '../package.json';
 import { runCli } from '../src/cli/index.js';
 import type { AnkhCommandContext } from '../src/commandContext.js';
@@ -13,12 +15,12 @@ import type {
 import type { AnkhLoadedProvider } from '../src/providerManifestLoader.js';
 
 const metadata = {
-  capabilities: [
+  capabilities: createCapabilities([
     'fixture.source.inspect',
     'fixture.template.seed',
     'fixture.project.sync',
     'fixture.status',
-  ],
+  ]),
   category: 'fixture',
   provider: './dist/ankh.provider.js',
 } as const satisfies AnkhPackageMetadata;
