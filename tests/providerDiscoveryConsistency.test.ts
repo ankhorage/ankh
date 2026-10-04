@@ -2,6 +2,8 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+import { createCapabilities } from './capabilityFixture.js';
+
 import type { AnkhCommandProviderManifest, AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 import { afterEach, expect, it } from 'bun:test';
 
@@ -14,7 +16,7 @@ import type { AnkhLoadedProvider } from '../src/providerManifestLoader.js';
 const temporaryDirectories: string[] = [];
 
 const metadata = {
-  capabilities: ['infra.up'],
+  capabilities: createCapabilities(['infra.up']),
   category: 'infra',
   provider: './dist/cli/index.js',
 } as const satisfies AnkhPackageMetadata;
@@ -23,7 +25,7 @@ const manifest = {
   id: '@ankhorage/infra',
   category: 'infra',
   version: '1.0.0',
-  capabilities: ['infra.up'],
+  capabilities: createCapabilities(['infra.up']),
   commands: [
     {
       path: ['up'],
