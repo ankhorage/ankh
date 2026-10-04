@@ -1,11 +1,9 @@
-import type {
-  AnkhCapabilityId,
-  AnkhPackageMetadata,
-  AnkhProviderReference,
-} from '@ankhorage/contracts/cli';
+import type { Capability } from '@ankhorage/contracts/capabilities';
+import type { AnkhPackageMetadata, AnkhProviderReference } from '@ankhorage/contracts/cli';
 
 import type { AnkhProviderCatalogEntry } from '../../../../types/providers.js';
 import type { ProviderCatalogSource } from '../../application/ports/outbound/providerCatalogSource.js';
+import { parseCapability } from '../../../../utils/parseCapability.js';
 
 const DEFAULT_GITHUB_ORGANIZATION = 'ankhorage';
 const GITHUB_PAGE_SIZE = 100;
@@ -217,12 +215,13 @@ function parseAnkhMetadata(
   if (!Array.isArray(rawMetadata.capabilities)) {
     throw new Error(`${packageName} package.json.ankh.capabilities must be an array.`);
   }
-  const capabilities: AnkhCapabilityId[] = [];
+  const capabilities: Capability[] = [];
   for (const rawCapability of rawMetadata.capabilities) {
-    if (typeof rawCapability !== 'string' || !isCapabilityId(rawCapability)) {
-      throw new Error(`${packageName} contains an invalid Ankh capability identifier.`);
+    const capability = parseCapability(rawCapability);
+    if (capability === null) {
+      throw new Error(`${packageName} contains an invalid Ankh capability descriptor.`);
     }
-    capabilities.push(rawCapability);
+    capabilities.push(capability);
   }
 
   return { capabilities, category, provider };
@@ -243,13 +242,13 @@ function validateCatalogUniqueness(entries: readonly AnkhProviderCatalogEntry[])
     categories.set(entry.metadata.category, entry.packageName);
 
     for (const capability of entry.metadata.capabilities) {
-      const capabilityOwner = capabilities.get(capability);
+      const capabilityOwner = capabilities.get(capability.id);
       if (capabilityOwner !== undefined) {
         throw new Error(
-          `Duplicate Ankh capability "${capability}" declared by ${capabilityOwner} and ${entry.packageName}.`,
+          `Duplicate Ankh capability "${capability.id}" declared by ${capabilityOwner} and ${entry.packageName}.`,
         );
       }
-      capabilities.set(capability, entry.packageName);
+      capabilities.set(capability.id, entry.packageName);
     }
   }
 }
@@ -264,12 +263,6 @@ function readNonEmptyString(value: unknown): string | null {
 /*** Validate package-relative provider references. */
 function isProviderReference(value: string): value is AnkhProviderReference {
   return value.startsWith('./');
-}
-
-/*** Validate dot-separated Ankh capability identifiers. */
-function isCapabilityId(value: string): value is AnkhCapabilityId {
-  const segments = value.split('.');
-  return segments.length >= 2 && segments.every((segment) => segment.length > 0);
 }
 
 /*** Narrow an unknown JSON value to a non-array object. */
