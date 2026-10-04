@@ -1,10 +1,12 @@
 import type { AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 import { describe, expect, it } from 'bun:test';
 
+import { createCapabilities } from './capabilityFixture.js';
+
 import { createPackageRegistry } from '../src/packageRegistry.js';
 
 const contractsMetadata = {
-  capabilities: ['contracts.cli'],
+  capabilities: createCapabilities(['contracts.cli']),
   category: 'contracts',
   provider: null,
 } as const satisfies AnkhPackageMetadata;
