@@ -630,9 +630,14 @@ function getCommandPath(value: unknown): readonly string[] | null {
 }
 
 function getCapabilityId(value: unknown): Capability['id'] | null {
-  if (typeof value !== 'string') return null;
+  return isCapabilityId(value) ? value : null;
+}
+
+/*** Validate one canonical namespaced capability identifier. */
+function isCapabilityId(value: unknown): value is Capability['id'] {
+  if (typeof value !== 'string') return false;
   const segments = value.split('.');
-  return segments.length >= 2 && segments.every((segment) => segment.length > 0) ? value : null;
+  return segments.length >= 2 && segments.every((segment) => segment.length > 0);
 }
 
 function getOptionalStringArray(value: unknown): readonly string[] | null {
