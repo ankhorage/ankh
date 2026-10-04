@@ -1,6 +1,8 @@
 import type { AnkhCommandProviderManifest, AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 import { describe, expect, it } from 'bun:test';
 
+import { createCapabilities } from './capabilityFixture.js';
+
 import packageJson from '../package.json';
 import { runCli } from '../src/cli/index.js';
 import type { AnkhCommandContext } from '../src/commandContext.js';
@@ -14,7 +16,7 @@ import type {
 import { createProviderRegistry } from '../src/providerRegistry.js';
 
 const infraMetadata = {
-  capabilities: ['infra.up', 'infra.status', 'infra.down'],
+  capabilities: createCapabilities(['infra.up', 'infra.status', 'infra.down']),
   category: 'infra',
   provider: './dist/ankh.provider.js',
 } as const satisfies AnkhPackageMetadata;
@@ -23,7 +25,7 @@ const infraManifest = {
   id: '@ankhorage/infra',
   category: 'infra',
   version: '1.0.0',
-  capabilities: ['infra.up', 'infra.status'],
+  capabilities: createCapabilities(['infra.up', 'infra.status']),
   commands: [
     {
       path: ['up'],
@@ -225,11 +227,11 @@ describe('runCli', () => {
     const { context, stdout, stderr } = createMemoryContext();
     const infraPackage = createDiscoveredPackage('@ankhorage/infra', {
       ...infraMetadata,
-      capabilities: ['infra.up', 'infra.status', 'infra.port', 'infra.port.forward'],
+      capabilities: createCapabilities(['infra.up', 'infra.status', 'infra.port', 'infra.port.forward']),
     });
     const nestedManifest = {
       ...infraManifest,
-      capabilities: ['infra.up', 'infra.status', 'infra.port', 'infra.port.forward'],
+      capabilities: createCapabilities(['infra.up', 'infra.status', 'infra.port', 'infra.port.forward']),
       commands: [
         ...infraManifest.commands,
         {
