@@ -629,8 +629,10 @@ function getCommandPath(value: unknown): readonly string[] | null {
   return parts;
 }
 
-function getCapabilityId(value: unknown): AnkhCapabilityId | null {
-  return typeof value === 'string' && isCapabilityId(value) ? value : null;
+function getCapabilityId(value: unknown): Capability['id'] | null {
+  if (typeof value !== 'string') return null;
+  const segments = value.split('.');
+  return segments.length >= 2 && segments.every((segment) => segment.length > 0) ? value : null;
 }
 
 function getOptionalStringArray(value: unknown): readonly string[] | null {
