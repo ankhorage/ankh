@@ -1,11 +1,10 @@
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-import type {
-  AnkhCapabilityId,
-  AnkhCommandDescriptor,
-  AnkhCommandProviderManifest,
-} from '@ankhorage/contracts/cli';
+import type { Capability } from '@ankhorage/contracts/capabilities';
+import type { AnkhCommandDescriptor, AnkhCommandProviderManifest } from '@ankhorage/contracts/cli';
+
+import { parseCapability } from './utils/parseCapability.js';
 
 import type { AnkhDiscoveredPackage } from './discovery.js';
 
@@ -201,7 +200,7 @@ function validateProviderManifest(
   diagnostics.push(...capabilityResult.diagnostics);
 
   const commandResult = validateCommands({
-    declaredCapabilities: new Set(capabilityResult.capabilities),
+    declaredCapabilities: new Set(capabilityResult.capabilities.map((capability) => capability.id)),
     discoveredPackage: options.discoveredPackage,
     providerModulePath: options.providerModulePath,
     rawCommands: options.rawManifest.commands,
@@ -257,7 +256,7 @@ interface ValidateCapabilitiesOptions {
 }
 
 interface ValidateCapabilitiesResult {
-  readonly capabilities: readonly AnkhCapabilityId[];
+  readonly capabilities: readonly Capability[];
   readonly diagnostics: readonly AnkhProviderManifestDiagnostic[];
 }
 
@@ -270,7 +269,7 @@ function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCap
           category: options.category ?? undefined,
           code: 'invalid-provider-capabilities',
           message:
-            'Provider manifest "capabilities" must be an array of dot-separated string identifiers.',
+            'Provider manifest "capabilities" must be an array of canonical capability descriptors.',
           providerModulePath: options.providerModulePath,
           severity: 'error',
         }),
@@ -279,17 +278,20 @@ function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCap
   }
 
   const diagnostics: AnkhProviderManifestDiagnostic[] = [];
-  const capabilities: AnkhCapabilityId[] = [];
-  const metadataCapabilities = new Set(options.discoveredPackage.metadata.capabilities);
+  const capabilities: Capability[] = [];
+  const metadataCapabilities = new Map(
+    options.discoveredPackage.metadata.capabilities.map((capability) => [capability.id, capability]),
+  );
 
   for (const rawCapability of options.rawCapabilities) {
-    if (typeof rawCapability !== 'string' || !isCapabilityId(rawCapability)) {
+    const capability = parseCapability(rawCapability);
+    if (capability === null) {
       diagnostics.push(
         createDiagnostic(options.discoveredPackage, {
           category: options.category ?? undefined,
           code: 'invalid-provider-capabilities',
           message:
-            'Provider manifest "capabilities" must contain dot-separated string identifiers.',
+            'Provider manifest "capabilities" must contain canonical capability descriptors.',
           providerModulePath: options.providerModulePath,
           severity: 'error',
         }),
@@ -300,12 +302,16 @@ function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCap
       };
     }
 
-    if (!metadataCapabilities.has(rawCapability)) {
+    const metadataCapability = metadataCapabilities.get(capability.id);
+    if (
+      metadataCapability === undefined ||
+      JSON.stringify(metadataCapability) !== JSON.stringify(capability)
+    ) {
       diagnostics.push(
         createDiagnostic(options.discoveredPackage, {
-          category: options.category ?? rawCapability.split('.')[0],
+          category: options.category ?? capability.id.split('.')[0],
           code: 'provider-capability-not-declared',
-          message: `Provider manifest capability "${rawCapability}" is not declared in package.json ankh.capabilities.`,
+          message: `Provider manifest capability "${capability.id}" does not match package.json ankh.capabilities.`,
           providerModulePath: options.providerModulePath,
           severity: 'error',
         }),
@@ -313,7 +319,7 @@ function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCap
       continue;
     }
 
-    capabilities.push(rawCapability);
+    capabilities.push(capability);
   }
 
   return {
@@ -324,7 +330,7 @@ function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCap
 
 interface ValidateCommandsOptions {
   readonly category: string | null;
-  readonly declaredCapabilities: ReadonlySet<AnkhCapabilityId>;
+  readonly declaredCapabilities: ReadonlySet<Capability['id']>;
   readonly discoveredPackage: AnkhDiscoveredPackage;
   readonly providerModulePath: string;
   readonly rawCommands: unknown;
@@ -377,7 +383,7 @@ function validateCommands(options: ValidateCommandsOptions): ValidateCommandsRes
 
 interface ValidateCommandOptions {
   readonly category: string | null;
-  readonly declaredCapabilities: ReadonlySet<AnkhCapabilityId>;
+  readonly declaredCapabilities: ReadonlySet<Capability['id']>;
   readonly discoveredPackage: AnkhDiscoveredPackage;
   readonly providerModulePath: string;
   readonly rawCommand: unknown;
@@ -655,11 +661,6 @@ function getNonEmptyString(value: unknown): string | null {
 
   const trimmedValue = value.trim();
   return trimmedValue === '' ? null : trimmedValue;
-}
-
-function isCapabilityId(value: string): value is AnkhCapabilityId {
-  const segments = value.split('.');
-  return segments.length >= 2 && segments.every((segment) => segment.length > 0);
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
