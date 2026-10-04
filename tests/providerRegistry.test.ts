@@ -1,10 +1,12 @@
 import type { AnkhCommandProviderManifest, AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 import { describe, expect, it } from 'bun:test';
 
+import { createCapabilities } from './capabilityFixture.js';
+
 import { createProviderRegistry } from '../src/providerRegistry.js';
 
 const infraMetadata = {
-  capabilities: ['infra.up', 'infra.status'],
+  capabilities: createCapabilities(['infra.up', 'infra.status']),
   category: 'infra',
   provider: './dist/ankh.provider.js',
 } as const satisfies AnkhPackageMetadata;
@@ -13,7 +15,7 @@ const infraManifest = {
   id: '@ankhorage/infra',
   category: 'infra',
   version: '1.0.0',
-  capabilities: ['infra.up', 'infra.port', 'infra.port.forward'],
+  capabilities: createCapabilities(['infra.up', 'infra.port', 'infra.port.forward']),
   commands: [
     {
       path: ['up'],
