@@ -2,6 +2,8 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+import { createCapabilities } from './capabilityFixture.js';
+
 import type { AnkhCommandProviderManifest } from '@ankhorage/contracts/cli';
 import { afterEach, describe, expect, test } from 'bun:test';
 
@@ -22,7 +24,7 @@ const temporaryDirectories: string[] = [];
 const infraEntry = {
   description: 'Infrastructure provider',
   metadata: {
-    capabilities: ['infra.up'],
+    capabilities: createCapabilities(['infra.up']),
     category: 'infra',
     provider: './dist/cli/index.js',
   },
@@ -35,7 +37,7 @@ const infraManifest = {
   id: '@ankhorage/infra',
   category: 'infra',
   version: '7.1.2',
-  capabilities: ['infra.up'],
+  capabilities: createCapabilities(['infra.up']),
   commands: [
     {
       path: ['up'],
@@ -159,7 +161,7 @@ describe('official provider runtime', () => {
           return Promise.resolve(
             jsonResponse({
               ankh: {
-                capabilities: [],
+                capabilities: createCapabilities([]),
                 category: 'runtime',
                 provider: null,
               },
@@ -185,7 +187,7 @@ describe('official provider runtime', () => {
     const publishedEntry = {
       description: 'ZORA provider',
       metadata: {
-        capabilities: ['zora.sync'],
+        capabilities: createCapabilities(['zora.sync']),
         category: 'zora',
         provider: './dist/cli/index.js',
       },
@@ -213,7 +215,7 @@ describe('official provider runtime', () => {
           return Promise.resolve(
             jsonResponse({
               ankh: {
-                capabilities: ['zora.sync', 'zora.create'],
+                capabilities: createCapabilities(['zora.sync', 'zora.create']),
                 category: 'zora',
                 provider: './dist/cli/index.js',
               },
@@ -259,7 +261,7 @@ describe('official provider runtime', () => {
         return Promise.resolve(
           jsonResponse({
             ankh: {
-              capabilities: ['inferred.run'],
+              capabilities: createCapabilities(['inferred.run']),
               category: 'inferred',
               provider: null,
             },
@@ -296,7 +298,7 @@ describe('official provider runtime', () => {
         return Promise.resolve(
           jsonResponse({
             ankh: {
-              capabilities: ['broken.run'],
+              capabilities: createCapabilities(['broken.run']),
               category: 'broken',
               provider: 'dist/cli/index.js',
             },
