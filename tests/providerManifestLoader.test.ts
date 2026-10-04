@@ -2,6 +2,8 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+import { createCapabilities } from './capabilityFixture.js';
+
 import type { AnkhCommandProviderManifest, AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 import { afterEach, describe, expect, it } from 'bun:test';
 
@@ -10,7 +12,7 @@ import { loadProviderManifests } from '../src/providerManifestLoader.js';
 const temporaryDirectories: string[] = [];
 
 const infraMetadata = {
-  capabilities: ['infra.up', 'infra.status', 'infra.down'],
+  capabilities: createCapabilities(['infra.up', 'infra.status', 'infra.down']),
   category: 'infra',
   provider: './dist/ankh.provider.js',
 } as const satisfies AnkhPackageMetadata;
@@ -19,7 +21,7 @@ const validManifest = {
   id: '@ankhorage/infra',
   category: 'infra',
   version: '1.0.0',
-  capabilities: ['infra.up', 'infra.status'],
+  capabilities: createCapabilities(['infra.up', 'infra.status']),
   commands: [
     {
       path: ['up'],
@@ -217,7 +219,7 @@ describe('loadProviderManifests', () => {
       `export default ${JSON.stringify(
         {
           ...validManifest,
-          capabilities: ['infra.up', 'infra.rebuild'],
+          capabilities: createCapabilities(['infra.up', 'infra.rebuild']),
         },
         null,
         2,
@@ -273,7 +275,7 @@ describe('loadProviderManifests', () => {
     const result = await loadProviderManifests([
       createDiscoveredPackage(packageRoot, '@ankhorage/infra', {
         ...infraMetadata,
-        capabilities: ['infra.up', 'infra.status', 'infra.down', 'infra.destroy'],
+        capabilities: createCapabilities(['infra.up', 'infra.status', 'infra.down', 'infra.destroy']),
       }),
     ]);
 
