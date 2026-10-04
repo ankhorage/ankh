@@ -202,11 +202,11 @@ function collectDuplicateMetadataDiagnostics(
     }
 
     for (const capability of discoveredPackage.metadata.capabilities) {
-      const existingCapabilityOwner = capabilities.get(capability);
+      const existingCapabilityOwner = capabilities.get(capability.id);
       if (existingCapabilityOwner !== undefined) {
         diagnostics.push({
           code: 'duplicate-ankh-capability',
-          message: `Discovered duplicate Ankh capability "${capability}" in ${discoveredPackage.packageName}; already claimed by ${existingCapabilityOwner.packageName}.`,
+          message: `Discovered duplicate Ankh capability "${capability.id}" in ${discoveredPackage.packageName}; already claimed by ${existingCapabilityOwner.packageName}.`,
           packageJsonPath: discoveredPackage.packageJsonPath,
           packageName: discoveredPackage.packageName,
           severity: 'warning',
@@ -215,7 +215,7 @@ function collectDuplicateMetadataDiagnostics(
         continue;
       }
 
-      capabilities.set(capability, discoveredPackage);
+      capabilities.set(capability.id, discoveredPackage);
     }
   }
 
