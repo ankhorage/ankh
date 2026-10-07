@@ -1,7 +1,12 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import type { AnkhCapabilityId, AnkhProviderReference } from '@ankhorage/contracts/cli';
+import {
+  type Capability,
+  isCapability,
+  normalizeCapability,
+} from '@ankhorage/contracts/capabilities';
+import type { AnkhProviderReference } from '@ankhorage/contracts/cli';
 
 import type {
   AnkhProviderCatalogEntry,
@@ -61,10 +66,10 @@ function parseEntry(value: unknown): AnkhProviderCatalogEntry | null {
     return null;
   }
 
-  const capabilities: AnkhCapabilityId[] = [];
-  for (const capability of value.metadata.capabilities) {
-    if (typeof capability !== 'string' || !isCapabilityId(capability)) return null;
-    capabilities.push(capability);
+  const capabilities: Capability[] = [];
+  for (const rawCapability of value.metadata.capabilities) {
+    if (!isCapability(rawCapability)) return null;
+    capabilities.push(normalizeCapability(rawCapability));
   }
 
   return {
@@ -83,12 +88,6 @@ function parseEntry(value: unknown): AnkhProviderCatalogEntry | null {
 /*** Validate package-relative provider references in cached metadata. */
 function isProviderReference(value: string): value is AnkhProviderReference {
   return value.startsWith('./');
-}
-
-/*** Validate cached capability identifiers. */
-function isCapabilityId(value: string): value is AnkhCapabilityId {
-  const segments = value.split('.');
-  return segments.length >= 2 && segments.every((segment) => segment.length > 0);
 }
 
 /*** Narrow an unknown value to a Node filesystem error. */

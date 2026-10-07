@@ -12,9 +12,10 @@ import type {
   AnkhProviderManifestDiagnostic,
 } from '../src/providerManifestLoader.js';
 import { createProviderRegistry } from '../src/providerRegistry.js';
+import { createCapabilities } from './capabilityFixture.js';
 
 const infraMetadata = {
-  capabilities: ['infra.up', 'infra.status', 'infra.down'],
+  capabilities: createCapabilities(['fixture.up', 'fixture.status', 'fixture.down']),
   category: 'infra',
   provider: './dist/ankh.provider.js',
 } as const satisfies AnkhPackageMetadata;
@@ -23,18 +24,18 @@ const infraManifest = {
   id: '@ankhorage/infra',
   category: 'infra',
   version: '1.0.0',
-  capabilities: ['infra.up', 'infra.status'],
+  capabilities: createCapabilities(['fixture.up', 'fixture.status']),
   commands: [
     {
       path: ['up'],
-      capability: 'infra.up',
+      capability: 'fixture.up',
       summary: 'Bring project infrastructure up',
       aliases: ['start'],
       examples: ['ankh infra up shop'],
     },
     {
       path: ['status'],
-      capability: 'infra.status',
+      capability: 'fixture.status',
       summary: 'Show project infrastructure status',
     },
   ],
@@ -225,22 +226,32 @@ describe('runCli', () => {
     const { context, stdout, stderr } = createMemoryContext();
     const infraPackage = createDiscoveredPackage('@ankhorage/infra', {
       ...infraMetadata,
-      capabilities: ['infra.up', 'infra.status', 'infra.port', 'infra.port.forward'],
+      capabilities: createCapabilities([
+        'fixture.up',
+        'fixture.status',
+        'fixture.port',
+        'fixture.port.forward',
+      ]),
     });
     const nestedManifest = {
       ...infraManifest,
-      capabilities: ['infra.up', 'infra.status', 'infra.port', 'infra.port.forward'],
+      capabilities: createCapabilities([
+        'fixture.up',
+        'fixture.status',
+        'fixture.port',
+        'fixture.port.forward',
+      ]),
       commands: [
         ...infraManifest.commands,
         {
           path: ['port'],
-          capability: 'infra.port',
+          capability: 'fixture.port',
           summary: 'Manage forwarded ports',
           aliases: ['pf'],
         },
         {
           path: ['port', 'forward'],
-          capability: 'infra.port.forward',
+          capability: 'fixture.port.forward',
           summary: 'Forward a named infrastructure port',
         },
       ],

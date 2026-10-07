@@ -1,8 +1,10 @@
-import type {
-  AnkhCapabilityId,
-  AnkhPackageMetadata,
-  AnkhProviderReference,
-} from '@ankhorage/contracts/cli';
+import {
+  areCapabilitiesEqual,
+  type Capability,
+  isCapability,
+  normalizeCapability,
+} from '@ankhorage/contracts/capabilities';
+import type { AnkhPackageMetadata, AnkhProviderReference } from '@ankhorage/contracts/cli';
 
 import type { AnkhProviderCatalogEntry } from '../../../../types/providers.js';
 import type { ProviderCatalogSource } from '../../application/ports/outbound/providerCatalogSource.js';
@@ -217,21 +219,24 @@ function parseAnkhMetadata(
   if (!Array.isArray(rawMetadata.capabilities)) {
     throw new Error(`${packageName} package.json.ankh.capabilities must be an array.`);
   }
-  const capabilities: AnkhCapabilityId[] = [];
+  const capabilities: Capability[] = [];
   for (const rawCapability of rawMetadata.capabilities) {
-    if (typeof rawCapability !== 'string' || !isCapabilityId(rawCapability)) {
-      throw new Error(`${packageName} contains an invalid Ankh capability identifier.`);
+    if (!isCapability(rawCapability)) {
+      throw new Error(`${packageName} contains an invalid Ankh capability descriptor.`);
     }
-    capabilities.push(rawCapability);
+    capabilities.push(normalizeCapability(rawCapability));
   }
 
   return { capabilities, category, provider };
 }
 
-/*** Reject ambiguous categories or capabilities in the official remote catalog. */
+/*** Reject ambiguous categories or conflicting canonical capabilities in the remote catalog. */
 function validateCatalogUniqueness(entries: readonly AnkhProviderCatalogEntry[]): void {
   const categories = new Map<string, string>();
-  const capabilities = new Map<string, string>();
+  const capabilities = new Map<
+    string,
+    { readonly capability: Capability; readonly packageName: string }
+  >();
 
   for (const entry of entries) {
     const categoryOwner = categories.get(entry.metadata.category);
@@ -243,13 +248,16 @@ function validateCatalogUniqueness(entries: readonly AnkhProviderCatalogEntry[])
     categories.set(entry.metadata.category, entry.packageName);
 
     for (const capability of entry.metadata.capabilities) {
-      const capabilityOwner = capabilities.get(capability);
-      if (capabilityOwner !== undefined) {
-        throw new Error(
-          `Duplicate Ankh capability "${capability}" declared by ${capabilityOwner} and ${entry.packageName}.`,
-        );
+      const existing = capabilities.get(capability.id);
+      if (existing !== undefined) {
+        if (!areCapabilitiesEqual(existing.capability, capability)) {
+          throw new Error(
+            `Conflicting Ankh capability "${capability.id}" declared by ${existing.packageName} and ${entry.packageName}.`,
+          );
+        }
+        continue;
       }
-      capabilities.set(capability, entry.packageName);
+      capabilities.set(capability.id, { capability, packageName: entry.packageName });
     }
   }
 }
@@ -264,12 +272,6 @@ function readNonEmptyString(value: unknown): string | null {
 /*** Validate package-relative provider references. */
 function isProviderReference(value: string): value is AnkhProviderReference {
   return value.startsWith('./');
-}
-
-/*** Validate dot-separated Ankh capability identifiers. */
-function isCapabilityId(value: string): value is AnkhCapabilityId {
-  const segments = value.split('.');
-  return segments.length >= 2 && segments.every((segment) => segment.length > 0);
 }
 
 /*** Narrow an unknown JSON value to a non-array object. */

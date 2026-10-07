@@ -10,11 +10,12 @@ import type { AnkhCommandContext } from '../src/commandContext.js';
 import type { AnkhDiscoveredPackage } from '../src/discovery.js';
 import type { AnkhRuntimeCommandProvider } from '../src/execution.js';
 import type { AnkhLoadedProvider } from '../src/providerManifestLoader.js';
+import { createCapabilities } from './capabilityFixture.js';
 
 const temporaryDirectories: string[] = [];
 
 const metadata = {
-  capabilities: ['infra.up'],
+  capabilities: createCapabilities(['fixture.up']),
   category: 'infra',
   provider: './dist/cli/index.js',
 } as const satisfies AnkhPackageMetadata;
@@ -23,11 +24,11 @@ const manifest = {
   id: '@ankhorage/infra',
   category: 'infra',
   version: '1.0.0',
-  capabilities: ['infra.up'],
+  capabilities: createCapabilities(['fixture.up']),
   commands: [
     {
       path: ['up'],
-      capability: 'infra.up',
+      capability: 'fixture.up',
       summary: 'Bring project infrastructure up',
     },
   ],

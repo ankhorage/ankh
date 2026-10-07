@@ -11,14 +11,15 @@ import type {
   AnkhRuntimeCommandProvider,
 } from '../src/index.js';
 import type { AnkhLoadedProvider } from '../src/providerManifestLoader.js';
+import { createCapabilities } from './capabilityFixture.js';
 
 const metadata = {
-  capabilities: [
+  capabilities: createCapabilities([
     'fixture.source.inspect',
     'fixture.template.seed',
     'fixture.project.sync',
     'fixture.status',
-  ],
+  ]),
   category: 'fixture',
   provider: './dist/ankh.provider.js',
 } as const satisfies AnkhPackageMetadata;

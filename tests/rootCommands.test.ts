@@ -5,9 +5,10 @@ import { type AnkhRuntimeCommandProvider, resolveExecutableCommand } from '../sr
 import { renderCategoryHelp, renderProviderHelp, renderRootHelp } from '../src/help.js';
 import { resolvePlannableCommand } from '../src/planning.js';
 import { createProviderRegistry } from '../src/providerRegistry.js';
+import { createCapabilities } from './capabilityFixture.js';
 
 const metadata = {
-  capabilities: ['deploy.release', 'deploy.status'],
+  capabilities: createCapabilities(['fixture.release', 'fixture.status']),
   category: 'deploy',
   provider: './dist/cli/index.js',
 } as const satisfies AnkhPackageMetadata;
@@ -16,16 +17,16 @@ const manifest = {
   id: '@ankhorage/deploy',
   category: 'deploy',
   version: '1.0.0',
-  capabilities: ['deploy.release', 'deploy.status'],
+  capabilities: createCapabilities(['fixture.release', 'fixture.status']),
   commands: [
     {
       path: [],
-      capability: 'deploy.release',
+      capability: 'fixture.release',
       summary: 'Deploy the authored release',
     },
     {
       path: ['status'],
-      capability: 'deploy.status',
+      capability: 'fixture.status',
       summary: 'Show deployment status',
       aliases: ['s'],
     },

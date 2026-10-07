@@ -6,11 +6,12 @@ import type { AnkhCommandProviderManifest, AnkhPackageMetadata } from '@ankhorag
 import { afterEach, describe, expect, it } from 'bun:test';
 
 import { loadProviderManifests } from '../src/providerManifestLoader.js';
+import { createCapabilities } from './capabilityFixture.js';
 
 const temporaryDirectories: string[] = [];
 
 const infraMetadata = {
-  capabilities: ['infra.up', 'infra.status', 'infra.down'],
+  capabilities: createCapabilities(['fixture.up', 'fixture.status', 'fixture.down']),
   category: 'infra',
   provider: './dist/ankh.provider.js',
 } as const satisfies AnkhPackageMetadata;
@@ -19,11 +20,11 @@ const validManifest = {
   id: '@ankhorage/infra',
   category: 'infra',
   version: '1.0.0',
-  capabilities: ['infra.up', 'infra.status'],
+  capabilities: createCapabilities(['fixture.up', 'fixture.status']),
   commands: [
     {
       path: ['up'],
-      capability: 'infra.up',
+      capability: 'fixture.up',
       summary: 'Bring project infrastructure up',
       aliases: ['start'],
       examples: ['ankh infra up shop'],
@@ -68,7 +69,7 @@ describe('loadProviderManifests', () => {
       commands: [
         {
           path: [],
-          capability: 'infra.up',
+          capability: 'fixture.up',
           summary: 'Bring project infrastructure up from the category root',
         },
       ],
@@ -91,8 +92,8 @@ describe('loadProviderManifests', () => {
     const duplicateRootManifest = {
       ...validManifest,
       commands: [
-        { path: [], capability: 'infra.up', summary: 'First root command' },
-        { path: [], capability: 'infra.status', summary: 'Second root command' },
+        { path: [], capability: 'fixture.up', summary: 'First root command' },
+        { path: [], capability: 'fixture.status', summary: 'Second root command' },
       ],
     } as const satisfies AnkhCommandProviderManifest;
     await writeProviderModule(
@@ -217,7 +218,7 @@ describe('loadProviderManifests', () => {
       `export default ${JSON.stringify(
         {
           ...validManifest,
-          capabilities: ['infra.up', 'infra.rebuild'],
+          capabilities: createCapabilities(['fixture.up', 'fixture.rebuild']),
         },
         null,
         2,
@@ -247,7 +248,9 @@ describe('loadProviderManifests', () => {
 
     expect(result.diagnostics).toEqual([]);
     expect(result.providers).toHaveLength(1);
-    expect(result.providers[0]?.manifest.capabilities).toEqual(['infra.up', 'infra.status']);
+    expect(result.providers[0]?.manifest.capabilities).toEqual(
+      createCapabilities(['fixture.up', 'fixture.status']),
+    );
   });
 
   it('rejects command capabilities not declared in provider manifest capabilities', async () => {
@@ -260,7 +263,7 @@ describe('loadProviderManifests', () => {
           commands: [
             {
               path: ['destroy'],
-              capability: 'infra.destroy',
+              capability: 'fixture.destroy',
               summary: 'Destroy project infrastructure',
             },
           ],
@@ -273,7 +276,12 @@ describe('loadProviderManifests', () => {
     const result = await loadProviderManifests([
       createDiscoveredPackage(packageRoot, '@ankhorage/infra', {
         ...infraMetadata,
-        capabilities: ['infra.up', 'infra.status', 'infra.down', 'infra.destroy'],
+        capabilities: createCapabilities([
+          'fixture.up',
+          'fixture.status',
+          'fixture.down',
+          'fixture.destroy',
+        ]),
       }),
     ]);
 
@@ -294,7 +302,7 @@ describe('loadProviderManifests', () => {
             validManifest.commands[0],
             {
               path: ['up'],
-              capability: 'infra.status',
+              capability: 'fixture.status',
               summary: 'Duplicate path',
             },
           ],
@@ -325,7 +333,7 @@ describe('loadProviderManifests', () => {
             validManifest.commands[0],
             {
               path: ['status'],
-              capability: 'infra.status',
+              capability: 'fixture.status',
               summary: 'Show status',
               aliases: ['start'],
             },
@@ -357,7 +365,7 @@ describe('loadProviderManifests', () => {
             validManifest.commands[0],
             {
               path: ['start'],
-              capability: 'infra.status',
+              capability: 'fixture.status',
               summary: 'Canonical start command',
             },
           ],

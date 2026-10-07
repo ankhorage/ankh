@@ -6,17 +6,18 @@ import type { AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 import { afterEach, describe, expect, it } from 'bun:test';
 
 import { discoverAnkhPackages } from '../src/discovery.js';
+import { createCapabilities } from './capabilityFixture.js';
 
 const temporaryDirectories: string[] = [];
 
 const contractsMetadata = {
-  capabilities: ['contracts.cli'],
+  capabilities: createCapabilities(['fixture.cli']),
   category: 'contracts',
   provider: null,
 } as const satisfies AnkhPackageMetadata;
 
 const infraMetadata = {
-  capabilities: ['infra.up', 'infra.status'],
+  capabilities: createCapabilities(['fixture.up', 'fixture.status']),
   category: 'infra',
   provider: './dist/ankh.provider.js',
 } as const satisfies AnkhPackageMetadata;
@@ -134,7 +135,7 @@ describe('discoverAnkhPackages', () => {
     });
     await writePackageJson(path.join(root, 'packages', 'bad'), {
       ankh: {
-        capabilities: ['broken.capability'],
+        capabilities: createCapabilities(['fixture.broken']),
         category: 42,
         provider: null,
       },
@@ -213,7 +214,7 @@ describe('discoverAnkhPackages', () => {
     });
     await writePackageJson(path.join(root, 'node_modules', '@ankhorage', 'infra'), {
       ankh: {
-        capabilities: ['infra.up'],
+        capabilities: createCapabilities(['fixture.up']),
         category: 'installed-infra',
         provider: './dist/installed.provider.js',
       },
@@ -227,27 +228,27 @@ describe('discoverAnkhPackages', () => {
     expect(result.packages[0]?.metadata).toEqual(infraMetadata);
   });
 
-  it('reports duplicate category and capability diagnostics', async () => {
+  it('reports duplicate provider categories independently from capability identity', async () => {
     const root = await createFixtureRoot();
     await writePackageJson(root, {
       name: 'repo',
       workspaces: ['packages/*'],
     });
-    await writePackageJson(path.join(root, 'packages', 'infra-a'), {
+    await writePackageJson(path.join(root, 'packages', 'provider-a'), {
       ankh: {
-        capabilities: ['infra.up'],
-        category: 'infra',
+        capabilities: createCapabilities(['fixture.first']),
+        category: 'fixture-provider',
         provider: './dist/a.provider.js',
       },
-      name: '@ankhorage/infra-a',
+      name: '@ankhorage/fixture-a',
     });
-    await writePackageJson(path.join(root, 'packages', 'infra-b'), {
+    await writePackageJson(path.join(root, 'packages', 'provider-b'), {
       ankh: {
-        capabilities: ['infra.up'],
-        category: 'infra',
+        capabilities: createCapabilities(['fixture.second']),
+        category: 'fixture-provider',
         provider: './dist/b.provider.js',
       },
-      name: '@ankhorage/infra-b',
+      name: '@ankhorage/fixture-b',
     });
 
     const result = await discoverAnkhPackages({ cwd: root });
@@ -255,7 +256,90 @@ describe('discoverAnkhPackages', () => {
 
     expect(result.packages).toHaveLength(2);
     expect(diagnosticCodes).toContain('duplicate-ankh-category');
-    expect(diagnosticCodes).toContain('duplicate-ankh-capability');
+    expect(diagnosticCodes).not.toContain('conflicting-ankh-capability');
+  });
+
+  it('allows multiple packages to advertise the same canonical capability descriptor', async () => {
+    const root = await createFixtureRoot();
+    await writePackageJson(root, {
+      name: 'repo',
+      workspaces: ['packages/*'],
+    });
+    const [capability] = createCapabilities(['fixture.shared']);
+    if (capability === undefined) throw new Error('Expected fixture capability.');
+
+    const canonicalCapability = {
+      ...capability,
+      access: ['invoke', 'read'],
+      binding: { kind: 'action', bindableAs: ['source', 'target'] },
+    } as const;
+    await writePackageJson(path.join(root, 'packages', 'provider-a'), {
+      ankh: {
+        capabilities: [canonicalCapability],
+        category: 'fixture-a',
+        provider: './dist/a.provider.js',
+      },
+      name: '@ankhorage/fixture-a',
+    });
+    await writePackageJson(path.join(root, 'packages', 'provider-b'), {
+      ankh: {
+        capabilities: [
+          {
+            ...canonicalCapability,
+            access: ['read', 'invoke', 'read'],
+            binding: { kind: 'action', bindableAs: ['target', 'source', 'target'] },
+          },
+        ],
+        category: 'fixture-b',
+        provider: './dist/b.provider.js',
+      },
+      name: '@ankhorage/fixture-b',
+    });
+
+    const result = await discoverAnkhPackages({ cwd: root });
+
+    expect(result.packages).toHaveLength(2);
+    expect(result.diagnostics.map((diagnostic) => diagnostic.code)).not.toContain(
+      'conflicting-ankh-capability',
+    );
+    expect(result.packages.map((entry) => entry.metadata.capabilities)).toEqual([
+      [canonicalCapability],
+      [canonicalCapability],
+    ]);
+  });
+
+  it('reports conflicting descriptors for the same capability id', async () => {
+    const root = await createFixtureRoot();
+    await writePackageJson(root, {
+      name: 'repo',
+      workspaces: ['packages/*'],
+    });
+    const [canonical] = createCapabilities(['fixture.shared']);
+    if (canonical === undefined) throw new Error('Expected fixture capability.');
+
+    await writePackageJson(path.join(root, 'packages', 'provider-a'), {
+      ankh: {
+        capabilities: [canonical],
+        category: 'fixture-a',
+        provider: './dist/a.provider.js',
+      },
+      name: '@ankhorage/fixture-a',
+    });
+    await writePackageJson(path.join(root, 'packages', 'provider-b'), {
+      ankh: {
+        capabilities: [{ ...canonical, access: ['read'] }],
+        category: 'fixture-b',
+        provider: './dist/b.provider.js',
+      },
+      name: '@ankhorage/fixture-b',
+    });
+
+    const result = await discoverAnkhPackages({ cwd: root });
+
+    expect(result.packages).toHaveLength(2);
+    expect(result.diagnostics.map((diagnostic) => diagnostic.code)).toContain(
+      'conflicting-ankh-capability',
+    );
   });
 
   it('discovers workspace packages declared through pnpm-workspace.yaml', async () => {

@@ -1,11 +1,8 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import type {
-  AnkhCapabilityId,
-  AnkhPackageMetadata,
-  AnkhProviderReference,
-} from '@ankhorage/contracts/cli';
+import { isCapability, normalizeCapability } from '@ankhorage/contracts/capabilities';
+import type { AnkhPackageMetadata, AnkhProviderReference } from '@ankhorage/contracts/cli';
 
 import type { AnkhDiscoverySource, AnkhMetadataDiscoveryDiagnostic } from './discovery.js';
 
@@ -199,7 +196,7 @@ function validateAnkhMetadata(options: ValidateAnkhMetadataOptions): ValidateAnk
       diagnostics: [
         createDiagnostic({
           code: 'invalid-ankh-capabilities',
-          message: 'package.json "ankh.capabilities" must be an array of strings.',
+          message: 'package.json "ankh.capabilities" must be an array of capability descriptors.',
           packageJsonPath: options.packageJsonPath,
           packageName: options.packageName,
           severity: 'error',
@@ -209,33 +206,28 @@ function validateAnkhMetadata(options: ValidateAnkhMetadataOptions): ValidateAnk
     };
   }
 
-  const capabilities: AnkhCapabilityId[] = [];
-  for (const capability of rawCapabilities) {
-    if (typeof capability !== 'string' || !isCapabilityId(capability)) {
-      return {
-        metadata: null,
-        diagnostics: [
-          createDiagnostic({
-            code: 'invalid-ankh-capabilities',
-            message:
-              'package.json "ankh.capabilities" must contain dot-separated string identifiers.',
-            packageJsonPath: options.packageJsonPath,
-            packageName: options.packageName,
-            severity: 'error',
-            source: options.source,
-          }),
-        ],
-      };
-    }
-
-    capabilities.push(capability);
+  if (!rawCapabilities.every(isCapability)) {
+    return {
+      metadata: null,
+      diagnostics: [
+        createDiagnostic({
+          code: 'invalid-ankh-capabilities',
+          message:
+            'package.json "ankh.capabilities" must contain canonical capability descriptors.',
+          packageJsonPath: options.packageJsonPath,
+          packageName: options.packageName,
+          severity: 'error',
+          source: options.source,
+        }),
+      ],
+    };
   }
 
   return {
     metadata: {
       category: rawCategory.trim(),
       provider: providerResult.provider,
-      capabilities,
+      capabilities: rawCapabilities.map(normalizeCapability),
     },
     diagnostics: [],
   };
@@ -309,11 +301,6 @@ function getPackageName(value: unknown): string | null {
 
   const trimmedValue = value.trim();
   return trimmedValue === '' ? null : trimmedValue;
-}
-
-function isCapabilityId(value: string): value is AnkhCapabilityId {
-  const segments = value.split('.');
-  return segments.length >= 2 && segments.every((segment) => segment.length > 0);
 }
 
 function isProviderReference(value: string): value is AnkhProviderReference {

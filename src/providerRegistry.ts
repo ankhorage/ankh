@@ -1,4 +1,4 @@
-import type { AnkhCapabilityId } from '@ankhorage/contracts/cli';
+import type { Capability } from '@ankhorage/contracts/capabilities';
 
 import type { AnkhLoadedProvider } from './providerManifestLoader.js';
 
@@ -9,7 +9,7 @@ export interface AnkhCommandListing {
   readonly packageName: string;
   readonly category: string;
   readonly path: readonly string[];
-  readonly capability: AnkhCapabilityId;
+  readonly capability: Capability['id'];
   readonly summary: string;
 }
 

@@ -1,5 +1,6 @@
 import path from 'node:path';
 
+import { areCapabilitiesEqual } from '@ankhorage/contracts/capabilities';
 import type { AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 
 import { readAnkhPackageMetadata } from './packageMetadata.js';
@@ -184,7 +185,13 @@ function collectDuplicateMetadataDiagnostics(
 ): readonly AnkhMetadataDiscoveryDiagnostic[] {
   const diagnostics: AnkhMetadataDiscoveryDiagnostic[] = [];
   const categories = new Map<string, AnkhDiscoveredPackage>();
-  const capabilities = new Map<string, AnkhDiscoveredPackage>();
+  const capabilities = new Map<
+    string,
+    {
+      readonly capability: AnkhDiscoveredPackage['metadata']['capabilities'][number];
+      readonly owner: AnkhDiscoveredPackage;
+    }
+  >();
 
   for (const discoveredPackage of packages) {
     const existingCategoryOwner = categories.get(discoveredPackage.metadata.category);
@@ -202,20 +209,22 @@ function collectDuplicateMetadataDiagnostics(
     }
 
     for (const capability of discoveredPackage.metadata.capabilities) {
-      const existingCapabilityOwner = capabilities.get(capability);
-      if (existingCapabilityOwner !== undefined) {
-        diagnostics.push({
-          code: 'duplicate-ankh-capability',
-          message: `Discovered duplicate Ankh capability "${capability}" in ${discoveredPackage.packageName}; already claimed by ${existingCapabilityOwner.packageName}.`,
-          packageJsonPath: discoveredPackage.packageJsonPath,
-          packageName: discoveredPackage.packageName,
-          severity: 'warning',
-          source: discoveredPackage.source,
-        });
+      const existing = capabilities.get(capability.id);
+      if (existing !== undefined) {
+        if (!areCapabilitiesEqual(existing.capability, capability)) {
+          diagnostics.push({
+            code: 'conflicting-ankh-capability',
+            message: `Discovered conflicting Ankh capability "${capability.id}" in ${discoveredPackage.packageName}; canonical descriptor differs from ${existing.owner.packageName}.`,
+            packageJsonPath: discoveredPackage.packageJsonPath,
+            packageName: discoveredPackage.packageName,
+            severity: 'warning',
+            source: discoveredPackage.source,
+          });
+        }
         continue;
       }
 
-      capabilities.set(capability, discoveredPackage);
+      capabilities.set(capability.id, { capability, owner: discoveredPackage });
     }
   }
 

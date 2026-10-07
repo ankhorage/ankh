@@ -6,9 +6,10 @@ import type { AnkhCommandContext } from '../src/commandContext.js';
 import type { AnkhRuntimeCommandProvider } from '../src/execution.js';
 import { createPackageRegistry } from '../src/packageRegistry.js';
 import { createProviderRegistry } from '../src/providerRegistry.js';
+import { createCapabilities } from './capabilityFixture.js';
 
 const metadata = {
-  capabilities: ['deploy.release'],
+  capabilities: createCapabilities(['fixture.release']),
   category: 'deploy',
   provider: './dist/cli/index.js',
 } as const satisfies AnkhPackageMetadata;
@@ -17,11 +18,11 @@ const manifest = {
   id: '@ankhorage/deploy',
   category: 'deploy',
   version: '1.0.0',
-  capabilities: ['deploy.release'],
+  capabilities: createCapabilities(['fixture.release']),
   commands: [
     {
       path: [],
-      capability: 'deploy.release',
+      capability: 'fixture.release',
       summary: 'Deploy the authored release',
     },
   ],
