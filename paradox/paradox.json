@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.11.1",
+      "value": "v0.12.0",
       "color": "cb3837"
     },
     {
@@ -539,6 +539,15 @@
       ]
     },
     {
+      "path": "tests/capabilityFixture.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "createCapabilities",
+        "createCapability"
+      ]
+    },
+    {
       "path": "tests/cli.test.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -549,7 +558,8 @@
         "src/execution.ts",
         "src/packageRegistry.ts",
         "src/providerManifestLoader.ts",
-        "src/providerRegistry.ts"
+        "src/providerRegistry.ts",
+        "tests/capabilityFixture.ts"
       ],
       "exports": []
     },
@@ -565,7 +575,8 @@
       "path": "tests/discovery.test.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/discovery.ts"
+        "src/discovery.ts",
+        "tests/capabilityFixture.ts"
       ],
       "exports": []
     },
@@ -576,8 +587,8 @@
         "src/cli/index.ts",
         "src/commandContext.ts",
         "src/discovery.ts",
-        "src/packageMetadata.ts",
-        "src/types/providers.ts"
+        "src/types/providers.ts",
+        "tests/fixtures/canonicalDoctorProvider.ts"
       ],
       "exports": []
     },
@@ -587,9 +598,21 @@
       "dependencies": [
         "src/execution.ts",
         "src/providerManifestLoader.ts",
-        "src/providerRegistry.ts"
+        "src/providerRegistry.ts",
+        "tests/capabilityFixture.ts"
       ],
       "exports": []
+    },
+    {
+      "path": "tests/fixtures/canonicalDoctorProvider.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "tests/capabilityFixture.ts"
+      ],
+      "exports": [
+        "default",
+        "DOCTOR_FIXTURE_CAPABILITIES"
+      ]
     },
     {
       "path": "tests/package.test.ts",
@@ -611,7 +634,8 @@
       "path": "tests/packageRegistry.test.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/packageRegistry.ts"
+        "src/packageRegistry.ts",
+        "tests/capabilityFixture.ts"
       ],
       "exports": []
     },
@@ -632,7 +656,8 @@
         "src/commandContext.ts",
         "src/discovery.ts",
         "src/index.ts",
-        "src/providerManifestLoader.ts"
+        "src/providerManifestLoader.ts",
+        "tests/capabilityFixture.ts"
       ],
       "exports": []
     },
@@ -652,7 +677,8 @@
         "src/commandContext.ts",
         "src/discovery.ts",
         "src/execution.ts",
-        "src/providerManifestLoader.ts"
+        "src/providerManifestLoader.ts",
+        "tests/capabilityFixture.ts"
       ],
       "exports": []
     },
@@ -660,7 +686,8 @@
       "path": "tests/providerManifestLoader.test.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/providerManifestLoader.ts"
+        "src/providerManifestLoader.ts",
+        "tests/capabilityFixture.ts"
       ],
       "exports": []
     },
@@ -668,7 +695,8 @@
       "path": "tests/providerRegistry.test.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/providerRegistry.ts"
+        "src/providerRegistry.ts",
+        "tests/capabilityFixture.ts"
       ],
       "exports": []
     },
@@ -682,7 +710,8 @@
         "src/features/providers/adapters/outbound/createBunProviderPackageStore.ts",
         "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
         "src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts",
-        "src/types/providers.ts"
+        "src/types/providers.ts",
+        "tests/capabilityFixture.ts"
       ],
       "exports": []
     },
@@ -694,7 +723,8 @@
         "src/commandContext.ts",
         "src/execution.ts",
         "src/packageRegistry.ts",
-        "src/providerRegistry.ts"
+        "src/providerRegistry.ts",
+        "tests/capabilityFixture.ts"
       ],
       "exports": []
     },
@@ -705,7 +735,8 @@
         "src/execution.ts",
         "src/help.ts",
         "src/planning.ts",
-        "src/providerRegistry.ts"
+        "src/providerRegistry.ts",
+        "tests/capabilityFixture.ts"
       ],
       "exports": []
     },
@@ -1366,7 +1397,7 @@
       "modulePath": "src/discovery.ts",
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 14,
+        "line": 15,
         "column": 1
       },
       "exportPaths": [
@@ -1424,7 +1455,7 @@
       "modulePath": "src/discovery.ts",
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 12,
+        "line": 13,
         "column": 1
       },
       "exportPaths": [
@@ -1513,7 +1544,7 @@
       "modulePath": "src/providerManifestLoader.ts",
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 22,
+        "line": 25,
         "column": 1
       },
       "exportPaths": [
@@ -1571,7 +1602,7 @@
       "modulePath": "src/discovery.ts",
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 22,
+        "line": 23,
         "column": 1
       },
       "exportPaths": [
@@ -1636,7 +1667,7 @@
       "modulePath": "src/discovery.ts",
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 31,
+        "line": 32,
         "column": 1
       },
       "exportPaths": [
@@ -1909,7 +1940,7 @@
       "modulePath": "src/providerManifestLoader.ts",
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 12,
+        "line": 15,
         "column": 1
       },
       "exportPaths": [
@@ -2143,7 +2174,7 @@
         {
           "name": "capabilities",
           "kind": "property",
-          "type": "readonly `${string}.${string}`[]",
+          "type": "readonly Capability[]",
           "required": true,
           "description": null
         },
@@ -2340,7 +2371,7 @@
       "modulePath": "src/discovery.ts",
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 49,
+        "line": 50,
         "column": 1
       },
       "exportPaths": [
@@ -2410,7 +2441,7 @@
       "modulePath": "src/providerManifestLoader.ts",
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 35,
+        "line": 38,
         "column": 1
       },
       "exportPaths": [
@@ -2447,7 +2478,7 @@
       "modulePath": "src/providerManifestLoader.ts",
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 30,
+        "line": 33,
         "column": 1
       },
       "exportPaths": [
@@ -2868,7 +2899,7 @@
       "description": "Discover Ankh package metadata from the current project and any additional package roots.",
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 49,
+        "line": 50,
         "column": 1
       }
     },
@@ -2877,7 +2908,7 @@
       "description": "Collect project-local candidates before installation-level candidates so local packages override\ninstalled packages with the same package name.",
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 104,
+        "line": 105,
         "column": 1
       }
     },
@@ -2886,7 +2917,7 @@
       "description": "Add one normalized discovery candidate unless the same package.json path was already collected.",
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 162,
+        "line": 163,
         "column": 1
       }
     },
@@ -2895,7 +2926,7 @@
       "description": "Report category and capability collisions across the final discovered package set.",
       "sourceLocation": {
         "filePath": "src/discovery.ts",
-        "line": 182,
+        "line": 183,
         "column": 1
       }
     },
@@ -3102,7 +3133,7 @@
       "description": "Create a JSON-file cache for the remotely discovered provider catalog.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts",
-        "line": 13,
+        "line": 18,
         "column": 1
       }
     },
@@ -3111,7 +3142,7 @@
       "description": "Validate a cached provider catalog snapshot before it can drive the CLI.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts",
-        "line": 35,
+        "line": 40,
         "column": 1
       }
     },
@@ -3120,22 +3151,13 @@
       "description": "Validate one cached catalog entry without trusting arbitrary JSON.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts",
-        "line": 49,
+        "line": 54,
         "column": 1
       }
     },
     {
       "name": "isProviderReference",
       "description": "Validate package-relative provider references in cached metadata.",
-      "sourceLocation": {
-        "filePath": "src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts",
-        "line": 84,
-        "column": 1
-      }
-    },
-    {
-      "name": "isCapabilityId",
-      "description": "Validate cached capability identifiers.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts",
         "line": 89,
@@ -3147,7 +3169,7 @@
       "description": "Narrow an unknown value to a Node filesystem error.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts",
-        "line": 95,
+        "line": 94,
         "column": 1
       }
     },
@@ -3156,7 +3178,7 @@
       "description": "Narrow an unknown JSON value to a non-array object.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts",
-        "line": 100,
+        "line": 99,
         "column": 1
       }
     },
@@ -3165,7 +3187,7 @@
       "description": "Create the GitHub-backed source for the official Ankhorage provider catalog.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 16,
+        "line": 18,
         "column": 1
       }
     },
@@ -3174,7 +3196,7 @@
       "description": "Read all public repositories in the provider organization.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 55,
+        "line": 57,
         "column": 1
       }
     },
@@ -3183,7 +3205,7 @@
       "description": "Parse the GitHub fields required for provider metadata discovery.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 92,
+        "line": 94,
         "column": 1
       }
     },
@@ -3192,7 +3214,7 @@
       "description": "Resolve one repository candidate to the latest published npm provider metadata.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 114,
+        "line": 116,
         "column": 1
       }
     },
@@ -3201,7 +3223,7 @@
       "description": "Read the latest published npm manifest so catalog state is always installable.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 138,
+        "line": 140,
         "column": 1
       }
     },
@@ -3210,7 +3232,7 @@
       "description": "Parse one package manifest and return its validated CLI-provider entry when present.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 164,
+        "line": 166,
         "column": 1
       }
     },
@@ -3219,16 +3241,16 @@
       "description": "Parse package-owned Ankh category, provider, and capability metadata.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 197,
+        "line": 199,
         "column": 1
       }
     },
     {
       "name": "validateCatalogUniqueness",
-      "description": "Reject ambiguous categories or capabilities in the official remote catalog.",
+      "description": "Reject ambiguous categories or conflicting canonical capabilities in the remote catalog.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 232,
+        "line": 234,
         "column": 1
       }
     },
@@ -3237,7 +3259,7 @@
       "description": "Read a trimmed non-empty string.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 258,
+        "line": 266,
         "column": 1
       }
     },
@@ -3246,16 +3268,7 @@
       "description": "Validate package-relative provider references.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 265,
-        "column": 1
-      }
-    },
-    {
-      "name": "isCapabilityId",
-      "description": "Validate dot-separated Ankh capability identifiers.",
-      "sourceLocation": {
-        "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 270,
+        "line": 273,
         "column": 1
       }
     },
@@ -3264,7 +3277,7 @@
       "description": "Narrow an unknown JSON value to a non-array object.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 276,
+        "line": 278,
         "column": 1
       }
     },
@@ -3453,7 +3466,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 30,
+        "line": 27,
         "column": 1
       }
     },
@@ -3462,7 +3475,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 146,
+        "line": 143,
         "column": 1
       }
     },
@@ -3471,7 +3484,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 244,
+        "line": 236,
         "column": 1
       }
     },
@@ -3480,7 +3493,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 282,
+        "line": 274,
         "column": 1
       }
     },
@@ -3489,16 +3502,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 305,
-        "column": 1
-      }
-    },
-    {
-      "name": "isCapabilityId",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/packageMetadata.ts",
-        "line": 314,
+        "line": 297,
         "column": 1
       }
     },
@@ -3507,7 +3511,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 319,
+        "line": 306,
         "column": 1
       }
     },
@@ -3516,7 +3520,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 323,
+        "line": 310,
         "column": 1
       }
     },
@@ -3525,7 +3529,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 336,
+        "line": 323,
         "column": 1
       }
     },
@@ -3705,7 +3709,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 35,
+        "line": 38,
         "column": 1
       }
     },
@@ -3714,7 +3718,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 124,
+        "line": 127,
         "column": 1
       }
     },
@@ -3723,7 +3727,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 264,
+        "line": 267,
         "column": 1
       }
     },
@@ -3732,7 +3736,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 338,
+        "line": 348,
         "column": 1
       }
     },
@@ -3741,7 +3745,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 391,
+        "line": 401,
         "column": 1
       }
     },
@@ -3750,7 +3754,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 520,
+        "line": 530,
         "column": 1
       }
     },
@@ -3759,7 +3763,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 606,
+        "line": 616,
         "column": 1
       }
     },
@@ -3768,7 +3772,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 610,
+        "line": 620,
         "column": 1
       }
     },
@@ -3777,16 +3781,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 614,
+        "line": 624,
         "column": 1
       }
     },
     {
       "name": "getCapabilityId",
-      "description": null,
+      "description": "Read one canonical capability identifier from untrusted command metadata.",
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 626,
+        "line": 637,
         "column": 1
       }
     },
@@ -3795,7 +3799,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 630,
+        "line": 641,
         "column": 1
       }
     },
@@ -3804,16 +3808,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 651,
-        "column": 1
-      }
-    },
-    {
-      "name": "isCapabilityId",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/providerManifestLoader.ts",
-        "line": 660,
+        "line": 662,
         "column": 1
       }
     },
@@ -3822,7 +3817,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 665,
+        "line": 671,
         "column": 1
       }
     },
@@ -3831,7 +3826,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 669,
+        "line": 675,
         "column": 1
       }
     },
@@ -3840,7 +3835,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 680,
+        "line": 686,
         "column": 1
       }
     },
@@ -3849,7 +3844,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 696,
+        "line": 702,
         "column": 1
       }
     },
@@ -4323,6 +4318,11 @@
         "sourcePath": "tests/cli.test.ts"
       },
       {
+        "fromPath": "tests/cli.test.ts",
+        "toPath": "tests/capabilityFixture.ts",
+        "sourcePath": "tests/cli.test.ts"
+      },
+      {
         "fromPath": "tests/commandInteraction.test.ts",
         "toPath": "src/createCommandInteraction.ts",
         "sourcePath": "tests/commandInteraction.test.ts"
@@ -4330,6 +4330,11 @@
       {
         "fromPath": "tests/discovery.test.ts",
         "toPath": "src/discovery.ts",
+        "sourcePath": "tests/discovery.test.ts"
+      },
+      {
+        "fromPath": "tests/discovery.test.ts",
+        "toPath": "tests/capabilityFixture.ts",
         "sourcePath": "tests/discovery.test.ts"
       },
       {
@@ -4349,12 +4354,12 @@
       },
       {
         "fromPath": "tests/doctorCoreProviderReadiness.test.ts",
-        "toPath": "src/packageMetadata.ts",
+        "toPath": "src/types/providers.ts",
         "sourcePath": "tests/doctorCoreProviderReadiness.test.ts"
       },
       {
         "fromPath": "tests/doctorCoreProviderReadiness.test.ts",
-        "toPath": "src/types/providers.ts",
+        "toPath": "tests/fixtures/canonicalDoctorProvider.ts",
         "sourcePath": "tests/doctorCoreProviderReadiness.test.ts"
       },
       {
@@ -4373,6 +4378,11 @@
         "sourcePath": "tests/execution.test.ts"
       },
       {
+        "fromPath": "tests/execution.test.ts",
+        "toPath": "tests/capabilityFixture.ts",
+        "sourcePath": "tests/execution.test.ts"
+      },
+      {
         "fromPath": "tests/package.test.ts",
         "toPath": "package.json",
         "sourcePath": "tests/package.test.ts"
@@ -4385,6 +4395,11 @@
       {
         "fromPath": "tests/packageRegistry.test.ts",
         "toPath": "src/packageRegistry.ts",
+        "sourcePath": "tests/packageRegistry.test.ts"
+      },
+      {
+        "fromPath": "tests/packageRegistry.test.ts",
+        "toPath": "tests/capabilityFixture.ts",
         "sourcePath": "tests/packageRegistry.test.ts"
       },
       {
@@ -4423,6 +4438,11 @@
         "sourcePath": "tests/planning.test.ts"
       },
       {
+        "fromPath": "tests/planning.test.ts",
+        "toPath": "tests/capabilityFixture.ts",
+        "sourcePath": "tests/planning.test.ts"
+      },
+      {
         "fromPath": "tests/providerCatalogAuthentication.test.ts",
         "toPath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
         "sourcePath": "tests/providerCatalogAuthentication.test.ts"
@@ -4453,13 +4473,28 @@
         "sourcePath": "tests/providerDiscoveryConsistency.test.ts"
       },
       {
+        "fromPath": "tests/providerDiscoveryConsistency.test.ts",
+        "toPath": "tests/capabilityFixture.ts",
+        "sourcePath": "tests/providerDiscoveryConsistency.test.ts"
+      },
+      {
         "fromPath": "tests/providerManifestLoader.test.ts",
         "toPath": "src/providerManifestLoader.ts",
         "sourcePath": "tests/providerManifestLoader.test.ts"
       },
       {
+        "fromPath": "tests/providerManifestLoader.test.ts",
+        "toPath": "tests/capabilityFixture.ts",
+        "sourcePath": "tests/providerManifestLoader.test.ts"
+      },
+      {
         "fromPath": "tests/providerRegistry.test.ts",
         "toPath": "src/providerRegistry.ts",
+        "sourcePath": "tests/providerRegistry.test.ts"
+      },
+      {
+        "fromPath": "tests/providerRegistry.test.ts",
+        "toPath": "tests/capabilityFixture.ts",
         "sourcePath": "tests/providerRegistry.test.ts"
       },
       {
@@ -4498,6 +4533,11 @@
         "sourcePath": "tests/providerRuntime.test.ts"
       },
       {
+        "fromPath": "tests/providerRuntime.test.ts",
+        "toPath": "tests/capabilityFixture.ts",
+        "sourcePath": "tests/providerRuntime.test.ts"
+      },
+      {
         "fromPath": "tests/rootCli.test.ts",
         "toPath": "src/cli/index.ts",
         "sourcePath": "tests/rootCli.test.ts"
@@ -4523,6 +4563,11 @@
         "sourcePath": "tests/rootCli.test.ts"
       },
       {
+        "fromPath": "tests/rootCli.test.ts",
+        "toPath": "tests/capabilityFixture.ts",
+        "sourcePath": "tests/rootCli.test.ts"
+      },
+      {
         "fromPath": "tests/rootCommands.test.ts",
         "toPath": "src/execution.ts",
         "sourcePath": "tests/rootCommands.test.ts"
@@ -4540,6 +4585,11 @@
       {
         "fromPath": "tests/rootCommands.test.ts",
         "toPath": "src/providerRegistry.ts",
+        "sourcePath": "tests/rootCommands.test.ts"
+      },
+      {
+        "fromPath": "tests/rootCommands.test.ts",
+        "toPath": "tests/capabilityFixture.ts",
         "sourcePath": "tests/rootCommands.test.ts"
       },
       {
@@ -4611,6 +4661,11 @@
         "fromPath": "src/types/providers.ts",
         "toPath": "src/discovery.ts",
         "sourcePath": "src/types/providers.ts"
+      },
+      {
+        "fromPath": "tests/fixtures/canonicalDoctorProvider.ts",
+        "toPath": "tests/capabilityFixture.ts",
+        "sourcePath": "tests/fixtures/canonicalDoctorProvider.ts"
       },
       {
         "fromPath": "src/features/input-resolution/application/resolveAnkhInputValue.test.ts",
@@ -4803,6 +4858,12 @@
         "sourcePath": "src/discovery.ts"
       },
       {
+        "fromSymbol": "collectDuplicateMetadataDiagnostics",
+        "toSymbol": "areCapabilitiesEqual",
+        "callExpression": "areCapabilitiesEqual",
+        "sourcePath": "src/discovery.ts"
+      },
+      {
         "fromSymbol": "resolveExecutableCommand",
         "toSymbol": "findAllByCategory",
         "callExpression": "providerRegistry.findAllByCategory",
@@ -4986,12 +5047,6 @@
         "fromSymbol": "validateAnkhMetadata",
         "toSymbol": "resolveAnkhProviderReference",
         "callExpression": "resolveAnkhProviderReference",
-        "sourcePath": "src/packageMetadata.ts"
-      },
-      {
-        "fromSymbol": "validateAnkhMetadata",
-        "toSymbol": "isCapabilityId",
-        "callExpression": "isCapabilityId",
         "sourcePath": "src/packageMetadata.ts"
       },
       {
@@ -5218,8 +5273,20 @@
       },
       {
         "fromSymbol": "validateCapabilities",
-        "toSymbol": "isCapabilityId",
-        "callExpression": "isCapabilityId",
+        "toSymbol": "isCapability",
+        "callExpression": "isCapability",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "validateCapabilities",
+        "toSymbol": "normalizeCapability",
+        "callExpression": "normalizeCapability",
+        "sourcePath": "src/providerManifestLoader.ts"
+      },
+      {
+        "fromSymbol": "validateCapabilities",
+        "toSymbol": "areCapabilitiesEqual",
+        "callExpression": "areCapabilitiesEqual",
         "sourcePath": "src/providerManifestLoader.ts"
       },
       {
@@ -5439,6 +5506,12 @@
         "sourcePath": "src/workspace.ts"
       },
       {
+        "fromSymbol": "tests/cli.test.ts",
+        "toSymbol": "createCapabilities",
+        "callExpression": "createCapabilities",
+        "sourcePath": "tests/cli.test.ts"
+      },
+      {
         "fromSymbol": "createInjectedState",
         "toSymbol": "createPackageRegistry",
         "callExpression": "createPackageRegistry",
@@ -5557,6 +5630,12 @@
         "toSymbol": "confirm",
         "callExpression": "no.confirm",
         "sourcePath": "tests/commandInteraction.test.ts"
+      },
+      {
+        "fromSymbol": "tests/discovery.test.ts",
+        "toSymbol": "createCapabilities",
+        "callExpression": "createCapabilities",
+        "sourcePath": "tests/discovery.test.ts"
       },
       {
         "fromSymbol": "tests/discovery.test.ts",
@@ -5703,16 +5782,10 @@
         "sourcePath": "tests/doctorCoreProviderReadiness.test.ts"
       },
       {
-        "fromSymbol": "createDoctorProviderRuntime",
-        "toSymbol": "fileURLToPath",
-        "callExpression": "fileURLToPath",
-        "sourcePath": "tests/doctorCoreProviderReadiness.test.ts"
-      },
-      {
-        "fromSymbol": "createDoctorProviderRuntime",
-        "toSymbol": "readAnkhPackageMetadata",
-        "callExpression": "readAnkhPackageMetadata",
-        "sourcePath": "tests/doctorCoreProviderReadiness.test.ts"
+        "fromSymbol": "tests/execution.test.ts",
+        "toSymbol": "createCapabilities",
+        "callExpression": "createCapabilities",
+        "sourcePath": "tests/execution.test.ts"
       },
       {
         "fromSymbol": "tests/execution.test.ts",
@@ -5824,6 +5897,12 @@
       },
       {
         "fromSymbol": "tests/packageRegistry.test.ts",
+        "toSymbol": "createCapabilities",
+        "callExpression": "createCapabilities",
+        "sourcePath": "tests/packageRegistry.test.ts"
+      },
+      {
+        "fromSymbol": "tests/packageRegistry.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
         "sourcePath": "tests/packageRegistry.test.ts"
@@ -5887,6 +5966,12 @@
         "toSymbol": "parseArgv",
         "callExpression": "parseArgv",
         "sourcePath": "tests/parser.test.ts"
+      },
+      {
+        "fromSymbol": "tests/planning.test.ts",
+        "toSymbol": "createCapabilities",
+        "callExpression": "createCapabilities",
+        "sourcePath": "tests/planning.test.ts"
       },
       {
         "fromSymbol": "loadedProvider",
@@ -5998,6 +6083,12 @@
       },
       {
         "fromSymbol": "tests/providerDiscoveryConsistency.test.ts",
+        "toSymbol": "createCapabilities",
+        "callExpression": "createCapabilities",
+        "sourcePath": "tests/providerDiscoveryConsistency.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerDiscoveryConsistency.test.ts",
         "toSymbol": "afterEach",
         "callExpression": "afterEach",
         "sourcePath": "tests/providerDiscoveryConsistency.test.ts"
@@ -6055,6 +6146,12 @@
         "toSymbol": "expect",
         "callExpression": "expect",
         "sourcePath": "tests/providerDiscoveryConsistency.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerManifestLoader.test.ts",
+        "toSymbol": "createCapabilities",
+        "callExpression": "createCapabilities",
+        "sourcePath": "tests/providerManifestLoader.test.ts"
       },
       {
         "fromSymbol": "tests/providerManifestLoader.test.ts",
@@ -6136,6 +6233,12 @@
       },
       {
         "fromSymbol": "tests/providerRegistry.test.ts",
+        "toSymbol": "createCapabilities",
+        "callExpression": "createCapabilities",
+        "sourcePath": "tests/providerRegistry.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerRegistry.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
         "sourcePath": "tests/providerRegistry.test.ts"
@@ -6196,6 +6299,12 @@
       },
       {
         "fromSymbol": "tests/providerRuntime.test.ts",
+        "toSymbol": "createCapabilities",
+        "callExpression": "createCapabilities",
+        "sourcePath": "tests/providerRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerRuntime.test.ts",
         "toSymbol": "afterEach",
         "callExpression": "afterEach",
         "sourcePath": "tests/providerRuntime.test.ts"
@@ -6246,6 +6355,12 @@
         "fromSymbol": "fetchImpl",
         "toSymbol": "jsonResponse",
         "callExpression": "jsonResponse",
+        "sourcePath": "tests/providerRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "fetchImpl",
+        "toSymbol": "createCapabilities",
+        "callExpression": "createCapabilities",
         "sourcePath": "tests/providerRuntime.test.ts"
       },
       {
@@ -6327,6 +6442,12 @@
         "sourcePath": "tests/providerRuntime.test.ts"
       },
       {
+        "fromSymbol": "tests/rootCli.test.ts",
+        "toSymbol": "createCapabilities",
+        "callExpression": "createCapabilities",
+        "sourcePath": "tests/rootCli.test.ts"
+      },
+      {
         "fromSymbol": "createState",
         "toSymbol": "createPackageRegistry",
         "callExpression": "createPackageRegistry",
@@ -6373,6 +6494,12 @@
         "toSymbol": "expect",
         "callExpression": "expect",
         "sourcePath": "tests/rootCli.test.ts"
+      },
+      {
+        "fromSymbol": "tests/rootCommands.test.ts",
+        "toSymbol": "createCapabilities",
+        "callExpression": "createCapabilities",
+        "sourcePath": "tests/rootCommands.test.ts"
       },
       {
         "fromSymbol": "tests/rootCommands.test.ts",
@@ -6981,6 +7108,36 @@
         "sourcePath": "src/cli/index.ts"
       },
       {
+        "fromSymbol": "tests/fixtures/canonicalDoctorProvider.ts",
+        "toSymbol": "createCapabilities",
+        "callExpression": "createCapabilities",
+        "sourcePath": "tests/fixtures/canonicalDoctorProvider.ts"
+      },
+      {
+        "fromSymbol": "tests/fixtures/canonicalDoctorProvider.ts",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "tests/fixtures/canonicalDoctorProvider.ts"
+      },
+      {
+        "fromSymbol": "tests/fixtures/canonicalDoctorProvider.ts",
+        "toSymbol": "readCommands",
+        "callExpression": "readCommands",
+        "sourcePath": "tests/fixtures/canonicalDoctorProvider.ts"
+      },
+      {
+        "fromSymbol": "tests/fixtures/canonicalDoctorProvider.ts",
+        "toSymbol": "readCapabilityId",
+        "callExpression": "readCapabilityId",
+        "sourcePath": "tests/fixtures/canonicalDoctorProvider.ts"
+      },
+      {
+        "fromSymbol": "asRecord",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "tests/fixtures/canonicalDoctorProvider.ts"
+      },
+      {
         "fromSymbol": "readPackagePresentation",
         "toSymbol": "getAnkhorageRepositoryUrlFromPath",
         "callExpression": "getAnkhorageRepositoryUrlFromPath",
@@ -7228,8 +7385,14 @@
       },
       {
         "fromSymbol": "parseEntry",
-        "toSymbol": "isCapabilityId",
-        "callExpression": "isCapabilityId",
+        "toSymbol": "isCapability",
+        "callExpression": "isCapability",
+        "sourcePath": "src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts"
+      },
+      {
+        "fromSymbol": "parseEntry",
+        "toSymbol": "normalizeCapability",
+        "callExpression": "normalizeCapability",
         "sourcePath": "src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts"
       },
       {
@@ -7342,8 +7505,20 @@
       },
       {
         "fromSymbol": "parseAnkhMetadata",
-        "toSymbol": "isCapabilityId",
-        "callExpression": "isCapabilityId",
+        "toSymbol": "isCapability",
+        "callExpression": "isCapability",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "parseAnkhMetadata",
+        "toSymbol": "normalizeCapability",
+        "callExpression": "normalizeCapability",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "validateCatalogUniqueness",
+        "toSymbol": "areCapabilitiesEqual",
+        "callExpression": "areCapabilitiesEqual",
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
       },
       {
@@ -7489,6 +7664,11 @@
       {
         "fromSymbol": "AnkhRuntimeCommandProvider",
         "toType": "AnkhPlanningHandlerBinding",
+        "sourcePath": "src/execution.ts"
+      },
+      {
+        "fromSymbol": "AnkhRuntimeCommandProvider",
+        "toType": "Capability",
         "sourcePath": "src/execution.ts"
       },
       {

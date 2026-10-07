@@ -187,7 +187,7 @@ Source: `src/confirmationResult.ts:1:1`
 
 Kind: `type`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:14:1`
+Source: `src/discovery.ts:15:1`
 
 ### Members
 
@@ -203,7 +203,7 @@ Source: `src/discovery.ts:14:1`
 
 Kind: `unknown`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:12:1`
+Source: `src/discovery.ts:13:1`
 
 ## AnkhInputValueCandidates
 
@@ -230,7 +230,7 @@ Source: `src/types/inputResolution.ts:1:1`
 
 Kind: `type`
 Module: `src/providerManifestLoader.ts`
-Source: `src/providerManifestLoader.ts:22:1`
+Source: `src/providerManifestLoader.ts:25:1`
 
 ### Members
 
@@ -246,7 +246,7 @@ Source: `src/providerManifestLoader.ts:22:1`
 
 Kind: `type`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:22:1`
+Source: `src/discovery.ts:23:1`
 
 ### Members
 
@@ -263,7 +263,7 @@ Source: `src/discovery.ts:22:1`
 
 Kind: `type`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:31:1`
+Source: `src/discovery.ts:32:1`
 
 ### Members
 
@@ -343,7 +343,7 @@ Source: `src/planning.ts:42:1`
 
 Kind: `type`
 Module: `src/providerManifestLoader.ts`
-Source: `src/providerManifestLoader.ts:12:1`
+Source: `src/providerManifestLoader.ts:15:1`
 
 ### Members
 
@@ -411,7 +411,7 @@ Source: `src/execution.ts:38:1`
 
 | Name | Kind | Type | Required | Description |
 | --- | --- | --- | --- | --- |
-| capabilities | property | `readonly `${string}.${string}`[]` | yes |  |
+| capabilities | property | `readonly Capability[]` | yes |  |
 | category | property | `string` | yes |  |
 | commands | property | `readonly AnkhCommandDescriptor[]` | yes |  |
 | handlers | property | `readonly AnkhCommandHandlerBinding[] \| undefined` | no |  |
@@ -470,7 +470,7 @@ Source: `src/providerRegistry.ts:31:1`
 
 Kind: `function`
 Module: `src/discovery.ts`
-Source: `src/discovery.ts:49:1`
+Source: `src/discovery.ts:50:1`
 
 Discover Ankh package metadata from the current project and any additional package roots.
 
@@ -498,7 +498,7 @@ Return whether a token requests conventional CLI help.
 
 Kind: `function`
 Module: `src/providerManifestLoader.ts`
-Source: `src/providerManifestLoader.ts:35:1`
+Source: `src/providerManifestLoader.ts:38:1`
 
 ### Signatures
 
@@ -510,7 +510,7 @@ Source: `src/providerManifestLoader.ts:35:1`
 
 Kind: `type`
 Module: `src/providerManifestLoader.ts`
-Source: `src/providerManifestLoader.ts:30:1`
+Source: `src/providerManifestLoader.ts:33:1`
 
 ### Members
 

@@ -32,11 +32,13 @@ graph LR
   module_src_types_inputResolution_ts["src/types/inputResolution.ts"]
   module_src_types_providers_ts["src/types/providers.ts"]
   module_src_workspace_ts["src/workspace.ts"]
+  module_tests_capabilityFixture_ts["tests/capabilityFixture.ts"]
   module_tests_cli_test_ts["tests/cli.test.ts"]
   module_tests_commandInteraction_test_ts["tests/commandInteraction.test.ts"]
   module_tests_discovery_test_ts["tests/discovery.test.ts"]
   module_tests_doctorCoreProviderReadiness_test_ts["tests/doctorCoreProviderReadiness.test.ts"]
   module_tests_execution_test_ts["tests/execution.test.ts"]
+  module_tests_fixtures_canonicalDoctorProvider_ts["tests/fixtures/canonicalDoctorProvider.ts"]
   module_tests_package_test_ts["tests/package.test.ts"]
   module_tests_packagePresentation_test_ts["tests/packagePresentation.test.ts"]
   module_tests_packageRegistry_test_ts["tests/packageRegistry.test.ts"]
@@ -119,19 +121,24 @@ graph LR
   module_tests_cli_test_ts --> module_src_packageRegistry_ts
   module_tests_cli_test_ts --> module_src_providerManifestLoader_ts
   module_tests_cli_test_ts --> module_src_providerRegistry_ts
+  module_tests_cli_test_ts --> module_tests_capabilityFixture_ts
   module_tests_commandInteraction_test_ts --> module_src_createCommandInteraction_ts
   module_tests_discovery_test_ts --> module_src_discovery_ts
+  module_tests_discovery_test_ts --> module_tests_capabilityFixture_ts
   module_tests_doctorCoreProviderReadiness_test_ts --> module_src_cli_index_ts
   module_tests_doctorCoreProviderReadiness_test_ts --> module_src_commandContext_ts
   module_tests_doctorCoreProviderReadiness_test_ts --> module_src_discovery_ts
-  module_tests_doctorCoreProviderReadiness_test_ts --> module_src_packageMetadata_ts
   module_tests_doctorCoreProviderReadiness_test_ts --> module_src_types_providers_ts
+  module_tests_doctorCoreProviderReadiness_test_ts --> module_tests_fixtures_canonicalDoctorProvider_ts
   module_tests_execution_test_ts --> module_src_execution_ts
   module_tests_execution_test_ts --> module_src_providerManifestLoader_ts
   module_tests_execution_test_ts --> module_src_providerRegistry_ts
+  module_tests_execution_test_ts --> module_tests_capabilityFixture_ts
+  module_tests_fixtures_canonicalDoctorProvider_ts --> module_tests_capabilityFixture_ts
   module_tests_package_test_ts --> module_package_json
   module_tests_packagePresentation_test_ts --> module_src_features_help_readPackagePresentation_ts
   module_tests_packageRegistry_test_ts --> module_src_packageRegistry_ts
+  module_tests_packageRegistry_test_ts --> module_tests_capabilityFixture_ts
   module_tests_parser_test_ts --> module_src_parser_ts
   module_tests_planning_test_ts --> module_package_json
   module_tests_planning_test_ts --> module_src_cli_index_ts
@@ -139,14 +146,18 @@ graph LR
   module_tests_planning_test_ts --> module_src_discovery_ts
   module_tests_planning_test_ts --> module_src_index_ts
   module_tests_planning_test_ts --> module_src_providerManifestLoader_ts
+  module_tests_planning_test_ts --> module_tests_capabilityFixture_ts
   module_tests_providerCatalogAuthentication_test_ts --> module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts
   module_tests_providerDiscoveryConsistency_test_ts --> module_src_cli_index_ts
   module_tests_providerDiscoveryConsistency_test_ts --> module_src_commandContext_ts
   module_tests_providerDiscoveryConsistency_test_ts --> module_src_discovery_ts
   module_tests_providerDiscoveryConsistency_test_ts --> module_src_execution_ts
   module_tests_providerDiscoveryConsistency_test_ts --> module_src_providerManifestLoader_ts
+  module_tests_providerDiscoveryConsistency_test_ts --> module_tests_capabilityFixture_ts
   module_tests_providerManifestLoader_test_ts --> module_src_providerManifestLoader_ts
+  module_tests_providerManifestLoader_test_ts --> module_tests_capabilityFixture_ts
   module_tests_providerRegistry_test_ts --> module_src_providerRegistry_ts
+  module_tests_providerRegistry_test_ts --> module_tests_capabilityFixture_ts
   module_tests_providerRuntime_test_ts --> module_src_cli_index_ts
   module_tests_providerRuntime_test_ts --> module_src_commandContext_ts
   module_tests_providerRuntime_test_ts --> module_src_discovery_ts
@@ -154,13 +165,16 @@ graph LR
   module_tests_providerRuntime_test_ts --> module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts
   module_tests_providerRuntime_test_ts --> module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts
   module_tests_providerRuntime_test_ts --> module_src_types_providers_ts
+  module_tests_providerRuntime_test_ts --> module_tests_capabilityFixture_ts
   module_tests_rootCli_test_ts --> module_src_cli_index_ts
   module_tests_rootCli_test_ts --> module_src_commandContext_ts
   module_tests_rootCli_test_ts --> module_src_execution_ts
   module_tests_rootCli_test_ts --> module_src_packageRegistry_ts
   module_tests_rootCli_test_ts --> module_src_providerRegistry_ts
+  module_tests_rootCli_test_ts --> module_tests_capabilityFixture_ts
   module_tests_rootCommands_test_ts --> module_src_execution_ts
   module_tests_rootCommands_test_ts --> module_src_help_ts
   module_tests_rootCommands_test_ts --> module_src_planning_ts
   module_tests_rootCommands_test_ts --> module_src_providerRegistry_ts
+  module_tests_rootCommands_test_ts --> module_tests_capabilityFixture_ts
   module_tests_workspace_test_ts --> module_src_workspace_ts

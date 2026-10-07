@@ -646,7 +646,7 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 14,
+      "line": 15,
       "column": 1
     },
     "exportPaths": [
@@ -704,7 +704,7 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 12,
+      "line": 13,
       "column": 1
     },
     "exportPaths": [
@@ -793,7 +793,7 @@
     "modulePath": "src/providerManifestLoader.ts",
     "sourceLocation": {
       "filePath": "src/providerManifestLoader.ts",
-      "line": 22,
+      "line": 25,
       "column": 1
     },
     "exportPaths": [
@@ -851,7 +851,7 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 22,
+      "line": 23,
       "column": 1
     },
     "exportPaths": [
@@ -916,7 +916,7 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 31,
+      "line": 32,
       "column": 1
     },
     "exportPaths": [
@@ -1189,7 +1189,7 @@
     "modulePath": "src/providerManifestLoader.ts",
     "sourceLocation": {
       "filePath": "src/providerManifestLoader.ts",
-      "line": 12,
+      "line": 15,
       "column": 1
     },
     "exportPaths": [
@@ -1423,7 +1423,7 @@
       {
         "name": "capabilities",
         "kind": "property",
-        "type": "readonly `${string}.${string}`[]",
+        "type": "readonly Capability[]",
         "required": true,
         "description": null
       },
@@ -1620,7 +1620,7 @@
     "modulePath": "src/discovery.ts",
     "sourceLocation": {
       "filePath": "src/discovery.ts",
-      "line": 49,
+      "line": 50,
       "column": 1
     },
     "exportPaths": [
@@ -1690,7 +1690,7 @@
     "modulePath": "src/providerManifestLoader.ts",
     "sourceLocation": {
       "filePath": "src/providerManifestLoader.ts",
-      "line": 35,
+      "line": 38,
       "column": 1
     },
     "exportPaths": [
@@ -1727,7 +1727,7 @@
     "modulePath": "src/providerManifestLoader.ts",
     "sourceLocation": {
       "filePath": "src/providerManifestLoader.ts",
-      "line": 30,
+      "line": 33,
       "column": 1
     },
     "exportPaths": [
