@@ -23,7 +23,7 @@ const temporaryDirectories: string[] = [];
 const infraEntry = {
   description: 'Infrastructure provider',
   metadata: {
-    capabilities: createCapabilities(['infra.up']),
+    capabilities: createCapabilities(['fixture.up']),
     category: 'infra',
     provider: './dist/cli/index.js',
   },
@@ -36,11 +36,11 @@ const infraManifest = {
   id: '@ankhorage/infra',
   category: 'infra',
   version: '7.1.2',
-  capabilities: createCapabilities(['infra.up']),
+  capabilities: createCapabilities(['fixture.up']),
   commands: [
     {
       path: ['up'],
-      capability: 'infra.up',
+      capability: 'fixture.up',
       summary: 'Bring infrastructure up',
     },
   ],
@@ -186,7 +186,7 @@ describe('official provider runtime', () => {
     const publishedEntry = {
       description: 'ZORA provider',
       metadata: {
-        capabilities: createCapabilities(['zora.sync']),
+        capabilities: createCapabilities(['fixture.sync']),
         category: 'zora',
         provider: './dist/cli/index.js',
       },
@@ -214,7 +214,7 @@ describe('official provider runtime', () => {
           return Promise.resolve(
             jsonResponse({
               ankh: {
-                capabilities: createCapabilities(['zora.sync', 'zora.create']),
+                capabilities: createCapabilities(['fixture.sync', 'fixture.create']),
                 category: 'zora',
                 provider: './dist/cli/index.js',
               },
@@ -260,7 +260,7 @@ describe('official provider runtime', () => {
         return Promise.resolve(
           jsonResponse({
             ankh: {
-              capabilities: createCapabilities(['inferred.run']),
+              capabilities: createCapabilities(['fixture.run']),
               category: 'inferred',
               provider: null,
             },
@@ -297,7 +297,7 @@ describe('official provider runtime', () => {
         return Promise.resolve(
           jsonResponse({
             ankh: {
-              capabilities: createCapabilities(['broken.run']),
+              capabilities: createCapabilities(['fixture.run']),
               category: 'broken',
               provider: 'dist/cli/index.js',
             },
