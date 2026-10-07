@@ -9,7 +9,7 @@ import { runCli } from '../src/cli/index.js';
 import type { AnkhCommandContext } from '../src/commandContext.js';
 import type { AnkhDiscoveredPackage } from '../src/discovery.js';
 import type { AnkhProviderRuntime } from '../src/types/providers.js';
-import { createCapabilities } from './capabilityFixture.js';
+import { DOCTOR_FIXTURE_CAPABILITIES } from './fixtures/canonicalDoctorProvider.js';
 
 test('root CLI routes resolved Doctor for native OAuth readiness', async () => {
   const fixture = await fs.mkdtemp(path.join(os.tmpdir(), 'ankh-doctor-auth5-'));
@@ -39,12 +39,7 @@ function createDoctorProviderRuntime(): AnkhProviderRuntime {
   const packageRoot = process.cwd();
   const packageJsonPath = path.join(packageRoot, 'package.json');
   const providerMetadata = {
-    capabilities: createCapabilities([
-      'doctor.validate',
-      'doctor.fix',
-      'doctor.repo',
-      'doctor.package',
-    ]),
+    capabilities: DOCTOR_FIXTURE_CAPABILITIES,
     category: 'doctor',
     provider: './tests/fixtures/canonicalDoctorProvider.ts',
   } as const;
