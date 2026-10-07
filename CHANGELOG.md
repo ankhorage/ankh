@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.12.1
+
+### Patch Changes
+
+- 17da721: Exclude malformed remote provider catalog candidates without interrupting canonical provider discovery.
+
 ## 0.12.0
 
 ### Minor Changes

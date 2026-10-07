@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.12.0",
+      "value": "v0.12.1",
       "color": "cb3837"
     },
     {
@@ -3228,20 +3228,20 @@
       }
     },
     {
-      "name": "parseProviderEntry",
-      "description": "Parse one package manifest and return its validated CLI-provider entry when present.",
+      "name": "parseRemoteProviderCandidate",
+      "description": "Classify published metadata without letting an invalid remote candidate poison catalog aggregation.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 166,
+        "line": 175,
         "column": 1
       }
     },
     {
-      "name": "parseAnkhMetadata",
-      "description": "Parse package-owned Ankh category, provider, and capability metadata.",
+      "name": "parseRemoteAnkhMetadata",
+      "description": "Parse canonical metadata for one remote provider candidate.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 199,
+        "line": 210,
         "column": 1
       }
     },
@@ -6370,6 +6370,18 @@
         "sourcePath": "tests/providerRuntime.test.ts"
       },
       {
+        "fromSymbol": "fetchImpl",
+        "toSymbol": "githubRepository",
+        "callExpression": "githubRepository",
+        "sourcePath": "tests/providerRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "fetchImpl",
+        "toSymbol": "remoteProviderPackage",
+        "callExpression": "remoteProviderPackage",
+        "sourcePath": "tests/providerRuntime.test.ts"
+      },
+      {
         "fromSymbol": "tests/providerRuntime.test.ts",
         "toSymbol": "memoryContext",
         "callExpression": "memoryContext",
@@ -6415,6 +6427,12 @@
         "fromSymbol": "tests/providerRuntime.test.ts",
         "toSymbol": "resolveAsync",
         "callExpression": "store.resolveAsync",
+        "sourcePath": "tests/providerRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "remoteProviderPackage",
+        "toSymbol": "createCapabilities",
+        "callExpression": "createCapabilities",
         "sourcePath": "tests/providerRuntime.test.ts"
       },
       {
@@ -7469,48 +7487,48 @@
       },
       {
         "fromSymbol": "readPublishedProviderEntryAsync",
-        "toSymbol": "parseProviderEntry",
-        "callExpression": "parseProviderEntry",
+        "toSymbol": "parseRemoteProviderCandidate",
+        "callExpression": "parseRemoteProviderCandidate",
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
       },
       {
-        "fromSymbol": "parseProviderEntry",
+        "fromSymbol": "parseRemoteProviderCandidate",
         "toSymbol": "readNonEmptyString",
         "callExpression": "readNonEmptyString",
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
       },
       {
-        "fromSymbol": "parseProviderEntry",
+        "fromSymbol": "parseRemoteProviderCandidate",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
       },
       {
-        "fromSymbol": "parseProviderEntry",
-        "toSymbol": "parseAnkhMetadata",
-        "callExpression": "parseAnkhMetadata",
+        "fromSymbol": "parseRemoteProviderCandidate",
+        "toSymbol": "parseRemoteAnkhMetadata",
+        "callExpression": "parseRemoteAnkhMetadata",
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
       },
       {
-        "fromSymbol": "parseAnkhMetadata",
+        "fromSymbol": "parseRemoteAnkhMetadata",
         "toSymbol": "readNonEmptyString",
         "callExpression": "readNonEmptyString",
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
       },
       {
-        "fromSymbol": "parseAnkhMetadata",
+        "fromSymbol": "parseRemoteAnkhMetadata",
         "toSymbol": "isProviderReference",
         "callExpression": "isProviderReference",
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
       },
       {
-        "fromSymbol": "parseAnkhMetadata",
+        "fromSymbol": "parseRemoteAnkhMetadata",
         "toSymbol": "isCapability",
         "callExpression": "isCapability",
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
       },
       {
-        "fromSymbol": "parseAnkhMetadata",
+        "fromSymbol": "parseRemoteAnkhMetadata",
         "toSymbol": "normalizeCapability",
         "callExpression": "normalizeCapability",
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
