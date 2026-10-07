@@ -15,7 +15,7 @@ import { createCapabilities } from './capabilityFixture.js';
 const temporaryDirectories: string[] = [];
 
 const metadata = {
-  capabilities: createCapabilities(['infra.up']),
+  capabilities: createCapabilities(['fixture.up']),
   category: 'infra',
   provider: './dist/cli/index.js',
 } as const satisfies AnkhPackageMetadata;
@@ -24,11 +24,11 @@ const manifest = {
   id: '@ankhorage/infra',
   category: 'infra',
   version: '1.0.0',
-  capabilities: createCapabilities(['infra.up']),
+  capabilities: createCapabilities(['fixture.up']),
   commands: [
     {
       path: ['up'],
-      capability: 'infra.up',
+      capability: 'fixture.up',
       summary: 'Bring project infrastructure up',
     },
   ],
