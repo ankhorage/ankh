@@ -187,7 +187,10 @@ function collectDuplicateMetadataDiagnostics(
   const categories = new Map<string, AnkhDiscoveredPackage>();
   const capabilities = new Map<
     string,
-    { readonly capability: AnkhDiscoveredPackage['metadata']['capabilities'][number]; readonly owner: AnkhDiscoveredPackage }
+    {
+      readonly capability: AnkhDiscoveredPackage['metadata']['capabilities'][number];
+      readonly owner: AnkhDiscoveredPackage;
+    }
   >();
 
   for (const discoveredPackage of packages) {
