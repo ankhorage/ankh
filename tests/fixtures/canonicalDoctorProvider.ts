@@ -72,8 +72,13 @@ function readCapabilityId(value: unknown): string {
 
 /*** Preserve the released Doctor provider fields while replacing only test-owned metadata. */
 function asRecord(value: unknown): Record<string, unknown> {
-  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+  if (!isRecord(value)) {
     throw new Error('Doctor CLI provider value must be an object.');
   }
   return value;
+}
+
+/*** Narrow an unknown Doctor provider value to a record. */
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
