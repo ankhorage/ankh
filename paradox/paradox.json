@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.12.1",
+      "value": "v0.12.2",
       "color": "cb3837"
     },
     {
@@ -3070,7 +3070,7 @@
       "description": "Create the provider package cache backed by Bun package installation.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createBunProviderPackageStore.ts",
-        "line": 25,
+        "line": 27,
         "column": 1
       }
     },
@@ -3079,7 +3079,7 @@
       "description": "Read and validate an exact provider version already present in the Ankh package cache.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createBunProviderPackageStore.ts",
-        "line": 67,
+        "line": 69,
         "column": 1
       }
     },
@@ -3088,7 +3088,7 @@
       "description": "Ensure the private provider-cache directory is a valid Bun package project.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createBunProviderPackageStore.ts",
-        "line": 107,
+        "line": 109,
         "column": 1
       }
     },
@@ -3097,7 +3097,7 @@
       "description": "Run Bun and capture installation errors without forwarding package-manager noise to the CLI.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createBunProviderPackageStore.ts",
-        "line": 124,
+        "line": 126,
         "column": 1
       }
     },
@@ -3106,7 +3106,7 @@
       "description": "Verify cached package metadata still matches the remotely declared catalog contract.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createBunProviderPackageStore.ts",
-        "line": 140,
+        "line": 142,
         "column": 1
       }
     },
@@ -3115,7 +3115,7 @@
       "description": "Narrow an unknown value to a Node filesystem error.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createBunProviderPackageStore.ts",
-        "line": 152,
+        "line": 158,
         "column": 1
       }
     },
@@ -3124,7 +3124,7 @@
       "description": "Narrow an unknown JSON value to a non-array object.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createBunProviderPackageStore.ts",
-        "line": 157,
+        "line": 163,
         "column": 1
       }
     },
@@ -6430,6 +6430,12 @@
         "sourcePath": "tests/providerRuntime.test.ts"
       },
       {
+        "fromSymbol": "tests/providerRuntime.test.ts",
+        "toSymbol": "writeCachedProviderPackage",
+        "callExpression": "writeCachedProviderPackage",
+        "sourcePath": "tests/providerRuntime.test.ts"
+      },
+      {
         "fromSymbol": "remoteProviderPackage",
         "toSymbol": "createCapabilities",
         "callExpression": "createCapabilities",
@@ -7351,6 +7357,12 @@
         "fromSymbol": "src/features/providers/adapters/outbound/createBunProviderPackageStore.ts",
         "toSymbol": "resolve",
         "callExpression": "resolve",
+        "sourcePath": "src/features/providers/adapters/outbound/createBunProviderPackageStore.ts"
+      },
+      {
+        "fromSymbol": "src/features/providers/adapters/outbound/createBunProviderPackageStore.ts",
+        "toSymbol": "areCapabilitiesEqual",
+        "callExpression": "areCapabilitiesEqual",
         "sourcePath": "src/features/providers/adapters/outbound/createBunProviderPackageStore.ts"
       },
       {

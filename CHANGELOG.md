@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.12.2
+
+### Patch Changes
+
+- 88cc18c: Compare installed provider metadata with canonical capability equality during remote catalog resolution.
+
 ## 0.12.1
 
 ### Patch Changes
