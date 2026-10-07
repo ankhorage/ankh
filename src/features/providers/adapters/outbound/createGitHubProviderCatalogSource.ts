@@ -154,76 +154,76 @@ async function readPublishedProviderEntryAsync(
   }
 
   const rawPublishedPackage: unknown = await response.json();
-  if (!isRecord(rawPublishedPackage) || rawPublishedPackage.ankh === undefined) return null;
+  if (!isRecord(rawPublishedPackage)) {
+    throw new Error(`npm returned invalid package metadata while resolving ${packageName}.`);
+  }
+  if (rawPublishedPackage.ankh === undefined) return null;
   if (readNonEmptyString(rawPublishedPackage.name) !== packageName) {
     throw new Error(`npm returned mismatched package metadata while resolving ${packageName}.`);
   }
 
-  return parseProviderEntry(rawPublishedPackage, repository);
+  const candidate = parseRemoteProviderCandidate(rawPublishedPackage, repository);
+  return candidate.kind === 'provider-entry' ? candidate.entry : null;
 }
 
-/*** Parse one package manifest and return its validated CLI-provider entry when present. */
-function parseProviderEntry(
+type RemoteProviderCandidate =
+  | { readonly kind: 'invalid-provider-candidate' }
+  | { readonly kind: 'not-provider' }
+  | { readonly entry: AnkhProviderCatalogEntry; readonly kind: 'provider-entry' };
+
+/*** Classify published metadata without letting an invalid remote candidate poison catalog aggregation. */
+function parseRemoteProviderCandidate(
   rawPackage: Record<string, unknown>,
   repository: GitHubRepository,
-): AnkhProviderCatalogEntry | null {
+): RemoteProviderCandidate {
   const packageName = readNonEmptyString(rawPackage.name);
   const version = readNonEmptyString(rawPackage.version);
   if (!packageName?.startsWith('@ankhorage/')) {
-    throw new Error(
-      `${repository.name} declares Ankh metadata without an @ankhorage package name.`,
-    );
+    return { kind: 'invalid-provider-candidate' };
   }
   if (version === null) {
-    throw new Error(`${packageName} declares Ankh metadata without a valid package version.`);
+    return { kind: 'invalid-provider-candidate' };
   }
   if (!isRecord(rawPackage.ankh)) {
-    throw new Error(`${packageName} package.json.ankh must be an object.`);
+    return { kind: 'invalid-provider-candidate' };
   }
 
-  const metadata = parseAnkhMetadata(rawPackage.ankh, packageName);
-  if (metadata.provider === null) return null;
+  const metadata = parseRemoteAnkhMetadata(rawPackage.ankh);
+  if (metadata === null) return { kind: 'invalid-provider-candidate' };
+  if (metadata.provider === null) return { kind: 'not-provider' };
   const providerMetadata = { ...metadata, provider: metadata.provider };
   const description = readNonEmptyString(rawPackage.description) ?? packageName;
 
   return {
-    description,
-    metadata: providerMetadata,
-    packageName,
-    repositoryUrl: repository.repositoryUrl,
-    version,
+    kind: 'provider-entry',
+    entry: {
+      description,
+      metadata: providerMetadata,
+      packageName,
+      repositoryUrl: repository.repositoryUrl,
+      version,
+    },
   };
 }
 
-/*** Parse package-owned Ankh category, provider, and capability metadata. */
-function parseAnkhMetadata(
-  rawMetadata: Record<string, unknown>,
-  packageName: string,
-): AnkhPackageMetadata {
+/*** Parse canonical metadata for one remote provider candidate. */
+function parseRemoteAnkhMetadata(rawMetadata: Record<string, unknown>): AnkhPackageMetadata | null {
   const category = readNonEmptyString(rawMetadata.category);
-  if (category === null) {
-    throw new Error(`${packageName} package.json.ankh.category must be a non-empty string.`);
-  }
+  if (category === null) return null;
 
   if (
     !('provider' in rawMetadata) ||
     (rawMetadata.provider !== null &&
       (typeof rawMetadata.provider !== 'string' || !isProviderReference(rawMetadata.provider)))
   ) {
-    throw new Error(
-      `${packageName} package.json.ankh.provider must be null or a package-relative path.`,
-    );
+    return null;
   }
   const provider = typeof rawMetadata.provider === 'string' ? rawMetadata.provider : null;
 
-  if (!Array.isArray(rawMetadata.capabilities)) {
-    throw new Error(`${packageName} package.json.ankh.capabilities must be an array.`);
-  }
+  if (!Array.isArray(rawMetadata.capabilities)) return null;
   const capabilities: Capability[] = [];
   for (const rawCapability of rawMetadata.capabilities) {
-    if (!isCapability(rawCapability)) {
-      throw new Error(`${packageName} contains an invalid Ankh capability descriptor.`);
-    }
+    if (!isCapability(rawCapability)) return null;
     capabilities.push(normalizeCapability(rawCapability));
   }
 

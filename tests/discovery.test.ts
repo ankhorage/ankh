@@ -150,6 +150,29 @@ describe('discoverAnkhPackages', () => {
     );
   });
 
+  it('keeps legacy capability strings invalid for local package discovery', async () => {
+    const root = await createFixtureRoot();
+    await writePackageJson(root, {
+      name: 'repo',
+      workspaces: ['packages/*'],
+    });
+    await writePackageJson(path.join(root, 'packages', 'legacy'), {
+      ankh: {
+        capabilities: ['fixture.legacy'],
+        category: 'legacy',
+        provider: './dist/ankh.provider.js',
+      },
+      name: '@ankhorage/legacy',
+    });
+
+    const result = await discoverAnkhPackages({ cwd: root });
+
+    expect(result.packages).toEqual([]);
+    expect(result.diagnostics.map((diagnostic) => diagnostic.code)).toContain(
+      'invalid-ankh-capabilities',
+    );
+  });
+
   it('reports malformed package json without crashing', async () => {
     const root = await createFixtureRoot();
     await writePackageJson(root, {
