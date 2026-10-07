@@ -15,5 +15,12 @@ export function areCapabilitiesEqual(left: Capability, right: Capability): boole
 
 /*** Compare two string collections as sets. */
 function hasSameStringValues(left: readonly string[], right: readonly string[]): boolean {
-  return left.length === right.length && left.every((value) => right.includes(value));
+  const leftValues = new Set(left);
+  const rightValues = new Set(right);
+  return (
+    leftValues.size === rightValues.size &&
+    leftValues.size === left.length &&
+    rightValues.size === right.length &&
+    [...leftValues].every((value) => rightValues.has(value))
+  );
 }
