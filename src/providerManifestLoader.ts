@@ -5,6 +5,7 @@ import type { Capability } from '@ankhorage/contracts/capabilities';
 import type { AnkhCommandDescriptor, AnkhCommandProviderManifest } from '@ankhorage/contracts/cli';
 
 import type { AnkhDiscoveredPackage } from './discovery.js';
+import { areCapabilitiesEqual } from './utils/areCapabilitiesEqual.js';
 import { parseCapability } from './utils/parseCapability.js';
 
 export interface AnkhProviderManifestDiagnostic {
@@ -307,7 +308,7 @@ function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCap
     const metadataCapability = metadataCapabilities.get(capability.id);
     if (
       metadataCapability === undefined ||
-      JSON.stringify(metadataCapability) !== JSON.stringify(capability)
+      !areCapabilitiesEqual(metadataCapability, capability)
     ) {
       diagnostics.push(
         createDiagnostic(options.discoveredPackage, {
