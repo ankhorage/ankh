@@ -135,7 +135,7 @@ describe('discoverAnkhPackages', () => {
     });
     await writePackageJson(path.join(root, 'packages', 'bad'), {
       ankh: {
-        capabilities: createCapabilities(['broken.capability']),
+        capabilities: createCapabilities(['fixture.broken']),
         category: 42,
         provider: null,
       },
