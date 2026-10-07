@@ -251,6 +251,123 @@ describe('official provider runtime', () => {
     ]);
   });
 
+  test('excludes a remote package with legacy capability strings while retaining valid providers', async () => {
+    const source = createGitHubProviderCatalogSource({
+      fetchImpl(input) {
+        const url = readRequestUrl(input);
+        if (url.includes('/orgs/ankhorage/repos')) {
+          return Promise.resolve(
+            jsonResponse([githubRepository('legacy'), githubRepository('valid')]),
+          );
+        }
+        if (url.includes('/legacy/main/package.json')) {
+          return Promise.resolve(jsonResponse({ name: '@ankhorage/legacy' }));
+        }
+        if (url.includes('/valid/main/package.json')) {
+          return Promise.resolve(jsonResponse({ name: '@ankhorage/valid' }));
+        }
+        if (url.includes('%40ankhorage%2Flegacy/latest')) {
+          return Promise.resolve(
+            jsonResponse({
+              ankh: {
+                capabilities: ['fixture.legacy'],
+                category: 'legacy',
+                provider: './dist/cli/index.js',
+              },
+              name: '@ankhorage/legacy',
+              version: '1.0.0',
+            }),
+          );
+        }
+        if (url.includes('%40ankhorage%2Fvalid/latest')) {
+          return Promise.resolve(jsonResponse(remoteProviderPackage('valid')));
+        }
+        return Promise.resolve(new Response(null, { status: 404 }));
+      },
+    });
+
+    expect((await source.readAsync()).map((entry) => entry.packageName)).toEqual([
+      '@ankhorage/valid',
+    ]);
+  });
+
+  test('excludes malformed canonical remote capability descriptors', async () => {
+    const source = createGitHubProviderCatalogSource({
+      fetchImpl(input) {
+        const url = readRequestUrl(input);
+        if (url.includes('/orgs/ankhorage/repos')) {
+          return Promise.resolve(jsonResponse([githubRepository('malformed')]));
+        }
+        if (url.includes('/malformed/main/package.json')) {
+          return Promise.resolve(jsonResponse({ name: '@ankhorage/malformed' }));
+        }
+        if (url.includes('%40ankhorage%2Fmalformed/latest')) {
+          return Promise.resolve(
+            jsonResponse({
+              ankh: {
+                capabilities: [{ id: 'fixture.malformed' }],
+                category: 'malformed',
+                provider: './dist/cli/index.js',
+              },
+              name: '@ankhorage/malformed',
+              version: '1.0.0',
+            }),
+          );
+        }
+        return Promise.resolve(new Response(null, { status: 404 }));
+      },
+    });
+
+    expect(await source.readAsync()).toEqual([]);
+  });
+
+  test('keeps npm registry failures loud during remote aggregation', () => {
+    const source = createGitHubProviderCatalogSource({
+      fetchImpl(input) {
+        const url = readRequestUrl(input);
+        if (url.includes('/orgs/ankhorage/repos')) {
+          return Promise.resolve(jsonResponse([githubRepository('unavailable')]));
+        }
+        if (url.includes('/unavailable/main/package.json')) {
+          return Promise.resolve(jsonResponse({ name: '@ankhorage/unavailable' }));
+        }
+        return Promise.resolve(new Response(null, { status: 503 }));
+      },
+    });
+
+    expect(source.readAsync()).rejects.toThrow(
+      'Could not read latest published metadata for @ankhorage/unavailable from npm (HTTP 503).',
+    );
+  });
+
+  test('rejects duplicate categories between valid remote providers', () => {
+    const source = createGitHubProviderCatalogSource({
+      fetchImpl(input) {
+        const url = readRequestUrl(input);
+        if (url.includes('/orgs/ankhorage/repos')) {
+          return Promise.resolve(
+            jsonResponse([githubRepository('first'), githubRepository('second')]),
+          );
+        }
+        if (url.includes('/first/main/package.json')) {
+          return Promise.resolve(jsonResponse({ name: '@ankhorage/first' }));
+        }
+        if (url.includes('/second/main/package.json')) {
+          return Promise.resolve(jsonResponse({ name: '@ankhorage/second' }));
+        }
+        if (url.includes('%40ankhorage%2Ffirst/latest')) {
+          return Promise.resolve(jsonResponse(remoteProviderPackage('first', 'shared')));
+        }
+        if (url.includes('%40ankhorage%2Fsecond/latest')) {
+          return Promise.resolve(jsonResponse(remoteProviderPackage('second', 'shared')));
+        }
+        return Promise.resolve(new Response(null, { status: 404 }));
+      },
+    });
+
+    expect(source.readAsync()).rejects.toThrow('Duplicate Ankh category "shared"');
+  });
+
   test('rejects conflicting remote descriptors for the same capability id', () => {
     const [canonical] = createCapabilities(['fixture.shared']);
     if (canonical === undefined) throw new Error('Expected fixture capability.');
@@ -412,7 +529,7 @@ describe('official provider runtime', () => {
     expect(await source.readAsync()).toEqual([]);
   });
 
-  test('rejects malformed non-null provider declarations', () => {
+  test('excludes malformed non-null remote provider declarations', async () => {
     const source = createGitHubProviderCatalogSource({
       fetchImpl(input) {
         const url = readRequestUrl(input);
@@ -443,9 +560,7 @@ describe('official provider runtime', () => {
       },
     });
 
-    expect(source.readAsync()).rejects.toThrow(
-      '@ankhorage/broken package.json.ankh.provider must be null or a package-relative path.',
-    );
+    expect(await source.readAsync()).toEqual([]);
   });
 
   test('renders cwd-independent root help without installing provider packages', async () => {
@@ -541,6 +656,30 @@ function jsonResponse(value: unknown): Response {
     headers: { 'Content-Type': 'application/json' },
     status: 200,
   });
+}
+
+/*** Create a GitHub repository-list fixture for remote catalog tests. */
+function githubRepository(name: string): Record<string, unknown> {
+  return {
+    archived: false,
+    default_branch: 'main',
+    fork: false,
+    html_url: `https://github.com/ankhorage/${name}`,
+    name,
+  };
+}
+
+/*** Create a canonical published provider manifest fixture. */
+function remoteProviderPackage(name: string, category = name): Record<string, unknown> {
+  return {
+    ankh: {
+      capabilities: createCapabilities([`fixture.${name}`]),
+      category,
+      provider: './dist/cli/index.js',
+    },
+    name: `@ankhorage/${name}`,
+    version: '1.0.0',
+  };
 }
 
 /*** Create a minimal cached provider package matching the remote catalog entry. */
