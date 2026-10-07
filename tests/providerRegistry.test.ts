@@ -5,7 +5,7 @@ import { createProviderRegistry } from '../src/providerRegistry.js';
 import { createCapabilities } from './capabilityFixture.js';
 
 const infraMetadata = {
-  capabilities: createCapabilities(['infra.up', 'infra.status']),
+  capabilities: createCapabilities(['fixture.up', 'fixture.status']),
   category: 'infra',
   provider: './dist/ankh.provider.js',
 } as const satisfies AnkhPackageMetadata;
@@ -14,24 +14,24 @@ const infraManifest = {
   id: '@ankhorage/infra',
   category: 'infra',
   version: '1.0.0',
-  capabilities: createCapabilities(['infra.up', 'infra.port', 'infra.port.forward']),
+  capabilities: createCapabilities(['fixture.up', 'fixture.port', 'fixture.port.forward']),
   commands: [
     {
       path: ['up'],
-      capability: 'infra.up',
+      capability: 'fixture.up',
       summary: 'Bring project infrastructure up',
       aliases: ['start'],
       examples: ['ankh infra up shop'],
     },
     {
       path: ['port'],
-      capability: 'infra.port',
+      capability: 'fixture.port',
       summary: 'Manage forwarded ports',
       aliases: ['pf'],
     },
     {
       path: ['port', 'forward'],
-      capability: 'infra.port.forward',
+      capability: 'fixture.port.forward',
       summary: 'Forward a named infrastructure port',
     },
   ],
@@ -69,7 +69,7 @@ describe('createProviderRegistry', () => {
     expect(registry.listCommands()).toEqual([
       {
         aliases: ['start'],
-        capability: 'infra.up',
+        capability: 'fixture.up',
         category: 'infra',
         examples: ['ankh infra up shop'],
         packageName: '@ankhorage/infra',
@@ -79,7 +79,7 @@ describe('createProviderRegistry', () => {
       },
       {
         aliases: ['pf'],
-        capability: 'infra.port',
+        capability: 'fixture.port',
         category: 'infra',
         packageName: '@ankhorage/infra',
         path: ['port'],
@@ -87,7 +87,7 @@ describe('createProviderRegistry', () => {
         summary: 'Manage forwarded ports',
       },
       {
-        capability: 'infra.port.forward',
+        capability: 'fixture.port.forward',
         category: 'infra',
         packageName: '@ankhorage/infra',
         path: ['port', 'forward'],
@@ -119,7 +119,7 @@ describe('createProviderRegistry', () => {
       argv: ['--watch'],
       command: {
         aliases: ['start'],
-        capability: 'infra.up',
+        capability: 'fixture.up',
         category: 'infra',
         examples: ['ankh infra up shop'],
         packageName: '@ankhorage/infra',
