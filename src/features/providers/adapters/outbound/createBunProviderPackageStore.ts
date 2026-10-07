@@ -2,6 +2,8 @@ import { spawn } from 'node:child_process';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import { areCapabilitiesEqual } from '@ankhorage/contracts/capabilities';
+
 import type { AnkhDiscoveredPackage } from '../../../../discovery.js';
 import { readAnkhPackageMetadata } from '../../../../packageMetadata.js';
 import type { AnkhProviderCatalogEntry } from '../../../../types/providers.js';
@@ -144,7 +146,11 @@ function metadataMatchesCatalog(
   return (
     metadata.category === entry.metadata.category &&
     metadata.provider === entry.metadata.provider &&
-    JSON.stringify(metadata.capabilities) === JSON.stringify(entry.metadata.capabilities)
+    metadata.capabilities.length === entry.metadata.capabilities.length &&
+    metadata.capabilities.every((capability, index) => {
+      const catalogCapability = entry.metadata.capabilities.at(index);
+      return catalogCapability !== undefined && areCapabilitiesEqual(capability, catalogCapability);
+    })
   );
 }
 
