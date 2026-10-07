@@ -218,7 +218,7 @@ describe('loadProviderManifests', () => {
       `export default ${JSON.stringify(
         {
           ...validManifest,
-          capabilities: createCapabilities(['fixture.up', 'infra.rebuild']),
+          capabilities: createCapabilities(['fixture.up', 'fixture.rebuild']),
         },
         null,
         2,
