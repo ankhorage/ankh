@@ -18,9 +18,7 @@ export function parseCapability(value: unknown): Capability | null {
   if (
     !Array.isArray(value.access) ||
     value.access.length === 0 ||
-    !value.access.every(
-      (entry) => typeof entry === 'string' && CAPABILITY_ACCESS.has(entry),
-    )
+    !value.access.every((entry) => typeof entry === 'string' && CAPABILITY_ACCESS.has(entry))
   ) {
     return null;
   }
@@ -68,37 +66,54 @@ function isDataSchemaSlot(value: unknown): value is NonNullable<Capability['inpu
 /*** Validate the portable schema shape used by capability input/output metadata. */
 function isDataSchema(value: unknown): boolean {
   if (!isRecord(value) || !isDataSchemaType(value.type)) return false;
-  if (!isOptionalString(value.title) || !isOptionalString(value.description)) return false;
-  if (!isOptionalString(value.format)) return false;
-  if (value.nullable !== undefined && typeof value.nullable !== 'boolean') return false;
-  if (value.required !== undefined && !isStringArray(value.required)) return false;
-  if (
-    value.properties !== undefined &&
-    (!isRecord(value.properties) || !Object.values(value.properties).every(isDataSchema))
-  ) {
-    return false;
-  }
-  if (
-    value.additionalProperties !== undefined &&
-    typeof value.additionalProperties !== 'boolean' &&
-    !isDataSchema(value.additionalProperties)
-  ) {
-    return false;
-  }
-  if (value.items !== undefined && !isDataSchema(value.items)) return false;
-  if (value.ref !== undefined && !isDataSchemaRef(value.ref)) return false;
-  if (!isSerializableSchemaValue(value.const)) return false;
-  if (!isSerializableSchemaValue(value.default)) return false;
-  if (
-    value.enum !== undefined &&
-    (!Array.isArray(value.enum) || !value.enum.every(isSerializableValue))
-  ) {
-    return false;
-  }
-  return ['allOf', 'anyOf', 'oneOf'].every((key) => {
-    const entry = value[key];
-    return entry === undefined || (Array.isArray(entry) && entry.every(isDataSchema));
-  });
+  return isValidSchemaMetadata(value) && isValidSchemaComposition(value);
+}
+
+/*** Validate non-composition DataSchema fields. */
+function isValidSchemaMetadata(value: Record<string, unknown>): boolean {
+  return (
+    isOptionalString(value.title) &&
+    isOptionalString(value.description) &&
+    isOptionalString(value.format) &&
+    (value.nullable === undefined || typeof value.nullable === 'boolean') &&
+    (value.required === undefined || isStringArray(value.required)) &&
+    isValidSchemaProperties(value.properties) &&
+    isValidAdditionalProperties(value.additionalProperties) &&
+    (value.items === undefined || isDataSchema(value.items)) &&
+    (value.ref === undefined || isDataSchemaRef(value.ref)) &&
+    isSerializableSchemaValue(value.const) &&
+    isSerializableSchemaValue(value.default) &&
+    isValidSchemaEnum(value.enum)
+  );
+}
+
+/*** Validate object properties against the same recursive schema contract. */
+function isValidSchemaProperties(value: unknown): boolean {
+  return value === undefined || (isRecord(value) && Object.values(value).every(isDataSchema));
+}
+
+/*** Validate an optional additional-properties schema. */
+function isValidAdditionalProperties(value: unknown): boolean {
+  return value === undefined || typeof value === 'boolean' || isDataSchema(value);
+}
+
+/*** Validate an optional enum of serializable data values. */
+function isValidSchemaEnum(value: unknown): boolean {
+  return value === undefined || (Array.isArray(value) && value.every(isSerializableValue));
+}
+
+/*** Validate recursive schema composition fields without dynamic property indexing. */
+function isValidSchemaComposition(value: Record<string, unknown>): boolean {
+  return (
+    isDataSchemaArray(value.allOf) &&
+    isDataSchemaArray(value.anyOf) &&
+    isDataSchemaArray(value.oneOf)
+  );
+}
+
+/*** Validate one optional recursive schema array. */
+function isDataSchemaArray(value: unknown): boolean {
+  return value === undefined || (Array.isArray(value) && value.every(isDataSchema));
 }
 
 /*** Validate one supported schema type declaration. */

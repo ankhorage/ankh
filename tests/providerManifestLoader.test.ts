@@ -2,12 +2,11 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
-import { createCapabilities } from './capabilityFixture.js';
-
 import type { AnkhCommandProviderManifest, AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 import { afterEach, describe, expect, it } from 'bun:test';
 
 import { loadProviderManifests } from '../src/providerManifestLoader.js';
+import { createCapabilities } from './capabilityFixture.js';
 
 const temporaryDirectories: string[] = [];
 
@@ -249,7 +248,9 @@ describe('loadProviderManifests', () => {
 
     expect(result.diagnostics).toEqual([]);
     expect(result.providers).toHaveLength(1);
-    expect(result.providers[0]?.manifest.capabilities).toEqual(['infra.up', 'infra.status']);
+    expect(result.providers[0]?.manifest.capabilities).toEqual(
+      createCapabilities(['infra.up', 'infra.status']),
+    );
   });
 
   it('rejects command capabilities not declared in provider manifest capabilities', async () => {
@@ -275,7 +276,12 @@ describe('loadProviderManifests', () => {
     const result = await loadProviderManifests([
       createDiscoveredPackage(packageRoot, '@ankhorage/infra', {
         ...infraMetadata,
-        capabilities: createCapabilities(['infra.up', 'infra.status', 'infra.down', 'infra.destroy']),
+        capabilities: createCapabilities([
+          'infra.up',
+          'infra.status',
+          'infra.down',
+          'infra.destroy',
+        ]),
       }),
     ]);
 

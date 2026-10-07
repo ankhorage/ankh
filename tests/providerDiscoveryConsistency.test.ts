@@ -2,8 +2,6 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
-import { createCapabilities } from './capabilityFixture.js';
-
 import type { AnkhCommandProviderManifest, AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 import { afterEach, expect, it } from 'bun:test';
 
@@ -12,6 +10,7 @@ import type { AnkhCommandContext } from '../src/commandContext.js';
 import type { AnkhDiscoveredPackage } from '../src/discovery.js';
 import type { AnkhRuntimeCommandProvider } from '../src/execution.js';
 import type { AnkhLoadedProvider } from '../src/providerManifestLoader.js';
+import { createCapabilities } from './capabilityFixture.js';
 
 const temporaryDirectories: string[] = [];
 

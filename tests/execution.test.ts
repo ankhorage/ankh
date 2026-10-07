@@ -1,12 +1,11 @@
 import type { AnkhCommandProviderManifest, AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 import { describe, expect, it } from 'bun:test';
 
-import { createCapabilities } from './capabilityFixture.js';
-
 import type { AnkhRuntimeCommandProvider } from '../src/execution.js';
 import { resolveExecutableCommand } from '../src/execution.js';
 import type { AnkhLoadedProvider } from '../src/providerManifestLoader.js';
 import { createProviderRegistry } from '../src/providerRegistry.js';
+import { createCapabilities } from './capabilityFixture.js';
 
 const infraMetadata = {
   capabilities: createCapabilities(['infra.up', 'infra.status', 'infra.destroy']),

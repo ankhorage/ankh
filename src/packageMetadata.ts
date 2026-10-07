@@ -3,9 +3,8 @@ import path from 'node:path';
 
 import type { AnkhPackageMetadata, AnkhProviderReference } from '@ankhorage/contracts/cli';
 
-import { parseCapability } from './utils/parseCapability.js';
-
 import type { AnkhDiscoverySource, AnkhMetadataDiscoveryDiagnostic } from './discovery.js';
+import { parseCapability } from './utils/parseCapability.js';
 
 export interface ReadAnkhPackageMetadataOptions {
   readonly packageJsonPath: string;

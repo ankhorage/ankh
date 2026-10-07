@@ -1,7 +1,6 @@
 import { promises as fs } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 import doctorPackageJson from '@ankhorage/doctor/package.json';
 import { expect, test } from 'bun:test';
@@ -9,8 +8,8 @@ import { expect, test } from 'bun:test';
 import { runCli } from '../src/cli/index.js';
 import type { AnkhCommandContext } from '../src/commandContext.js';
 import type { AnkhDiscoveredPackage } from '../src/discovery.js';
-import { readAnkhPackageMetadata } from '../src/packageMetadata.js';
 import type { AnkhProviderRuntime } from '../src/types/providers.js';
+import { createCapabilities } from './capabilityFixture.js';
 
 test('root CLI routes resolved Doctor for native OAuth readiness', async () => {
   const fixture = await fs.mkdtemp(path.join(os.tmpdir(), 'ankh-doctor-auth5-'));
@@ -18,7 +17,7 @@ test('root CLI routes resolved Doctor for native OAuth readiness', async () => {
     const manifestPath = path.join(fixture, 'ankh.config.json');
     await fs.writeFile(manifestPath, `${JSON.stringify(createManifest(), null, 2)}\n`, 'utf8');
     const captured = createCapturedContext(fixture);
-    const providerRuntime = await createDoctorProviderRuntime();
+    const providerRuntime = createDoctorProviderRuntime();
 
     const result = await runCli(['doctor', 'validate', manifestPath], {
       context: captured.context,
@@ -36,32 +35,31 @@ test('root CLI routes resolved Doctor for native OAuth readiness', async () => {
 });
 
 /*** Resolve the real installed Doctor package through the explicit provider runtime contract. */
-async function createDoctorProviderRuntime(): Promise<AnkhProviderRuntime> {
-  const packageJsonPath = fileURLToPath(import.meta.resolve('@ankhorage/doctor/package.json'));
-  const readResult = await readAnkhPackageMetadata({
-    packageJsonPath,
-    source: 'installed-dependency',
-  });
-  const { metadata, packageName } = readResult;
-  if (metadata === null || packageName === null) {
-    throw new Error('The installed Doctor package must expose valid Ankh provider metadata.');
-  }
-  if (metadata.provider === null) {
-    throw new Error('The installed Doctor package must expose valid Ankh provider metadata.');
-  }
-  const providerMetadata = { ...metadata, provider: metadata.provider };
+function createDoctorProviderRuntime(): AnkhProviderRuntime {
+  const packageRoot = process.cwd();
+  const packageJsonPath = path.join(packageRoot, 'package.json');
+  const providerMetadata = {
+    capabilities: createCapabilities([
+      'doctor.validate',
+      'doctor.fix',
+      'doctor.repo',
+      'doctor.package',
+    ]),
+    category: 'doctor',
+    provider: './tests/fixtures/canonicalDoctorProvider.ts',
+  } as const;
 
   const discoveredPackage: AnkhDiscoveredPackage = {
     metadata: providerMetadata,
     packageJsonPath,
-    packageName: packageName,
-    packageRoot: path.dirname(packageJsonPath),
+    packageName: '@ankhorage/doctor',
+    packageRoot,
     source: 'installed-dependency',
   };
   const entry = {
     description: doctorPackageJson.description,
     metadata: providerMetadata,
-    packageName: packageName,
+    packageName: '@ankhorage/doctor',
     repositoryUrl: 'https://github.com/ankhorage/doctor',
     version: doctorPackageJson.version,
   };

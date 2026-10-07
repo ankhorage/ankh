@@ -1,9 +1,8 @@
 import type { AnkhCommandProviderManifest, AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 import { describe, expect, it } from 'bun:test';
 
-import { createCapabilities } from './capabilityFixture.js';
-
 import { createProviderRegistry } from '../src/providerRegistry.js';
+import { createCapabilities } from './capabilityFixture.js';
 
 const infraMetadata = {
   capabilities: createCapabilities(['infra.up', 'infra.status']),

@@ -4,9 +4,8 @@ import { pathToFileURL } from 'node:url';
 import type { Capability } from '@ankhorage/contracts/capabilities';
 import type { AnkhCommandDescriptor, AnkhCommandProviderManifest } from '@ankhorage/contracts/cli';
 
-import { parseCapability } from './utils/parseCapability.js';
-
 import type { AnkhDiscoveredPackage } from './discovery.js';
+import { parseCapability } from './utils/parseCapability.js';
 
 export interface AnkhProviderManifestDiagnostic {
   readonly category?: string;
@@ -280,7 +279,10 @@ function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCap
   const diagnostics: AnkhProviderManifestDiagnostic[] = [];
   const capabilities: Capability[] = [];
   const metadataCapabilities = new Map(
-    options.discoveredPackage.metadata.capabilities.map((capability) => [capability.id, capability]),
+    options.discoveredPackage.metadata.capabilities.map((capability) => [
+      capability.id,
+      capability,
+    ]),
   );
 
   for (const rawCapability of options.rawCapabilities) {

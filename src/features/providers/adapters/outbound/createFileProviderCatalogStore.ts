@@ -4,12 +4,11 @@ import path from 'node:path';
 import type { Capability } from '@ankhorage/contracts/capabilities';
 import type { AnkhProviderReference } from '@ankhorage/contracts/cli';
 
-import { parseCapability } from '../../../../utils/parseCapability.js';
-
 import type {
   AnkhProviderCatalogEntry,
   AnkhProviderCatalogSnapshot,
 } from '../../../../types/providers.js';
+import { parseCapability } from '../../../../utils/parseCapability.js';
 import type { ProviderCatalogStore } from '../../application/ports/outbound/providerCatalogStore.js';
 
 /*** Create a JSON-file cache for the remotely discovered provider catalog. */

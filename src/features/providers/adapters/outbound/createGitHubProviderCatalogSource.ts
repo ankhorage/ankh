@@ -2,8 +2,8 @@ import type { Capability } from '@ankhorage/contracts/capabilities';
 import type { AnkhPackageMetadata, AnkhProviderReference } from '@ankhorage/contracts/cli';
 
 import type { AnkhProviderCatalogEntry } from '../../../../types/providers.js';
-import type { ProviderCatalogSource } from '../../application/ports/outbound/providerCatalogSource.js';
 import { parseCapability } from '../../../../utils/parseCapability.js';
+import type { ProviderCatalogSource } from '../../application/ports/outbound/providerCatalogSource.js';
 
 const DEFAULT_GITHUB_ORGANIZATION = 'ankhorage';
 const GITHUB_PAGE_SIZE = 100;
