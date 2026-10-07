@@ -5,7 +5,7 @@ import { createPackageRegistry } from '../src/packageRegistry.js';
 import { createCapabilities } from './capabilityFixture.js';
 
 const contractsMetadata = {
-  capabilities: createCapabilities(['contracts.cli']),
+  capabilities: createCapabilities(['fixture.cli']),
   category: 'contracts',
   provider: null,
 } as const satisfies AnkhPackageMetadata;
