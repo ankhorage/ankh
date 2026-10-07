@@ -641,6 +641,63 @@ describe('official provider runtime', () => {
     expect(second.packageRoot).toBe(first.packageRoot);
     expect(installs).toBe(1);
   });
+
+  test('accepts cached provider metadata with equivalent schema property order', async () => {
+    const cacheRoot = await createTemporaryDirectory();
+    const [capability] = createCapabilities(['fixture.up']);
+    if (capability === undefined) throw new Error('Expected fixture capability.');
+    const entry = {
+      ...infraEntry,
+      metadata: {
+        ...infraEntry.metadata,
+        capabilities: [
+          {
+            ...capability,
+            input: {
+              schema: {
+                additionalProperties: false,
+                properties: {
+                  first: { type: 'string' },
+                  second: { type: 'string' },
+                },
+                type: 'object',
+              },
+            },
+          },
+        ],
+      },
+    } as const satisfies AnkhProviderCatalogEntry;
+    await writeCachedProviderPackage(cacheRoot, entry, {
+      ...entry.metadata,
+      capabilities: [
+        {
+          ...entry.metadata.capabilities[0],
+          input: {
+            schema: {
+              additionalProperties: false,
+              properties: {
+                second: { type: 'string' },
+                first: { type: 'string' },
+              },
+              type: 'object',
+            },
+          },
+        },
+      ],
+    });
+    let installs = 0;
+    const store = createBunProviderPackageStore({
+      bunExecutable: '/fake/bun',
+      cacheRoot,
+      runProcessAsync() {
+        installs += 1;
+        return Promise.resolve({ exitCode: 0, stderr: '' });
+      },
+    });
+
+    expect((await store.resolveAsync(entry)).packageName).toBe(entry.packageName);
+    expect(installs).toBe(0);
+  });
 });
 
 /*** Convert one Fetch request target to its URL without object default stringification. */
@@ -683,16 +740,20 @@ function remoteProviderPackage(name: string, category = name): Record<string, un
 }
 
 /*** Create a minimal cached provider package matching the remote catalog entry. */
-async function writeCachedProviderPackage(cacheRoot: string): Promise<void> {
-  const packageRoot = path.join(cacheRoot, 'node_modules', '@ankhorage', 'infra');
+async function writeCachedProviderPackage(
+  cacheRoot: string,
+  entry: AnkhProviderCatalogEntry = infraEntry,
+  metadata: AnkhProviderCatalogEntry['metadata'] = entry.metadata,
+): Promise<void> {
+  const packageRoot = path.join(cacheRoot, 'node_modules', ...entry.packageName.split('/'));
   await mkdir(packageRoot, { recursive: true });
   await writeFile(
     path.join(packageRoot, 'package.json'),
     `${JSON.stringify(
       {
-        ankh: infraEntry.metadata,
-        name: infraEntry.packageName,
-        version: infraEntry.version,
+        ankh: metadata,
+        name: entry.packageName,
+        version: entry.version,
       },
       null,
       2,
