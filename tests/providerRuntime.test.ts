@@ -182,6 +182,143 @@ describe('official provider runtime', () => {
     expect(requestedUrls.some((url) => url.includes('%40ankhorage%2Finfra/latest'))).toBeTrue();
   });
 
+  test('allows multiple provider packages to advertise the same canonical capability', async () => {
+    const sharedCapabilities = createCapabilities(['fixture.shared']);
+    const source = createGitHubProviderCatalogSource({
+      fetchImpl(input) {
+        const url = readRequestUrl(input);
+        if (url.includes('/orgs/ankhorage/repos')) {
+          return Promise.resolve(
+            jsonResponse([
+              {
+                archived: false,
+                default_branch: 'main',
+                fork: false,
+                html_url: 'https://github.com/ankhorage/fixture-a',
+                name: 'fixture-a',
+              },
+              {
+                archived: false,
+                default_branch: 'main',
+                fork: false,
+                html_url: 'https://github.com/ankhorage/fixture-b',
+                name: 'fixture-b',
+              },
+            ]),
+          );
+        }
+        if (url.includes('/fixture-a/main/package.json')) {
+          return Promise.resolve(jsonResponse({ name: '@ankhorage/fixture-a' }));
+        }
+        if (url.includes('/fixture-b/main/package.json')) {
+          return Promise.resolve(jsonResponse({ name: '@ankhorage/fixture-b' }));
+        }
+        if (url.includes('%40ankhorage%2Ffixture-a/latest')) {
+          return Promise.resolve(
+            jsonResponse({
+              ankh: {
+                capabilities: sharedCapabilities,
+                category: 'fixture-a',
+                provider: './dist/cli/index.js',
+              },
+              description: 'Fixture provider A',
+              name: '@ankhorage/fixture-a',
+              version: '1.0.0',
+            }),
+          );
+        }
+        if (url.includes('%40ankhorage%2Ffixture-b/latest')) {
+          return Promise.resolve(
+            jsonResponse({
+              ankh: {
+                capabilities: sharedCapabilities,
+                category: 'fixture-b',
+                provider: './dist/cli/index.js',
+              },
+              description: 'Fixture provider B',
+              name: '@ankhorage/fixture-b',
+              version: '1.0.0',
+            }),
+          );
+        }
+        return Promise.resolve(new Response(null, { status: 404 }));
+      },
+    });
+
+    expect((await source.readAsync()).map((entry) => entry.packageName)).toEqual([
+      '@ankhorage/fixture-a',
+      '@ankhorage/fixture-b',
+    ]);
+  });
+
+  test('rejects conflicting remote descriptors for the same capability id', async () => {
+    const [canonical] = createCapabilities(['fixture.shared']);
+    if (canonical === undefined) throw new Error('Expected fixture capability.');
+
+    const source = createGitHubProviderCatalogSource({
+      fetchImpl(input) {
+        const url = readRequestUrl(input);
+        if (url.includes('/orgs/ankhorage/repos')) {
+          return Promise.resolve(
+            jsonResponse([
+              {
+                archived: false,
+                default_branch: 'main',
+                fork: false,
+                html_url: 'https://github.com/ankhorage/fixture-a',
+                name: 'fixture-a',
+              },
+              {
+                archived: false,
+                default_branch: 'main',
+                fork: false,
+                html_url: 'https://github.com/ankhorage/fixture-b',
+                name: 'fixture-b',
+              },
+            ]),
+          );
+        }
+        if (url.includes('/fixture-a/main/package.json')) {
+          return Promise.resolve(jsonResponse({ name: '@ankhorage/fixture-a' }));
+        }
+        if (url.includes('/fixture-b/main/package.json')) {
+          return Promise.resolve(jsonResponse({ name: '@ankhorage/fixture-b' }));
+        }
+        if (url.includes('%40ankhorage%2Ffixture-a/latest')) {
+          return Promise.resolve(
+            jsonResponse({
+              ankh: {
+                capabilities: [canonical],
+                category: 'fixture-a',
+                provider: './dist/cli/index.js',
+              },
+              name: '@ankhorage/fixture-a',
+              version: '1.0.0',
+            }),
+          );
+        }
+        if (url.includes('%40ankhorage%2Ffixture-b/latest')) {
+          return Promise.resolve(
+            jsonResponse({
+              ankh: {
+                capabilities: [{ ...canonical, access: ['read'] }],
+                category: 'fixture-b',
+                provider: './dist/cli/index.js',
+              },
+              name: '@ankhorage/fixture-b',
+              version: '1.0.0',
+            }),
+          );
+        }
+        return Promise.resolve(new Response(null, { status: 404 }));
+      },
+    });
+
+    expect(source.readAsync()).rejects.toThrow(
+      'Conflicting Ankh capability "fixture.shared"',
+    );
+  });
+
   test('keeps unreleased repository versions out of the provider catalog', async () => {
     const publishedEntry = {
       description: 'ZORA provider',
