@@ -11,13 +11,13 @@ import { createCapabilities } from './capabilityFixture.js';
 const temporaryDirectories: string[] = [];
 
 const contractsMetadata = {
-  capabilities: createCapabilities(['contracts.cli']),
+  capabilities: createCapabilities(['fixture.cli']),
   category: 'contracts',
   provider: null,
 } as const satisfies AnkhPackageMetadata;
 
 const infraMetadata = {
-  capabilities: createCapabilities(['infra.up', 'infra.status']),
+  capabilities: createCapabilities(['fixture.up', 'fixture.status']),
   category: 'infra',
   provider: './dist/ankh.provider.js',
 } as const satisfies AnkhPackageMetadata;
@@ -214,7 +214,7 @@ describe('discoverAnkhPackages', () => {
     });
     await writePackageJson(path.join(root, 'node_modules', '@ankhorage', 'infra'), {
       ankh: {
-        capabilities: createCapabilities(['infra.up']),
+        capabilities: createCapabilities(['fixture.up']),
         category: 'installed-infra',
         provider: './dist/installed.provider.js',
       },
@@ -236,7 +236,7 @@ describe('discoverAnkhPackages', () => {
     });
     await writePackageJson(path.join(root, 'packages', 'infra-a'), {
       ankh: {
-        capabilities: createCapabilities(['infra.up']),
+        capabilities: createCapabilities(['fixture.up']),
         category: 'infra',
         provider: './dist/a.provider.js',
       },
@@ -244,7 +244,7 @@ describe('discoverAnkhPackages', () => {
     });
     await writePackageJson(path.join(root, 'packages', 'infra-b'), {
       ankh: {
-        capabilities: createCapabilities(['infra.up']),
+        capabilities: createCapabilities(['fixture.up']),
         category: 'infra',
         provider: './dist/b.provider.js',
       },
