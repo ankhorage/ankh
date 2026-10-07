@@ -2,6 +2,7 @@ import type { Capability } from '@ankhorage/contracts/capabilities';
 import type { AnkhPackageMetadata, AnkhProviderReference } from '@ankhorage/contracts/cli';
 
 import type { AnkhProviderCatalogEntry } from '../../../../types/providers.js';
+import { areCapabilitiesEqual } from '../../../../utils/areCapabilitiesEqual.js';
 import { parseCapability } from '../../../../utils/parseCapability.js';
 import type { ProviderCatalogSource } from '../../application/ports/outbound/providerCatalogSource.js';
 
@@ -227,10 +228,10 @@ function parseAnkhMetadata(
   return { capabilities, category, provider };
 }
 
-/*** Reject ambiguous categories or capabilities in the official remote catalog. */
+/*** Reject ambiguous categories or conflicting canonical capabilities in the remote catalog. */
 function validateCatalogUniqueness(entries: readonly AnkhProviderCatalogEntry[]): void {
   const categories = new Map<string, string>();
-  const capabilities = new Map<string, string>();
+  const capabilities = new Map<string, { readonly capability: Capability; readonly packageName: string }>();
 
   for (const entry of entries) {
     const categoryOwner = categories.get(entry.metadata.category);
@@ -242,13 +243,16 @@ function validateCatalogUniqueness(entries: readonly AnkhProviderCatalogEntry[])
     categories.set(entry.metadata.category, entry.packageName);
 
     for (const capability of entry.metadata.capabilities) {
-      const capabilityOwner = capabilities.get(capability.id);
-      if (capabilityOwner !== undefined) {
-        throw new Error(
-          `Duplicate Ankh capability "${capability.id}" declared by ${capabilityOwner} and ${entry.packageName}.`,
-        );
+      const existing = capabilities.get(capability.id);
+      if (existing !== undefined) {
+        if (!areCapabilitiesEqual(existing.capability, capability)) {
+          throw new Error(
+            `Conflicting Ankh capability "${capability.id}" declared by ${existing.packageName} and ${entry.packageName}.`,
+          );
+        }
+        continue;
       }
-      capabilities.set(capability.id, entry.packageName);
+      capabilities.set(capability.id, { capability, packageName: entry.packageName });
     }
   }
 }
