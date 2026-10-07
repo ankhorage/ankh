@@ -1,41 +1,79 @@
 import type { Capability } from '@ankhorage/contracts/capabilities';
 import doctorProvider from '@ankhorage/doctor/cli';
 
-const capabilities = [
+export const DOCTOR_FIXTURE_CAPABILITIES = [
   {
-    id: 'doctor.validate',
-    owner: '@ankhorage/doctor',
+    id: 'fixture.doctor.validate',
+    owner: '@ankhorage/fixture',
     access: ['invoke'],
   },
   {
-    id: 'doctor.fix',
-    owner: '@ankhorage/doctor',
+    id: 'fixture.doctor.fix',
+    owner: '@ankhorage/fixture',
     access: ['invoke'],
   },
   {
-    id: 'doctor.repo',
-    owner: '@ankhorage/doctor',
+    id: 'fixture.doctor.repo',
+    owner: '@ankhorage/fixture',
     access: ['invoke'],
   },
   {
-    id: 'doctor.package',
-    owner: '@ankhorage/doctor',
+    id: 'fixture.doctor.package',
+    owner: '@ankhorage/fixture',
     access: ['invoke'],
   },
 ] as const satisfies readonly Capability[];
 
-/*** Provide Doctor's released handlers through a canonical capability manifest fixture. */
+const CAPABILITY_ID_MAP = new Map<string, Capability['id']>([
+  ['doctor.validate', 'fixture.doctor.validate'],
+  ['doctor.fix', 'fixture.doctor.fix'],
+  ['doctor.repo', 'fixture.doctor.repo'],
+  ['doctor.package', 'fixture.doctor.package'],
+]);
+
+const provider = asRecord(doctorProvider);
+const commands = readCommands(provider.commands).map((command) => {
+  const capability = CAPABILITY_ID_MAP.get(readCapabilityId(command.capability));
+  if (capability === undefined) {
+    throw new Error('Doctor fixture command must reference a known Doctor capability.');
+  }
+
+  return {
+    ...command,
+    capability,
+  };
+});
+
+/*** Provide Doctor's released handlers through a fixture-owned capability manifest. */
 const canonicalDoctorProvider = {
-  ...asRecord(doctorProvider),
-  capabilities,
+  ...provider,
+  capabilities: DOCTOR_FIXTURE_CAPABILITIES,
+  commands,
 };
 
 export default canonicalDoctorProvider;
 
-/*** Preserve the released Doctor handler fields while replacing only capability metadata. */
+/*** Read provider command descriptors from the released Doctor provider. */
+function readCommands(value: unknown): readonly Record<string, unknown>[] {
+  if (!Array.isArray(value)) {
+    throw new Error('Doctor CLI provider must expose command descriptors.');
+  }
+
+  return value.map(asRecord);
+}
+
+/*** Read one provider command capability id. */
+function readCapabilityId(value: unknown): string {
+  if (typeof value !== 'string') {
+    throw new Error('Doctor CLI command must expose a capability id.');
+  }
+  return value;
+}
+
+/*** Preserve the released Doctor provider fields while replacing only test-owned metadata. */
 function asRecord(value: unknown): Record<string, unknown> {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) {
-    throw new Error('Doctor CLI provider must default-export an object.');
+    throw new Error('Doctor CLI provider value must be an object.');
   }
-  return value as Record<string, unknown>;
+  return value;
 }
