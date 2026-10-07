@@ -306,10 +306,7 @@ function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCap
     }
 
     const metadataCapability = metadataCapabilities.get(capability.id);
-    if (
-      metadataCapability === undefined ||
-      !areCapabilitiesEqual(metadataCapability, capability)
-    ) {
+    if (metadataCapability === undefined || !areCapabilitiesEqual(metadataCapability, capability)) {
       diagnostics.push(
         createDiagnostic(options.discoveredPackage, {
           category: options.category ?? capability.id.split('.')[0],
