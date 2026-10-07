@@ -251,7 +251,7 @@ describe('official provider runtime', () => {
     ]);
   });
 
-  test('rejects conflicting remote descriptors for the same capability id', async () => {
+  test('rejects conflicting remote descriptors for the same capability id', () => {
     const [canonical] = createCapabilities(['fixture.shared']);
     if (canonical === undefined) throw new Error('Expected fixture capability.');
 
@@ -314,9 +314,7 @@ describe('official provider runtime', () => {
       },
     });
 
-    expect(source.readAsync()).rejects.toThrow(
-      'Conflicting Ankh capability "fixture.shared"',
-    );
+    expect(source.readAsync()).rejects.toThrow('Conflicting Ankh capability "fixture.shared"');
   });
 
   test('keeps unreleased repository versions out of the provider catalog', async () => {
