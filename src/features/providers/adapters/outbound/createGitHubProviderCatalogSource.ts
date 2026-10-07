@@ -231,7 +231,10 @@ function parseAnkhMetadata(
 /*** Reject ambiguous categories or conflicting canonical capabilities in the remote catalog. */
 function validateCatalogUniqueness(entries: readonly AnkhProviderCatalogEntry[]): void {
   const categories = new Map<string, string>();
-  const capabilities = new Map<string, { readonly capability: Capability; readonly packageName: string }>();
+  const capabilities = new Map<
+    string,
+    { readonly capability: Capability; readonly packageName: string }
+  >();
 
   for (const entry of entries) {
     const categoryOwner = categories.get(entry.metadata.category);
