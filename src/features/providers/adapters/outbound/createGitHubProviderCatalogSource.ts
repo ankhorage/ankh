@@ -1,9 +1,12 @@
-import type { Capability } from '@ankhorage/contracts/capabilities';
+import {
+  areCapabilitiesEqual,
+  type Capability,
+  isCapability,
+  normalizeCapability,
+} from '@ankhorage/contracts/capabilities';
 import type { AnkhPackageMetadata, AnkhProviderReference } from '@ankhorage/contracts/cli';
 
 import type { AnkhProviderCatalogEntry } from '../../../../types/providers.js';
-import { areCapabilitiesEqual } from '../../../../utils/areCapabilitiesEqual.js';
-import { parseCapability } from '../../../../utils/parseCapability.js';
 import type { ProviderCatalogSource } from '../../application/ports/outbound/providerCatalogSource.js';
 
 const DEFAULT_GITHUB_ORGANIZATION = 'ankhorage';
@@ -218,11 +221,10 @@ function parseAnkhMetadata(
   }
   const capabilities: Capability[] = [];
   for (const rawCapability of rawMetadata.capabilities) {
-    const capability = parseCapability(rawCapability);
-    if (capability === null) {
+    if (!isCapability(rawCapability)) {
       throw new Error(`${packageName} contains an invalid Ankh capability descriptor.`);
     }
-    capabilities.push(capability);
+    capabilities.push(normalizeCapability(rawCapability));
   }
 
   return { capabilities, category, provider };

@@ -1,12 +1,16 @@
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-import type { Capability } from '@ankhorage/contracts/capabilities';
+import {
+  areCapabilitiesEqual,
+  type Capability,
+  isCapability,
+  isCapabilityId,
+  normalizeCapability,
+} from '@ankhorage/contracts/capabilities';
 import type { AnkhCommandDescriptor, AnkhCommandProviderManifest } from '@ankhorage/contracts/cli';
 
 import type { AnkhDiscoveredPackage } from './discovery.js';
-import { areCapabilitiesEqual } from './utils/areCapabilitiesEqual.js';
-import { parseCapability } from './utils/parseCapability.js';
 
 export interface AnkhProviderManifestDiagnostic {
   readonly category?: string;
@@ -287,8 +291,7 @@ function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCap
   );
 
   for (const rawCapability of options.rawCapabilities) {
-    const capability = parseCapability(rawCapability);
-    if (capability === null) {
+    if (!isCapability(rawCapability)) {
       diagnostics.push(
         createDiagnostic(options.discoveredPackage, {
           category: options.category ?? undefined,
@@ -305,6 +308,7 @@ function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCap
       };
     }
 
+    const capability = normalizeCapability(rawCapability);
     const metadataCapability = metadataCapabilities.get(capability.id);
     if (metadataCapability === undefined || !areCapabilitiesEqual(metadataCapability, capability)) {
       diagnostics.push(
@@ -629,15 +633,9 @@ function getCommandPath(value: unknown): readonly string[] | null {
   return parts;
 }
 
+/*** Read one canonical capability identifier from untrusted command metadata. */
 function getCapabilityId(value: unknown): Capability['id'] | null {
   return isCapabilityId(value) ? value : null;
-}
-
-/*** Validate one canonical namespaced capability identifier. */
-function isCapabilityId(value: unknown): value is Capability['id'] {
-  if (typeof value !== 'string') return false;
-  const segments = value.split('.');
-  return segments.length >= 2 && segments.every((segment) => segment.length > 0);
 }
 
 function getOptionalStringArray(value: unknown): readonly string[] | null {

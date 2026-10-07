@@ -265,10 +265,17 @@ describe('discoverAnkhPackages', () => {
       name: 'repo',
       workspaces: ['packages/*'],
     });
-    const capabilities = createCapabilities(['fixture.shared']);
+    const [capability] = createCapabilities(['fixture.shared']);
+    if (capability === undefined) throw new Error('Expected fixture capability.');
+
+    const canonicalCapability = {
+      ...capability,
+      access: ['invoke', 'read'],
+      binding: { kind: 'action', bindableAs: ['source', 'target'] },
+    } as const;
     await writePackageJson(path.join(root, 'packages', 'provider-a'), {
       ankh: {
-        capabilities,
+        capabilities: [canonicalCapability],
         category: 'fixture-a',
         provider: './dist/a.provider.js',
       },
@@ -276,7 +283,13 @@ describe('discoverAnkhPackages', () => {
     });
     await writePackageJson(path.join(root, 'packages', 'provider-b'), {
       ankh: {
-        capabilities,
+        capabilities: [
+          {
+            ...canonicalCapability,
+            access: ['read', 'invoke', 'read'],
+            binding: { kind: 'action', bindableAs: ['target', 'source', 'target'] },
+          },
+        ],
         category: 'fixture-b',
         provider: './dist/b.provider.js',
       },
@@ -289,6 +302,10 @@ describe('discoverAnkhPackages', () => {
     expect(result.diagnostics.map((diagnostic) => diagnostic.code)).not.toContain(
       'conflicting-ankh-capability',
     );
+    expect(result.packages.map((entry) => entry.metadata.capabilities)).toEqual([
+      [canonicalCapability],
+      [canonicalCapability],
+    ]);
   });
 
   it('reports conflicting descriptors for the same capability id', async () => {

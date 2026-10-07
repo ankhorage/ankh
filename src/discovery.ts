@@ -1,9 +1,9 @@
 import path from 'node:path';
 
+import { areCapabilitiesEqual } from '@ankhorage/contracts/capabilities';
 import type { AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 
 import { readAnkhPackageMetadata } from './packageMetadata.js';
-import { areCapabilitiesEqual } from './utils/areCapabilitiesEqual.js';
 import {
   findInstalledAnkhoragePackageJsonFiles,
   findWorkspacePackageJsonFiles,

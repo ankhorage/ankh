@@ -1,10 +1,10 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import { isCapability, normalizeCapability } from '@ankhorage/contracts/capabilities';
 import type { AnkhPackageMetadata, AnkhProviderReference } from '@ankhorage/contracts/cli';
 
 import type { AnkhDiscoverySource, AnkhMetadataDiscoveryDiagnostic } from './discovery.js';
-import { parseCapability } from './utils/parseCapability.js';
 
 export interface ReadAnkhPackageMetadataOptions {
   readonly packageJsonPath: string;
@@ -206,8 +206,7 @@ function validateAnkhMetadata(options: ValidateAnkhMetadataOptions): ValidateAnk
     };
   }
 
-  const capabilities = rawCapabilities.map(parseCapability);
-  if (capabilities.some((capability) => capability === null)) {
+  if (!rawCapabilities.every(isCapability)) {
     return {
       metadata: null,
       diagnostics: [
@@ -228,7 +227,7 @@ function validateAnkhMetadata(options: ValidateAnkhMetadataOptions): ValidateAnk
     metadata: {
       category: rawCategory.trim(),
       provider: providerResult.provider,
-      capabilities: capabilities.filter((capability) => capability !== null),
+      capabilities: rawCapabilities.map(normalizeCapability),
     },
     diagnostics: [],
   };

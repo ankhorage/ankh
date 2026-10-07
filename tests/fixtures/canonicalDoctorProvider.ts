@@ -1,28 +1,14 @@
 import type { Capability } from '@ankhorage/contracts/capabilities';
 import doctorProvider from '@ankhorage/doctor/cli';
 
-export const DOCTOR_FIXTURE_CAPABILITIES = [
-  {
-    id: 'fixture.doctor.validate',
-    owner: '@ankhorage/fixture',
-    access: ['invoke'],
-  },
-  {
-    id: 'fixture.doctor.fix',
-    owner: '@ankhorage/fixture',
-    access: ['invoke'],
-  },
-  {
-    id: 'fixture.doctor.repo',
-    owner: '@ankhorage/fixture',
-    access: ['invoke'],
-  },
-  {
-    id: 'fixture.doctor.package',
-    owner: '@ankhorage/fixture',
-    access: ['invoke'],
-  },
-] as const satisfies readonly Capability[];
+import { createCapabilities } from '../capabilityFixture.js';
+
+export const DOCTOR_FIXTURE_CAPABILITIES = createCapabilities([
+  'fixture.doctor.validate',
+  'fixture.doctor.fix',
+  'fixture.doctor.repo',
+  'fixture.doctor.package',
+]);
 
 const CAPABILITY_ID_MAP = new Map<string, Capability['id']>([
   ['doctor.validate', 'fixture.doctor.validate'],

@@ -10,6 +10,10 @@ export function createCapability(id: Capability['id']): Capability {
     id,
     owner: '@ankhorage/fixture',
     access: ['invoke'],
+    binding: {
+      kind: 'action',
+      bindableAs: ['target'],
+    },
   };
 }
 

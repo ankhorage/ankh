@@ -1,14 +1,17 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import type { Capability } from '@ankhorage/contracts/capabilities';
+import {
+  type Capability,
+  isCapability,
+  normalizeCapability,
+} from '@ankhorage/contracts/capabilities';
 import type { AnkhProviderReference } from '@ankhorage/contracts/cli';
 
 import type {
   AnkhProviderCatalogEntry,
   AnkhProviderCatalogSnapshot,
 } from '../../../../types/providers.js';
-import { parseCapability } from '../../../../utils/parseCapability.js';
 import type { ProviderCatalogStore } from '../../application/ports/outbound/providerCatalogStore.js';
 
 /*** Create a JSON-file cache for the remotely discovered provider catalog. */
@@ -65,9 +68,8 @@ function parseEntry(value: unknown): AnkhProviderCatalogEntry | null {
 
   const capabilities: Capability[] = [];
   for (const rawCapability of value.metadata.capabilities) {
-    const capability = parseCapability(rawCapability);
-    if (capability === null) return null;
-    capabilities.push(capability);
+    if (!isCapability(rawCapability)) return null;
+    capabilities.push(normalizeCapability(rawCapability));
   }
 
   return {
