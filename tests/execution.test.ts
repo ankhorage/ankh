@@ -8,7 +8,7 @@ import { createProviderRegistry } from '../src/providerRegistry.js';
 import { createCapabilities } from './capabilityFixture.js';
 
 const infraMetadata = {
-  capabilities: createCapabilities(['infra.up', 'infra.status', 'infra.destroy']),
+  capabilities: createCapabilities(['fixture.up', 'fixture.status', 'fixture.destroy']),
   category: 'infra',
   provider: './dist/ankh.provider.js',
 } as const satisfies AnkhPackageMetadata;
@@ -17,17 +17,17 @@ const infraManifest = {
   id: '@ankhorage/infra',
   category: 'infra',
   version: '1.0.0',
-  capabilities: createCapabilities(['infra.up', 'infra.status', 'infra.destroy']),
+  capabilities: createCapabilities(['fixture.up', 'fixture.status', 'fixture.destroy']),
   commands: [
     {
       path: ['up'],
-      capability: 'infra.up',
+      capability: 'fixture.up',
       summary: 'Bring project infrastructure up',
       aliases: ['start'],
     },
     {
       path: ['status'],
-      capability: 'infra.status',
+      capability: 'fixture.status',
       summary: 'Show project infrastructure status',
     },
   ],
