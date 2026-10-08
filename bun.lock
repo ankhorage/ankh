@@ -39,7 +39,7 @@
 
     "@ankhorage/rules-repository": ["@ankhorage/rules-repository@0.2.0", "", { "dependencies": { "@ankhorage/rules": "^0.2.0" } }, "sha512-ugJq6urUXGpexwcJAERSfauHJAUtWN2ZkogsAMYUX9dMCH8wXcQrdWOuYHjL5G7wB6f0IX2Ebjri7091AuF1XQ=="],
 
-    "@ankhorage/supabase-auth": ["@ankhorage/supabase-auth@1.2.39", "", { "dependencies": { "@ankhorage/contracts": "^24.2.0", "@noble/hashes": "2.4.0" } }, "sha512-ZR2XyOxootI29dXK6xyzu4iy0TsI7DxxjX7YxwEUp0sHPTlFN4hCCaak6QrKkvurHTe6udxA1nSZaSjqyeAdkQ=="],
+    "@ankhorage/supabase-auth": ["@ankhorage/supabase-auth@1.2.40", "", { "dependencies": { "@ankhorage/contracts": "^24.2.1", "@noble/hashes": "2.4.0" } }, "sha512-uXA5NnTp4wX67kb2pnMWImPfI6U/EXreUgYYSy1UmvpHQ36VPnVOvnibmIR20s1Cp9PPiBtt2rQe6L/hpGm5aw=="],
 
     "@ankhorage/utility": ["@ankhorage/utility@0.5.5", "", { "dependencies": { "@ankhorage/contracts": "^12.0.1" }, "peerDependencies": { "@techstark/opencv-js": "^5.0.0-release.1", "pixelmatch": "^7.2.0", "sharp": "^0.35.4", "tesseract.js": "^7.0.0" }, "optionalPeers": ["@techstark/opencv-js", "pixelmatch", "sharp", "tesseract.js"] }, "sha512-so1NXcIOQjEPNsNpdGp9McXsw8oIo4Mw/pF3y2x69f1MbwqEC79H7I0dResKs52S8Il4JeO/e5RO3Sf4yDdMGA=="],
 
