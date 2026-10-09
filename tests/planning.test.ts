@@ -1,8 +1,6 @@
 import type { AnkhCommandProviderManifest, AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 import { describe, expect, it } from 'bun:test';
 
-import { createCapabilities } from './capabilityFixture.js';
-
 import packageJson from '../package.json';
 import { runCli } from '../src/cli/index.js';
 import type { AnkhCommandContext } from '../src/commandContext.js';

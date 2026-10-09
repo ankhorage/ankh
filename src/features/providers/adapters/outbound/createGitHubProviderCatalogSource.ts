@@ -1,4 +1,4 @@
-import { areCapabilitiesEqual, parseCapability } from '@ankhorage/capability';
+import { areCapabilitiesEqual, normalizeCapability, parseCapability } from '@ankhorage/capability';
 import type { Capability } from '@ankhorage/contracts/capability';
 import type { AnkhPackageMetadata, AnkhProviderReference } from '@ankhorage/contracts/cli';
 
@@ -221,7 +221,7 @@ function parseRemoteAnkhMetadata(rawMetadata: Record<string, unknown>): AnkhPack
   for (const rawCapability of rawMetadata.capabilities) {
     const capability = parseCapability(rawCapability);
     if (capability === null) return null;
-    capabilities.push(capability);
+    capabilities.push(normalizeCapability(capability));
   }
 
   return { capabilities, category, provider };

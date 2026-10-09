@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import { parseCapability } from '@ankhorage/capability';
+import { normalizeCapability, parseCapability } from '@ankhorage/capability';
 import type { AnkhPackageMetadata, AnkhProviderReference } from '@ankhorage/contracts/cli';
 
 import type { AnkhDiscoverySource, AnkhMetadataDiscoveryDiagnostic } from './discovery.js';
@@ -228,7 +228,9 @@ function validateAnkhMetadata(options: ValidateAnkhMetadataOptions): ValidateAnk
     metadata: {
       category: rawCategory.trim(),
       provider: providerResult.provider,
-      capabilities: capabilities.filter((capability) => capability !== null),
+      capabilities: capabilities
+        .filter((capability) => capability !== null)
+        .map(normalizeCapability),
     },
     diagnostics: [],
   };

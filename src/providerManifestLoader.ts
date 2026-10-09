@@ -1,7 +1,12 @@
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-import { areCapabilitiesEqual, isCapabilityId, parseCapability } from '@ankhorage/capability';
+import {
+  areCapabilitiesEqual,
+  isCapabilityId,
+  normalizeCapability,
+  parseCapability,
+} from '@ankhorage/capability';
 import type { Capability } from '@ankhorage/contracts/capability';
 import type { AnkhCommandDescriptor, AnkhCommandProviderManifest } from '@ankhorage/contracts/cli';
 
@@ -279,7 +284,10 @@ function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCap
   const diagnostics: AnkhProviderManifestDiagnostic[] = [];
   const capabilities: Capability[] = [];
   const metadataCapabilities = new Map(
-    options.discoveredPackage.metadata.capabilities.map((capability) => [capability.id, capability]),
+    options.discoveredPackage.metadata.capabilities.map((capability) => [
+      capability.id,
+      capability,
+    ]),
   );
 
   for (const rawCapability of options.rawCapabilities) {
@@ -301,13 +309,17 @@ function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCap
       };
     }
 
-    const metadataCapability = metadataCapabilities.get(capability.id);
-    if (metadataCapability === undefined || !areCapabilitiesEqual(metadataCapability, capability)) {
+    const normalizedCapability = normalizeCapability(capability);
+    const metadataCapability = metadataCapabilities.get(normalizedCapability.id);
+    if (
+      metadataCapability === undefined ||
+      !areCapabilitiesEqual(metadataCapability, normalizedCapability)
+    ) {
       diagnostics.push(
         createDiagnostic(options.discoveredPackage, {
-          category: options.category ?? capability.id.split('.')[0],
+          category: options.category ?? normalizedCapability.id.split('.')[0],
           code: 'provider-capability-not-declared',
-          message: `Provider manifest capability "${capability.id}" does not match package.json ankh.capabilities.`,
+          message: `Provider manifest capability "${normalizedCapability.id}" does not match package.json ankh.capabilities.`,
           providerModulePath: options.providerModulePath,
           severity: 'error',
         }),
@@ -315,7 +327,7 @@ function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCap
       continue;
     }
 
-    capabilities.push(capability);
+    capabilities.push(normalizedCapability);
   }
 
   return {
