@@ -1,9 +1,5 @@
-import {
-  areCapabilitiesEqual,
-  type Capability,
-  isCapability,
-  normalizeCapability,
-} from '@ankhorage/contracts/capabilities';
+import { areCapabilitiesEqual, normalizeCapability, parseCapability } from '@ankhorage/capability';
+import type { Capability } from '@ankhorage/contracts/capability';
 import type { AnkhPackageMetadata, AnkhProviderReference } from '@ankhorage/contracts/cli';
 
 import type { AnkhProviderCatalogEntry } from '../../../../types/providers.js';
@@ -223,8 +219,9 @@ function parseRemoteAnkhMetadata(rawMetadata: Record<string, unknown>): AnkhPack
   if (!Array.isArray(rawMetadata.capabilities)) return null;
   const capabilities: Capability[] = [];
   for (const rawCapability of rawMetadata.capabilities) {
-    if (!isCapability(rawCapability)) return null;
-    capabilities.push(normalizeCapability(rawCapability));
+    const capability = parseCapability(rawCapability);
+    if (capability === null) return null;
+    capabilities.push(normalizeCapability(capability));
   }
 
   return { capabilities, category, provider };

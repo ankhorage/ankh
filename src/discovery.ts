@@ -1,6 +1,6 @@
 import path from 'node:path';
 
-import { areCapabilitiesEqual } from '@ankhorage/contracts/capabilities';
+import { areCapabilitiesEqual } from '@ankhorage/capability';
 import type { AnkhPackageMetadata } from '@ankhorage/contracts/cli';
 
 import { readAnkhPackageMetadata } from './packageMetadata.js';

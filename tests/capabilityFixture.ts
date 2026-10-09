@@ -1,4 +1,4 @@
-import type { Capability } from '@ankhorage/contracts/capabilities';
+import type { Capability } from '@ankhorage/contracts/capability';
 
 /*** Create one Ankh-owned test capability without defining another package's public namespace. */
 export function createCapability(id: Capability['id']): Capability {

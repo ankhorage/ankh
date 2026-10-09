@@ -3,11 +3,11 @@ import { pathToFileURL } from 'node:url';
 
 import {
   areCapabilitiesEqual,
-  type Capability,
-  isCapability,
   isCapabilityId,
   normalizeCapability,
-} from '@ankhorage/contracts/capabilities';
+  parseCapability,
+} from '@ankhorage/capability';
+import type { Capability } from '@ankhorage/contracts/capability';
 import type { AnkhCommandDescriptor, AnkhCommandProviderManifest } from '@ankhorage/contracts/cli';
 
 import type { AnkhDiscoveredPackage } from './discovery.js';
@@ -291,7 +291,8 @@ function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCap
   );
 
   for (const rawCapability of options.rawCapabilities) {
-    if (!isCapability(rawCapability)) {
+    const capability = parseCapability(rawCapability);
+    if (capability === null) {
       diagnostics.push(
         createDiagnostic(options.discoveredPackage, {
           category: options.category ?? undefined,
@@ -308,14 +309,17 @@ function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCap
       };
     }
 
-    const capability = normalizeCapability(rawCapability);
-    const metadataCapability = metadataCapabilities.get(capability.id);
-    if (metadataCapability === undefined || !areCapabilitiesEqual(metadataCapability, capability)) {
+    const normalizedCapability = normalizeCapability(capability);
+    const metadataCapability = metadataCapabilities.get(normalizedCapability.id);
+    if (
+      metadataCapability === undefined ||
+      !areCapabilitiesEqual(metadataCapability, normalizedCapability)
+    ) {
       diagnostics.push(
         createDiagnostic(options.discoveredPackage, {
-          category: options.category ?? capability.id.split('.')[0],
+          category: options.category ?? normalizedCapability.id.split('.')[0],
           code: 'provider-capability-not-declared',
-          message: `Provider manifest capability "${capability.id}" does not match package.json ankh.capabilities.`,
+          message: `Provider manifest capability "${normalizedCapability.id}" does not match package.json ankh.capabilities.`,
           providerModulePath: options.providerModulePath,
           severity: 'error',
         }),
@@ -323,7 +327,7 @@ function validateCapabilities(options: ValidateCapabilitiesOptions): ValidateCap
       continue;
     }
 
-    capabilities.push(capability);
+    capabilities.push(normalizedCapability);
   }
 
   return {

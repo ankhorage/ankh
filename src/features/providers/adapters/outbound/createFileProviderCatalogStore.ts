@@ -1,11 +1,8 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import {
-  type Capability,
-  isCapability,
-  normalizeCapability,
-} from '@ankhorage/contracts/capabilities';
+import { normalizeCapability, parseCapability } from '@ankhorage/capability';
+import type { Capability } from '@ankhorage/contracts/capability';
 import type { AnkhProviderReference } from '@ankhorage/contracts/cli';
 
 import type {
@@ -68,8 +65,9 @@ function parseEntry(value: unknown): AnkhProviderCatalogEntry | null {
 
   const capabilities: Capability[] = [];
   for (const rawCapability of value.metadata.capabilities) {
-    if (!isCapability(rawCapability)) return null;
-    capabilities.push(normalizeCapability(rawCapability));
+    const capability = parseCapability(rawCapability);
+    if (capability === null) return null;
+    capabilities.push(normalizeCapability(capability));
   }
 
   return {
