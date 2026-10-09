@@ -1,4 +1,4 @@
-import type { Capability } from '@ankhorage/contracts/capabilities';
+import type { Capability } from '@ankhorage/contracts/capability';
 import doctorProvider from '@ankhorage/doctor/cli';
 
 import { createCapabilities } from '../capabilityFixture.js';

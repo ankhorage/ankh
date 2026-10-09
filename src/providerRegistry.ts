@@ -1,4 +1,4 @@
-import type { Capability } from '@ankhorage/contracts/capabilities';
+import type { Capability } from '@ankhorage/contracts/capability';
 
 import type { AnkhLoadedProvider } from './providerManifestLoader.js';
 

@@ -2,7 +2,7 @@ import { spawn } from 'node:child_process';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import { areCapabilitiesEqual } from '@ankhorage/contracts/capabilities';
+import { areCapabilitiesEqual } from '@ankhorage/capability';
 
 import type { AnkhDiscoveredPackage } from '../../../../discovery.js';
 import { readAnkhPackageMetadata } from '../../../../packageMetadata.js';

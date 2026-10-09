@@ -1,9 +1,8 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import { parseCapability } from '@ankhorage/capability';
 import type { AnkhPackageMetadata, AnkhProviderReference } from '@ankhorage/contracts/cli';
-
-import { parseCapability } from './utils/parseCapability.js';
 
 import type { AnkhDiscoverySource, AnkhMetadataDiscoveryDiagnostic } from './discovery.js';
 

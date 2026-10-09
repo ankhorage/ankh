@@ -17,7 +17,11 @@ describe('package.json', () => {
   });
 
   it('keeps concrete providers out of the published runtime dependency graph', () => {
-    expect(Object.keys(packageJson.dependencies).sort()).toEqual(['@ankhorage/contracts', 'yaml']);
+    expect(Object.keys(packageJson.dependencies).sort()).toEqual([
+      '@ankhorage/capability',
+      '@ankhorage/contracts',
+      'yaml',
+    ]);
     expect(packageJson.devDependencies['@ankhorage/devtools']).toBeDefined();
     expect(packageJson.devDependencies['@ankhorage/doctor']).toBeDefined();
   });
