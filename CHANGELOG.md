@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.13.0
+
+### Minor Changes
+
+- a0c32b9: Consume canonical Contracts capability descriptors throughout package discovery, provider manifests,
+  remote catalogs, caches, command references, and collision validation.
+
 ## 0.12.2
 
 ### Patch Changes

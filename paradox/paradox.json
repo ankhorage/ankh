@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.12.2",
+      "value": "v0.13.0",
       "color": "cb3837"
     },
     {
@@ -3133,7 +3133,7 @@
       "description": "Create a JSON-file cache for the remotely discovered provider catalog.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts",
-        "line": 18,
+        "line": 15,
         "column": 1
       }
     },
@@ -3142,7 +3142,7 @@
       "description": "Validate a cached provider catalog snapshot before it can drive the CLI.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts",
-        "line": 40,
+        "line": 37,
         "column": 1
       }
     },
@@ -3151,7 +3151,7 @@
       "description": "Validate one cached catalog entry without trusting arbitrary JSON.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts",
-        "line": 54,
+        "line": 51,
         "column": 1
       }
     },
@@ -3160,7 +3160,7 @@
       "description": "Validate package-relative provider references in cached metadata.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts",
-        "line": 89,
+        "line": 87,
         "column": 1
       }
     },
@@ -3169,7 +3169,7 @@
       "description": "Narrow an unknown value to a Node filesystem error.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts",
-        "line": 94,
+        "line": 92,
         "column": 1
       }
     },
@@ -3178,7 +3178,7 @@
       "description": "Narrow an unknown JSON value to a non-array object.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts",
-        "line": 99,
+        "line": 97,
         "column": 1
       }
     },
@@ -3187,7 +3187,7 @@
       "description": "Create the GitHub-backed source for the official Ankhorage provider catalog.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 18,
+        "line": 14,
         "column": 1
       }
     },
@@ -3196,7 +3196,7 @@
       "description": "Read all public repositories in the provider organization.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 57,
+        "line": 53,
         "column": 1
       }
     },
@@ -3205,7 +3205,7 @@
       "description": "Parse the GitHub fields required for provider metadata discovery.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 94,
+        "line": 90,
         "column": 1
       }
     },
@@ -3214,7 +3214,7 @@
       "description": "Resolve one repository candidate to the latest published npm provider metadata.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 116,
+        "line": 112,
         "column": 1
       }
     },
@@ -3223,7 +3223,7 @@
       "description": "Read the latest published npm manifest so catalog state is always installable.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 140,
+        "line": 136,
         "column": 1
       }
     },
@@ -3232,7 +3232,7 @@
       "description": "Classify published metadata without letting an invalid remote candidate poison catalog aggregation.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 175,
+        "line": 171,
         "column": 1
       }
     },
@@ -3241,7 +3241,7 @@
       "description": "Parse canonical metadata for one remote provider candidate.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 210,
+        "line": 206,
         "column": 1
       }
     },
@@ -3250,7 +3250,7 @@
       "description": "Reject ambiguous categories or conflicting canonical capabilities in the remote catalog.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 234,
+        "line": 231,
         "column": 1
       }
     },
@@ -3259,7 +3259,7 @@
       "description": "Read a trimmed non-empty string.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 266,
+        "line": 263,
         "column": 1
       }
     },
@@ -3268,7 +3268,7 @@
       "description": "Validate package-relative provider references.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 273,
+        "line": 270,
         "column": 1
       }
     },
@@ -3277,7 +3277,7 @@
       "description": "Narrow an unknown JSON value to a non-array object.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 278,
+        "line": 275,
         "column": 1
       }
     },
@@ -3484,7 +3484,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 236,
+        "line": 239,
         "column": 1
       }
     },
@@ -3493,7 +3493,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 274,
+        "line": 277,
         "column": 1
       }
     },
@@ -3502,7 +3502,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 297,
+        "line": 300,
         "column": 1
       }
     },
@@ -3511,7 +3511,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 306,
+        "line": 309,
         "column": 1
       }
     },
@@ -3520,7 +3520,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 310,
+        "line": 313,
         "column": 1
       }
     },
@@ -3529,7 +3529,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 323,
+        "line": 326,
         "column": 1
       }
     },
@@ -3736,7 +3736,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 348,
+        "line": 352,
         "column": 1
       }
     },
@@ -3745,7 +3745,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 401,
+        "line": 405,
         "column": 1
       }
     },
@@ -3754,7 +3754,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 530,
+        "line": 534,
         "column": 1
       }
     },
@@ -3763,7 +3763,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 616,
+        "line": 620,
         "column": 1
       }
     },
@@ -3772,7 +3772,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 620,
+        "line": 624,
         "column": 1
       }
     },
@@ -3781,7 +3781,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 624,
+        "line": 628,
         "column": 1
       }
     },
@@ -3790,7 +3790,7 @@
       "description": "Read one canonical capability identifier from untrusted command metadata.",
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 637,
+        "line": 641,
         "column": 1
       }
     },
@@ -3799,7 +3799,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 641,
+        "line": 645,
         "column": 1
       }
     },
@@ -3808,7 +3808,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 662,
+        "line": 666,
         "column": 1
       }
     },
@@ -3817,7 +3817,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 671,
+        "line": 675,
         "column": 1
       }
     },
@@ -3826,7 +3826,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 675,
+        "line": 679,
         "column": 1
       }
     },
@@ -3835,7 +3835,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 686,
+        "line": 690,
         "column": 1
       }
     },
@@ -3844,7 +3844,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/providerManifestLoader.ts",
-        "line": 702,
+        "line": 706,
         "column": 1
       }
     },
@@ -5273,8 +5273,8 @@
       },
       {
         "fromSymbol": "validateCapabilities",
-        "toSymbol": "isCapability",
-        "callExpression": "isCapability",
+        "toSymbol": "parseCapability",
+        "callExpression": "parseCapability",
         "sourcePath": "src/providerManifestLoader.ts"
       },
       {
@@ -7415,8 +7415,8 @@
       },
       {
         "fromSymbol": "parseEntry",
-        "toSymbol": "isCapability",
-        "callExpression": "isCapability",
+        "toSymbol": "parseCapability",
+        "callExpression": "parseCapability",
         "sourcePath": "src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts"
       },
       {
@@ -7535,8 +7535,8 @@
       },
       {
         "fromSymbol": "parseRemoteAnkhMetadata",
-        "toSymbol": "isCapability",
-        "callExpression": "isCapability",
+        "toSymbol": "parseCapability",
+        "callExpression": "parseCapability",
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
       },
       {
