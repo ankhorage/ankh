@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.13.1
+
+### Patch Changes
+
+- 8e5ea69: Accept package metadata that omits a static capability catalog or explicit provider reference during catalog discovery.
+
 ## 0.13.0
 
 ### Minor Changes

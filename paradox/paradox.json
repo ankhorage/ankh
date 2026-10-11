@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.13.0",
+      "value": "v0.13.1",
       "color": "cb3837"
     },
     {
@@ -3246,11 +3246,29 @@
       }
     },
     {
+      "name": "resolveRemoteProviderReference",
+      "description": "Resolve an omitted provider from the canonical CLI export while preserving explicit null.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "line": 228,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolvePackageCliExport",
+      "description": "Read a package-relative CLI export suitable for the Ankh provider runtime.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "line": 239,
+        "column": 1
+      }
+    },
+    {
       "name": "validateCatalogUniqueness",
       "description": "Reject ambiguous categories or conflicting canonical capabilities in the remote catalog.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 231,
+        "line": 253,
         "column": 1
       }
     },
@@ -3259,7 +3277,7 @@
       "description": "Read a trimmed non-empty string.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 263,
+        "line": 285,
         "column": 1
       }
     },
@@ -3268,7 +3286,7 @@
       "description": "Validate package-relative provider references.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 270,
+        "line": 292,
         "column": 1
       }
     },
@@ -3277,7 +3295,7 @@
       "description": "Narrow an unknown JSON value to a non-array object.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 275,
+        "line": 297,
         "column": 1
       }
     },
@@ -3484,7 +3502,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 239,
+        "line": 250,
         "column": 1
       }
     },
@@ -3493,7 +3511,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 277,
+        "line": 295,
         "column": 1
       }
     },
@@ -3502,7 +3520,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 300,
+        "line": 318,
         "column": 1
       }
     },
@@ -3511,7 +3529,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 309,
+        "line": 327,
         "column": 1
       }
     },
@@ -3520,7 +3538,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 313,
+        "line": 331,
         "column": 1
       }
     },
@@ -3529,7 +3547,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/packageMetadata.ts",
-        "line": 326,
+        "line": 344,
         "column": 1
       }
     },
@@ -7523,14 +7541,20 @@
       },
       {
         "fromSymbol": "parseRemoteAnkhMetadata",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "parseRemoteAnkhMetadata",
         "toSymbol": "readNonEmptyString",
         "callExpression": "readNonEmptyString",
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
       },
       {
         "fromSymbol": "parseRemoteAnkhMetadata",
-        "toSymbol": "isProviderReference",
-        "callExpression": "isProviderReference",
+        "toSymbol": "resolveRemoteProviderReference",
+        "callExpression": "resolveRemoteProviderReference",
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
       },
       {
@@ -7543,6 +7567,30 @@
         "fromSymbol": "parseRemoteAnkhMetadata",
         "toSymbol": "normalizeCapability",
         "callExpression": "normalizeCapability",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "resolveRemoteProviderReference",
+        "toSymbol": "resolvePackageCliExport",
+        "callExpression": "resolvePackageCliExport",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "resolveRemoteProviderReference",
+        "toSymbol": "isProviderReference",
+        "callExpression": "isProviderReference",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "resolvePackageCliExport",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "resolvePackageCliExport",
+        "toSymbol": "isProviderReference",
+        "callExpression": "isProviderReference",
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
       },
       {
