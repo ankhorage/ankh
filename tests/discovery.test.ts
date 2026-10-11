@@ -127,6 +127,56 @@ describe('discoverAnkhPackages', () => {
     expect(result.diagnostics).toEqual([]);
   });
 
+  it('discovers package metadata without a static catalog or explicit provider', async () => {
+    const root = await createFixtureRoot();
+    await writePackageJson(root, { name: 'repo' });
+    await writePackageJson(path.join(root, 'node_modules', '@ankhorage', 'contracts'), {
+      ankh: {
+        category: 'contracts',
+      },
+      name: '@ankhorage/contracts',
+    });
+
+    const result = await discoverAnkhPackages({ cwd: root });
+
+    expect(result.packages).toEqual([
+      {
+        metadata: {
+          capabilities: [],
+          category: 'contracts',
+          provider: null,
+        },
+        packageJsonPath: path.join(root, 'node_modules', '@ankhorage', 'contracts', 'package.json'),
+        packageName: '@ankhorage/contracts',
+        packageRoot: path.join(root, 'node_modules', '@ankhorage', 'contracts'),
+        source: 'installed-dependency',
+      },
+    ]);
+    expect(result.diagnostics).toEqual([]);
+  });
+
+  it('discovers an implicit provider from the package CLI export', async () => {
+    const root = await createFixtureRoot();
+    await writePackageJson(root, { name: 'repo' });
+    await writePackageJson(path.join(root, 'node_modules', '@ankhorage', 'deploy'), {
+      ankh: {
+        capabilities: createCapabilities(['fixture.deploy']),
+        category: 'deploy',
+      },
+      exports: {
+        './cli': {
+          import: './dist/cli/index.js',
+        },
+      },
+      name: '@ankhorage/deploy',
+    });
+
+    const result = await discoverAnkhPackages({ cwd: root });
+
+    expect(result.packages[0]?.metadata.provider).toBe('./dist/cli/index.js');
+    expect(result.diagnostics).toEqual([]);
+  });
+
   it('reports invalid metadata without crashing', async () => {
     const root = await createFixtureRoot();
     await writePackageJson(root, {
