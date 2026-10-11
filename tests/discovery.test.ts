@@ -177,6 +177,28 @@ describe('discoverAnkhPackages', () => {
     expect(result.diagnostics).toEqual([]);
   });
 
+  it('keeps an explicit null provider authoritative over a package CLI export', async () => {
+    const root = await createFixtureRoot();
+    await writePackageJson(root, { name: 'repo' });
+    await writePackageJson(path.join(root, 'node_modules', '@ankhorage', 'contracts'), {
+      ankh: {
+        category: 'contracts',
+        provider: null,
+      },
+      exports: {
+        './cli': {
+          import: './dist/cli/index.js',
+        },
+      },
+      name: '@ankhorage/contracts',
+    });
+
+    const result = await discoverAnkhPackages({ cwd: root });
+
+    expect(result.packages[0]?.metadata.provider).toBeNull();
+    expect(result.diagnostics).toEqual([]);
+  });
+
   it('reports invalid metadata without crashing', async () => {
     const root = await createFixtureRoot();
     await writePackageJson(root, {

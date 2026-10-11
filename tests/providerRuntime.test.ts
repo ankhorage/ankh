@@ -182,6 +182,82 @@ describe('official provider runtime', () => {
     expect(requestedUrls.some((url) => url.includes('%40ankhorage%2Finfra/latest'))).toBeTrue();
   });
 
+  test('classifies published Contracts and Storage metadata without excluding a CLI provider', async () => {
+    const source = createGitHubProviderCatalogSource({
+      fetchImpl(input) {
+        const url = readRequestUrl(input);
+        if (url.includes('/orgs/ankhorage/repos')) {
+          return Promise.resolve(
+            jsonResponse([
+              githubRepository('contracts'),
+              githubRepository('storage'),
+              githubRepository('devtools'),
+            ]),
+          );
+        }
+        if (url.includes('/contracts/main/package.json')) {
+          return Promise.resolve(jsonResponse({ name: '@ankhorage/contracts' }));
+        }
+        if (url.includes('/storage/main/package.json')) {
+          return Promise.resolve(jsonResponse({ name: '@ankhorage/storage' }));
+        }
+        if (url.includes('/devtools/main/package.json')) {
+          return Promise.resolve(jsonResponse({ name: '@ankhorage/devtools' }));
+        }
+        if (url.includes('%40ankhorage%2Fcontracts/latest')) {
+          return Promise.resolve(
+            jsonResponse({
+              ankh: { category: 'contracts', provider: null },
+              exports: { './cli': { default: './dist/cli/index.js' } },
+              name: '@ankhorage/contracts',
+              version: '26.0.0',
+            }),
+          );
+        }
+        if (url.includes('%40ankhorage%2Fstorage/latest')) {
+          return Promise.resolve(
+            jsonResponse({
+              ankh: {
+                capabilities: createCapabilities(['fixture.storage']),
+                category: 'storage',
+              },
+              name: '@ankhorage/storage',
+              version: '0.2.1',
+            }),
+          );
+        }
+        if (url.includes('%40ankhorage%2Fdevtools/latest')) {
+          return Promise.resolve(
+            jsonResponse({
+              ankh: {
+                capabilities: createCapabilities(['fixture.sync']),
+                category: 'devtools',
+              },
+              exports: { './cli': { import: './dist/cli/index.js' } },
+              name: '@ankhorage/devtools',
+              version: '2.3.16',
+            }),
+          );
+        }
+        return Promise.resolve(new Response(null, { status: 404 }));
+      },
+    });
+
+    expect(await source.readAsync()).toEqual([
+      {
+        description: '@ankhorage/devtools',
+        metadata: {
+          capabilities: createCapabilities(['fixture.sync']),
+          category: 'devtools',
+          provider: './dist/cli/index.js',
+        },
+        packageName: '@ankhorage/devtools',
+        repositoryUrl: 'https://github.com/ankhorage/devtools',
+        version: '2.3.16',
+      },
+    ]);
+  });
+
   test('allows multiple provider packages to advertise the same canonical capability', async () => {
     const sharedCapabilities = createCapabilities(['fixture.shared']);
     const source = createGitHubProviderCatalogSource({

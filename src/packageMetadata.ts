@@ -257,7 +257,14 @@ function resolveAnkhProviderReference(options: {
   readonly diagnostic: AnkhMetadataDiscoveryDiagnostic | null;
   readonly provider: AnkhProviderReference | null;
 } {
-  if (options.rawProvider === undefined || options.rawProvider === null) {
+  if (options.rawProvider === null) {
+    return {
+      diagnostic: null,
+      provider: null,
+    };
+  }
+
+  if (options.rawProvider === undefined) {
     return {
       diagnostic: null,
       provider: resolvePackageCliExport(options.packageExports),
