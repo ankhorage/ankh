@@ -190,6 +190,17 @@ function validateAnkhMetadata(options: ValidateAnkhMetadataOptions): ValidateAnk
   }
 
   const rawCapabilities = options.rawAnkhMetadata.capabilities;
+  if (rawCapabilities === undefined) {
+    return {
+      metadata: {
+        category: rawCategory.trim(),
+        provider: providerResult.provider,
+        capabilities: [],
+      },
+      diagnostics: [],
+    };
+  }
+
   if (!Array.isArray(rawCapabilities)) {
     return {
       metadata: null,
@@ -247,6 +258,13 @@ function resolveAnkhProviderReference(options: {
   readonly provider: AnkhProviderReference | null;
 } {
   if (options.rawProvider === null) {
+    return {
+      diagnostic: null,
+      provider: null,
+    };
+  }
+
+  if (options.rawProvider === undefined) {
     return {
       diagnostic: null,
       provider: resolvePackageCliExport(options.packageExports),

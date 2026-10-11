@@ -184,7 +184,7 @@ function parseRemoteProviderCandidate(
     return { kind: 'invalid-provider-candidate' };
   }
 
-  const metadata = parseRemoteAnkhMetadata(rawPackage.ankh);
+  const metadata = parseRemoteAnkhMetadata(rawPackage);
   if (metadata === null) return { kind: 'invalid-provider-candidate' };
   if (metadata.provider === null) return { kind: 'not-provider' };
   const providerMetadata = { ...metadata, provider: metadata.provider };
@@ -203,19 +203,16 @@ function parseRemoteProviderCandidate(
 }
 
 /*** Parse canonical metadata for one remote provider candidate. */
-function parseRemoteAnkhMetadata(rawMetadata: Record<string, unknown>): AnkhPackageMetadata | null {
+function parseRemoteAnkhMetadata(rawPackage: Record<string, unknown>): AnkhPackageMetadata | null {
+  if (!isRecord(rawPackage.ankh)) return null;
+  const rawMetadata = rawPackage.ankh;
   const category = readNonEmptyString(rawMetadata.category);
   if (category === null) return null;
 
-  if (
-    !('provider' in rawMetadata) ||
-    (rawMetadata.provider !== null &&
-      (typeof rawMetadata.provider !== 'string' || !isProviderReference(rawMetadata.provider)))
-  ) {
-    return null;
-  }
-  const provider = typeof rawMetadata.provider === 'string' ? rawMetadata.provider : null;
+  const provider = resolveRemoteProviderReference(rawMetadata.provider, rawPackage.exports);
+  if (provider === undefined) return null;
 
+  if (rawMetadata.capabilities === undefined) return { capabilities: [], category, provider };
   if (!Array.isArray(rawMetadata.capabilities)) return null;
   const capabilities: Capability[] = [];
   for (const rawCapability of rawMetadata.capabilities) {
@@ -225,6 +222,31 @@ function parseRemoteAnkhMetadata(rawMetadata: Record<string, unknown>): AnkhPack
   }
 
   return { capabilities, category, provider };
+}
+
+/*** Resolve an omitted provider from the canonical CLI export while preserving explicit null. */
+function resolveRemoteProviderReference(
+  rawProvider: unknown,
+  packageExports: unknown,
+): AnkhProviderReference | null | undefined {
+  if (rawProvider === null) return null;
+  if (rawProvider === undefined) return resolvePackageCliExport(packageExports);
+  if (typeof rawProvider === 'string' && isProviderReference(rawProvider)) return rawProvider;
+  return undefined;
+}
+
+/*** Read a package-relative CLI export suitable for the Ankh provider runtime. */
+function resolvePackageCliExport(value: unknown): AnkhProviderReference | null {
+  if (!isRecord(value)) return null;
+  const cliExport = value['./cli'];
+  if (typeof cliExport === 'string' && isProviderReference(cliExport)) return cliExport;
+  if (!isRecord(cliExport)) return null;
+
+  for (const candidate of [cliExport.import, cliExport.default]) {
+    if (typeof candidate === 'string' && isProviderReference(candidate)) return candidate;
+  }
+
+  return null;
 }
 
 /*** Reject ambiguous categories or conflicting canonical capabilities in the remote catalog. */
