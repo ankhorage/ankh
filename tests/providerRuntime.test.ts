@@ -327,6 +327,40 @@ describe('official provider runtime', () => {
     ]);
   });
 
+  test('preserves published descriptor ownership independently of the provider package', async () => {
+    const [capability] = createCapabilities(['fixture.shared']);
+    if (capability === undefined) throw new Error('Expected fixture capability.');
+
+    const source = createGitHubProviderCatalogSource({
+      fetchImpl(input) {
+        const url = readRequestUrl(input);
+        if (url.includes('/orgs/ankhorage/repos')) {
+          return Promise.resolve(jsonResponse([githubRepository('provider')]));
+        }
+        if (url.includes('/provider/main/package.json')) {
+          return Promise.resolve(jsonResponse({ name: '@ankhorage/provider' }));
+        }
+        if (url.includes('%40ankhorage%2Fprovider/latest')) {
+          return Promise.resolve(
+            jsonResponse({
+              ankh: {
+                capabilities: [{ ...capability, owner: '@ankhorage/canonical-owner' }],
+                category: 'provider',
+                provider: './dist/cli/index.js',
+              },
+              name: '@ankhorage/provider',
+              version: '1.0.0',
+            }),
+          );
+        }
+        return Promise.resolve(new Response(null, { status: 404 }));
+      },
+    });
+
+    const [entry] = await source.readAsync();
+    expect(entry?.metadata.capabilities[0]?.owner).toBe('@ankhorage/canonical-owner');
+  });
+
   test('excludes a remote package with legacy capability strings while retaining valid providers', async () => {
     const source = createGitHubProviderCatalogSource({
       fetchImpl(input) {
