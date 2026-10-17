@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.13.2
+
+### Patch Changes
+
+- 11cd58d: Update the published Contracts and capability descriptor runtime to Contracts 26 and Capability 0.2.2.
+
 ## 0.13.1
 
 ### Patch Changes
