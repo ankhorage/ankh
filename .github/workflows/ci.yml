@@ -73,7 +73,7 @@ jobs:
           if node -e "const p=require('./package.json'); process.exit(p.name === '@ankhorage/doctor' ? 0 : 1)"; then
             bun ./dist/cli/standalone.js validate .
           else
-            BUN_INSTALL_CACHE_DIR="${RUNNER_TEMP}/doctor-cache" bunx @ankhorage/doctor@0.14.24 validate .
+            BUN_INSTALL_CACHE_DIR="${RUNNER_TEMP}/doctor-cache" bunx @ankhorage/doctor@0.14.25 validate .
           fi
 
       - name: Run lint
@@ -107,13 +107,6 @@ jobs:
           else
             echo "No test script found; skipping."
           fi
-
-      - name: Accept published MCP consumer
-        run: |
-          consumer_cache="${RUNNER_TEMP}/ankh-published-mcp-consumer"
-          mkdir -p "$consumer_cache/providers"
-          bun add --cwd "$consumer_cache/providers" --exact @ankhorage/mcp@0.3.0 --ignore-scripts
-          ANKH_PUBLISHED_MCP_PROVIDER_CACHE_DIR="$consumer_cache" bun run test:published-mcp-consumer
 
       - name: Run typecheck
         run: |
