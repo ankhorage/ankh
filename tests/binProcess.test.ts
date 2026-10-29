@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process';
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -9,7 +9,6 @@ import packageJson from '../package.json';
 
 const temporaryDirectories: string[] = [];
 const repositoryRoot = path.dirname(import.meta.dir);
-const mcpProviderVersion = '0.3.0';
 
 afterEach(async () => {
   await Promise.all(
@@ -99,7 +98,8 @@ async function createFixtureAsync(): Promise<{
   readonly cwd: string;
 }> {
   const root = await createTemporaryDirectoryAsync('ankh-bin-process-');
-  const cacheDirectory = path.join(root, 'cache');
+  const cacheDirectory = readPublishedMcpProviderCacheDirectory();
+  const mcpProviderVersion = await readPublishedMcpProviderVersionAsync(cacheDirectory);
   const cwd = path.join(root, 'workspace');
   await mkdir(cwd, { recursive: true });
   await writeFile(path.join(cwd, 'package.json'), '{"name":"fixture-workspace","type":"module"}\n');
@@ -109,16 +109,45 @@ async function createFixtureAsync(): Promise<{
     '{"allowedAccounts":["allowed"],"packages":["@fixture/provider"]}\n',
   );
   await writeFixtureIntegrationAsync(cwd);
-  await writeProviderCatalogAsync(cacheDirectory);
-  await mkdir(path.join(cacheDirectory, 'providers'), { recursive: true });
-  await runBunAsync([
-    'add',
-    '--cwd',
-    path.join(cacheDirectory, 'providers'),
-    '--exact',
-    `@ankhorage/mcp@${mcpProviderVersion}`,
-  ]);
+  await writeProviderCatalogAsync(cacheDirectory, mcpProviderVersion);
   return { cacheDirectory, cwd };
+}
+
+/*** Reads the CI-provisioned cache containing the independently published MCP provider. */
+function readPublishedMcpProviderCacheDirectory(): string {
+  const cacheDirectory = process.env.ANKH_PUBLISHED_MCP_PROVIDER_CACHE_DIR;
+  if (cacheDirectory === undefined || cacheDirectory.length === 0) {
+    throw new Error(
+      'Set ANKH_PUBLISHED_MCP_PROVIDER_CACHE_DIR to run the published MCP consumer acceptance.',
+    );
+  }
+  return cacheDirectory;
+}
+
+/*** Reads the exact provider version installed by the independent published-consumer setup. */
+async function readPublishedMcpProviderVersionAsync(cacheDirectory: string): Promise<string> {
+  const packageJsonPath = path.join(
+    cacheDirectory,
+    'providers',
+    'node_modules',
+    '@ankhorage',
+    'mcp',
+    'package.json',
+  );
+  const packageJson: unknown = JSON.parse(await readFile(packageJsonPath, 'utf8'));
+  if (!isPublishedMcpPackageJson(packageJson)) {
+    throw new Error(`Expected the published @ankhorage/mcp package at ${packageJsonPath}.`);
+  }
+  return packageJson.version;
+}
+
+/*** Verifies the package manifest belongs to the MCP provider used by this acceptance boundary. */
+function isPublishedMcpPackageJson(
+  value: unknown,
+): value is { readonly name: '@ankhorage/mcp'; readonly version: string } {
+  if (typeof value !== 'object' || value === null) return false;
+  const { name, version } = value as Record<string, unknown>;
+  return name === '@ankhorage/mcp' && typeof version === 'string' && version.length > 0;
 }
 
 async function createFailingWorkspaceAsync(): Promise<string> {
@@ -145,7 +174,10 @@ async function writeFixtureIntegrationAsync(cwd: string): Promise<void> {
   );
 }
 
-async function writeProviderCatalogAsync(cacheDirectory: string): Promise<void> {
+async function writeProviderCatalogAsync(
+  cacheDirectory: string,
+  mcpProviderVersion: string,
+): Promise<void> {
   await mkdir(cacheDirectory, { recursive: true });
   await writeFile(
     path.join(cacheDirectory, 'provider-catalog-v2.json'),
@@ -221,16 +253,6 @@ async function runCommandAsync(
     readStreamAsync(child.stderr),
   ]);
   return { exitCode, stderr, stdout };
-}
-
-async function runBunAsync(args: readonly string[]): Promise<void> {
-  const child = spawn(process.execPath, args, { stdio: ['ignore', 'pipe', 'pipe'] });
-  const [exitCode, stdout, stderr] = await Promise.all([
-    waitForExitAsync(child),
-    readStreamAsync(child.stdout),
-    readStreamAsync(child.stderr),
-  ]);
-  if (exitCode !== 0) throw new Error(`bun ${args.join(' ')} failed: ${stdout}${stderr}`);
 }
 
 interface StdioCommand {
