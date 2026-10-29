@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.13.2",
+      "value": "v0.13.3",
       "color": "cb3837"
     },
     {
@@ -537,6 +537,14 @@
         "findWorkspaceRoots",
         "WorkspaceRoots"
       ]
+    },
+    {
+      "path": "tests/binProcess.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "package.json"
+      ],
+      "exports": []
     },
     {
       "path": "tests/capabilityFixture.ts",
@@ -4296,6 +4304,11 @@
         "sourcePath": "src/readme-usage.ts"
       },
       {
+        "fromPath": "tests/binProcess.test.ts",
+        "toPath": "package.json",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
         "fromPath": "tests/cli.test.ts",
         "toPath": "package.json",
         "sourcePath": "tests/cli.test.ts"
@@ -5522,6 +5535,264 @@
         "toSymbol": "access",
         "callExpression": "access",
         "sourcePath": "src/workspace.ts"
+      },
+      {
+        "fromSymbol": "tests/binProcess.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "tests/binProcess.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "tests/binProcess.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "tests/binProcess.test.ts",
+        "toSymbol": "createFixtureAsync",
+        "callExpression": "createFixtureAsync",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "tests/binProcess.test.ts",
+        "toSymbol": "expectCommandAsync",
+        "callExpression": "expectCommandAsync",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "tests/binProcess.test.ts",
+        "toSymbol": "startCommand",
+        "callExpression": "startCommand",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "tests/binProcess.test.ts",
+        "toSymbol": "send",
+        "callExpression": "server.send",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "tests/binProcess.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "tests/binProcess.test.ts",
+        "toSymbol": "readAsync",
+        "callExpression": "server.readAsync",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "tests/binProcess.test.ts",
+        "toSymbol": "closeStdin",
+        "callExpression": "server.closeStdin",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "tests/binProcess.test.ts",
+        "toSymbol": "exitedAsync",
+        "callExpression": "server.exitedAsync",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "tests/binProcess.test.ts",
+        "toSymbol": "createFailingWorkspaceAsync",
+        "callExpression": "createFailingWorkspaceAsync",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "tests/binProcess.test.ts",
+        "toSymbol": "runCommandAsync",
+        "callExpression": "runCommandAsync",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "createFixtureAsync",
+        "toSymbol": "createTemporaryDirectoryAsync",
+        "callExpression": "createTemporaryDirectoryAsync",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "createFixtureAsync",
+        "toSymbol": "readPublishedMcpProviderCacheDirectory",
+        "callExpression": "readPublishedMcpProviderCacheDirectory",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "createFixtureAsync",
+        "toSymbol": "readPublishedMcpProviderVersionAsync",
+        "callExpression": "readPublishedMcpProviderVersionAsync",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "createFixtureAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "createFixtureAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "createFixtureAsync",
+        "toSymbol": "writeFixtureIntegrationAsync",
+        "callExpression": "writeFixtureIntegrationAsync",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "createFixtureAsync",
+        "toSymbol": "writeProviderCatalogAsync",
+        "callExpression": "writeProviderCatalogAsync",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "readPublishedMcpProviderVersionAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "readPublishedMcpProviderVersionAsync",
+        "toSymbol": "isPublishedMcpPackageJson",
+        "callExpression": "isPublishedMcpPackageJson",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "createFailingWorkspaceAsync",
+        "toSymbol": "createTemporaryDirectoryAsync",
+        "callExpression": "createTemporaryDirectoryAsync",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "createFailingWorkspaceAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "createFailingWorkspaceAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "writeFixtureIntegrationAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "writeFixtureIntegrationAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "writeProviderCatalogAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "writeProviderCatalogAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "writeProviderCatalogAsync",
+        "toSymbol": "createMcpCapability",
+        "callExpression": "createMcpCapability",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "expectCommandAsync",
+        "toSymbol": "runCommandAsync",
+        "callExpression": "runCommandAsync",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "expectCommandAsync",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "startCommand",
+        "toSymbol": "spawn",
+        "callExpression": "spawn",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "startCommand",
+        "toSymbol": "createStdioCommand",
+        "callExpression": "createStdioCommand",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "runCommandAsync",
+        "toSymbol": "spawn",
+        "callExpression": "spawn",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "runCommandAsync",
+        "toSymbol": "waitForExitAsync",
+        "callExpression": "waitForExitAsync",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "runCommandAsync",
+        "toSymbol": "readStreamAsync",
+        "callExpression": "readStreamAsync",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "tests/binProcess.test.ts",
+        "toSymbol": "recordMessage",
+        "callExpression": "recordMessage",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "exitedAsync",
+        "toSymbol": "waitForExitAsync",
+        "callExpression": "waitForExitAsync",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "recordMessage",
+        "toSymbol": "waiter",
+        "callExpression": "waiter",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "tests/binProcess.test.ts",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "createTemporaryDirectoryAsync",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "tests/binProcess.test.ts"
+      },
+      {
+        "fromSymbol": "createTemporaryDirectoryAsync",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "tests/binProcess.test.ts"
       },
       {
         "fromSymbol": "tests/cli.test.ts",

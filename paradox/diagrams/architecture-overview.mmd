@@ -128,6 +128,9 @@ graph TD
   module_src_types_providers_ts --> module_src_discovery_ts
   module_src_workspace_ts["src/workspace.ts"]
   package__ankhorage_ankh -.-> module_src_workspace_ts
+  module_tests_binProcess_test_ts["tests/binProcess.test.ts"]
+  package__ankhorage_ankh -.-> module_tests_binProcess_test_ts
+  module_tests_binProcess_test_ts --> module_package_json
   module_tests_capabilityFixture_ts["tests/capabilityFixture.ts"]
   package__ankhorage_ankh -.-> module_tests_capabilityFixture_ts
   module_tests_cli_test_ts["tests/cli.test.ts"]

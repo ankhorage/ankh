@@ -243,7 +243,7 @@
       <div class="summary">
         <div><strong>44</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>53</strong><span class="muted">modules</span></div>
+        <div><strong>54</strong><span class="muted">modules</span></div>
         <div><strong>1</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -419,6 +419,11 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>findInstalledAnkhoragePackageJsonFiles</code>, <code>findWorkspacePackageJsonFiles</code>, <code>findWorkspaceRoots</code>, <code>WorkspaceRoots</code></p>
+  </article><article class="item" data-search="tests/binProcess.test.ts package.json">
+    <h3>tests/binProcess.test.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>package.json</code></p>
+    <p><strong>Exports:</strong> <span class="empty">None</span></p>
   </article><article class="item" data-search="tests/capabilityFixture.ts createCapabilities createCapability">
     <h3>tests/capabilityFixture.ts</h3>
     <p class="muted">Referenced module</p>
@@ -2091,6 +2096,9 @@ package once the provider-facing API is stable.</p>
   module_src_types_providers_ts --&gt; module_src_discovery_ts
   module_src_workspace_ts[&quot;src/workspace.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_workspace_ts
+  module_tests_binProcess_test_ts[&quot;tests/binProcess.test.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_binProcess_test_ts
+  module_tests_binProcess_test_ts --&gt; module_package_json
   module_tests_capabilityFixture_ts[&quot;tests/capabilityFixture.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_capabilityFixture_ts
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
@@ -2329,6 +2337,9 @@ package once the provider-facing API is stable.</p>
   module_src_types_providers_ts --&gt; module_src_discovery_ts
   module_src_workspace_ts[&quot;src/workspace.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_workspace_ts
+  module_tests_binProcess_test_ts[&quot;tests/binProcess.test.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_binProcess_test_ts
+  module_tests_binProcess_test_ts --&gt; module_package_json
   module_tests_capabilityFixture_ts[&quot;tests/capabilityFixture.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_capabilityFixture_ts
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
@@ -2473,6 +2484,7 @@ package once the provider-facing API is stable.</p>
   module_src_types_inputResolution_ts[&quot;src/types/inputResolution.ts&quot;]
   module_src_types_providers_ts[&quot;src/types/providers.ts&quot;]
   module_src_workspace_ts[&quot;src/workspace.ts&quot;]
+  module_tests_binProcess_test_ts[&quot;tests/binProcess.test.ts&quot;]
   module_tests_capabilityFixture_ts[&quot;tests/capabilityFixture.ts&quot;]
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
   module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
@@ -2554,6 +2566,7 @@ package once the provider-facing API is stable.</p>
   module_src_providerManifestLoader_ts --&gt; module_src_discovery_ts
   module_src_providerRegistry_ts --&gt; module_src_providerManifestLoader_ts
   module_src_types_providers_ts --&gt; module_src_discovery_ts
+  module_tests_binProcess_test_ts --&gt; module_package_json
   module_tests_cli_test_ts --&gt; module_package_json
   module_tests_cli_test_ts --&gt; module_src_cli_index_ts
   module_tests_cli_test_ts --&gt; module_src_commandContext_ts
@@ -2656,6 +2669,7 @@ package once the provider-facing API is stable.</p>
   module_src_types_inputResolution_ts[&quot;src/types/inputResolution.ts&quot;]
   module_src_types_providers_ts[&quot;src/types/providers.ts&quot;]
   module_src_workspace_ts[&quot;src/workspace.ts&quot;]
+  module_tests_binProcess_test_ts[&quot;tests/binProcess.test.ts&quot;]
   module_tests_capabilityFixture_ts[&quot;tests/capabilityFixture.ts&quot;]
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
   module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
@@ -2737,6 +2751,7 @@ package once the provider-facing API is stable.</p>
   module_src_providerManifestLoader_ts --&gt; module_src_discovery_ts
   module_src_providerRegistry_ts --&gt; module_src_providerManifestLoader_ts
   module_src_types_providers_ts --&gt; module_src_discovery_ts
+  module_tests_binProcess_test_ts --&gt; module_package_json
   module_tests_cli_test_ts --&gt; module_package_json
   module_tests_cli_test_ts --&gt; module_src_cli_index_ts
   module_tests_cli_test_ts --&gt; module_src_commandContext_ts
@@ -2841,6 +2856,7 @@ package once the provider-facing API is stable.</p>
   module_src_types_inputResolution_ts[&quot;src/types/inputResolution.ts&quot;]
   module_src_types_providers_ts[&quot;src/types/providers.ts&quot;]
   module_src_workspace_ts[&quot;src/workspace.ts&quot;]
+  module_tests_binProcess_test_ts[&quot;tests/binProcess.test.ts&quot;]
   module_tests_capabilityFixture_ts[&quot;tests/capabilityFixture.ts&quot;]
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
   module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
@@ -3034,6 +3050,7 @@ package once the provider-facing API is stable.</p>
   module_src_types_inputResolution_ts[&quot;src/types/inputResolution.ts&quot;]
   module_src_types_providers_ts[&quot;src/types/providers.ts&quot;]
   module_src_workspace_ts[&quot;src/workspace.ts&quot;]
+  module_tests_binProcess_test_ts[&quot;tests/binProcess.test.ts&quot;]
   module_tests_capabilityFixture_ts[&quot;tests/capabilityFixture.ts&quot;]
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
   module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]

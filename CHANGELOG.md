@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.13.3
+
+### Patch Changes
+
+- b7bc17e: Preserve long-running provider transports after successful CLI initialization.
+
 ## 0.13.2
 
 ### Patch Changes
