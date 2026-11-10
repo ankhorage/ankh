@@ -32,15 +32,16 @@ export function createBunProviderPackageStore(
 
   return {
     async resolveAsync(entry) {
-      const cached = await readCachedProviderAsync(options.cacheRoot, entry);
+      const versionCacheRoot = resolveVersionCacheRoot(options.cacheRoot, entry);
+      const cached = await readCachedProviderAsync(versionCacheRoot, entry);
       if (cached !== null) return cached;
 
-      await ensureCacheProjectAsync(options.cacheRoot);
+      await ensureCacheProjectAsync(versionCacheRoot);
       const packageSpec = `${entry.packageName}@${entry.version}`;
       const result = await runProcessAsync(bunExecutable, [
         'add',
         '--cwd',
-        options.cacheRoot,
+        versionCacheRoot,
         '--exact',
         '--omit=peer',
         '--silent',
@@ -54,7 +55,7 @@ export function createBunProviderPackageStore(
         );
       }
 
-      const installed = await readCachedProviderAsync(options.cacheRoot, entry);
+      const installed = await readCachedProviderAsync(versionCacheRoot, entry);
       if (installed === null) {
         throw new Error(
           `${packageSpec} was installed but did not expose the expected Ankh provider metadata.`,
@@ -63,6 +64,11 @@ export function createBunProviderPackageStore(
       return installed;
     },
   };
+}
+
+/*** Resolve the isolated cache project for one provider package and exact version. */
+function resolveVersionCacheRoot(cacheRoot: string, entry: AnkhProviderCatalogEntry): string {
+  return path.join(cacheRoot, 'packages', ...entry.packageName.split('/'), entry.version);
 }
 
 /*** Read and validate an exact provider version already present in the Ankh package cache. */

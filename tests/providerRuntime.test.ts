@@ -698,9 +698,13 @@ describe('official provider runtime', () => {
 
   test('resolves only the selected provider package and leaves a blank line after category help', async () => {
     const discoveredPackage = providerPackage('/cache/providers');
+    let resolvedCwd: string | undefined;
     const providerRuntime: AnkhProviderRuntime = {
       resolveCatalogAsync: () => Promise.resolve({ entries: [infraEntry] }),
-      resolvePackageAsync: () => Promise.resolve(discoveredPackage),
+      resolvePackageAsync(_entry, cwd) {
+        resolvedCwd = cwd;
+        return Promise.resolve(discoveredPackage);
+      },
     };
     const run = memoryContext('/irrelevant');
 
@@ -726,6 +730,7 @@ describe('official provider runtime', () => {
     expect(run.stdout.value).toContain('ankh infra <command>');
     expect(run.stdout.value.endsWith('\n\n')).toBeTrue();
     expect(run.stderr.value).toBe('');
+    expect(resolvedCwd).toBe('/irrelevant');
   });
 
   test('installs a missing exact provider version into the private Bun cache once', async () => {
@@ -750,6 +755,31 @@ describe('official provider runtime', () => {
     expect(first.packageName).toBe(infraEntry.packageName);
     expect(second.packageRoot).toBe(first.packageRoot);
     expect(installs).toBe(1);
+  });
+
+  test('isolates warm cache entries for consumers that select different provider versions', async () => {
+    const cacheRoot = await createTemporaryDirectory();
+    const olderEntry = {
+      ...infraEntry,
+      version: '7.1.1',
+    } as const satisfies AnkhProviderCatalogEntry;
+    const installedVersions: string[] = [];
+    const store = createBunProviderPackageStore({
+      bunExecutable: '/fake/bun',
+      cacheRoot,
+      async runProcessAsync(_executable, args) {
+        const packageSpec = args.at(-1);
+        const entry = packageSpec?.endsWith(`@${olderEntry.version}`) ? olderEntry : infraEntry;
+        installedVersions.push(entry.version);
+        await writeCachedProviderPackage(cacheRoot, entry);
+        return { exitCode: 0, stderr: '' };
+      },
+    });
+
+    expect((await store.resolveAsync(olderEntry)).packageRoot).toContain(olderEntry.version);
+    expect((await store.resolveAsync(infraEntry)).packageRoot).toContain(infraEntry.version);
+    expect((await store.resolveAsync(olderEntry)).packageRoot).toContain(olderEntry.version);
+    expect(installedVersions).toEqual([olderEntry.version, infraEntry.version]);
   });
 
   test('accepts cached provider metadata with equivalent schema property order', async () => {
@@ -855,7 +885,14 @@ async function writeCachedProviderPackage(
   entry: AnkhProviderCatalogEntry = infraEntry,
   metadata: AnkhProviderCatalogEntry['metadata'] = entry.metadata,
 ): Promise<void> {
-  const packageRoot = path.join(cacheRoot, 'node_modules', ...entry.packageName.split('/'));
+  const packageRoot = path.join(
+    cacheRoot,
+    'packages',
+    ...entry.packageName.split('/'),
+    entry.version,
+    'node_modules',
+    ...entry.packageName.split('/'),
+  );
   await mkdir(packageRoot, { recursive: true });
   await writeFile(
     path.join(packageRoot, 'package.json'),
