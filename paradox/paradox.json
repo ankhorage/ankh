@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.13.4",
+      "value": "v0.13.5",
       "color": "cb3837"
     },
     {
@@ -691,6 +691,14 @@
         "src/providerManifestLoader.ts",
         "src/providerRegistry.ts",
         "tests/capabilityFixture.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "tests/fileConsumerProviderVersion.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts"
       ],
       "exports": []
     },
@@ -3238,11 +3246,20 @@
       }
     },
     {
+      "name": "isValidNpmPackageName",
+      "description": "Validate package-name segments before using them in a filesystem path.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts",
+        "line": 57,
+        "column": 1
+      }
+    },
+    {
       "name": "isRecord",
       "description": "Narrow an unknown JSON value to a non-array object.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts",
-        "line": 31,
+        "line": 68,
         "column": 1
       }
     },
@@ -3391,11 +3408,20 @@
       }
     },
     {
+      "name": "resolveInstalledCaretVersionAsync",
+      "description": "Resolve a compatible caret to the consumer's installed immutable provider identity.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts",
+        "line": 41,
+        "column": 1
+      }
+    },
+    {
       "name": "readSelectedVersion",
       "description": "Read one unambiguous provider version from supported consumer dependency declarations.",
       "sourceLocation": {
         "filePath": "src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts",
-        "line": 43,
+        "line": 68,
         "column": 1
       }
     },
@@ -3404,7 +3430,7 @@
       "description": "Recognize a registry version without permitting tags, ranges, paths, or workspace protocols.",
       "sourceLocation": {
         "filePath": "src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts",
-        "line": 65,
+        "line": 90,
         "column": 1
       }
     },
@@ -3413,7 +3439,7 @@
       "description": "Narrow an unknown JSON value to a non-array object.",
       "sourceLocation": {
         "filePath": "src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts",
-        "line": 72,
+        "line": 97,
         "column": 1
       }
     },
@@ -4596,6 +4622,11 @@
         "fromPath": "tests/execution.test.ts",
         "toPath": "tests/capabilityFixture.ts",
         "sourcePath": "tests/execution.test.ts"
+      },
+      {
+        "fromPath": "tests/fileConsumerProviderVersion.test.ts",
+        "toPath": "src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts",
+        "sourcePath": "tests/fileConsumerProviderVersion.test.ts"
       },
       {
         "fromPath": "tests/package.test.ts",
@@ -6224,6 +6255,12 @@
         "sourcePath": "tests/consumerProviderVersion.test.ts"
       },
       {
+        "fromSymbol": "resolveAsync",
+        "toSymbol": "resolveRelease",
+        "callExpression": "resolveRelease",
+        "sourcePath": "tests/consumerProviderVersion.test.ts"
+      },
+      {
         "fromSymbol": "tests/consumerProviderVersionProcess.acceptance.ts",
         "toSymbol": "mkdtemp",
         "callExpression": "mkdtemp",
@@ -6648,6 +6685,66 @@
         "toSymbol": "expect",
         "callExpression": "expect",
         "sourcePath": "tests/execution.test.ts"
+      },
+      {
+        "fromSymbol": "tests/fileConsumerProviderVersion.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "tests/fileConsumerProviderVersion.test.ts"
+      },
+      {
+        "fromSymbol": "tests/fileConsumerProviderVersion.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "tests/fileConsumerProviderVersion.test.ts"
+      },
+      {
+        "fromSymbol": "tests/fileConsumerProviderVersion.test.ts",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "tests/fileConsumerProviderVersion.test.ts"
+      },
+      {
+        "fromSymbol": "tests/fileConsumerProviderVersion.test.ts",
+        "toSymbol": "createFileConsumerProviderManifestSource",
+        "callExpression": "createFileConsumerProviderManifestSource",
+        "sourcePath": "tests/fileConsumerProviderVersion.test.ts"
+      },
+      {
+        "fromSymbol": "tests/fileConsumerProviderVersion.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "tests/fileConsumerProviderVersion.test.ts"
+      },
+      {
+        "fromSymbol": "tests/fileConsumerProviderVersion.test.ts",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "tests/fileConsumerProviderVersion.test.ts"
+      },
+      {
+        "fromSymbol": "tests/fileConsumerProviderVersion.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "tests/fileConsumerProviderVersion.test.ts"
+      },
+      {
+        "fromSymbol": "tests/fileConsumerProviderVersion.test.ts",
+        "toSymbol": "readInstalledVersionAsync",
+        "callExpression": "source.readInstalledVersionAsync",
+        "sourcePath": "tests/fileConsumerProviderVersion.test.ts"
+      },
+      {
+        "fromSymbol": "tests/fileConsumerProviderVersion.test.ts",
+        "toSymbol": "expectFailure",
+        "callExpression": "expectFailure",
+        "sourcePath": "tests/fileConsumerProviderVersion.test.ts"
+      },
+      {
+        "fromSymbol": "tests/fileConsumerProviderVersion.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "tests/fileConsumerProviderVersion.test.ts"
       },
       {
         "fromSymbol": "tests/package.test.ts",
@@ -8276,6 +8373,30 @@
         "sourcePath": "src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts"
       },
       {
+        "fromSymbol": "readInstalledVersionAsync",
+        "toSymbol": "isValidNpmPackageName",
+        "callExpression": "isValidNpmPackageName",
+        "sourcePath": "src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts"
+      },
+      {
+        "fromSymbol": "readInstalledVersionAsync",
+        "toSymbol": "findWorkspaceRoots",
+        "callExpression": "findWorkspaceRoots",
+        "sourcePath": "src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts"
+      },
+      {
+        "fromSymbol": "readInstalledVersionAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts"
+      },
+      {
+        "fromSymbol": "readInstalledVersionAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts"
+      },
+      {
         "fromSymbol": "readAsync",
         "toSymbol": "readFile",
         "callExpression": "readFile",
@@ -8451,8 +8572,26 @@
       },
       {
         "fromSymbol": "resolveConsumerProviderEntryAsync",
+        "toSymbol": "resolveInstalledCaretVersionAsync",
+        "callExpression": "resolveInstalledCaretVersionAsync",
+        "sourcePath": "src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveConsumerProviderEntryAsync",
         "toSymbol": "resolveAsync",
         "callExpression": "input.providerReleaseSource.resolveAsync",
+        "sourcePath": "src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveInstalledCaretVersionAsync",
+        "toSymbol": "readInstalledVersionAsync",
+        "callExpression": "input.consumerManifestSource.readInstalledVersionAsync",
+        "sourcePath": "src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveInstalledCaretVersionAsync",
+        "toSymbol": "isExactVersion",
+        "callExpression": "isExactVersion",
         "sourcePath": "src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts"
       },
       {

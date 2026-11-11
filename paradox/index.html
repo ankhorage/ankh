@@ -174,7 +174,7 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts">
       src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts
-      <small>2 functions</small>
+      <small>3 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts">
@@ -194,7 +194,7 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts">
       src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts
-      <small>4 functions</small>
+      <small>5 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts">
@@ -263,7 +263,7 @@
       <div class="summary">
         <div><strong>44</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>62</strong><span class="muted">modules</span></div>
+        <div><strong>63</strong><span class="muted">modules</span></div>
         <div><strong>1</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -513,6 +513,11 @@
     <h3>tests/execution.test.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/execution.ts</code>, <code>src/providerManifestLoader.ts</code>, <code>src/providerRegistry.ts</code>, <code>tests/capabilityFixture.ts</code></p>
+    <p><strong>Exports:</strong> <span class="empty">None</span></p>
+  </article><article class="item" data-search="tests/fileConsumerProviderVersion.test.ts src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts">
+    <h3>tests/fileConsumerProviderVersion.test.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
   </article><article class="item" data-search="tests/fixtures/canonicalDoctorProvider.ts tests/capabilityFixture.ts default DOCTOR_FIXTURE_CAPABILITIES">
     <h3>tests/fixtures/canonicalDoctorProvider.ts</h3>
@@ -2225,6 +2230,9 @@ package once the provider-facing API is stable.</p>
   module_tests_execution_test_ts --&gt; module_src_providerManifestLoader_ts
   module_tests_execution_test_ts --&gt; module_src_providerRegistry_ts
   module_tests_execution_test_ts --&gt; module_tests_capabilityFixture_ts
+  module_tests_fileConsumerProviderVersion_test_ts[&quot;tests/fileConsumerProviderVersion.test.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_fileConsumerProviderVersion_test_ts
+  module_tests_fileConsumerProviderVersion_test_ts --&gt; module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts
   module_tests_fixtures_canonicalDoctorProvider_ts[&quot;tests/fixtures/canonicalDoctorProvider.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_fixtures_canonicalDoctorProvider_ts
   module_tests_fixtures_canonicalDoctorProvider_ts --&gt; module_tests_capabilityFixture_ts
@@ -2499,6 +2507,9 @@ package once the provider-facing API is stable.</p>
   module_tests_execution_test_ts --&gt; module_src_providerManifestLoader_ts
   module_tests_execution_test_ts --&gt; module_src_providerRegistry_ts
   module_tests_execution_test_ts --&gt; module_tests_capabilityFixture_ts
+  module_tests_fileConsumerProviderVersion_test_ts[&quot;tests/fileConsumerProviderVersion.test.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_fileConsumerProviderVersion_test_ts
+  module_tests_fileConsumerProviderVersion_test_ts --&gt; module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts
   module_tests_fixtures_canonicalDoctorProvider_ts[&quot;tests/fixtures/canonicalDoctorProvider.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_fixtures_canonicalDoctorProvider_ts
   module_tests_fixtures_canonicalDoctorProvider_ts --&gt; module_tests_capabilityFixture_ts
@@ -2625,6 +2636,7 @@ package once the provider-facing API is stable.</p>
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   module_tests_doctorCoreProviderReadiness_test_ts[&quot;tests/doctorCoreProviderReadiness.test.ts&quot;]
   module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
+  module_tests_fileConsumerProviderVersion_test_ts[&quot;tests/fileConsumerProviderVersion.test.ts&quot;]
   module_tests_fixtures_canonicalDoctorProvider_ts[&quot;tests/fixtures/canonicalDoctorProvider.ts&quot;]
   module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
   module_tests_packagePresentation_test_ts[&quot;tests/packagePresentation.test.ts&quot;]
@@ -2739,6 +2751,7 @@ package once the provider-facing API is stable.</p>
   module_tests_execution_test_ts --&gt; module_src_providerManifestLoader_ts
   module_tests_execution_test_ts --&gt; module_src_providerRegistry_ts
   module_tests_execution_test_ts --&gt; module_tests_capabilityFixture_ts
+  module_tests_fileConsumerProviderVersion_test_ts --&gt; module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts
   module_tests_fixtures_canonicalDoctorProvider_ts --&gt; module_tests_capabilityFixture_ts
   module_tests_package_test_ts --&gt; module_package_json
   module_tests_packagePresentation_test_ts --&gt; module_src_features_help_readPackagePresentation_ts
@@ -2835,6 +2848,7 @@ package once the provider-facing API is stable.</p>
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   module_tests_doctorCoreProviderReadiness_test_ts[&quot;tests/doctorCoreProviderReadiness.test.ts&quot;]
   module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
+  module_tests_fileConsumerProviderVersion_test_ts[&quot;tests/fileConsumerProviderVersion.test.ts&quot;]
   module_tests_fixtures_canonicalDoctorProvider_ts[&quot;tests/fixtures/canonicalDoctorProvider.ts&quot;]
   module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
   module_tests_packagePresentation_test_ts[&quot;tests/packagePresentation.test.ts&quot;]
@@ -2949,6 +2963,7 @@ package once the provider-facing API is stable.</p>
   module_tests_execution_test_ts --&gt; module_src_providerManifestLoader_ts
   module_tests_execution_test_ts --&gt; module_src_providerRegistry_ts
   module_tests_execution_test_ts --&gt; module_tests_capabilityFixture_ts
+  module_tests_fileConsumerProviderVersion_test_ts --&gt; module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts
   module_tests_fixtures_canonicalDoctorProvider_ts --&gt; module_tests_capabilityFixture_ts
   module_tests_package_test_ts --&gt; module_package_json
   module_tests_packagePresentation_test_ts --&gt; module_src_features_help_readPackagePresentation_ts
@@ -3047,6 +3062,7 @@ package once the provider-facing API is stable.</p>
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   module_tests_doctorCoreProviderReadiness_test_ts[&quot;tests/doctorCoreProviderReadiness.test.ts&quot;]
   module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
+  module_tests_fileConsumerProviderVersion_test_ts[&quot;tests/fileConsumerProviderVersion.test.ts&quot;]
   module_tests_fixtures_canonicalDoctorProvider_ts[&quot;tests/fixtures/canonicalDoctorProvider.ts&quot;]
   module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
   module_tests_packagePresentation_test_ts[&quot;tests/packagePresentation.test.ts&quot;]
@@ -3249,6 +3265,7 @@ package once the provider-facing API is stable.</p>
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   module_tests_doctorCoreProviderReadiness_test_ts[&quot;tests/doctorCoreProviderReadiness.test.ts&quot;]
   module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
+  module_tests_fileConsumerProviderVersion_test_ts[&quot;tests/fileConsumerProviderVersion.test.ts&quot;]
   module_tests_fixtures_canonicalDoctorProvider_ts[&quot;tests/fixtures/canonicalDoctorProvider.ts&quot;]
   module_tests_package_test_ts[&quot;tests/package.test.ts&quot;]
   module_tests_packagePresentation_test_ts[&quot;tests/packagePresentation.test.ts&quot;]
@@ -3722,9 +3739,13 @@ Undefined, null, empty, and whitespace-only strings are treated as absent.</p>
     <h3>createFileConsumerProviderManifestSource</h3>
     <p class="muted"><code>src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts:8:1</code></p>
     <p>Create the filesystem adapter that reads the invoking consumer package manifest.</p>
+  </article><article class="item" data-search="isValidNpmPackageName src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts Validate package-name segments before using them in a filesystem path.">
+    <h3>isValidNpmPackageName</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts:57:1</code></p>
+    <p>Validate package-name segments before using them in a filesystem path.</p>
   </article><article class="item" data-search="isRecord src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts Narrow an unknown JSON value to a non-array object.">
     <h3>isRecord</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts:31:1</code></p>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts:68:1</code></p>
     <p>Narrow an unknown JSON value to a non-array object.</p>
   </article>
     </section>
@@ -3810,17 +3831,21 @@ Undefined, null, empty, and whitespace-only strings are treated as absent.</p>
     <h3>resolveConsumerProviderEntryAsync</h3>
     <p class="muted"><code>src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts:13:1</code></p>
     <p>Resolve a catalog provider to the exact version explicitly selected by its consumer.</p>
+  </article><article class="item" data-search="resolveInstalledCaretVersionAsync src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts Resolve a compatible caret to the consumer&#39;s installed immutable provider identity.">
+    <h3>resolveInstalledCaretVersionAsync</h3>
+    <p class="muted"><code>src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts:41:1</code></p>
+    <p>Resolve a compatible caret to the consumer&#39;s installed immutable provider identity.</p>
   </article><article class="item" data-search="readSelectedVersion src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts Read one unambiguous provider version from supported consumer dependency declarations.">
     <h3>readSelectedVersion</h3>
-    <p class="muted"><code>src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts:43:1</code></p>
+    <p class="muted"><code>src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts:68:1</code></p>
     <p>Read one unambiguous provider version from supported consumer dependency declarations.</p>
   </article><article class="item" data-search="isExactVersion src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts Recognize a registry version without permitting tags, ranges, paths, or workspace protocols.">
     <h3>isExactVersion</h3>
-    <p class="muted"><code>src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts:65:1</code></p>
+    <p class="muted"><code>src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts:90:1</code></p>
     <p>Recognize a registry version without permitting tags, ranges, paths, or workspace protocols.</p>
   </article><article class="item" data-search="isRecord src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts Narrow an unknown JSON value to a non-array object.">
     <h3>isRecord</h3>
-    <p class="muted"><code>src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts:72:1</code></p>
+    <p class="muted"><code>src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts:97:1</code></p>
     <p>Narrow an unknown JSON value to a non-array object.</p>
   </article>
     </section>

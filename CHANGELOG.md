@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.13.5
+
+### Patch Changes
+
+- 35db5d9: Resolve declared provider caret dependencies through the installed exact consumer package version, preserving the trusted published provider identity and rejecting missing or incompatible installations.
+
 ## 0.13.4
 
 ### Patch Changes

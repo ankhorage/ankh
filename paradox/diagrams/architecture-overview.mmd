@@ -197,6 +197,9 @@ graph TD
   module_tests_execution_test_ts --> module_src_providerManifestLoader_ts
   module_tests_execution_test_ts --> module_src_providerRegistry_ts
   module_tests_execution_test_ts --> module_tests_capabilityFixture_ts
+  module_tests_fileConsumerProviderVersion_test_ts["tests/fileConsumerProviderVersion.test.ts"]
+  package__ankhorage_ankh -.-> module_tests_fileConsumerProviderVersion_test_ts
+  module_tests_fileConsumerProviderVersion_test_ts --> module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts
   module_tests_fixtures_canonicalDoctorProvider_ts["tests/fixtures/canonicalDoctorProvider.ts"]
   package__ankhorage_ankh -.-> module_tests_fixtures_canonicalDoctorProvider_ts
   module_tests_fixtures_canonicalDoctorProvider_ts --> module_tests_capabilityFixture_ts
