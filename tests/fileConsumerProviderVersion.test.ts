@@ -20,9 +20,12 @@ test('resolves a caret from installed exact consumer bytes, not catalog latest',
     expect(await source.readInstalledVersionAsync(root, '@ankhorage/devtools', '^2.4.2')).toBe(
       '2.4.3',
     );
-    expect(await source.readInstalledVersionAsync(root, '@ankhorage/devtools', '^3.0.0')).toBeNull();
+    expect(
+      await source.readInstalledVersionAsync(root, '@ankhorage/devtools', '^3.0.0'),
+    ).toBeNull();
     expect(await source.readInstalledVersionAsync(root, '@ankhorage/missing', '^2.4.2')).toBeNull();
-    await expect(source.readInstalledVersionAsync(root, '../escape', '^2.4.2')).rejects.toThrow(
+    await expectFailure(
+      source.readInstalledVersionAsync(root, '../escape', '^2.4.2'),
       'Invalid provider package name',
     );
   } finally {
@@ -38,10 +41,24 @@ test('rejects installed files with a mismatched provider identity', async () => 
     await mkdir(installed, { recursive: true });
     await writeFile(path.join(installed, 'package.json'), '{"name":"fake","version":"2.4.2"}\n');
     const source = createFileConsumerProviderManifestSource();
-    await expect(source.readInstalledVersionAsync(root, '@ankhorage/devtools', '^2.4.2')).rejects.toThrow(
+    await expectFailure(
+      source.readInstalledVersionAsync(root, '@ankhorage/devtools', '^2.4.2'),
       'Installed provider metadata is invalid',
     );
   } finally {
     await rm(root, { recursive: true, force: true });
   }
 });
+
+/*** Assert one provider read rejects with an expected diagnostic. */
+async function expectFailure(result: Promise<unknown>, fragment: string): Promise<void> {
+  await result.then(
+    () => {
+      throw new Error('Expected provider version read to fail.');
+    },
+    (error: unknown) => {
+      expect(error).toBeInstanceOf(Error);
+      if (error instanceof Error) expect(error.message).toContain(fragment);
+    },
+  );
+}
