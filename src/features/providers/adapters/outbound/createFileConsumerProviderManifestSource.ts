@@ -24,7 +24,7 @@ export function createFileConsumerProviderManifestSource(): ConsumerProviderMani
       }
       return value;
     },
-    async readInstalledVersionAsync(cwd, packageName) {
+    async readInstalledVersionAsync(cwd, packageName, range) {
       if (!isValidNpmPackageName(packageName)) {
         throw new Error(`Invalid provider package name: ${packageName}.`);
       }
@@ -37,7 +37,7 @@ export function createFileConsumerProviderManifestSource(): ConsumerProviderMani
           if (!isRecord(value) || value.name !== packageName || typeof value.version !== 'string') {
             throw new Error(`Installed provider metadata is invalid at ${packageJsonPath}.`);
           }
-          return value.version;
+          return Bun.semver.satisfies(value.version, range) ? value.version : null;
         } catch (error) {
           if (error instanceof Error && 'code' in error && error.code === 'ENOENT') continue;
           throw error;
