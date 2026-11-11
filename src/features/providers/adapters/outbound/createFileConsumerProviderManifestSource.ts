@@ -31,7 +31,12 @@ export function createFileConsumerProviderManifestSource(): ConsumerProviderMani
       const { currentPackageRoot, workspaceRoot } = await findWorkspaceRoots(cwd);
       for (const root of [currentPackageRoot, workspaceRoot]) {
         if (root === null) continue;
-        const packageJsonPath = path.join(root, 'node_modules', ...packageName.split('/'), 'package.json');
+        const packageJsonPath = path.join(
+          root,
+          'node_modules',
+          ...packageName.split('/'),
+          'package.json',
+        );
         try {
           const value = JSON.parse(await readFile(packageJsonPath, 'utf8')) as unknown;
           if (!isRecord(value) || value.name !== packageName || typeof value.version !== 'string') {
@@ -53,9 +58,8 @@ function isValidNpmPackageName(packageName: string): boolean {
   const segments = packageName.split('/');
   if (segments.length !== 1 && segments.length !== 2) return false;
   return segments.every((segment, index) => {
-    const candidate = index === 0 && segments.length === 2 && segment.startsWith('@')
-      ? segment.slice(1)
-      : segment;
+    const candidate =
+      index === 0 && segments.length === 2 && segment.startsWith('@') ? segment.slice(1) : segment;
     return /^[a-z0-9][a-z0-9._-]*$/u.test(candidate);
   });
 }
