@@ -108,6 +108,12 @@ jobs:
             echo "No test script found; skipping."
           fi
 
+      - name: Run published-provider process acceptance
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: bun run test:published-providers
+
       - name: Run typecheck
         run: |
           if node -e "const p=require('./package.json'); process.exit(p.scripts?.typecheck ? 0 : 1)"; then
