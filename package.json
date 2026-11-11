@@ -54,6 +54,7 @@
     "format:check": "ankhorage-prettier --check .",
     "test": "bun test --path-ignore-patterns='tests/binProcess.test.ts'",
     "test:published-mcp-consumer": "bun test tests/binProcess.test.ts",
+    "test:published-providers": "bun ./tests/consumerProviderVersionProcess.acceptance.ts",
     "knip:check": "ankhorage-knip",
     "docs": "bunx @ankhorage/paradox && ankhorage-prettier --write README.md paradox",
     "changeset": "ankhorage-changeset",
