@@ -24,6 +24,16 @@ describe('consumer provider version selection', () => {
     expect(resolved.version).toBe('1.0.0');
   });
 
+  test('resolves a ranged dependency through its exact installed lockfile version', async () => {
+    const resolved = await resolve(
+      { dependencies: { '@ankhorage/fixture': '^1.0.0' } },
+      () => Promise.resolve({ ...latestEntry, version: '1.2.3' }),
+      () => Promise.resolve('1.2.3'),
+    );
+
+    expect(resolved.version).toBe('1.2.3');
+  });
+
   test('retains the catalog latest release when the consumer makes no provider selection', async () => {
     const resolved = await resolve({ dependencies: {} });
 
@@ -39,15 +49,32 @@ describe('consumer provider version selection', () => {
     );
   });
 
-  test.each(['^1.0.0', 'latest', 'workspace:*', 'file:../fixture'])(
-    'fails closed for unsupported explicit version %s',
+  test.each(['latest', 'workspace:*', 'file:../fixture'])(
+    'fails closed when a non-registry dependency has no verifiable installed version: %s',
     async (version) => {
       await expectFailure(
-        resolve({ dependencies: { '@ankhorage/fixture': version } }),
-        'must use an exact published version',
+        resolve(
+          { dependencies: { '@ankhorage/fixture': version } },
+          () => Promise.resolve(latestEntry),
+          () =>
+            Promise.reject(new Error('Consumer Bun lockfile does not confirm installed provider.')),
+        ),
+        'does not confirm installed provider',
       );
     },
   );
+
+  test('fails closed for a lockfile and installed-version mismatch', async () => {
+    await expectFailure(
+      resolve(
+        { dependencies: { '@ankhorage/fixture': '^1.0.0' } },
+        () => Promise.resolve(latestEntry),
+        () =>
+          Promise.reject(new Error('Consumer Bun lockfile does not confirm installed provider.')),
+      ),
+      'does not confirm installed provider',
+    );
+  });
 
   test('fails closed for conflicting dependency declarations', async () => {
     await expectFailure(
@@ -85,9 +112,11 @@ function resolve(
   manifest: Record<string, unknown>,
   resolveRelease: () => Promise<AnkhProviderCatalogEntry> = () =>
     Promise.resolve({ ...latestEntry, version: '1.0.0' }),
+  resolveInstalledVersion: () => Promise<string> = () => Promise.resolve('1.0.0'),
 ): Promise<AnkhProviderCatalogEntry> {
   return resolveConsumerProviderEntryAsync({
     catalogEntry: latestEntry,
+    consumerProviderInstalledVersionSource: { resolveAsync: resolveInstalledVersion },
     consumerManifestSource: { readAsync: () => Promise.resolve(manifest) },
     cwd: '/consumer',
     providerReleaseSource: { resolveAsync: resolveRelease },

@@ -1,4 +1,5 @@
 import type { AnkhProviderCatalogEntry } from '../../../../types/providers.js';
+import type { ConsumerProviderInstalledVersionSource } from '../ports/outbound/consumerProviderInstalledVersionSource.js';
 import type { ConsumerProviderManifestSource } from '../ports/outbound/consumerProviderManifestSource.js';
 import type { ProviderReleaseSource } from '../ports/outbound/providerReleaseSource.js';
 
@@ -9,9 +10,10 @@ const DEPENDENCY_FIELDS = [
   'peerDependencies',
 ] as const;
 
-/*** Resolve a catalog provider to the exact version explicitly selected by its consumer. */
+/*** Resolve a catalog provider from an explicit pin or the consumer's lockfile-backed installation. */
 export async function resolveConsumerProviderEntryAsync(input: {
   readonly catalogEntry: AnkhProviderCatalogEntry;
+  readonly consumerProviderInstalledVersionSource: ConsumerProviderInstalledVersionSource;
   readonly consumerManifestSource: ConsumerProviderManifestSource;
   readonly cwd: string;
   readonly providerReleaseSource: ProviderReleaseSource;
@@ -21,19 +23,24 @@ export async function resolveConsumerProviderEntryAsync(input: {
 
   const selectedVersion = readSelectedVersion(manifest, input.catalogEntry.packageName);
   if (selectedVersion === null) return input.catalogEntry;
-  if (!isExactVersion(selectedVersion)) {
+  const resolvedVersion = isExactVersion(selectedVersion)
+    ? selectedVersion
+    : await input.consumerProviderInstalledVersionSource.resolveAsync({
+        cwd: input.cwd,
+        packageName: input.catalogEntry.packageName,
+      });
+  if (!isExactVersion(resolvedVersion))
     throw new Error(
-      `Consumer selects ${input.catalogEntry.packageName} with unsupported version "${selectedVersion}". Provider selections must use an exact published version.`,
+      `Consumer installation resolves ${input.catalogEntry.packageName} with invalid version "${resolvedVersion}".`,
     );
-  }
 
   const selectedEntry = await input.providerReleaseSource.resolveAsync({
     catalogEntry: input.catalogEntry,
-    version: selectedVersion,
+    version: resolvedVersion,
   });
   if (selectedEntry.metadata.category !== input.catalogEntry.metadata.category) {
     throw new Error(
-      `Published ${input.catalogEntry.packageName}@${selectedVersion} does not provide the expected "${input.catalogEntry.metadata.category}" category.`,
+      `Published ${input.catalogEntry.packageName}@${resolvedVersion} does not provide the expected "${input.catalogEntry.metadata.category}" category.`,
     );
   }
   return selectedEntry;
@@ -61,7 +68,7 @@ function readSelectedVersion(
   return uniqueVersions[0] ?? null;
 }
 
-/*** Recognize a registry version without permitting tags, ranges, paths, or workspace protocols. */
+/*** Recognize a concrete registry version without permitting tags, ranges, paths, or workspace protocols. */
 function isExactVersion(value: string): boolean {
   return /^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/.test(
     value,
