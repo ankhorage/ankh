@@ -16,6 +16,9 @@ const bunCache = path.join(root, 'bun-cache');
 try {
   const first = await createConsumerAsync('first', FIRST_VERSION);
   await expectSuccessAsync(first, FIRST_VERSION);
+
+  const ranged = await createInstalledConsumerAsync('range', '^26.0.0', FIRST_VERSION);
+  await expectSuccessAsync(ranged, FIRST_VERSION);
   await expectCacheVersionAsync(FIRST_VERSION);
   await expectNewerCatalogVersionAsync(FIRST_VERSION);
 
@@ -27,8 +30,7 @@ try {
 
   await expectSuccessAsync(first, FIRST_VERSION);
 
-  await expectFailureAsync('malformed', '26.0', 'must use an exact published version');
-  await expectFailureAsync('range', '^26.0.1', 'must use an exact published version');
+  await expectFailureAsync('malformed', '26.0', 'Could not read installed');
   await expectFailureAsync('unpublished', '99.99.99', 'does not exist');
   await expectInvalidManifestFailureAsync();
 } finally {
@@ -46,6 +48,26 @@ async function createConsumerAsync(name: string, version: string): Promise<strin
   await writeFile(
     path.join(cwd, 'zora.web.json'),
     `${JSON.stringify({ components: ['button'], schemaVersion: 1 })}\n`,
+  );
+  return cwd;
+}
+
+/*** Create a ranged consumer with a concrete package installation confirmed by its Bun lockfile. */
+async function createInstalledConsumerAsync(
+  name: string,
+  dependencyRange: string,
+  installedVersion: string,
+): Promise<string> {
+  const cwd = await createConsumerAsync(name, dependencyRange);
+  const packageRoot = path.join(cwd, 'node_modules', ...PACKAGE_NAME.split('/'));
+  await mkdir(packageRoot, { recursive: true });
+  await writeFile(
+    path.join(packageRoot, 'package.json'),
+    `${JSON.stringify({ name: PACKAGE_NAME, version: installedVersion })}\n`,
+  );
+  await writeFile(
+    path.join(cwd, 'bun.lock'),
+    `${JSON.stringify({ packages: { [PACKAGE_NAME]: [`${PACKAGE_NAME}@${installedVersion}`] } })}\n`,
   );
   return cwd;
 }
