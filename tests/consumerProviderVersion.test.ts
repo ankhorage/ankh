@@ -30,6 +30,22 @@ describe('consumer provider version selection', () => {
     expect(resolved).toEqual(latestEntry);
   });
 
+  test('resolves a managed caret range to the installed exact release', async () => {
+    const resolved = await resolve(
+      { devDependencies: { '@ankhorage/fixture': '^1.0.0' } },
+      (version) => Promise.resolve({ ...latestEntry, version }),
+      '1.2.3',
+    );
+    expect(resolved.version).toBe('1.2.3');
+  });
+
+  test('fails closed when a caret range has no installed provider', async () => {
+    await expectFailure(
+      resolve({ devDependencies: { '@ankhorage/fixture': '^1.0.0' } }),
+      'requires an installed compatible exact version',
+    );
+  });
+
   test('fails closed for a missing selected release', async () => {
     await expectFailure(
       resolve({ dependencies: { '@ankhorage/fixture': '1.0.0' } }, () =>
@@ -39,7 +55,7 @@ describe('consumer provider version selection', () => {
     );
   });
 
-  test.each(['^1.0.0', 'latest', 'workspace:*', 'file:../fixture'])(
+  test.each(['~1.0.0', 'latest', 'workspace:*', 'file:../fixture'])(
     'fails closed for unsupported explicit version %s',
     async (version) => {
       await expectFailure(
@@ -83,14 +99,18 @@ describe('consumer provider version selection', () => {
 /*** Resolve one fixture consumer manifest through an injected deterministic release source. */
 function resolve(
   manifest: Record<string, unknown>,
-  resolveRelease: () => Promise<AnkhProviderCatalogEntry> = () =>
-    Promise.resolve({ ...latestEntry, version: '1.0.0' }),
+  resolveRelease: (version: string) => Promise<AnkhProviderCatalogEntry> = (version) =>
+    Promise.resolve({ ...latestEntry, version }),
+  installedVersion: string | null = null,
 ): Promise<AnkhProviderCatalogEntry> {
   return resolveConsumerProviderEntryAsync({
     catalogEntry: latestEntry,
-    consumerManifestSource: { readAsync: () => Promise.resolve(manifest) },
+    consumerManifestSource: {
+      readAsync: () => Promise.resolve(manifest),
+      readInstalledVersionAsync: () => Promise.resolve(installedVersion),
+    },
     cwd: '/consumer',
-    providerReleaseSource: { resolveAsync: resolveRelease },
+    providerReleaseSource: { resolveAsync: ({ version }) => resolveRelease(version) },
   });
 }
 
