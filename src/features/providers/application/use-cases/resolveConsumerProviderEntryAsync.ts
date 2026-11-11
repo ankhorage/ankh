@@ -21,15 +21,13 @@ export async function resolveConsumerProviderEntryAsync(input: {
 
   const selectedVersion = readSelectedVersion(manifest, input.catalogEntry.packageName);
   if (selectedVersion === null) return input.catalogEntry;
-  if (!isExactVersion(selectedVersion)) {
-    throw new Error(
-      `Consumer selects ${input.catalogEntry.packageName} with unsupported version "${selectedVersion}". Provider selections must use an exact published version.`,
-    );
-  }
+  const exactVersion = isExactVersion(selectedVersion)
+    ? selectedVersion
+    : await resolveInstalledCaretVersionAsync(input, selectedVersion);
 
   const selectedEntry = await input.providerReleaseSource.resolveAsync({
     catalogEntry: input.catalogEntry,
-    version: selectedVersion,
+    version: exactVersion,
   });
   if (selectedEntry.metadata.category !== input.catalogEntry.metadata.category) {
     throw new Error(
@@ -37,6 +35,33 @@ export async function resolveConsumerProviderEntryAsync(input: {
     );
   }
   return selectedEntry;
+}
+
+/*** Resolve a compatible caret to the consumer's installed immutable provider identity. */
+async function resolveInstalledCaretVersionAsync(
+  input: {
+    readonly catalogEntry: AnkhProviderCatalogEntry;
+    readonly consumerManifestSource: ConsumerProviderManifestSource;
+    readonly cwd: string;
+  },
+  range: string,
+): Promise<string> {
+  if (!/^\^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$/u.test(range)) {
+    throw new Error(
+      `Consumer selects ${input.catalogEntry.packageName} with unsupported version "${range}". Provider selections must use an exact published version or a supported caret range.`,
+    );
+  }
+  const version = await input.consumerManifestSource.readInstalledVersionAsync(
+    input.cwd,
+    input.catalogEntry.packageName,
+    range,
+  );
+  if (version === null || !isExactVersion(version)) {
+    throw new Error(
+      `Consumer provider ${input.catalogEntry.packageName}@${range} requires an installed compatible exact version. Run bun install --frozen-lockfile.`,
+    );
+  }
+  return version;
 }
 
 /*** Read one unambiguous provider version from supported consumer dependency declarations. */

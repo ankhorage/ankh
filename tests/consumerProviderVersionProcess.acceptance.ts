@@ -28,7 +28,7 @@ try {
   await expectSuccessAsync(first, FIRST_VERSION);
 
   await expectFailureAsync('malformed', '26.0', 'must use an exact published version');
-  await expectFailureAsync('range', '^26.0.1', 'must use an exact published version');
+  await expectFailureAsync('range', '^26.0.1', 'requires an installed compatible exact version');
   await expectFailureAsync('unpublished', '99.99.99', 'does not exist');
   await expectInvalidManifestFailureAsync();
 } finally {
