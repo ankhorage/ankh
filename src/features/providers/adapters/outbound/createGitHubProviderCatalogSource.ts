@@ -1,9 +1,9 @@
-import { areCapabilitiesEqual, normalizeCapability, parseCapability } from '@ankhorage/capability';
+import { areCapabilitiesEqual } from '@ankhorage/capability';
 import type { Capability } from '@ankhorage/contracts/capability';
-import type { AnkhPackageMetadata, AnkhProviderReference } from '@ankhorage/contracts/cli';
 
 import type { AnkhProviderCatalogEntry } from '../../../../types/providers.js';
 import type { ProviderCatalogSource } from '../../application/ports/outbound/providerCatalogSource.js';
+import { parsePublishedProviderEntry } from '../../domain/parsePublishedProviderEntry.js';
 
 const DEFAULT_GITHUB_ORGANIZATION = 'ankhorage';
 const GITHUB_PAGE_SIZE = 100;
@@ -158,95 +158,8 @@ async function readPublishedProviderEntryAsync(
     throw new Error(`npm returned mismatched package metadata while resolving ${packageName}.`);
   }
 
-  const candidate = parseRemoteProviderCandidate(rawPublishedPackage, repository);
-  return candidate.kind === 'provider-entry' ? candidate.entry : null;
-}
-
-type RemoteProviderCandidate =
-  | { readonly kind: 'invalid-provider-candidate' }
-  | { readonly kind: 'not-provider' }
-  | { readonly entry: AnkhProviderCatalogEntry; readonly kind: 'provider-entry' };
-
-/*** Classify published metadata without letting an invalid remote candidate poison catalog aggregation. */
-function parseRemoteProviderCandidate(
-  rawPackage: Record<string, unknown>,
-  repository: GitHubRepository,
-): RemoteProviderCandidate {
-  const packageName = readNonEmptyString(rawPackage.name);
-  const version = readNonEmptyString(rawPackage.version);
-  if (!packageName?.startsWith('@ankhorage/')) {
-    return { kind: 'invalid-provider-candidate' };
-  }
-  if (version === null) {
-    return { kind: 'invalid-provider-candidate' };
-  }
-  if (!isRecord(rawPackage.ankh)) {
-    return { kind: 'invalid-provider-candidate' };
-  }
-
-  const metadata = parseRemoteAnkhMetadata(rawPackage);
-  if (metadata === null) return { kind: 'invalid-provider-candidate' };
-  if (metadata.provider === null) return { kind: 'not-provider' };
-  const providerMetadata = { ...metadata, provider: metadata.provider };
-  const description = readNonEmptyString(rawPackage.description) ?? packageName;
-
-  return {
-    kind: 'provider-entry',
-    entry: {
-      description,
-      metadata: providerMetadata,
-      packageName,
-      repositoryUrl: repository.repositoryUrl,
-      version,
-    },
-  };
-}
-
-/*** Parse canonical metadata for one remote provider candidate. */
-function parseRemoteAnkhMetadata(rawPackage: Record<string, unknown>): AnkhPackageMetadata | null {
-  if (!isRecord(rawPackage.ankh)) return null;
-  const rawMetadata = rawPackage.ankh;
-  const category = readNonEmptyString(rawMetadata.category);
-  if (category === null) return null;
-
-  const provider = resolveRemoteProviderReference(rawMetadata.provider, rawPackage.exports);
-  if (provider === undefined) return null;
-
-  if (rawMetadata.capabilities === undefined) return { capabilities: [], category, provider };
-  if (!Array.isArray(rawMetadata.capabilities)) return null;
-  const capabilities: Capability[] = [];
-  for (const rawCapability of rawMetadata.capabilities) {
-    const capability = parseCapability(rawCapability);
-    if (capability === null) return null;
-    capabilities.push(normalizeCapability(capability));
-  }
-
-  return { capabilities, category, provider };
-}
-
-/*** Resolve an omitted provider from the canonical CLI export while preserving explicit null. */
-function resolveRemoteProviderReference(
-  rawProvider: unknown,
-  packageExports: unknown,
-): AnkhProviderReference | null | undefined {
-  if (rawProvider === null) return null;
-  if (rawProvider === undefined) return resolvePackageCliExport(packageExports);
-  if (typeof rawProvider === 'string' && isProviderReference(rawProvider)) return rawProvider;
-  return undefined;
-}
-
-/*** Read a package-relative CLI export suitable for the Ankh provider runtime. */
-function resolvePackageCliExport(value: unknown): AnkhProviderReference | null {
-  if (!isRecord(value)) return null;
-  const cliExport = value['./cli'];
-  if (typeof cliExport === 'string' && isProviderReference(cliExport)) return cliExport;
-  if (!isRecord(cliExport)) return null;
-
-  for (const candidate of [cliExport.import, cliExport.default]) {
-    if (typeof candidate === 'string' && isProviderReference(candidate)) return candidate;
-  }
-
-  return null;
+  const entry = parsePublishedProviderEntry(rawPublishedPackage, repository.repositoryUrl);
+  return entry?.packageName === packageName ? entry : null;
 }
 
 /*** Reject ambiguous categories or conflicting canonical capabilities in the remote catalog. */
@@ -286,11 +199,6 @@ function readNonEmptyString(value: unknown): string | null {
   if (typeof value !== 'string') return null;
   const trimmed = value.trim();
   return trimmed === '' ? null : trimmed;
-}
-
-/*** Validate package-relative provider references. */
-function isProviderReference(value: string): value is AnkhProviderReference {
-  return value.startsWith('./');
 }
 
 /*** Narrow an unknown JSON value to a non-array object. */

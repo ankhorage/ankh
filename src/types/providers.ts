@@ -20,5 +20,5 @@ export interface AnkhProviderCatalogSnapshot extends AnkhProviderCatalog {
 
 export interface AnkhProviderRuntime {
   resolveCatalogAsync(): Promise<AnkhProviderCatalog>;
-  resolvePackageAsync(entry: AnkhProviderCatalogEntry): Promise<AnkhDiscoveredPackage>;
+  resolvePackageAsync(entry: AnkhProviderCatalogEntry, cwd: string): Promise<AnkhDiscoveredPackage>;
 }

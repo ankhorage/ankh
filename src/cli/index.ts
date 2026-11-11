@@ -419,7 +419,7 @@ async function resolveCategoryCliState(
 
   let discoveredPackage: AnkhDiscoveredPackage;
   try {
-    discoveredPackage = await input.providerRuntime.resolvePackageAsync(entry);
+    discoveredPackage = await input.providerRuntime.resolvePackageAsync(entry, input.context.cwd);
   } catch (error) {
     input.context.writeStderr(
       renderProviderPackageResolutionFailure(category, entry.packageName, error),

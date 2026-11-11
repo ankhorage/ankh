@@ -3,8 +3,11 @@ import path from 'node:path';
 
 import type { AnkhProviderRuntime } from '../../../types/providers.js';
 import { createBunProviderPackageStore } from '../adapters/outbound/createBunProviderPackageStore.js';
+import { createFileConsumerProviderManifestSource } from '../adapters/outbound/createFileConsumerProviderManifestSource.js';
 import { createFileProviderCatalogStore } from '../adapters/outbound/createFileProviderCatalogStore.js';
 import { createGitHubProviderCatalogSource } from '../adapters/outbound/createGitHubProviderCatalogSource.js';
+import { createNpmProviderReleaseSource } from '../adapters/outbound/createNpmProviderReleaseSource.js';
+import { resolveConsumerProviderEntryAsync } from '../application/use-cases/resolveConsumerProviderEntryAsync.js';
 import { resolveProviderCatalogAsync } from '../application/use-cases/resolveProviderCatalogAsync.js';
 
 /*** Compose the production provider runtime around GitHub discovery and the private Ankh cache. */
@@ -22,13 +25,21 @@ export function createProviderRuntime(
   const source = createGitHubProviderCatalogSource({ token });
   const store = createFileProviderCatalogStore(path.join(cacheRoot, 'provider-catalog-v2.json'));
   const packages = createBunProviderPackageStore({ cacheRoot: path.join(cacheRoot, 'providers') });
+  const consumerManifestSource = createFileConsumerProviderManifestSource();
+  const providerReleaseSource = createNpmProviderReleaseSource();
 
   return {
     resolveCatalogAsync() {
       return resolveProviderCatalogAsync({ source, store });
     },
-    resolvePackageAsync(entry) {
-      return packages.resolveAsync(entry);
+    async resolvePackageAsync(entry, cwd) {
+      const selectedEntry = await resolveConsumerProviderEntryAsync({
+        catalogEntry: entry,
+        consumerManifestSource,
+        cwd,
+        providerReleaseSource,
+      });
+      return packages.resolveAsync(selectedEntry);
     },
   };
 }
