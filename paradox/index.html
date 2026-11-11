@@ -169,7 +169,12 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/providers/adapters/outbound/createBunProviderPackageStore.ts">
       src/features/providers/adapters/outbound/createBunProviderPackageStore.ts
-      <small>7 functions</small>
+      <small>8 functions</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts">
+      src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts
+      <small>2 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts">
@@ -179,7 +184,17 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts">
       src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts
-      <small>13 functions</small>
+      <small>8 functions</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts">
+      src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts
+      <small>1 function</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts">
+      src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts
+      <small>4 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts">
@@ -190,6 +205,11 @@
     <button class="nav-button" type="button" data-target="src/features/providers/composition/createProviderRuntime.ts">
       src/features/providers/composition/createProviderRuntime.ts
       <small>1 function</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/features/providers/domain/parsePublishedProviderEntry.ts">
+      src/features/providers/domain/parsePublishedProviderEntry.ts
+      <small>6 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/help.ts">
@@ -243,7 +263,7 @@
       <div class="summary">
         <div><strong>44</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>54</strong><span class="muted">modules</span></div>
+        <div><strong>62</strong><span class="muted">modules</span></div>
         <div><strong>1</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -329,16 +349,31 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/discovery.ts</code>, <code>src/features/providers/application/ports/outbound/providerPackageStore.ts</code>, <code>src/packageMetadata.ts</code>, <code>src/types/providers.ts</code></p>
     <p><strong>Exports:</strong> <code>createBunProviderPackageStore</code></p>
+  </article><article class="item" data-search="src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts src/features/providers/application/ports/outbound/consumerProviderManifestSource.ts src/workspace.ts createFileConsumerProviderManifestSource">
+    <h3>src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/providers/application/ports/outbound/consumerProviderManifestSource.ts</code>, <code>src/workspace.ts</code></p>
+    <p><strong>Exports:</strong> <code>createFileConsumerProviderManifestSource</code></p>
   </article><article class="item" data-search="src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts src/features/providers/application/ports/outbound/providerCatalogStore.ts src/types/providers.ts createFileProviderCatalogStore">
     <h3>src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/features/providers/application/ports/outbound/providerCatalogStore.ts</code>, <code>src/types/providers.ts</code></p>
     <p><strong>Exports:</strong> <code>createFileProviderCatalogStore</code></p>
-  </article><article class="item" data-search="src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts src/features/providers/application/ports/outbound/providerCatalogSource.ts src/types/providers.ts createGitHubProviderCatalogSource">
+  </article><article class="item" data-search="src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts src/features/providers/application/ports/outbound/providerCatalogSource.ts src/features/providers/domain/parsePublishedProviderEntry.ts src/types/providers.ts createGitHubProviderCatalogSource">
     <h3>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/features/providers/application/ports/outbound/providerCatalogSource.ts</code>, <code>src/types/providers.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/features/providers/application/ports/outbound/providerCatalogSource.ts</code>, <code>src/features/providers/domain/parsePublishedProviderEntry.ts</code>, <code>src/types/providers.ts</code></p>
     <p><strong>Exports:</strong> <code>createGitHubProviderCatalogSource</code></p>
+  </article><article class="item" data-search="src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts src/features/providers/application/ports/outbound/providerReleaseSource.ts src/features/providers/domain/parsePublishedProviderEntry.ts createNpmProviderReleaseSource">
+    <h3>src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/providers/application/ports/outbound/providerReleaseSource.ts</code>, <code>src/features/providers/domain/parsePublishedProviderEntry.ts</code></p>
+    <p><strong>Exports:</strong> <code>createNpmProviderReleaseSource</code></p>
+  </article><article class="item" data-search="src/features/providers/application/ports/outbound/consumerProviderManifestSource.ts ConsumerProviderManifestSource">
+    <h3>src/features/providers/application/ports/outbound/consumerProviderManifestSource.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>ConsumerProviderManifestSource</code></p>
   </article><article class="item" data-search="src/features/providers/application/ports/outbound/providerCatalogSource.ts src/types/providers.ts ProviderCatalogSource">
     <h3>src/features/providers/application/ports/outbound/providerCatalogSource.ts</h3>
     <p class="muted">Referenced module</p>
@@ -354,16 +389,31 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/discovery.ts</code>, <code>src/types/providers.ts</code></p>
     <p><strong>Exports:</strong> <code>ProviderPackageStore</code></p>
+  </article><article class="item" data-search="src/features/providers/application/ports/outbound/providerReleaseSource.ts src/types/providers.ts ProviderReleaseSource">
+    <h3>src/features/providers/application/ports/outbound/providerReleaseSource.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/types/providers.ts</code></p>
+    <p><strong>Exports:</strong> <code>ProviderReleaseSource</code></p>
+  </article><article class="item" data-search="src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts src/features/providers/application/ports/outbound/consumerProviderManifestSource.ts src/features/providers/application/ports/outbound/providerReleaseSource.ts src/types/providers.ts resolveConsumerProviderEntryAsync">
+    <h3>src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/providers/application/ports/outbound/consumerProviderManifestSource.ts</code>, <code>src/features/providers/application/ports/outbound/providerReleaseSource.ts</code>, <code>src/types/providers.ts</code></p>
+    <p><strong>Exports:</strong> <code>resolveConsumerProviderEntryAsync</code></p>
   </article><article class="item" data-search="src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts src/features/providers/application/ports/outbound/providerCatalogSource.ts src/features/providers/application/ports/outbound/providerCatalogStore.ts src/types/providers.ts resolveProviderCatalogAsync">
     <h3>src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/features/providers/application/ports/outbound/providerCatalogSource.ts</code>, <code>src/features/providers/application/ports/outbound/providerCatalogStore.ts</code>, <code>src/types/providers.ts</code></p>
     <p><strong>Exports:</strong> <code>resolveProviderCatalogAsync</code></p>
-  </article><article class="item" data-search="src/features/providers/composition/createProviderRuntime.ts src/features/providers/adapters/outbound/createBunProviderPackageStore.ts src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts src/types/providers.ts createProviderRuntime">
+  </article><article class="item" data-search="src/features/providers/composition/createProviderRuntime.ts src/features/providers/adapters/outbound/createBunProviderPackageStore.ts src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts src/types/providers.ts createProviderRuntime">
     <h3>src/features/providers/composition/createProviderRuntime.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/features/providers/adapters/outbound/createBunProviderPackageStore.ts</code>, <code>src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts</code>, <code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts</code>, <code>src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts</code>, <code>src/types/providers.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/features/providers/adapters/outbound/createBunProviderPackageStore.ts</code>, <code>src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts</code>, <code>src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts</code>, <code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts</code>, <code>src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts</code>, <code>src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts</code>, <code>src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts</code>, <code>src/types/providers.ts</code></p>
     <p><strong>Exports:</strong> <code>createProviderRuntime</code></p>
+  </article><article class="item" data-search="src/features/providers/domain/parsePublishedProviderEntry.ts src/types/providers.ts parsePublishedProviderEntry">
+    <h3>src/features/providers/domain/parsePublishedProviderEntry.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/types/providers.ts</code></p>
+    <p><strong>Exports:</strong> <code>parsePublishedProviderEntry</code></p>
   </article><article class="item" data-search="src/help.ts src/execution.ts src/providerManifestLoader.ts src/providerRegistry.ts renderCategoryHelp renderCategoryProviderUnavailable renderCommandExecutionFailure renderDiscoveryFailure renderExecutionDiagnostics renderProviderCatalogFailure renderProviderHelp RenderProviderHelpOptions renderProviderLoadFailure renderProviderManifestDiagnostics renderProviderPackageResolutionFailure renderRootHelp renderUnknownCategory renderUnknownCommand renderUnknownProviderCommand">
     <h3>src/help.ts</h3>
     <p class="muted">Referenced module</p>
@@ -438,6 +488,16 @@
     <h3>tests/commandInteraction.test.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/createCommandInteraction.ts</code></p>
+    <p><strong>Exports:</strong> <span class="empty">None</span></p>
+  </article><article class="item" data-search="tests/consumerProviderVersion.test.ts src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts src/types/providers.ts tests/capabilityFixture.ts">
+    <h3>tests/consumerProviderVersion.test.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts</code>, <code>src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts</code>, <code>src/types/providers.ts</code>, <code>tests/capabilityFixture.ts</code></p>
+    <p><strong>Exports:</strong> <span class="empty">None</span></p>
+  </article><article class="item" data-search="tests/consumerProviderVersionProcess.acceptance.ts">
+    <h3>tests/consumerProviderVersionProcess.acceptance.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
   </article><article class="item" data-search="tests/discovery.test.ts src/discovery.ts tests/capabilityFixture.ts">
     <h3>tests/discovery.test.ts</h3>
@@ -2033,6 +2093,10 @@ package once the provider-facing API is stable.</p>
   module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts --&gt; module_src_features_providers_application_ports_outbound_providerPackageStore_ts
   module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts --&gt; module_src_packageMetadata_ts
   module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts[&quot;src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts
+  module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts --&gt; module_src_features_providers_application_ports_outbound_consumerProviderManifestSource_ts
+  module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts --&gt; module_src_workspace_ts
   module_src_features_providers_adapters_outbound_createFileProviderCatalogStore_ts[&quot;src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_features_providers_adapters_outbound_createFileProviderCatalogStore_ts
   module_src_features_providers_adapters_outbound_createFileProviderCatalogStore_ts --&gt; module_src_features_providers_application_ports_outbound_providerCatalogStore_ts
@@ -2040,7 +2104,14 @@ package once the provider-facing API is stable.</p>
   module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts[&quot;src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts
   module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts --&gt; module_src_features_providers_application_ports_outbound_providerCatalogSource_ts
+  module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts --&gt; module_src_features_providers_domain_parsePublishedProviderEntry_ts
   module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts[&quot;src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts
+  module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts --&gt; module_src_features_providers_application_ports_outbound_providerReleaseSource_ts
+  module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts --&gt; module_src_features_providers_domain_parsePublishedProviderEntry_ts
+  module_src_features_providers_application_ports_outbound_consumerProviderManifestSource_ts[&quot;src/features/providers/application/ports/outbound/consumerProviderManifestSource.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_features_providers_application_ports_outbound_consumerProviderManifestSource_ts
   module_src_features_providers_application_ports_outbound_providerCatalogSource_ts[&quot;src/features/providers/application/ports/outbound/providerCatalogSource.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_features_providers_application_ports_outbound_providerCatalogSource_ts
   module_src_features_providers_application_ports_outbound_providerCatalogSource_ts --&gt; module_src_types_providers_ts
@@ -2051,6 +2122,14 @@ package once the provider-facing API is stable.</p>
   package__ankhorage_ankh -.-&gt; module_src_features_providers_application_ports_outbound_providerPackageStore_ts
   module_src_features_providers_application_ports_outbound_providerPackageStore_ts --&gt; module_src_discovery_ts
   module_src_features_providers_application_ports_outbound_providerPackageStore_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_application_ports_outbound_providerReleaseSource_ts[&quot;src/features/providers/application/ports/outbound/providerReleaseSource.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_features_providers_application_ports_outbound_providerReleaseSource_ts
+  module_src_features_providers_application_ports_outbound_providerReleaseSource_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts[&quot;src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts
+  module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts --&gt; module_src_features_providers_application_ports_outbound_consumerProviderManifestSource_ts
+  module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts --&gt; module_src_features_providers_application_ports_outbound_providerReleaseSource_ts
+  module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts --&gt; module_src_types_providers_ts
   module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts[&quot;src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts
   module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts --&gt; module_src_features_providers_application_ports_outbound_providerCatalogSource_ts
@@ -2059,10 +2138,16 @@ package once the provider-facing API is stable.</p>
   module_src_features_providers_composition_createProviderRuntime_ts[&quot;src/features/providers/composition/createProviderRuntime.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_features_providers_composition_createProviderRuntime_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts
+  module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createFileProviderCatalogStore_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts
+  module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts
+  module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_domain_parsePublishedProviderEntry_ts[&quot;src/features/providers/domain/parsePublishedProviderEntry.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_features_providers_domain_parsePublishedProviderEntry_ts
+  module_src_features_providers_domain_parsePublishedProviderEntry_ts --&gt; module_src_types_providers_ts
   module_src_help_ts[&quot;src/help.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_help_ts
   module_src_help_ts --&gt; module_src_execution_ts
@@ -2115,6 +2200,14 @@ package once the provider-facing API is stable.</p>
   module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_commandInteraction_test_ts
   module_tests_commandInteraction_test_ts --&gt; module_src_createCommandInteraction_ts
+  module_tests_consumerProviderVersion_test_ts[&quot;tests/consumerProviderVersion.test.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_consumerProviderVersion_test_ts
+  module_tests_consumerProviderVersion_test_ts --&gt; module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts
+  module_tests_consumerProviderVersion_test_ts --&gt; module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts
+  module_tests_consumerProviderVersion_test_ts --&gt; module_src_types_providers_ts
+  module_tests_consumerProviderVersion_test_ts --&gt; module_tests_capabilityFixture_ts
+  module_tests_consumerProviderVersionProcess_acceptance_ts[&quot;tests/consumerProviderVersionProcess.acceptance.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_consumerProviderVersionProcess_acceptance_ts
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_discovery_test_ts
   module_tests_discovery_test_ts --&gt; module_src_discovery_ts
@@ -2274,6 +2367,10 @@ package once the provider-facing API is stable.</p>
   module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts --&gt; module_src_features_providers_application_ports_outbound_providerPackageStore_ts
   module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts --&gt; module_src_packageMetadata_ts
   module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts[&quot;src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts
+  module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts --&gt; module_src_features_providers_application_ports_outbound_consumerProviderManifestSource_ts
+  module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts --&gt; module_src_workspace_ts
   module_src_features_providers_adapters_outbound_createFileProviderCatalogStore_ts[&quot;src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_features_providers_adapters_outbound_createFileProviderCatalogStore_ts
   module_src_features_providers_adapters_outbound_createFileProviderCatalogStore_ts --&gt; module_src_features_providers_application_ports_outbound_providerCatalogStore_ts
@@ -2281,7 +2378,14 @@ package once the provider-facing API is stable.</p>
   module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts[&quot;src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts
   module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts --&gt; module_src_features_providers_application_ports_outbound_providerCatalogSource_ts
+  module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts --&gt; module_src_features_providers_domain_parsePublishedProviderEntry_ts
   module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts[&quot;src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts
+  module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts --&gt; module_src_features_providers_application_ports_outbound_providerReleaseSource_ts
+  module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts --&gt; module_src_features_providers_domain_parsePublishedProviderEntry_ts
+  module_src_features_providers_application_ports_outbound_consumerProviderManifestSource_ts[&quot;src/features/providers/application/ports/outbound/consumerProviderManifestSource.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_features_providers_application_ports_outbound_consumerProviderManifestSource_ts
   module_src_features_providers_application_ports_outbound_providerCatalogSource_ts[&quot;src/features/providers/application/ports/outbound/providerCatalogSource.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_features_providers_application_ports_outbound_providerCatalogSource_ts
   module_src_features_providers_application_ports_outbound_providerCatalogSource_ts --&gt; module_src_types_providers_ts
@@ -2292,6 +2396,14 @@ package once the provider-facing API is stable.</p>
   package__ankhorage_ankh -.-&gt; module_src_features_providers_application_ports_outbound_providerPackageStore_ts
   module_src_features_providers_application_ports_outbound_providerPackageStore_ts --&gt; module_src_discovery_ts
   module_src_features_providers_application_ports_outbound_providerPackageStore_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_application_ports_outbound_providerReleaseSource_ts[&quot;src/features/providers/application/ports/outbound/providerReleaseSource.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_features_providers_application_ports_outbound_providerReleaseSource_ts
+  module_src_features_providers_application_ports_outbound_providerReleaseSource_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts[&quot;src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts
+  module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts --&gt; module_src_features_providers_application_ports_outbound_consumerProviderManifestSource_ts
+  module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts --&gt; module_src_features_providers_application_ports_outbound_providerReleaseSource_ts
+  module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts --&gt; module_src_types_providers_ts
   module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts[&quot;src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts
   module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts --&gt; module_src_features_providers_application_ports_outbound_providerCatalogSource_ts
@@ -2300,10 +2412,16 @@ package once the provider-facing API is stable.</p>
   module_src_features_providers_composition_createProviderRuntime_ts[&quot;src/features/providers/composition/createProviderRuntime.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_features_providers_composition_createProviderRuntime_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts
+  module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createFileProviderCatalogStore_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts
+  module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts
+  module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_domain_parsePublishedProviderEntry_ts[&quot;src/features/providers/domain/parsePublishedProviderEntry.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_src_features_providers_domain_parsePublishedProviderEntry_ts
+  module_src_features_providers_domain_parsePublishedProviderEntry_ts --&gt; module_src_types_providers_ts
   module_src_help_ts[&quot;src/help.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_src_help_ts
   module_src_help_ts --&gt; module_src_execution_ts
@@ -2356,6 +2474,14 @@ package once the provider-facing API is stable.</p>
   module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_commandInteraction_test_ts
   module_tests_commandInteraction_test_ts --&gt; module_src_createCommandInteraction_ts
+  module_tests_consumerProviderVersion_test_ts[&quot;tests/consumerProviderVersion.test.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_consumerProviderVersion_test_ts
+  module_tests_consumerProviderVersion_test_ts --&gt; module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts
+  module_tests_consumerProviderVersion_test_ts --&gt; module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts
+  module_tests_consumerProviderVersion_test_ts --&gt; module_src_types_providers_ts
+  module_tests_consumerProviderVersion_test_ts --&gt; module_tests_capabilityFixture_ts
+  module_tests_consumerProviderVersionProcess_acceptance_ts[&quot;tests/consumerProviderVersionProcess.acceptance.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_consumerProviderVersionProcess_acceptance_ts
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_discovery_test_ts
   module_tests_discovery_test_ts --&gt; module_src_discovery_ts
@@ -2466,13 +2592,19 @@ package once the provider-facing API is stable.</p>
   module_src_features_input_resolution_application_resolveAnkhInputValue_test_ts[&quot;src/features/input-resolution/application/resolveAnkhInputValue.test.ts&quot;]
   module_src_features_input_resolution_application_resolveAnkhInputValue_ts[&quot;src/features/input-resolution/application/resolveAnkhInputValue.ts&quot;]
   module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts[&quot;src/features/providers/adapters/outbound/createBunProviderPackageStore.ts&quot;]
+  module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts[&quot;src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts&quot;]
   module_src_features_providers_adapters_outbound_createFileProviderCatalogStore_ts[&quot;src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts&quot;]
   module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts[&quot;src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts&quot;]
+  module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts[&quot;src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts&quot;]
+  module_src_features_providers_application_ports_outbound_consumerProviderManifestSource_ts[&quot;src/features/providers/application/ports/outbound/consumerProviderManifestSource.ts&quot;]
   module_src_features_providers_application_ports_outbound_providerCatalogSource_ts[&quot;src/features/providers/application/ports/outbound/providerCatalogSource.ts&quot;]
   module_src_features_providers_application_ports_outbound_providerCatalogStore_ts[&quot;src/features/providers/application/ports/outbound/providerCatalogStore.ts&quot;]
   module_src_features_providers_application_ports_outbound_providerPackageStore_ts[&quot;src/features/providers/application/ports/outbound/providerPackageStore.ts&quot;]
+  module_src_features_providers_application_ports_outbound_providerReleaseSource_ts[&quot;src/features/providers/application/ports/outbound/providerReleaseSource.ts&quot;]
+  module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts[&quot;src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts&quot;]
   module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts[&quot;src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts&quot;]
   module_src_features_providers_composition_createProviderRuntime_ts[&quot;src/features/providers/composition/createProviderRuntime.ts&quot;]
+  module_src_features_providers_domain_parsePublishedProviderEntry_ts[&quot;src/features/providers/domain/parsePublishedProviderEntry.ts&quot;]
   module_src_help_ts[&quot;src/help.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
   module_src_packageMetadata_ts[&quot;src/packageMetadata.ts&quot;]
@@ -2488,6 +2620,8 @@ package once the provider-facing API is stable.</p>
   module_tests_capabilityFixture_ts[&quot;tests/capabilityFixture.ts&quot;]
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
   module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
+  module_tests_consumerProviderVersion_test_ts[&quot;tests/consumerProviderVersion.test.ts&quot;]
+  module_tests_consumerProviderVersionProcess_acceptance_ts[&quot;tests/consumerProviderVersionProcess.acceptance.ts&quot;]
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   module_tests_doctorCoreProviderReadiness_test_ts[&quot;tests/doctorCoreProviderReadiness.test.ts&quot;]
   module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
@@ -2538,22 +2672,35 @@ package once the provider-facing API is stable.</p>
   module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts --&gt; module_src_features_providers_application_ports_outbound_providerPackageStore_ts
   module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts --&gt; module_src_packageMetadata_ts
   module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts --&gt; module_src_features_providers_application_ports_outbound_consumerProviderManifestSource_ts
+  module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts --&gt; module_src_workspace_ts
   module_src_features_providers_adapters_outbound_createFileProviderCatalogStore_ts --&gt; module_src_features_providers_application_ports_outbound_providerCatalogStore_ts
   module_src_features_providers_adapters_outbound_createFileProviderCatalogStore_ts --&gt; module_src_types_providers_ts
   module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts --&gt; module_src_features_providers_application_ports_outbound_providerCatalogSource_ts
+  module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts --&gt; module_src_features_providers_domain_parsePublishedProviderEntry_ts
   module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts --&gt; module_src_features_providers_application_ports_outbound_providerReleaseSource_ts
+  module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts --&gt; module_src_features_providers_domain_parsePublishedProviderEntry_ts
   module_src_features_providers_application_ports_outbound_providerCatalogSource_ts --&gt; module_src_types_providers_ts
   module_src_features_providers_application_ports_outbound_providerCatalogStore_ts --&gt; module_src_types_providers_ts
   module_src_features_providers_application_ports_outbound_providerPackageStore_ts --&gt; module_src_discovery_ts
   module_src_features_providers_application_ports_outbound_providerPackageStore_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_application_ports_outbound_providerReleaseSource_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts --&gt; module_src_features_providers_application_ports_outbound_consumerProviderManifestSource_ts
+  module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts --&gt; module_src_features_providers_application_ports_outbound_providerReleaseSource_ts
+  module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts --&gt; module_src_types_providers_ts
   module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts --&gt; module_src_features_providers_application_ports_outbound_providerCatalogSource_ts
   module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts --&gt; module_src_features_providers_application_ports_outbound_providerCatalogStore_ts
   module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts --&gt; module_src_types_providers_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts
+  module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createFileProviderCatalogStore_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts
+  module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts
+  module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_domain_parsePublishedProviderEntry_ts --&gt; module_src_types_providers_ts
   module_src_help_ts --&gt; module_src_execution_ts
   module_src_help_ts --&gt; module_src_providerManifestLoader_ts
   module_src_help_ts --&gt; module_src_providerRegistry_ts
@@ -2577,6 +2724,10 @@ package once the provider-facing API is stable.</p>
   module_tests_cli_test_ts --&gt; module_src_providerRegistry_ts
   module_tests_cli_test_ts --&gt; module_tests_capabilityFixture_ts
   module_tests_commandInteraction_test_ts --&gt; module_src_createCommandInteraction_ts
+  module_tests_consumerProviderVersion_test_ts --&gt; module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts
+  module_tests_consumerProviderVersion_test_ts --&gt; module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts
+  module_tests_consumerProviderVersion_test_ts --&gt; module_src_types_providers_ts
+  module_tests_consumerProviderVersion_test_ts --&gt; module_tests_capabilityFixture_ts
   module_tests_discovery_test_ts --&gt; module_src_discovery_ts
   module_tests_discovery_test_ts --&gt; module_tests_capabilityFixture_ts
   module_tests_doctorCoreProviderReadiness_test_ts --&gt; module_src_cli_index_ts
@@ -2651,13 +2802,19 @@ package once the provider-facing API is stable.</p>
   module_src_features_input_resolution_application_resolveAnkhInputValue_test_ts[&quot;src/features/input-resolution/application/resolveAnkhInputValue.test.ts&quot;]
   module_src_features_input_resolution_application_resolveAnkhInputValue_ts[&quot;src/features/input-resolution/application/resolveAnkhInputValue.ts&quot;]
   module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts[&quot;src/features/providers/adapters/outbound/createBunProviderPackageStore.ts&quot;]
+  module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts[&quot;src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts&quot;]
   module_src_features_providers_adapters_outbound_createFileProviderCatalogStore_ts[&quot;src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts&quot;]
   module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts[&quot;src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts&quot;]
+  module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts[&quot;src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts&quot;]
+  module_src_features_providers_application_ports_outbound_consumerProviderManifestSource_ts[&quot;src/features/providers/application/ports/outbound/consumerProviderManifestSource.ts&quot;]
   module_src_features_providers_application_ports_outbound_providerCatalogSource_ts[&quot;src/features/providers/application/ports/outbound/providerCatalogSource.ts&quot;]
   module_src_features_providers_application_ports_outbound_providerCatalogStore_ts[&quot;src/features/providers/application/ports/outbound/providerCatalogStore.ts&quot;]
   module_src_features_providers_application_ports_outbound_providerPackageStore_ts[&quot;src/features/providers/application/ports/outbound/providerPackageStore.ts&quot;]
+  module_src_features_providers_application_ports_outbound_providerReleaseSource_ts[&quot;src/features/providers/application/ports/outbound/providerReleaseSource.ts&quot;]
+  module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts[&quot;src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts&quot;]
   module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts[&quot;src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts&quot;]
   module_src_features_providers_composition_createProviderRuntime_ts[&quot;src/features/providers/composition/createProviderRuntime.ts&quot;]
+  module_src_features_providers_domain_parsePublishedProviderEntry_ts[&quot;src/features/providers/domain/parsePublishedProviderEntry.ts&quot;]
   module_src_help_ts[&quot;src/help.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
   module_src_packageMetadata_ts[&quot;src/packageMetadata.ts&quot;]
@@ -2673,6 +2830,8 @@ package once the provider-facing API is stable.</p>
   module_tests_capabilityFixture_ts[&quot;tests/capabilityFixture.ts&quot;]
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
   module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
+  module_tests_consumerProviderVersion_test_ts[&quot;tests/consumerProviderVersion.test.ts&quot;]
+  module_tests_consumerProviderVersionProcess_acceptance_ts[&quot;tests/consumerProviderVersionProcess.acceptance.ts&quot;]
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   module_tests_doctorCoreProviderReadiness_test_ts[&quot;tests/doctorCoreProviderReadiness.test.ts&quot;]
   module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
@@ -2723,22 +2882,35 @@ package once the provider-facing API is stable.</p>
   module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts --&gt; module_src_features_providers_application_ports_outbound_providerPackageStore_ts
   module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts --&gt; module_src_packageMetadata_ts
   module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts --&gt; module_src_features_providers_application_ports_outbound_consumerProviderManifestSource_ts
+  module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts --&gt; module_src_workspace_ts
   module_src_features_providers_adapters_outbound_createFileProviderCatalogStore_ts --&gt; module_src_features_providers_application_ports_outbound_providerCatalogStore_ts
   module_src_features_providers_adapters_outbound_createFileProviderCatalogStore_ts --&gt; module_src_types_providers_ts
   module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts --&gt; module_src_features_providers_application_ports_outbound_providerCatalogSource_ts
+  module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts --&gt; module_src_features_providers_domain_parsePublishedProviderEntry_ts
   module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts --&gt; module_src_features_providers_application_ports_outbound_providerReleaseSource_ts
+  module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts --&gt; module_src_features_providers_domain_parsePublishedProviderEntry_ts
   module_src_features_providers_application_ports_outbound_providerCatalogSource_ts --&gt; module_src_types_providers_ts
   module_src_features_providers_application_ports_outbound_providerCatalogStore_ts --&gt; module_src_types_providers_ts
   module_src_features_providers_application_ports_outbound_providerPackageStore_ts --&gt; module_src_discovery_ts
   module_src_features_providers_application_ports_outbound_providerPackageStore_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_application_ports_outbound_providerReleaseSource_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts --&gt; module_src_features_providers_application_ports_outbound_consumerProviderManifestSource_ts
+  module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts --&gt; module_src_features_providers_application_ports_outbound_providerReleaseSource_ts
+  module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts --&gt; module_src_types_providers_ts
   module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts --&gt; module_src_features_providers_application_ports_outbound_providerCatalogSource_ts
   module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts --&gt; module_src_features_providers_application_ports_outbound_providerCatalogStore_ts
   module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts --&gt; module_src_types_providers_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts
+  module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createFileProviderCatalogStore_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts
+  module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts
+  module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts
   module_src_features_providers_composition_createProviderRuntime_ts --&gt; module_src_types_providers_ts
+  module_src_features_providers_domain_parsePublishedProviderEntry_ts --&gt; module_src_types_providers_ts
   module_src_help_ts --&gt; module_src_execution_ts
   module_src_help_ts --&gt; module_src_providerManifestLoader_ts
   module_src_help_ts --&gt; module_src_providerRegistry_ts
@@ -2762,6 +2934,10 @@ package once the provider-facing API is stable.</p>
   module_tests_cli_test_ts --&gt; module_src_providerRegistry_ts
   module_tests_cli_test_ts --&gt; module_tests_capabilityFixture_ts
   module_tests_commandInteraction_test_ts --&gt; module_src_createCommandInteraction_ts
+  module_tests_consumerProviderVersion_test_ts --&gt; module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts
+  module_tests_consumerProviderVersion_test_ts --&gt; module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts
+  module_tests_consumerProviderVersion_test_ts --&gt; module_src_types_providers_ts
+  module_tests_consumerProviderVersion_test_ts --&gt; module_tests_capabilityFixture_ts
   module_tests_discovery_test_ts --&gt; module_src_discovery_ts
   module_tests_discovery_test_ts --&gt; module_tests_capabilityFixture_ts
   module_tests_doctorCoreProviderReadiness_test_ts --&gt; module_src_cli_index_ts
@@ -2838,13 +3014,19 @@ package once the provider-facing API is stable.</p>
   module_src_features_input_resolution_application_resolveAnkhInputValue_test_ts[&quot;src/features/input-resolution/application/resolveAnkhInputValue.test.ts&quot;]
   module_src_features_input_resolution_application_resolveAnkhInputValue_ts[&quot;src/features/input-resolution/application/resolveAnkhInputValue.ts&quot;]
   module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts[&quot;src/features/providers/adapters/outbound/createBunProviderPackageStore.ts&quot;]
+  module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts[&quot;src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts&quot;]
   module_src_features_providers_adapters_outbound_createFileProviderCatalogStore_ts[&quot;src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts&quot;]
   module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts[&quot;src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts&quot;]
+  module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts[&quot;src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts&quot;]
+  module_src_features_providers_application_ports_outbound_consumerProviderManifestSource_ts[&quot;src/features/providers/application/ports/outbound/consumerProviderManifestSource.ts&quot;]
   module_src_features_providers_application_ports_outbound_providerCatalogSource_ts[&quot;src/features/providers/application/ports/outbound/providerCatalogSource.ts&quot;]
   module_src_features_providers_application_ports_outbound_providerCatalogStore_ts[&quot;src/features/providers/application/ports/outbound/providerCatalogStore.ts&quot;]
   module_src_features_providers_application_ports_outbound_providerPackageStore_ts[&quot;src/features/providers/application/ports/outbound/providerPackageStore.ts&quot;]
+  module_src_features_providers_application_ports_outbound_providerReleaseSource_ts[&quot;src/features/providers/application/ports/outbound/providerReleaseSource.ts&quot;]
+  module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts[&quot;src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts&quot;]
   module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts[&quot;src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts&quot;]
   module_src_features_providers_composition_createProviderRuntime_ts[&quot;src/features/providers/composition/createProviderRuntime.ts&quot;]
+  module_src_features_providers_domain_parsePublishedProviderEntry_ts[&quot;src/features/providers/domain/parsePublishedProviderEntry.ts&quot;]
   module_src_help_ts[&quot;src/help.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
   module_src_packageMetadata_ts[&quot;src/packageMetadata.ts&quot;]
@@ -2860,6 +3042,8 @@ package once the provider-facing API is stable.</p>
   module_tests_capabilityFixture_ts[&quot;tests/capabilityFixture.ts&quot;]
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
   module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
+  module_tests_consumerProviderVersion_test_ts[&quot;tests/consumerProviderVersion.test.ts&quot;]
+  module_tests_consumerProviderVersionProcess_acceptance_ts[&quot;tests/consumerProviderVersionProcess.acceptance.ts&quot;]
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   module_tests_doctorCoreProviderReadiness_test_ts[&quot;tests/doctorCoreProviderReadiness.test.ts&quot;]
   module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
@@ -3032,13 +3216,19 @@ package once the provider-facing API is stable.</p>
   module_src_features_input_resolution_application_resolveAnkhInputValue_test_ts[&quot;src/features/input-resolution/application/resolveAnkhInputValue.test.ts&quot;]
   module_src_features_input_resolution_application_resolveAnkhInputValue_ts[&quot;src/features/input-resolution/application/resolveAnkhInputValue.ts&quot;]
   module_src_features_providers_adapters_outbound_createBunProviderPackageStore_ts[&quot;src/features/providers/adapters/outbound/createBunProviderPackageStore.ts&quot;]
+  module_src_features_providers_adapters_outbound_createFileConsumerProviderManifestSource_ts[&quot;src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts&quot;]
   module_src_features_providers_adapters_outbound_createFileProviderCatalogStore_ts[&quot;src/features/providers/adapters/outbound/createFileProviderCatalogStore.ts&quot;]
   module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts[&quot;src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts&quot;]
+  module_src_features_providers_adapters_outbound_createNpmProviderReleaseSource_ts[&quot;src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts&quot;]
+  module_src_features_providers_application_ports_outbound_consumerProviderManifestSource_ts[&quot;src/features/providers/application/ports/outbound/consumerProviderManifestSource.ts&quot;]
   module_src_features_providers_application_ports_outbound_providerCatalogSource_ts[&quot;src/features/providers/application/ports/outbound/providerCatalogSource.ts&quot;]
   module_src_features_providers_application_ports_outbound_providerCatalogStore_ts[&quot;src/features/providers/application/ports/outbound/providerCatalogStore.ts&quot;]
   module_src_features_providers_application_ports_outbound_providerPackageStore_ts[&quot;src/features/providers/application/ports/outbound/providerPackageStore.ts&quot;]
+  module_src_features_providers_application_ports_outbound_providerReleaseSource_ts[&quot;src/features/providers/application/ports/outbound/providerReleaseSource.ts&quot;]
+  module_src_features_providers_application_use_cases_resolveConsumerProviderEntryAsync_ts[&quot;src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts&quot;]
   module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts[&quot;src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts&quot;]
   module_src_features_providers_composition_createProviderRuntime_ts[&quot;src/features/providers/composition/createProviderRuntime.ts&quot;]
+  module_src_features_providers_domain_parsePublishedProviderEntry_ts[&quot;src/features/providers/domain/parsePublishedProviderEntry.ts&quot;]
   module_src_help_ts[&quot;src/help.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
   module_src_packageMetadata_ts[&quot;src/packageMetadata.ts&quot;]
@@ -3054,6 +3244,8 @@ package once the provider-facing API is stable.</p>
   module_tests_capabilityFixture_ts[&quot;tests/capabilityFixture.ts&quot;]
   module_tests_cli_test_ts[&quot;tests/cli.test.ts&quot;]
   module_tests_commandInteraction_test_ts[&quot;tests/commandInteraction.test.ts&quot;]
+  module_tests_consumerProviderVersion_test_ts[&quot;tests/consumerProviderVersion.test.ts&quot;]
+  module_tests_consumerProviderVersionProcess_acceptance_ts[&quot;tests/consumerProviderVersionProcess.acceptance.ts&quot;]
   module_tests_discovery_test_ts[&quot;tests/discovery.test.ts&quot;]
   module_tests_doctorCoreProviderReadiness_test_ts[&quot;tests/doctorCoreProviderReadiness.test.ts&quot;]
   module_tests_execution_test_ts[&quot;tests/execution.test.ts&quot;]
@@ -3493,29 +3685,46 @@ Undefined, null, empty, and whitespace-only strings are treated as absent.</p>
     <h3>createBunProviderPackageStore</h3>
     <p class="muted"><code>src/features/providers/adapters/outbound/createBunProviderPackageStore.ts:27:1</code></p>
     <p>Create the provider package cache backed by Bun package installation.</p>
+  </article><article class="item" data-search="resolveVersionCacheRoot src/features/providers/adapters/outbound/createBunProviderPackageStore.ts Resolve the isolated cache project for one provider package and exact version.">
+    <h3>resolveVersionCacheRoot</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createBunProviderPackageStore.ts:70:1</code></p>
+    <p>Resolve the isolated cache project for one provider package and exact version.</p>
   </article><article class="item" data-search="readCachedProviderAsync src/features/providers/adapters/outbound/createBunProviderPackageStore.ts Read and validate an exact provider version already present in the Ankh package cache.">
     <h3>readCachedProviderAsync</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createBunProviderPackageStore.ts:69:1</code></p>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createBunProviderPackageStore.ts:75:1</code></p>
     <p>Read and validate an exact provider version already present in the Ankh package cache.</p>
   </article><article class="item" data-search="ensureCacheProjectAsync src/features/providers/adapters/outbound/createBunProviderPackageStore.ts Ensure the private provider-cache directory is a valid Bun package project.">
     <h3>ensureCacheProjectAsync</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createBunProviderPackageStore.ts:109:1</code></p>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createBunProviderPackageStore.ts:115:1</code></p>
     <p>Ensure the private provider-cache directory is a valid Bun package project.</p>
   </article><article class="item" data-search="runProcess src/features/providers/adapters/outbound/createBunProviderPackageStore.ts Run Bun and capture installation errors without forwarding package-manager noise to the CLI.">
     <h3>runProcess</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createBunProviderPackageStore.ts:126:1</code></p>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createBunProviderPackageStore.ts:132:1</code></p>
     <p>Run Bun and capture installation errors without forwarding package-manager noise to the CLI.</p>
   </article><article class="item" data-search="metadataMatchesCatalog src/features/providers/adapters/outbound/createBunProviderPackageStore.ts Verify cached package metadata still matches the remotely declared catalog contract.">
     <h3>metadataMatchesCatalog</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createBunProviderPackageStore.ts:142:1</code></p>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createBunProviderPackageStore.ts:148:1</code></p>
     <p>Verify cached package metadata still matches the remotely declared catalog contract.</p>
   </article><article class="item" data-search="isNodeError src/features/providers/adapters/outbound/createBunProviderPackageStore.ts Narrow an unknown value to a Node filesystem error.">
     <h3>isNodeError</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createBunProviderPackageStore.ts:158:1</code></p>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createBunProviderPackageStore.ts:164:1</code></p>
     <p>Narrow an unknown value to a Node filesystem error.</p>
   </article><article class="item" data-search="isRecord src/features/providers/adapters/outbound/createBunProviderPackageStore.ts Narrow an unknown JSON value to a non-array object.">
     <h3>isRecord</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createBunProviderPackageStore.ts:163:1</code></p>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createBunProviderPackageStore.ts:169:1</code></p>
+    <p>Narrow an unknown JSON value to a non-array object.</p>
+  </article>
+    </section>
+  </section><section id="view-src-features-providers-adapters-outbound-createfileconsumerprovidermanifestsource-ts" class="view" data-view="src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts" hidden>
+    <section class="panel">
+      <h2>src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts</h2>
+      <article class="item" data-search="createFileConsumerProviderManifestSource src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts Create the filesystem adapter that reads the invoking consumer package manifest.">
+    <h3>createFileConsumerProviderManifestSource</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts:8:1</code></p>
+    <p>Create the filesystem adapter that reads the invoking consumer package manifest.</p>
+  </article><article class="item" data-search="isRecord src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts Narrow an unknown JSON value to a non-array object.">
+    <h3>isRecord</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createFileConsumerProviderManifestSource.ts:31:1</code></p>
     <p>Narrow an unknown JSON value to a non-array object.</p>
   </article>
     </section>
@@ -3571,37 +3780,47 @@ Undefined, null, empty, and whitespace-only strings are treated as absent.</p>
     <h3>readPublishedProviderEntryAsync</h3>
     <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:136:1</code></p>
     <p>Read the latest published npm manifest so catalog state is always installable.</p>
-  </article><article class="item" data-search="parseRemoteProviderCandidate src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Classify published metadata without letting an invalid remote candidate poison catalog aggregation.">
-    <h3>parseRemoteProviderCandidate</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:171:1</code></p>
-    <p>Classify published metadata without letting an invalid remote candidate poison catalog aggregation.</p>
-  </article><article class="item" data-search="parseRemoteAnkhMetadata src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Parse canonical metadata for one remote provider candidate.">
-    <h3>parseRemoteAnkhMetadata</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:206:1</code></p>
-    <p>Parse canonical metadata for one remote provider candidate.</p>
-  </article><article class="item" data-search="resolveRemoteProviderReference src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Resolve an omitted provider from the canonical CLI export while preserving explicit null.">
-    <h3>resolveRemoteProviderReference</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:228:1</code></p>
-    <p>Resolve an omitted provider from the canonical CLI export while preserving explicit null.</p>
-  </article><article class="item" data-search="resolvePackageCliExport src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Read a package-relative CLI export suitable for the Ankh provider runtime.">
-    <h3>resolvePackageCliExport</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:239:1</code></p>
-    <p>Read a package-relative CLI export suitable for the Ankh provider runtime.</p>
   </article><article class="item" data-search="validateCatalogUniqueness src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Reject ambiguous categories or conflicting canonical capabilities in the remote catalog.">
     <h3>validateCatalogUniqueness</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:253:1</code></p>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:166:1</code></p>
     <p>Reject ambiguous categories or conflicting canonical capabilities in the remote catalog.</p>
   </article><article class="item" data-search="readNonEmptyString src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Read a trimmed non-empty string.">
     <h3>readNonEmptyString</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:285:1</code></p>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:198:1</code></p>
     <p>Read a trimmed non-empty string.</p>
-  </article><article class="item" data-search="isProviderReference src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Validate package-relative provider references.">
-    <h3>isProviderReference</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:292:1</code></p>
-    <p>Validate package-relative provider references.</p>
   </article><article class="item" data-search="isRecord src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Narrow an unknown JSON value to a non-array object.">
     <h3>isRecord</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:297:1</code></p>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:205:1</code></p>
+    <p>Narrow an unknown JSON value to a non-array object.</p>
+  </article>
+    </section>
+  </section><section id="view-src-features-providers-adapters-outbound-createnpmproviderreleasesource-ts" class="view" data-view="src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts" hidden>
+    <section class="panel">
+      <h2>src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts</h2>
+      <article class="item" data-search="createNpmProviderReleaseSource src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts Create the npm adapter that resolves one explicitly selected published provider release.">
+    <h3>createNpmProviderReleaseSource</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts:7:1</code></p>
+    <p>Create the npm adapter that resolves one explicitly selected published provider release.</p>
+  </article>
+    </section>
+  </section><section id="view-src-features-providers-application-use-cases-resolveconsumerproviderentryasync-ts" class="view" data-view="src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts</h2>
+      <article class="item" data-search="resolveConsumerProviderEntryAsync src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts Resolve a catalog provider to the exact version explicitly selected by its consumer.">
+    <h3>resolveConsumerProviderEntryAsync</h3>
+    <p class="muted"><code>src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts:13:1</code></p>
+    <p>Resolve a catalog provider to the exact version explicitly selected by its consumer.</p>
+  </article><article class="item" data-search="readSelectedVersion src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts Read one unambiguous provider version from supported consumer dependency declarations.">
+    <h3>readSelectedVersion</h3>
+    <p class="muted"><code>src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts:43:1</code></p>
+    <p>Read one unambiguous provider version from supported consumer dependency declarations.</p>
+  </article><article class="item" data-search="isExactVersion src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts Recognize a registry version without permitting tags, ranges, paths, or workspace protocols.">
+    <h3>isExactVersion</h3>
+    <p class="muted"><code>src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts:65:1</code></p>
+    <p>Recognize a registry version without permitting tags, ranges, paths, or workspace protocols.</p>
+  </article><article class="item" data-search="isRecord src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts Narrow an unknown JSON value to a non-array object.">
+    <h3>isRecord</h3>
+    <p class="muted"><code>src/features/providers/application/use-cases/resolveConsumerProviderEntryAsync.ts:72:1</code></p>
     <p>Narrow an unknown JSON value to a non-array object.</p>
   </article>
     </section>
@@ -3619,8 +3838,37 @@ Undefined, null, empty, and whitespace-only strings are treated as absent.</p>
       <h2>src/features/providers/composition/createProviderRuntime.ts</h2>
       <article class="item" data-search="createProviderRuntime src/features/providers/composition/createProviderRuntime.ts Compose the production provider runtime around GitHub discovery and the private Ankh cache.">
     <h3>createProviderRuntime</h3>
-    <p class="muted"><code>src/features/providers/composition/createProviderRuntime.ts:11:1</code></p>
+    <p class="muted"><code>src/features/providers/composition/createProviderRuntime.ts:14:1</code></p>
     <p>Compose the production provider runtime around GitHub discovery and the private Ankh cache.</p>
+  </article>
+    </section>
+  </section><section id="view-src-features-providers-domain-parsepublishedproviderentry-ts" class="view" data-view="src/features/providers/domain/parsePublishedProviderEntry.ts" hidden>
+    <section class="panel">
+      <h2>src/features/providers/domain/parsePublishedProviderEntry.ts</h2>
+      <article class="item" data-search="parsePublishedProviderEntry src/features/providers/domain/parsePublishedProviderEntry.ts Parse one published npm package into validated Ankh provider catalog metadata.">
+    <h3>parsePublishedProviderEntry</h3>
+    <p class="muted"><code>src/features/providers/domain/parsePublishedProviderEntry.ts:7:1</code></p>
+    <p>Parse one published npm package into validated Ankh provider catalog metadata.</p>
+  </article><article class="item" data-search="parseAnkhMetadata src/features/providers/domain/parsePublishedProviderEntry.ts Parse canonical provider metadata from an npm package manifest.">
+    <h3>parseAnkhMetadata</h3>
+    <p class="muted"><code>src/features/providers/domain/parsePublishedProviderEntry.ts:29:1</code></p>
+    <p>Parse canonical provider metadata from an npm package manifest.</p>
+  </article><article class="item" data-search="resolveProviderReference src/features/providers/domain/parsePublishedProviderEntry.ts Resolve an explicit provider reference or the package CLI export.">
+    <h3>resolveProviderReference</h3>
+    <p class="muted"><code>src/features/providers/domain/parsePublishedProviderEntry.ts:48:1</code></p>
+    <p>Resolve an explicit provider reference or the package CLI export.</p>
+  </article><article class="item" data-search="resolvePackageCliExport src/features/providers/domain/parsePublishedProviderEntry.ts Resolve the canonical CLI export as a package-relative provider reference.">
+    <h3>resolvePackageCliExport</h3>
+    <p class="muted"><code>src/features/providers/domain/parsePublishedProviderEntry.ts:60:1</code></p>
+    <p>Resolve the canonical CLI export as a package-relative provider reference.</p>
+  </article><article class="item" data-search="readNonEmptyString src/features/providers/domain/parsePublishedProviderEntry.ts Read a trimmed non-empty string.">
+    <h3>readNonEmptyString</h3>
+    <p class="muted"><code>src/features/providers/domain/parsePublishedProviderEntry.ts:76:1</code></p>
+    <p>Read a trimmed non-empty string.</p>
+  </article><article class="item" data-search="isRecord src/features/providers/domain/parsePublishedProviderEntry.ts Narrow an unknown JSON value to a non-array object.">
+    <h3>isRecord</h3>
+    <p class="muted"><code>src/features/providers/domain/parsePublishedProviderEntry.ts:81:1</code></p>
+    <p>Narrow an unknown JSON value to a non-array object.</p>
   </article>
     </section>
   </section><section id="view-src-help-ts" class="view" data-view="src/help.ts" hidden>

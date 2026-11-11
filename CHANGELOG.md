@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.13.4
+
+### Patch Changes
+
+- b7a5cc6: Resolve an explicitly consumer-declared Ankh provider version instead of silently materializing a newer catalog release.
+
 ## 0.13.3
 
 ### Patch Changes
