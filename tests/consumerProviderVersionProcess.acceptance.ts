@@ -6,6 +6,8 @@ import path from 'node:path';
 
 const REPOSITORY_ROOT = path.dirname(import.meta.dir);
 const PROVIDER = { category: 'doctor', packageName: '@ankhorage/doctor' } as const;
+const DOCTOR_USAGE = /^Usage:\n\n {2}ankh doctor <command>$/mu;
+const DOCTOR_COMMANDS = ['fix', 'package', 'repo', 'validate'] as const;
 
 const root = await mkdtemp(path.join(tmpdir(), 'ankh-published-provider-'));
 const cache = path.join(root, 'ankh-cache');
@@ -127,7 +129,7 @@ async function runAsync(
 async function expectSuccessAsync(cwd: string, version: string): Promise<void> {
   const result = await runAsync(cwd);
   equal(result.code, 0, result.stderr);
-  match(result.stdout, new RegExp(`Commands for ${PROVIDER.category}`, 'u'));
+  expectProviderHelp(result.stdout);
   await expectCacheVersionAsync(version);
 }
 
@@ -236,9 +238,21 @@ async function expectNoCachedProviderAsync(version: string): Promise<void> {
   );
 }
 
-/*** Ensure failure paths do not present category help as a successful result. */
+/*** Verify the published Doctor provider exposes its public category-help contract. */
+function expectProviderHelp(stdout: string): void {
+  match(stdout, DOCTOR_USAGE);
+  match(stdout, /^Commands:\n$/mu);
+  for (const command of DOCTOR_COMMANDS) {
+    match(stdout, new RegExp(`^ {2}${command}\\b`, 'mu'));
+  }
+}
+
+/*** Ensure failure paths do not present Doctor usage or commands as a successful result. */
 function expectNoProviderHelp(stdout: string): void {
-  if (stdout.includes(`Commands for ${PROVIDER.category}`)) {
+  if (
+    DOCTOR_USAGE.test(stdout) ||
+    /^Commands:\n\n {2}(?:fix|package|repo|validate)\b/mu.test(stdout)
+  ) {
     fail(`Expected no successful ${PROVIDER.category} provider help after failure.`);
   }
 }
