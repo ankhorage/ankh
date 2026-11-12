@@ -48,6 +48,7 @@
   "scripts": {
     "build": "rm -rf dist tsconfig.tsbuildinfo tsconfig.build.tsbuildinfo && bun x tsc -p tsconfig.build.json",
     "typecheck": "bun x tsc --noEmit -p tsconfig.json",
+    "cache:rm": "rm -f "${ANKH_CACHE_DIR:-$HOME/.ankh}/provider-catalog-v2.json"",
     "lint": "ankhorage-eslint . --max-warnings=0",
     "lint:fix": "ankhorage-eslint . --fix --max-warnings=0",
     "format": "ankhorage-prettier --write .",
