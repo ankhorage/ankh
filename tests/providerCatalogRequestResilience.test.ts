@@ -103,6 +103,168 @@ describe('provider catalog remote request resilience', () => {
     expect(delays[1]).toBe(2_000);
   });
 
+  test('retries each reproduced Bun connection error', async () => {
+    const reproducedErrors = [
+      'The socket connection was closed unexpectedly.',
+      'Unable to connect. Is the computer able to access the url?',
+    ];
+
+    for (const errorMessage of reproducedErrors) {
+      let rawAttempts = 0;
+      const source = createGitHubProviderCatalogSource({
+        fetchImpl(input) {
+          const url = readRequestUrl(input);
+          if (url.includes('/orgs/ankhorage/repos')) {
+            return Promise.resolve(jsonResponse([githubRepository('retryable')]));
+          }
+          if (url.includes('raw.githubusercontent.com')) {
+            rawAttempts += 1;
+            return rawAttempts === 1
+              ? Promise.reject(new Error(errorMessage))
+              : Promise.resolve(jsonResponse({ name: '@ankhorage/retryable' }));
+          }
+          return Promise.resolve(jsonResponse(remoteProviderPackage('retryable')));
+        },
+        retryDelayAsync: () => Promise.resolve(),
+      });
+
+      const entries = await source.readAsync();
+      expect(entries).toHaveLength(1);
+      expect(rawAttempts).toBe(2);
+    }
+  });
+
+  test('retries transport failures while consuming a successful response body', async () => {
+    let rawAttempts = 0;
+    const source = createGitHubProviderCatalogSource({
+      fetchImpl(input) {
+        const url = readRequestUrl(input);
+        if (url.includes('/orgs/ankhorage/repos')) {
+          return Promise.resolve(jsonResponse([githubRepository('retryable')]));
+        }
+        if (url.includes('raw.githubusercontent.com')) {
+          rawAttempts += 1;
+          return Promise.resolve(
+            rawAttempts === 1
+              ? rejectingJsonResponse('The socket connection was closed unexpectedly.')
+              : jsonResponse({ name: '@ankhorage/retryable' }),
+          );
+        }
+        return Promise.resolve(jsonResponse(remoteProviderPackage('retryable')));
+      },
+      retryDelayAsync: () => Promise.resolve(),
+    });
+
+    const entries = await source.readAsync();
+    expect(entries).toHaveLength(1);
+    expect(rawAttempts).toBe(2);
+  });
+
+  test('bounds stalled response-body reads and aborts every attempt', async () => {
+    const signals: AbortSignal[] = [];
+    let bodyReads = 0;
+    const source = createGitHubProviderCatalogSource({
+      fetchImpl(_input, init) {
+        const signal = init?.signal;
+        if (!(signal instanceof AbortSignal)) throw new Error('Expected an abort signal.');
+        signals.push(signal);
+        const response = new Response('[]', { status: 200 });
+        Object.defineProperty(response, 'json', {
+          value: () => {
+            bodyReads += 1;
+            return new Promise((_resolve, reject) => {
+              signal.addEventListener('abort', () => reject(new Error('body stream interrupted')), {
+                once: true,
+              });
+            });
+          },
+        });
+        return Promise.resolve(response);
+      },
+      requestTimeoutMs: 1,
+      retryDelayAsync: () => Promise.resolve(),
+    });
+
+    await source.readAsync().then(
+      () => {
+        throw new Error('Expected the stalled body to time out.');
+      },
+      (error: unknown) => {
+        expect(error).toHaveProperty(
+          'message',
+          expect.stringContaining('request timeout; retries exhausted after 3 attempts'),
+        );
+      },
+    );
+    expect(bodyReads).toBe(3);
+    expect(signals).toHaveLength(3);
+    expect(signals.every((signal) => signal.aborted)).toBeTrue();
+  });
+
+  test('retries rate-limited GitHub 403 responses but not ordinary forbidden responses', async () => {
+    let rateLimitedAttempts = 0;
+    const delays: number[] = [];
+    const rateLimited = createGitHubProviderCatalogSource({
+      fetchImpl() {
+        rateLimitedAttempts += 1;
+        return Promise.resolve(
+          rateLimitedAttempts === 1
+            ? new Response(null, {
+                headers: { 'Retry-After': '2', 'X-RateLimit-Remaining': '0' },
+                status: 403,
+              })
+            : jsonResponse([]),
+        );
+      },
+      retryDelayAsync(milliseconds) {
+        delays.push(milliseconds);
+        return Promise.resolve();
+      },
+    });
+    const forbidden = createGitHubProviderCatalogSource({
+      fetchImpl: () => Promise.resolve(new Response(null, { status: 403 })),
+    });
+
+    const entries = await rateLimited.readAsync();
+    expect(entries).toEqual([]);
+    await forbidden.readAsync().then(
+      () => {
+        throw new Error('Expected ordinary forbidden access to fail.');
+      },
+      (error: unknown) => {
+        expect(error).toHaveProperty('message', expect.stringContaining('HTTP 403; not retried'));
+      },
+    );
+    expect(rateLimitedAttempts).toBe(2);
+    expect(delays).toEqual([2_000]);
+  });
+
+  test('rejects rate-limit guidance beyond the finite retry-delay budget', async () => {
+    const source = createGitHubProviderCatalogSource({
+      fetchImpl: () =>
+        Promise.resolve(
+          new Response(null, {
+            headers: { 'Retry-After': '61', 'X-RateLimit-Remaining': '0' },
+            status: 403,
+          }),
+        ),
+    });
+
+    await source.readAsync().then(
+      () => {
+        throw new Error('Expected excessive retry guidance to fail.');
+      },
+      (error: unknown) => {
+        expect(error).toHaveProperty(
+          'message',
+          expect.stringContaining(
+            'server retry delay 61000ms exceeds maximum 60000ms; not retried',
+          ),
+        );
+      },
+    );
+  });
+
   test('reports permanent and invalid responses with their sanitized source context', async () => {
     const unauthorized = createGitHubProviderCatalogSource({
       fetchImpl: () => Promise.resolve(new Response(null, { status: 401 })),
@@ -184,6 +346,12 @@ function jsonResponse(value: unknown): Response {
     headers: { 'Content-Type': 'application/json' },
     status: 200,
   });
+}
+
+function rejectingJsonResponse(message: string): Response {
+  const response = jsonResponse({});
+  Object.defineProperty(response, 'json', { value: () => Promise.reject(new Error(message)) });
+  return response;
 }
 
 function githubRepository(name: string): Record<string, unknown> {

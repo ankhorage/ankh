@@ -12,6 +12,7 @@ const MAX_CONCURRENT_REPOSITORIES = 5;
 const MAX_REQUEST_ATTEMPTS = 3;
 const REQUEST_TIMEOUT_MS = 10_000;
 const RETRY_BASE_DELAY_MS = 250;
+const MAX_SERVER_RETRY_DELAY_MS = 60_000;
 
 type FetchFunction = (input: string | URL | Request, init?: RequestInit) => Promise<Response>;
 type DelayAsync = (milliseconds: number) => Promise<void>;
@@ -82,6 +83,11 @@ interface RequestPolicy {
   readonly retryDelayAsync: DelayAsync;
 }
 
+interface RemoteJsonResponse {
+  readonly json: unknown;
+  readonly status: number;
+}
+
 /*** Read all public repositories in the provider organization. */
 async function readRepositoriesAsync(
   fetchImpl: FetchFunction,
@@ -94,7 +100,7 @@ async function readRepositoriesAsync(
 
   for (const page of pages) {
     const source = `GitHub API page ${page}`;
-    const response = await readRemoteResponseAsync(
+    const response = await readRemoteJsonAsync(
       fetchImpl,
       {
         init: {
@@ -110,7 +116,7 @@ async function readRepositoriesAsync(
       },
       requestPolicy,
     );
-    const rawPage = await readJsonAsync(response, source, 'GitHub repository discovery');
+    const rawPage = response.json;
     if (!Array.isArray(rawPage)) {
       throw new Error('GitHub repository discovery returned an invalid repository list.');
     }
@@ -158,7 +164,7 @@ async function readProviderEntryAsync(
   requestPolicy: RequestPolicy,
 ): Promise<AnkhProviderCatalogEntry | null> {
   const rawSource = `raw.githubusercontent.com/${repository.name}/package.json`;
-  const response = await readRemoteResponseAsync(
+  const response = await readRemoteJsonAsync(
     fetchImpl,
     {
       phase: `provider package discovery for repository "${repository.name}"`,
@@ -170,11 +176,7 @@ async function readProviderEntryAsync(
   );
   if (response.status === 404) return null;
 
-  const rawCandidatePackage = await readJsonAsync(
-    response,
-    rawSource,
-    'provider package discovery',
-  );
+  const rawCandidatePackage = response.json;
   if (!isRecord(rawCandidatePackage)) return null;
   const packageName = readNonEmptyString(rawCandidatePackage.name);
   if (!packageName?.startsWith('@ankhorage/')) return null;
@@ -190,7 +192,7 @@ async function readPublishedProviderEntryAsync(
   requestPolicy: RequestPolicy,
 ): Promise<AnkhProviderCatalogEntry | null> {
   const source = `npm package metadata for ${packageName}`;
-  const response = await readRemoteResponseAsync(
+  const response = await readRemoteJsonAsync(
     fetchImpl,
     {
       init: { headers: { Accept: 'application/json' } },
@@ -203,11 +205,7 @@ async function readPublishedProviderEntryAsync(
   );
   if (response.status === 404) return null;
 
-  const rawPublishedPackage = await readJsonAsync(
-    response,
-    source,
-    'published provider resolution',
-  );
+  const rawPublishedPackage = response.json;
   if (!isRecord(rawPublishedPackage)) {
     throw new Error(`npm returned invalid package metadata while resolving ${packageName}.`);
   }
@@ -220,13 +218,13 @@ async function readPublishedProviderEntryAsync(
   return entry?.packageName === packageName ? entry : null;
 }
 
-/*** Fetch one remote source with timeout, bounded retries, and sanitized diagnostics. */
-async function readRemoteResponseAsync(
+/*** Fetch and parse one remote JSON source with timeout, bounded retries, and sanitized diagnostics. */
+async function readRemoteJsonAsync(
   fetchImpl: FetchFunction,
   request: RemoteRequest,
   requestPolicy: RequestPolicy,
   allowsNotFound = false,
-): Promise<Response> {
+): Promise<RemoteJsonResponse> {
   const attempts = Array.from({ length: MAX_REQUEST_ATTEMPTS }, (_, index) => index + 1);
 
   for (const attempt of attempts) {
@@ -236,18 +234,47 @@ async function readRemoteResponseAsync(
         request.url,
         request.init,
         requestPolicy.requestTimeoutMs,
+        async (receivedResponse) => {
+          if (!receivedResponse.ok) {
+            await discardResponseBodyAsync(receivedResponse);
+            return { json: undefined, response: receivedResponse };
+          }
+          try {
+            return { json: await receivedResponse.json(), response: receivedResponse };
+          } catch (error) {
+            if (isTransientRequestError(error)) throw error;
+            throw new InvalidJsonError(error);
+          }
+        },
       );
-      if (response.ok || (allowsNotFound && response.status === 404)) return response;
-      if (!isRetryableStatus(response.status)) {
-        throw requestFailureError(request, `HTTP ${response.status}`, attempt, false);
+      if (response.response.ok || (allowsNotFound && response.response.status === 404)) {
+        return { json: response.json, status: response.response.status };
+      }
+      if (!isRetryableResponse(response.response)) {
+        throw requestFailureError(request, `HTTP ${response.response.status}`, attempt, false);
       }
       if (attempt === MAX_REQUEST_ATTEMPTS) {
-        throw requestFailureError(request, `HTTP ${response.status}`, attempt, true);
+        throw requestFailureError(request, `HTTP ${response.response.status}`, attempt, true);
       }
-      await discardResponseBodyAsync(response);
-      await requestPolicy.retryDelayAsync(retryDelayMs(response, attempt, requestPolicy.random));
+      await requestPolicy.retryDelayAsync(
+        retryDelayMs(response.response, attempt, requestPolicy.random),
+      );
     } catch (error) {
       if (isCatalogRequestError(error)) throw error;
+      if (error instanceof RetryDelayBudgetError) {
+        throw requestFailureError(
+          request,
+          `server retry delay ${error.delayMs}ms exceeds maximum ${MAX_SERVER_RETRY_DELAY_MS}ms`,
+          attempt,
+          false,
+        );
+      }
+      if (error instanceof InvalidJsonError) {
+        throw new Error(
+          `Provider catalog ${request.phase} received invalid JSON from ${request.source}.`,
+          { cause: error },
+        );
+      }
       const retryable = isTransientRequestError(error);
       if (!retryable || attempt === MAX_REQUEST_ATTEMPTS) {
         throw requestFailureError(request, requestErrorCategory(error), attempt, retryable);
@@ -259,46 +286,48 @@ async function readRemoteResponseAsync(
   throw new Error('Provider catalog request attempts were unexpectedly exhausted.');
 }
 
-/*** Invoke fetch with an abort signal and release its timer on every settled path. */
-async function fetchWithTimeoutAsync(
+/*** Invoke fetch and consume its response under one abortable deadline. */
+async function fetchWithTimeoutAsync<Result>(
   fetchImpl: FetchFunction,
   url: string,
   init: RequestInit | undefined,
   timeoutMs: number,
-): Promise<Response> {
+  consumeResponseAsync: (response: Response) => Promise<Result>,
+): Promise<Result> {
   const controller = new AbortController();
-  return new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => {
+  let response: Response | undefined;
+  let timeout: ReturnType<typeof setTimeout> | undefined;
+  const deadline = new Promise<never>((_resolve, reject) => {
+    timeout = setTimeout(() => {
       controller.abort();
+      if (response !== undefined) void discardResponseBodyAsync(response);
       reject(new RequestTimeoutError());
     }, timeoutMs);
-    void Promise.resolve()
-      .then(() => fetchImpl(url, { ...init, signal: controller.signal }))
-      .then(
-        (response) => {
-          clearTimeout(timeout);
-          resolve(response);
-        },
-        (error: unknown) => {
-          clearTimeout(timeout);
-          reject(toError(error));
-        },
-      );
   });
+  const request = Promise.resolve()
+    .then(() => fetchImpl(url, { ...init, signal: controller.signal }))
+    .then(async (receivedResponse) => {
+      response = receivedResponse;
+      if (controller.signal.aborted) {
+        await discardResponseBodyAsync(receivedResponse);
+        throw new RequestTimeoutError();
+      }
+      return consumeResponseAsync(receivedResponse);
+    })
+    .catch((error: unknown) => {
+      throw toError(error);
+    });
+
+  try {
+    return await Promise.race([request, deadline]);
+  } finally {
+    if (timeout !== undefined) clearTimeout(timeout);
+  }
 }
 
 /*** Convert an unknown fetch rejection into the Error boundary used by request diagnostics. */
 function toError(error: unknown): Error {
   return error instanceof Error ? error : new Error('Provider catalog request failed.');
-}
-
-/*** Parse a JSON response while retaining source context without exposing response content. */
-async function readJsonAsync(response: Response, source: string, phase: string): Promise<unknown> {
-  try {
-    return await response.json();
-  } catch {
-    throw new Error(`Provider catalog ${phase} received invalid JSON from ${source}.`);
-  }
 }
 
 /*** Process asynchronous operations in fixed-size batches without unbounded remote work. */
@@ -336,7 +365,12 @@ function retryDelayMs(
   random: () => number,
 ): number {
   const serverDelayMs = response === undefined ? null : readServerRetryDelayMs(response);
-  if (serverDelayMs !== null) return serverDelayMs;
+  if (serverDelayMs !== null) {
+    if (serverDelayMs > MAX_SERVER_RETRY_DELAY_MS) {
+      throw new RetryDelayBudgetError(serverDelayMs);
+    }
+    return serverDelayMs;
+  }
   const exponentialDelayMs = RETRY_BASE_DELAY_MS * 2 ** (attempt - 1);
   return Math.round(exponentialDelayMs * (0.5 + random()));
 }
@@ -357,18 +391,32 @@ function readServerRetryDelayMs(response: Response): number | null {
 }
 
 /*** Identify HTTP responses that can recover without changing provider metadata. */
-function isRetryableStatus(status: number): boolean {
-  return status === 408 || status === 429 || status >= 500;
+function isRetryableResponse(response: Response): boolean {
+  return (
+    response.status === 408 ||
+    response.status === 429 ||
+    response.status >= 500 ||
+    (response.status === 403 &&
+      (response.headers.get('x-ratelimit-remaining') === '0' ||
+        response.headers.has('retry-after')))
+  );
 }
 
 /*** Identify connection and timeout errors that can be retried safely. */
 function isTransientRequestError(error: unknown): boolean {
   if (error instanceof RequestTimeoutError) return true;
   if (!(error instanceof Error)) return false;
+  if (isTransientError(error)) return true;
+  return 'cause' in error && isTransientError(error.cause);
+}
+
+/*** Identify transient transport codes and the two observed Bun connection messages. */
+function isTransientError(error: unknown): boolean {
+  if (!(error instanceof Error)) return false;
   const code = 'code' in error ? String(error.code) : '';
   return (
     /ECONNRESET|ECONNREFUSED|EAI_AGAIN|ENETUNREACH|ETIMEDOUT/u.test(code) ||
-    /socket|connection|network|fetch failed|timed out|timeout/u.test(error.message)
+    /socket|connection|\bconnect\b|network|fetch failed|timed out|timeout/u.test(error.message)
   );
 }
 
@@ -400,6 +448,21 @@ function isCatalogRequestError(error: unknown): error is CatalogRequestError {
 class CatalogRequestError extends Error {}
 
 class RequestTimeoutError extends Error {}
+
+class InvalidJsonError extends Error {
+  constructor(cause: unknown) {
+    super(undefined, { cause });
+  }
+}
+
+class RetryDelayBudgetError extends Error {
+  readonly delayMs: number;
+
+  constructor(delayMs: number) {
+    super();
+    this.delayMs = delayMs;
+  }
+}
 
 /*** Reject ambiguous categories or conflicting canonical capabilities in the remote catalog. */
 function validateCatalogUniqueness(entries: readonly AnkhProviderCatalogEntry[]): void {
