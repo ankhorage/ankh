@@ -55,6 +55,7 @@ graph LR
   module_tests_parser_test_ts["tests/parser.test.ts"]
   module_tests_planning_test_ts["tests/planning.test.ts"]
   module_tests_providerCatalogAuthentication_test_ts["tests/providerCatalogAuthentication.test.ts"]
+  module_tests_providerCatalogRequestResilience_test_ts["tests/providerCatalogRequestResilience.test.ts"]
   module_tests_providerDiscoveryConsistency_test_ts["tests/providerDiscoveryConsistency.test.ts"]
   module_tests_providerManifestLoader_test_ts["tests/providerManifestLoader.test.ts"]
   module_tests_providerRegistry_test_ts["tests/providerRegistry.test.ts"]
@@ -177,6 +178,9 @@ graph LR
   module_tests_planning_test_ts --> module_src_providerManifestLoader_ts
   module_tests_planning_test_ts --> module_tests_capabilityFixture_ts
   module_tests_providerCatalogAuthentication_test_ts --> module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts
+  module_tests_providerCatalogRequestResilience_test_ts --> module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts
+  module_tests_providerCatalogRequestResilience_test_ts --> module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts
+  module_tests_providerCatalogRequestResilience_test_ts --> module_tests_capabilityFixture_ts
   module_tests_providerDiscoveryConsistency_test_ts --> module_src_cli_index_ts
   module_tests_providerDiscoveryConsistency_test_ts --> module_src_commandContext_ts
   module_tests_providerDiscoveryConsistency_test_ts --> module_src_discovery_ts

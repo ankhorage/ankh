@@ -184,7 +184,7 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts">
       src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts
-      <small>8 functions</small>
+      <small>22 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/providers/adapters/outbound/createNpmProviderReleaseSource.ts">
@@ -263,7 +263,7 @@
       <div class="summary">
         <div><strong>44</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>63</strong><span class="muted">modules</span></div>
+        <div><strong>64</strong><span class="muted">modules</span></div>
         <div><strong>1</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -553,6 +553,11 @@
     <h3>tests/providerCatalogAuthentication.test.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts</code></p>
+    <p><strong>Exports:</strong> <span class="empty">None</span></p>
+  </article><article class="item" data-search="tests/providerCatalogRequestResilience.test.ts src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts tests/capabilityFixture.ts">
+    <h3>tests/providerCatalogRequestResilience.test.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts</code>, <code>src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts</code>, <code>tests/capabilityFixture.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
   </article><article class="item" data-search="tests/providerDiscoveryConsistency.test.ts src/cli/index.ts src/commandContext.ts src/discovery.ts src/execution.ts src/providerManifestLoader.ts tests/capabilityFixture.ts">
     <h3>tests/providerDiscoveryConsistency.test.ts</h3>
@@ -2261,6 +2266,11 @@ package once the provider-facing API is stable.</p>
   module_tests_providerCatalogAuthentication_test_ts[&quot;tests/providerCatalogAuthentication.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_providerCatalogAuthentication_test_ts
   module_tests_providerCatalogAuthentication_test_ts --&gt; module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts
+  module_tests_providerCatalogRequestResilience_test_ts[&quot;tests/providerCatalogRequestResilience.test.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_providerCatalogRequestResilience_test_ts
+  module_tests_providerCatalogRequestResilience_test_ts --&gt; module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts
+  module_tests_providerCatalogRequestResilience_test_ts --&gt; module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts
+  module_tests_providerCatalogRequestResilience_test_ts --&gt; module_tests_capabilityFixture_ts
   module_tests_providerDiscoveryConsistency_test_ts[&quot;tests/providerDiscoveryConsistency.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_providerDiscoveryConsistency_test_ts
   module_tests_providerDiscoveryConsistency_test_ts --&gt; module_src_cli_index_ts
@@ -2538,6 +2548,11 @@ package once the provider-facing API is stable.</p>
   module_tests_providerCatalogAuthentication_test_ts[&quot;tests/providerCatalogAuthentication.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_providerCatalogAuthentication_test_ts
   module_tests_providerCatalogAuthentication_test_ts --&gt; module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts
+  module_tests_providerCatalogRequestResilience_test_ts[&quot;tests/providerCatalogRequestResilience.test.ts&quot;]
+  package__ankhorage_ankh -.-&gt; module_tests_providerCatalogRequestResilience_test_ts
+  module_tests_providerCatalogRequestResilience_test_ts --&gt; module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts
+  module_tests_providerCatalogRequestResilience_test_ts --&gt; module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts
+  module_tests_providerCatalogRequestResilience_test_ts --&gt; module_tests_capabilityFixture_ts
   module_tests_providerDiscoveryConsistency_test_ts[&quot;tests/providerDiscoveryConsistency.test.ts&quot;]
   package__ankhorage_ankh -.-&gt; module_tests_providerDiscoveryConsistency_test_ts
   module_tests_providerDiscoveryConsistency_test_ts --&gt; module_src_cli_index_ts
@@ -2644,6 +2659,7 @@ package once the provider-facing API is stable.</p>
   module_tests_parser_test_ts[&quot;tests/parser.test.ts&quot;]
   module_tests_planning_test_ts[&quot;tests/planning.test.ts&quot;]
   module_tests_providerCatalogAuthentication_test_ts[&quot;tests/providerCatalogAuthentication.test.ts&quot;]
+  module_tests_providerCatalogRequestResilience_test_ts[&quot;tests/providerCatalogRequestResilience.test.ts&quot;]
   module_tests_providerDiscoveryConsistency_test_ts[&quot;tests/providerDiscoveryConsistency.test.ts&quot;]
   module_tests_providerManifestLoader_test_ts[&quot;tests/providerManifestLoader.test.ts&quot;]
   module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
@@ -2766,6 +2782,9 @@ package once the provider-facing API is stable.</p>
   module_tests_planning_test_ts --&gt; module_src_providerManifestLoader_ts
   module_tests_planning_test_ts --&gt; module_tests_capabilityFixture_ts
   module_tests_providerCatalogAuthentication_test_ts --&gt; module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts
+  module_tests_providerCatalogRequestResilience_test_ts --&gt; module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts
+  module_tests_providerCatalogRequestResilience_test_ts --&gt; module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts
+  module_tests_providerCatalogRequestResilience_test_ts --&gt; module_tests_capabilityFixture_ts
   module_tests_providerDiscoveryConsistency_test_ts --&gt; module_src_cli_index_ts
   module_tests_providerDiscoveryConsistency_test_ts --&gt; module_src_commandContext_ts
   module_tests_providerDiscoveryConsistency_test_ts --&gt; module_src_discovery_ts
@@ -2856,6 +2875,7 @@ package once the provider-facing API is stable.</p>
   module_tests_parser_test_ts[&quot;tests/parser.test.ts&quot;]
   module_tests_planning_test_ts[&quot;tests/planning.test.ts&quot;]
   module_tests_providerCatalogAuthentication_test_ts[&quot;tests/providerCatalogAuthentication.test.ts&quot;]
+  module_tests_providerCatalogRequestResilience_test_ts[&quot;tests/providerCatalogRequestResilience.test.ts&quot;]
   module_tests_providerDiscoveryConsistency_test_ts[&quot;tests/providerDiscoveryConsistency.test.ts&quot;]
   module_tests_providerManifestLoader_test_ts[&quot;tests/providerManifestLoader.test.ts&quot;]
   module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
@@ -2978,6 +2998,9 @@ package once the provider-facing API is stable.</p>
   module_tests_planning_test_ts --&gt; module_src_providerManifestLoader_ts
   module_tests_planning_test_ts --&gt; module_tests_capabilityFixture_ts
   module_tests_providerCatalogAuthentication_test_ts --&gt; module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts
+  module_tests_providerCatalogRequestResilience_test_ts --&gt; module_src_features_providers_adapters_outbound_createGitHubProviderCatalogSource_ts
+  module_tests_providerCatalogRequestResilience_test_ts --&gt; module_src_features_providers_application_use_cases_resolveProviderCatalogAsync_ts
+  module_tests_providerCatalogRequestResilience_test_ts --&gt; module_tests_capabilityFixture_ts
   module_tests_providerDiscoveryConsistency_test_ts --&gt; module_src_cli_index_ts
   module_tests_providerDiscoveryConsistency_test_ts --&gt; module_src_commandContext_ts
   module_tests_providerDiscoveryConsistency_test_ts --&gt; module_src_discovery_ts
@@ -3070,6 +3093,7 @@ package once the provider-facing API is stable.</p>
   module_tests_parser_test_ts[&quot;tests/parser.test.ts&quot;]
   module_tests_planning_test_ts[&quot;tests/planning.test.ts&quot;]
   module_tests_providerCatalogAuthentication_test_ts[&quot;tests/providerCatalogAuthentication.test.ts&quot;]
+  module_tests_providerCatalogRequestResilience_test_ts[&quot;tests/providerCatalogRequestResilience.test.ts&quot;]
   module_tests_providerDiscoveryConsistency_test_ts[&quot;tests/providerDiscoveryConsistency.test.ts&quot;]
   module_tests_providerManifestLoader_test_ts[&quot;tests/providerManifestLoader.test.ts&quot;]
   module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
@@ -3273,6 +3297,7 @@ package once the provider-facing API is stable.</p>
   module_tests_parser_test_ts[&quot;tests/parser.test.ts&quot;]
   module_tests_planning_test_ts[&quot;tests/planning.test.ts&quot;]
   module_tests_providerCatalogAuthentication_test_ts[&quot;tests/providerCatalogAuthentication.test.ts&quot;]
+  module_tests_providerCatalogRequestResilience_test_ts[&quot;tests/providerCatalogRequestResilience.test.ts&quot;]
   module_tests_providerDiscoveryConsistency_test_ts[&quot;tests/providerDiscoveryConsistency.test.ts&quot;]
   module_tests_providerManifestLoader_test_ts[&quot;tests/providerManifestLoader.test.ts&quot;]
   module_tests_providerRegistry_test_ts[&quot;tests/providerRegistry.test.ts&quot;]
@@ -3783,35 +3808,91 @@ Undefined, null, empty, and whitespace-only strings are treated as absent.</p>
       <h2>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts</h2>
       <article class="item" data-search="createGitHubProviderCatalogSource src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Create the GitHub-backed source for the official Ankhorage provider catalog.">
     <h3>createGitHubProviderCatalogSource</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:14:1</code></p>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:28:1</code></p>
     <p>Create the GitHub-backed source for the official Ankhorage provider catalog.</p>
   </article><article class="item" data-search="readRepositoriesAsync src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Read all public repositories in the provider organization.">
     <h3>readRepositoriesAsync</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:53:1</code></p>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:92:1</code></p>
     <p>Read all public repositories in the provider organization.</p>
   </article><article class="item" data-search="parseRepository src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Parse the GitHub fields required for provider metadata discovery.">
     <h3>parseRepository</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:90:1</code></p>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:138:1</code></p>
     <p>Parse the GitHub fields required for provider metadata discovery.</p>
   </article><article class="item" data-search="readProviderEntryAsync src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Resolve one repository candidate to the latest published npm provider metadata.">
     <h3>readProviderEntryAsync</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:112:1</code></p>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:160:1</code></p>
     <p>Resolve one repository candidate to the latest published npm provider metadata.</p>
   </article><article class="item" data-search="readPublishedProviderEntryAsync src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Read the latest published npm manifest so catalog state is always installable.">
     <h3>readPublishedProviderEntryAsync</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:136:1</code></p>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:188:1</code></p>
     <p>Read the latest published npm manifest so catalog state is always installable.</p>
+  </article><article class="item" data-search="readRemoteJsonAsync src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Fetch and parse one remote JSON source with timeout, bounded retries, and sanitized diagnostics.">
+    <h3>readRemoteJsonAsync</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:222:1</code></p>
+    <p>Fetch and parse one remote JSON source with timeout, bounded retries, and sanitized diagnostics.</p>
+  </article><article class="item" data-search="fetchWithTimeoutAsync src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Invoke fetch and consume its response under one abortable deadline.">
+    <h3>fetchWithTimeoutAsync</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:290:1</code></p>
+    <p>Invoke fetch and consume its response under one abortable deadline.</p>
+  </article><article class="item" data-search="toError src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Convert an unknown fetch rejection into the Error boundary used by request diagnostics.">
+    <h3>toError</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:329:1</code></p>
+    <p>Convert an unknown fetch rejection into the Error boundary used by request diagnostics.</p>
+  </article><article class="item" data-search="mapInBatchesAsync src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Process asynchronous operations in fixed-size batches without unbounded remote work.">
+    <h3>mapInBatchesAsync</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:334:1</code></p>
+    <p>Process asynchronous operations in fixed-size batches without unbounded remote work.</p>
+  </article><article class="item" data-search="sleepAsync src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Delay a retry without retaining timers after the retry has begun.">
+    <h3>sleepAsync</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:348:1</code></p>
+    <p>Delay a retry without retaining timers after the retry has begun.</p>
+  </article><article class="item" data-search="discardResponseBodyAsync src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Discard a retryable response body before the following request opens another connection.">
+    <h3>discardResponseBodyAsync</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:353:1</code></p>
+    <p>Discard a retryable response body before the following request opens another connection.</p>
+  </article><article class="item" data-search="retryDelayMs src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Calculate a jittered retry delay while honoring explicit server retry guidance.">
+    <h3>retryDelayMs</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:362:1</code></p>
+    <p>Calculate a jittered retry delay while honoring explicit server retry guidance.</p>
+  </article><article class="item" data-search="readServerRetryDelayMs src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Read Retry-After or GitHub rate-limit reset delays from a response.">
+    <h3>readServerRetryDelayMs</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:379:1</code></p>
+    <p>Read Retry-After or GitHub rate-limit reset delays from a response.</p>
+  </article><article class="item" data-search="isRetryableResponse src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Identify HTTP responses that can recover without changing provider metadata.">
+    <h3>isRetryableResponse</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:394:1</code></p>
+    <p>Identify HTTP responses that can recover without changing provider metadata.</p>
+  </article><article class="item" data-search="isTransientRequestError src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Identify connection and timeout errors that can be retried safely.">
+    <h3>isTransientRequestError</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:406:1</code></p>
+    <p>Identify connection and timeout errors that can be retried safely.</p>
+  </article><article class="item" data-search="isTransientError src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Identify transient transport codes and the two observed Bun connection messages.">
+    <h3>isTransientError</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:414:1</code></p>
+    <p>Identify transient transport codes and the two observed Bun connection messages.</p>
+  </article><article class="item" data-search="requestErrorCategory src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Categorize a request failure without including raw error details in user-facing diagnostics.">
+    <h3>requestErrorCategory</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:424:1</code></p>
+    <p>Categorize a request failure without including raw error details in user-facing diagnostics.</p>
+  </article><article class="item" data-search="requestFailureError src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Create a concise diagnostic that identifies the failed catalog source and retry state.">
+    <h3>requestFailureError</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:429:1</code></p>
+    <p>Create a concise diagnostic that identifies the failed catalog source and retry state.</p>
+  </article><article class="item" data-search="isCatalogRequestError src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Identify failures already sanitized for provider-catalog diagnostics.">
+    <h3>isCatalogRequestError</h3>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:444:1</code></p>
+    <p>Identify failures already sanitized for provider-catalog diagnostics.</p>
   </article><article class="item" data-search="validateCatalogUniqueness src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Reject ambiguous categories or conflicting canonical capabilities in the remote catalog.">
     <h3>validateCatalogUniqueness</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:166:1</code></p>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:468:1</code></p>
     <p>Reject ambiguous categories or conflicting canonical capabilities in the remote catalog.</p>
   </article><article class="item" data-search="readNonEmptyString src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Read a trimmed non-empty string.">
     <h3>readNonEmptyString</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:198:1</code></p>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:500:1</code></p>
     <p>Read a trimmed non-empty string.</p>
   </article><article class="item" data-search="isRecord src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts Narrow an unknown JSON value to a non-array object.">
     <h3>isRecord</h3>
-    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:205:1</code></p>
+    <p class="muted"><code>src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts:507:1</code></p>
     <p>Narrow an unknown JSON value to a non-array object.</p>
   </article>
     </section>

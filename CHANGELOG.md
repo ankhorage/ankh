@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.13.6
+
+### Patch Changes
+
+- 31739dd: Retry transient provider-catalog requests with bounded concurrency, timeouts, and source diagnostics.
+
 ## 0.13.5
 
 ### Patch Changes

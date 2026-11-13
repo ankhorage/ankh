@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.13.5",
+      "value": "v0.13.6",
       "color": "cb3837"
     },
     {
@@ -765,6 +765,16 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "tests/providerCatalogRequestResilience.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts",
+        "tests/capabilityFixture.ts"
       ],
       "exports": []
     },
@@ -3322,7 +3332,7 @@
       "description": "Create the GitHub-backed source for the official Ankhorage provider catalog.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 14,
+        "line": 28,
         "column": 1
       }
     },
@@ -3331,7 +3341,7 @@
       "description": "Read all public repositories in the provider organization.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 53,
+        "line": 92,
         "column": 1
       }
     },
@@ -3340,7 +3350,7 @@
       "description": "Parse the GitHub fields required for provider metadata discovery.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 90,
+        "line": 138,
         "column": 1
       }
     },
@@ -3349,7 +3359,7 @@
       "description": "Resolve one repository candidate to the latest published npm provider metadata.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 112,
+        "line": 160,
         "column": 1
       }
     },
@@ -3358,7 +3368,133 @@
       "description": "Read the latest published npm manifest so catalog state is always installable.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 136,
+        "line": 188,
+        "column": 1
+      }
+    },
+    {
+      "name": "readRemoteJsonAsync",
+      "description": "Fetch and parse one remote JSON source with timeout, bounded retries, and sanitized diagnostics.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "line": 222,
+        "column": 1
+      }
+    },
+    {
+      "name": "fetchWithTimeoutAsync",
+      "description": "Invoke fetch and consume its response under one abortable deadline.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "line": 290,
+        "column": 1
+      }
+    },
+    {
+      "name": "toError",
+      "description": "Convert an unknown fetch rejection into the Error boundary used by request diagnostics.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "line": 329,
+        "column": 1
+      }
+    },
+    {
+      "name": "mapInBatchesAsync",
+      "description": "Process asynchronous operations in fixed-size batches without unbounded remote work.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "line": 334,
+        "column": 1
+      }
+    },
+    {
+      "name": "sleepAsync",
+      "description": "Delay a retry without retaining timers after the retry has begun.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "line": 348,
+        "column": 1
+      }
+    },
+    {
+      "name": "discardResponseBodyAsync",
+      "description": "Discard a retryable response body before the following request opens another connection.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "line": 353,
+        "column": 1
+      }
+    },
+    {
+      "name": "retryDelayMs",
+      "description": "Calculate a jittered retry delay while honoring explicit server retry guidance.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "line": 362,
+        "column": 1
+      }
+    },
+    {
+      "name": "readServerRetryDelayMs",
+      "description": "Read Retry-After or GitHub rate-limit reset delays from a response.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "line": 379,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRetryableResponse",
+      "description": "Identify HTTP responses that can recover without changing provider metadata.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "line": 394,
+        "column": 1
+      }
+    },
+    {
+      "name": "isTransientRequestError",
+      "description": "Identify connection and timeout errors that can be retried safely.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "line": 406,
+        "column": 1
+      }
+    },
+    {
+      "name": "isTransientError",
+      "description": "Identify transient transport codes and the two observed Bun connection messages.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "line": 414,
+        "column": 1
+      }
+    },
+    {
+      "name": "requestErrorCategory",
+      "description": "Categorize a request failure without including raw error details in user-facing diagnostics.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "line": 424,
+        "column": 1
+      }
+    },
+    {
+      "name": "requestFailureError",
+      "description": "Create a concise diagnostic that identifies the failed catalog source and retry state.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "line": 429,
+        "column": 1
+      }
+    },
+    {
+      "name": "isCatalogRequestError",
+      "description": "Identify failures already sanitized for provider-catalog diagnostics.",
+      "sourceLocation": {
+        "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "line": 444,
         "column": 1
       }
     },
@@ -3367,7 +3503,7 @@
       "description": "Reject ambiguous categories or conflicting canonical capabilities in the remote catalog.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 166,
+        "line": 468,
         "column": 1
       }
     },
@@ -3376,7 +3512,7 @@
       "description": "Read a trimmed non-empty string.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 198,
+        "line": 500,
         "column": 1
       }
     },
@@ -3385,7 +3521,7 @@
       "description": "Narrow an unknown JSON value to a non-array object.",
       "sourceLocation": {
         "filePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
-        "line": 205,
+        "line": 507,
         "column": 1
       }
     },
@@ -4692,6 +4828,21 @@
         "fromPath": "tests/providerCatalogAuthentication.test.ts",
         "toPath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
         "sourcePath": "tests/providerCatalogAuthentication.test.ts"
+      },
+      {
+        "fromPath": "tests/providerCatalogRequestResilience.test.ts",
+        "toPath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromPath": "tests/providerCatalogRequestResilience.test.ts",
+        "toPath": "src/features/providers/application/use-cases/resolveProviderCatalogAsync.ts",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromPath": "tests/providerCatalogRequestResilience.test.ts",
+        "toPath": "tests/capabilityFixture.ts",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
       },
       {
         "fromPath": "tests/providerDiscoveryConsistency.test.ts",
@@ -6274,6 +6425,12 @@
       },
       {
         "fromSymbol": "tests/consumerProviderVersionProcess.acceptance.ts",
+        "toSymbol": "resolveCompatiblePublishedVersionsAsync",
+        "callExpression": "resolveCompatiblePublishedVersionsAsync",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "tests/consumerProviderVersionProcess.acceptance.ts",
         "toSymbol": "createConsumerAsync",
         "callExpression": "createConsumerAsync",
         "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
@@ -6310,8 +6467,50 @@
       },
       {
         "fromSymbol": "tests/consumerProviderVersionProcess.acceptance.ts",
+        "toSymbol": "expectInvalidProviderManifestFailureAsync",
+        "callExpression": "expectInvalidProviderManifestFailureAsync",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "tests/consumerProviderVersionProcess.acceptance.ts",
         "toSymbol": "rm",
         "callExpression": "rm",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "resolveCompatiblePublishedVersionsAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "resolveCompatiblePublishedVersionsAsync",
+        "toSymbol": "isExactVersion",
+        "callExpression": "isExactVersion",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "resolveCompatiblePublishedVersionsAsync",
+        "toSymbol": "readProviderManifest",
+        "callExpression": "readProviderManifest",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "resolveCompatiblePublishedVersionsAsync",
+        "toSymbol": "findRecordValue",
+        "callExpression": "findRecordValue",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "tests/consumerProviderVersionProcess.acceptance.ts",
+        "toSymbol": "isExactVersion",
+        "callExpression": "isExactVersion",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "tests/consumerProviderVersionProcess.acceptance.ts",
+        "toSymbol": "manifestsMatch",
+        "callExpression": "manifestsMatch",
         "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
       },
       {
@@ -6358,26 +6557,14 @@
       },
       {
         "fromSymbol": "expectSuccessAsync",
-        "toSymbol": "match",
-        "callExpression": "match",
+        "toSymbol": "expectProviderHelp",
+        "callExpression": "expectProviderHelp",
         "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
       },
       {
         "fromSymbol": "expectSuccessAsync",
-        "toSymbol": "readFile",
-        "callExpression": "readFile",
-        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
-      },
-      {
-        "fromSymbol": "expectSuccessAsync",
-        "toSymbol": "deepEqual",
-        "callExpression": "deepEqual",
-        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
-      },
-      {
-        "fromSymbol": "expectSuccessAsync",
-        "toSymbol": "fail",
-        "callExpression": "fail",
+        "toSymbol": "expectCacheVersionAsync",
+        "callExpression": "expectCacheVersionAsync",
         "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
       },
       {
@@ -6436,8 +6623,14 @@
       },
       {
         "fromSymbol": "expectFailureAsync",
-        "toSymbol": "expectNoMaterializationAsync",
-        "callExpression": "expectNoMaterializationAsync",
+        "toSymbol": "expectNoProviderHelp",
+        "callExpression": "expectNoProviderHelp",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "expectFailureAsync",
+        "toSymbol": "expectNoCachedProviderAsync",
+        "callExpression": "expectNoCachedProviderAsync",
         "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
       },
       {
@@ -6472,12 +6665,42 @@
       },
       {
         "fromSymbol": "expectInvalidManifestFailureAsync",
-        "toSymbol": "expectNoMaterializationAsync",
-        "callExpression": "expectNoMaterializationAsync",
+        "toSymbol": "expectNoProviderHelp",
+        "callExpression": "expectNoProviderHelp",
         "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
       },
       {
-        "fromSymbol": "expectNoMaterializationAsync",
+        "fromSymbol": "expectInvalidProviderManifestFailureAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "expectInvalidProviderManifestFailureAsync",
+        "toSymbol": "runAsync",
+        "callExpression": "runAsync",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "expectInvalidProviderManifestFailureAsync",
+        "toSymbol": "equal",
+        "callExpression": "equal",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "expectInvalidProviderManifestFailureAsync",
+        "toSymbol": "match",
+        "callExpression": "match",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "expectInvalidProviderManifestFailureAsync",
+        "toSymbol": "expectNoProviderHelp",
+        "callExpression": "expectNoProviderHelp",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "expectNoCachedProviderAsync",
         "toSymbol": "readFile",
         "callExpression": "readFile",
         "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
@@ -6492,6 +6715,36 @@
         "fromSymbol": "tests/consumerProviderVersionProcess.acceptance.ts",
         "toSymbol": "equal",
         "callExpression": "equal",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "expectProviderHelp",
+        "toSymbol": "match",
+        "callExpression": "match",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "expectNoProviderHelp",
+        "toSymbol": "fail",
+        "callExpression": "fail",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "readProviderManifest",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "manifestsMatch",
+        "toSymbol": "deepEqual",
+        "callExpression": "deepEqual",
+        "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
+      },
+      {
+        "fromSymbol": "manifestsMatch",
+        "toSymbol": "readProviderManifest",
+        "callExpression": "readProviderManifest",
         "sourcePath": "tests/consumerProviderVersionProcess.acceptance.ts"
       },
       {
@@ -7003,6 +7256,132 @@
         "toSymbol": "expect",
         "callExpression": "expect",
         "sourcePath": "tests/providerCatalogAuthentication.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerCatalogRequestResilience.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerCatalogRequestResilience.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerCatalogRequestResilience.test.ts",
+        "toSymbol": "resolveProviderCatalogAsync",
+        "callExpression": "resolveProviderCatalogAsync",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerCatalogRequestResilience.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerCatalogRequestResilience.test.ts",
+        "toSymbol": "createGitHubProviderCatalogSource",
+        "callExpression": "createGitHubProviderCatalogSource",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "fetchImpl",
+        "toSymbol": "readRequestUrl",
+        "callExpression": "readRequestUrl",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "fetchImpl",
+        "toSymbol": "jsonResponse",
+        "callExpression": "jsonResponse",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerCatalogRequestResilience.test.ts",
+        "toSymbol": "githubRepository",
+        "callExpression": "githubRepository",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "fetchImpl",
+        "toSymbol": "readRepositoryName",
+        "callExpression": "readRepositoryName",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "fetchImpl",
+        "toSymbol": "remoteProviderPackage",
+        "callExpression": "remoteProviderPackage",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "fetchImpl",
+        "toSymbol": "readPackageName",
+        "callExpression": "readPackageName",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerCatalogRequestResilience.test.ts",
+        "toSymbol": "readAsync",
+        "callExpression": "source.readAsync",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "fetchImpl",
+        "toSymbol": "githubRepository",
+        "callExpression": "githubRepository",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "fetchImpl",
+        "toSymbol": "rejectingJsonResponse",
+        "callExpression": "rejectingJsonResponse",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerCatalogRequestResilience.test.ts",
+        "toSymbol": "reject",
+        "callExpression": "reject",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerCatalogRequestResilience.test.ts",
+        "toSymbol": "readAsync",
+        "callExpression": "rateLimited.readAsync",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerCatalogRequestResilience.test.ts",
+        "toSymbol": "readAsync",
+        "callExpression": "forbidden.readAsync",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerCatalogRequestResilience.test.ts",
+        "toSymbol": "readAsync",
+        "callExpression": "unauthorized.readAsync",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "tests/providerCatalogRequestResilience.test.ts",
+        "toSymbol": "readAsync",
+        "callExpression": "invalidJson.readAsync",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "rejectingJsonResponse",
+        "toSymbol": "jsonResponse",
+        "callExpression": "jsonResponse",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
+      },
+      {
+        "fromSymbol": "remoteProviderPackage",
+        "toSymbol": "createCapabilities",
+        "callExpression": "createCapabilities",
+        "sourcePath": "tests/providerCatalogRequestResilience.test.ts"
       },
       {
         "fromSymbol": "tests/providerDiscoveryConsistency.test.ts",
@@ -8463,6 +8842,12 @@
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
       },
       {
+        "fromSymbol": "readAsync",
+        "toSymbol": "mapInBatchesAsync",
+        "callExpression": "mapInBatchesAsync",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
         "fromSymbol": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
         "toSymbol": "readProviderEntryAsync",
         "callExpression": "readProviderEntryAsync",
@@ -8476,8 +8861,8 @@
       },
       {
         "fromSymbol": "readRepositoriesAsync",
-        "toSymbol": "fetchImpl",
-        "callExpression": "fetchImpl",
+        "toSymbol": "readRemoteJsonAsync",
+        "callExpression": "readRemoteJsonAsync",
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
       },
       {
@@ -8488,8 +8873,8 @@
       },
       {
         "fromSymbol": "readProviderEntryAsync",
-        "toSymbol": "fetchImpl",
-        "callExpression": "fetchImpl",
+        "toSymbol": "readRemoteJsonAsync",
+        "callExpression": "readRemoteJsonAsync",
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
       },
       {
@@ -8512,8 +8897,8 @@
       },
       {
         "fromSymbol": "readPublishedProviderEntryAsync",
-        "toSymbol": "fetchImpl",
-        "callExpression": "fetchImpl",
+        "toSymbol": "readRemoteJsonAsync",
+        "callExpression": "readRemoteJsonAsync",
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
       },
       {
@@ -8532,6 +8917,108 @@
         "fromSymbol": "readPublishedProviderEntryAsync",
         "toSymbol": "parsePublishedProviderEntry",
         "callExpression": "parsePublishedProviderEntry",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "readRemoteJsonAsync",
+        "toSymbol": "fetchWithTimeoutAsync",
+        "callExpression": "fetchWithTimeoutAsync",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "toSymbol": "discardResponseBodyAsync",
+        "callExpression": "discardResponseBodyAsync",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "toSymbol": "isTransientRequestError",
+        "callExpression": "isTransientRequestError",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "readRemoteJsonAsync",
+        "toSymbol": "isRetryableResponse",
+        "callExpression": "isRetryableResponse",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "readRemoteJsonAsync",
+        "toSymbol": "requestFailureError",
+        "callExpression": "requestFailureError",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "readRemoteJsonAsync",
+        "toSymbol": "retryDelayAsync",
+        "callExpression": "requestPolicy.retryDelayAsync",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "readRemoteJsonAsync",
+        "toSymbol": "retryDelayMs",
+        "callExpression": "retryDelayMs",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "readRemoteJsonAsync",
+        "toSymbol": "isCatalogRequestError",
+        "callExpression": "isCatalogRequestError",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "readRemoteJsonAsync",
+        "toSymbol": "isTransientRequestError",
+        "callExpression": "isTransientRequestError",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "readRemoteJsonAsync",
+        "toSymbol": "requestErrorCategory",
+        "callExpression": "requestErrorCategory",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "toSymbol": "reject",
+        "callExpression": "reject",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "toSymbol": "fetchImpl",
+        "callExpression": "fetchImpl",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "toSymbol": "consumeResponseAsync",
+        "callExpression": "consumeResponseAsync",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts",
+        "toSymbol": "toError",
+        "callExpression": "toError",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "retryDelayMs",
+        "toSymbol": "readServerRetryDelayMs",
+        "callExpression": "readServerRetryDelayMs",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "retryDelayMs",
+        "toSymbol": "random",
+        "callExpression": "random",
+        "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
+      },
+      {
+        "fromSymbol": "isTransientRequestError",
+        "toSymbol": "isTransientError",
+        "callExpression": "isTransientError",
         "sourcePath": "src/features/providers/adapters/outbound/createGitHubProviderCatalogSource.ts"
       },
       {
