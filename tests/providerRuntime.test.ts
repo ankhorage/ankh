@@ -446,7 +446,7 @@ describe('official provider runtime', () => {
     });
 
     expect(source.readAsync()).rejects.toThrow(
-      'Could not read latest published metadata for @ankhorage/unavailable from npm (HTTP 503).',
+      'npm package metadata for @ankhorage/unavailable (HTTP 503; retries exhausted after 3 attempts).',
     );
   });
 
