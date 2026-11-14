@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "kind": "tooling",
+  "title": "Ankh",
+  "summary": "Provides the Bun-first root command-line front door for discovering, planning, and dispatching independently released Ankh runtime providers.",
+  "purpose": "Give users one stable CLI entrypoint while keeping domain behavior and provider ownership in standalone packages.",
+  "domain": "command-line provider discovery and dispatch",
+  "responsibilities": [
+    "Discover compatible provider packages from the installed environment and current project.",
+    "Parse root commands, render provider-aware help, and dispatch commands to resolved provider handlers.",
+    "Expose inspectable provider command plans without taking ownership of domain execution."
+  ],
+  "boundaries": [
+    "Does not implement the domain behavior owned by provider packages.",
+    "Does not hard-code provider categories or silently select unpublished provider source.",
+    "Does not compose application workflows or deployment infrastructure."
+  ],
+  "audience": [
+    "Developers and operators invoking Ankhorage package capabilities from a terminal.",
+    "Provider package authors exposing commands through the Ankh runtime contract."
+  ],
+  "useCases": [
+    "List available provider commands and render provider-specific help.",
+    "Dispatch a command to the exact compatible installed provider.",
+    "Inspect a provider command plan without executing the provider handler."
+  ],
+  "architecture": {
+    "role": "Thin CLI router and provider-discovery boundary over published Ankh runtime providers.",
+    "invariants": [
+      "Domain behavior remains in independently released provider packages.",
+      "Provider resolution uses installed package identity and compatibility evidence.",
+      "Help, planning, and execution share the same provider discovery path."
+    ]
+  },
+  "constraints": {
+    "platforms": ["Bun"],
+    "limitations": [
+      "Only installed and compatible providers with valid package metadata can be discovered."
+    ]
+  }
+}
