@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.13.7
+
+### Patch Changes
+
+- c5a6933: Add canonical authored repository metadata for organization-wide tooling and documentation consumers.
+
 ## 0.13.6
 
 ### Patch Changes
