@@ -6,7 +6,38 @@
 
 Package: `@ankhorage/ankh`
 
-Bun-first root CLI front door for Ankhorage provider commands.
+Title: Ankh
+
+Provides the Bun-first root command-line front door for discovering, planning, and dispatching independently released Ankh runtime providers.
+
+Purpose: Give users one stable CLI entrypoint while keeping domain behavior and provider ownership in standalone packages.
+
+Audience:
+
+- Developers and operators invoking Ankhorage package capabilities from a terminal.
+- Provider package authors exposing commands through the Ankh runtime contract.
+
+## Scope and boundaries
+
+Responsibilities:
+
+- Discover compatible provider packages from the installed environment and current project.
+- Parse root commands, render provider-aware help, and dispatch commands to resolved provider handlers.
+- Expose inspectable provider command plans without taking ownership of domain execution.
+
+Boundaries:
+
+- Does not implement the domain behavior owned by provider packages.
+- Does not hard-code provider categories or silently select unpublished provider source.
+- Does not compose application workflows or deployment infrastructure.
+
+Architecture role: Thin CLI router and provider-discovery boundary over published Ankh runtime providers.
+
+Architectural invariants:
+
+- Domain behavior remains in independently released provider packages.
+- Provider resolution uses installed package identity and compatibility evidence.
+- Help, planning, and execution share the same provider discovery path.
 
 ## Current architecture only
 
@@ -64,6 +95,26 @@ Paradox `/*** ... */` comments in `src` and leading `@usage` comments in real
 `examples/<example>/...` source files, plus any repository-owned manual documentation outside the
 generated output. The managed release workflow runs `bun run docs` after the package version bump
 and commits the regenerated artifacts in the release commit.
+
+## GitHub task lifecycle and workspace cleanup
+
+- **Start.** Treat each issue implementation, PR implementation, review, and change request (CR)
+  as an independent task. Fetch the current remote default branch and read the applicable issue,
+  PR, HEAD, review feedback, and CI state. Use a fresh, uniquely named task checkout or worktree.
+  Concurrent tasks must have distinct writable checkout, temporary, build, and cache paths.
+- **CRs.** Fetch and check out the current remote PR branch in the new workspace. Preserve PR
+  history and scope. Push corrections to the existing PR branch.
+- **Delivery.** Run applicable checks. Commit and push all intended changes, then verify that
+  GitHub has the intended commit on the correct remote branch. Report the exact HEAD, checks, CI,
+  findings, and blockers. Report acceptance that was not run as unverified. Read-only reviews hand
+  off their findings without creating a commit. Merge requires explicit authorization.
+- **Cleanup.** After handoff, resolve every candidate path and remove only task-owned directories
+  whose resolved paths are strictly under the resolved system path for `/tmp` (`/private/tmp` on
+  macOS). Refuse candidates that resolve outside that boundary, including through a symlink. Use
+  Git-aware removal for worktrees. Preserve workspaces outside the boundary, shared directories,
+  other tasks' directories, uncommitted changes, and unpushed commits. If blocked, persist
+  recoverable work first and document what must be retained. Report whether cleanup succeeded, was
+  skipped, or was blocked.
 
 ## Pull requests
 
